@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_Salary_Slips</fullName>
+    <columns>NAME</columns>
+    <columns>Payroll_Period__c</columns>
+    <columns>Gross_Pay__c</columns>
+    <columns>Total_Deductions__c</columns>
+    <columns>Net_Pay__c</columns>
+    <columns>Status__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>My Salary Slips</label>
+</ListView>

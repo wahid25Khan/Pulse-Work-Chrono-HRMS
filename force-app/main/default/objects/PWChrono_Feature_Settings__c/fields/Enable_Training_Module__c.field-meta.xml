@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enable_Training_Module__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Enable or disable training management features including programs, events, and attendance tracking.</description>
+    <inlineHelpText>Uncheck if your organization doesn&apos;t track employee training internally.</inlineHelpText>
+    <label>Enable Training Module</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

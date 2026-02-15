@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Advance_Leave_Application_Days__c</fullName>
+    <defaultValue>2</defaultValue>
+    <description>Minimum number of days in advance employees must apply for leave (except emergency). Set to 0 for no restriction.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>For planned leave, employees must apply at least this many days before leave start date (0 = same-day allowed).</inlineHelpText>
+    <label>Advance Leave Application (Days)</label>
+    <precision>2</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

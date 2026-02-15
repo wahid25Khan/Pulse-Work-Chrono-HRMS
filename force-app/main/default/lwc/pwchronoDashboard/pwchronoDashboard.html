@@ -1,0 +1,257 @@
+<template>
+    <!-- Access Check Loading -->
+    <template if:false={accessLoaded}>
+        <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+            <div class="relative w-16 h-16">
+                <div class="absolute inset-0 border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin"></div>
+                <div class="absolute inset-4 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full animate-pulse"></div>
+            </div>
+            <p class="mt-6 text-slate-500 text-sm font-medium">Loading your dashboard...</p>
+        </div>
+    </template>
+
+    <!-- Main Content -->
+    <template if:true={accessLoaded}>
+        <!-- Access Denied State -->
+        <template if:false={hasAccess}>
+            <div class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-50 to-slate-100">
+                <div class="bg-white p-12 rounded-3xl text-center shadow-2xl max-w-md">
+                    <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center">
+                        <lightning-icon icon-name="utility:lock" size="large" class="text-red-500"></lightning-icon>
+                    </div>
+                    <h1 class="text-2xl font-bold text-slate-800 mb-2">Access Denied</h1>
+                    <p class="text-slate-500 mb-6 leading-relaxed">You do not have permission to view the Dashboard. Please contact your administrator.</p>
+                    <lightning-button label="Go Back" onclick={handleGoBack} variant="brand"></lightning-button>
+                </div>
+            </div>
+        </template>
+
+        <!-- Dashboard -->
+        <template if:true={hasAccess}>
+            <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+                <!-- Dashboard Header -->
+                <header class="bg-gradient-to-r from-indigo-500 via-purple-500 to-orange-500 px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                            <div>
+                                <h1 class="text-2xl sm:text-3xl font-bold text-white">Dashboard</h1>
+                                <p class="text-white/80 text-sm sm:text-base mt-1">Welcome back! Here's what's happening today.</p>
+                            </div>
+                            <div class="flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-full text-white text-sm">
+                                <lightning-icon icon-name="utility:date_input" size="small" class="text-white"></lightning-icon>
+                                <span>{todayDate}</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Loading Skeleton -->
+                <template if:true={isLoading}>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                            <template for:each={skeletonCards} for:item="skeleton">
+                                <div key={skeleton} class="bg-white rounded-2xl p-6 shadow-sm">
+                                    <div class="w-12 h-12 bg-slate-200 rounded-xl mb-4 animate-pulse"></div>
+                                    <div class="w-24 h-8 bg-slate-200 rounded-lg mb-2 animate-pulse"></div>
+                                    <div class="w-16 h-4 bg-slate-100 rounded animate-pulse"></div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Main Content -->
+                <template if:false={isLoading}>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                        <!-- Leave Balance Stats -->
+                        <section class="mb-8">
+                            <div class="flex items-center gap-2 mb-4">
+                                <lightning-icon icon-name="utility:event" size="small"></lightning-icon>
+                                <h2 class="text-lg font-semibold text-slate-800">Leave Balance</h2>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                                <template for:each={dashboardData.leaveBalance} for:item="leave">
+                                    <div key={leave.leaveType} class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                                <lightning-icon icon-name="utility:event" size="small" class="text-white"></lightning-icon>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">{leave.leaveType}</span>
+                                                <div class="flex items-baseline gap-1 mt-1">
+                                                    <span class="text-2xl sm:text-3xl font-bold text-slate-800">{leave.allocated}</span>
+                                                    <span class="text-sm text-slate-400">days</span>
+                                                </div>
+                                                <div class="h-1 bg-slate-100 rounded-full mt-3 overflow-hidden">
+                                                    <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500" style={leave.progressStyle}></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </section>
+
+                        <!-- Main Grid -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <!-- Left Column - Tables (2 columns wide) -->
+                            <div class="lg:col-span-2 space-y-6">
+                                <!-- Upcoming Shifts Card -->
+                                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                                    <div class="flex justify-between items-center px-5 sm:px-6 py-4 border-b border-slate-100">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+                                                <lightning-icon icon-name="utility:clock" size="small" class="text-white"></lightning-icon>
+                                            </div>
+                                            <h3 class="text-base font-semibold text-slate-800">Upcoming Shifts</h3>
+                                        </div>
+                                        <lightning-button-icon icon-name="utility:chevronright" alternative-text="View All" variant="bare" onclick={navigateToShifts}></lightning-button-icon>
+                                    </div>
+                                    <div class="p-5 sm:p-6">
+                                        <template if:true={hasShifts}>
+                                            <div class="space-y-3">
+                                                <template for:each={dashboardData.upcomingShifts} for:item="shift">
+                                                    <div key={shift.Id} class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+                                                        <div class="w-14 py-2 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg text-center text-white">
+                                                            <span class="block text-[10px] uppercase opacity-90">{shift.dayOfWeek}</span>
+                                                            <span class="block text-lg font-bold leading-tight">{shift.dateFormatted}</span>
+                                                        </div>
+                                                        <div class="flex-1 min-w-0">
+                                                            <span class="block font-semibold text-slate-800 truncate">{shift.shiftName}</span>
+                                                            <span class="flex items-center gap-1 text-sm text-slate-500 mt-0.5">
+                                                                <lightning-icon icon-name="utility:clock" size="xx-small"></lightning-icon>
+                                                                {shift.timeRange}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template if:false={hasShifts}>
+                                            <div class="py-10 text-center">
+                                                <div class="w-16 h-16 mx-auto mb-4 bg-slate-100 rounded-full flex items-center justify-center">
+                                                    <lightning-icon icon-name="utility:event" size="large" class="text-slate-400"></lightning-icon>
+                                                </div>
+                                                <p class="font-semibold text-slate-600">No upcoming shifts</p>
+                                                <p class="text-sm text-slate-400">Your shift schedule is clear</p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Payslips Card -->
+                                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                                    <div class="flex justify-between items-center px-5 sm:px-6 py-4 border-b border-slate-100">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                                                <lightning-icon icon-name="utility:moneybag" size="small" class="text-white"></lightning-icon>
+                                            </div>
+                                            <h3 class="text-base font-semibold text-slate-800">Recent Payslips</h3>
+                                        </div>
+                                        <lightning-button-icon icon-name="utility:chevronright" alternative-text="View All" variant="bare" onclick={navigateToPayroll}></lightning-button-icon>
+                                    </div>
+                                    <div class="p-5 sm:p-6">
+                                        <template if:true={hasPayslips}>
+                                            <div class="space-y-3">
+                                                <template for:each={dashboardData.recentSalarySlips} for:item="slip">
+                                                    <div key={slip.Id} class="flex justify-between items-center p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+                                                        <div>
+                                                            <span class="block font-semibold text-slate-800">{slip.payPeriodLabel}</span>
+                                                            <span class="text-sm text-slate-500">{slip.Payment_Date__c}</span>
+                                                        </div>
+                                                        <div class="text-right">
+                                                            <span class="block text-lg font-bold text-emerald-500">${slip.Net_Pay__c}</span>
+                                                            <span class="inline-block px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium uppercase">{slip.Status__c}</span>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template if:false={hasPayslips}>
+                                            <div class="py-10 text-center">
+                                                <div class="w-16 h-16 mx-auto mb-4 bg-slate-100 rounded-full flex items-center justify-center">
+                                                    <lightning-icon icon-name="utility:moneybag" size="large" class="text-slate-400"></lightning-icon>
+                                                </div>
+                                                <p class="font-semibold text-slate-600">No payslips yet</p>
+                                                <p class="text-sm text-slate-400">Your payslips will appear here</p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column - Quick Actions -->
+                            <div class="lg:col-span-1">
+                                <div class="bg-white rounded-2xl shadow-sm overflow-hidden sticky top-6">
+                                    <div class="flex items-center gap-3 px-5 sm:px-6 py-4 border-b border-slate-100">
+                                        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                                            <lightning-icon icon-name="utility:priority" size="small" class="text-white"></lightning-icon>
+                                        </div>
+                                        <h3 class="text-base font-semibold text-slate-800">Quick Actions</h3>
+                                    </div>
+                                    <div>
+                                        <!-- Pending Approvals -->
+                                        <div class="flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors border-b border-slate-100" onclick={navigateToPendingApprovals}>
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
+                                                    <lightning-icon icon-name="utility:approval" size="small" class="text-amber-600"></lightning-icon>
+                                                </div>
+                                                <div>
+                                                    <span class="block font-semibold text-slate-800 text-sm">Pending Approvals</span>
+                                                    <span class="text-xs text-slate-500">Requires your action</span>
+                                                </div>
+                                            </div>
+                                            <template if:true={dashboardData.pendingApprovals}>
+                                                <span class="min-w-[28px] h-7 px-2 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-sm font-bold">{dashboardData.pendingApprovals.total}</span>
+                                            </template>
+                                        </div>
+
+                                        <!-- Active Goals -->
+                                        <div class="flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors border-b border-slate-100" onclick={navigateToGoals}>
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
+                                                    <lightning-icon icon-name="utility:target" size="small" class="text-emerald-600"></lightning-icon>
+                                                </div>
+                                                <div>
+                                                    <span class="block font-semibold text-slate-800 text-sm">Active Goals</span>
+                                                    <span class="text-xs text-slate-500">Currently in progress</span>
+                                                </div>
+                                            </div>
+                                            <span class="min-w-[28px] h-7 px-2 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm font-bold">{dashboardData.activeGoalsCount}</span>
+                                        </div>
+
+                                        <!-- Pending Appraisals -->
+                                        <div class="flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick={navigateToAppraisals}>
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                                                    <lightning-icon icon-name="utility:trending" size="small" class="text-blue-600"></lightning-icon>
+                                                </div>
+                                                <div>
+                                                    <span class="block font-semibold text-slate-800 text-sm">Appraisals</span>
+                                                    <span class="text-xs text-slate-500">Review pending</span>
+                                                </div>
+                                            </div>
+                                            <span class="min-w-[28px] h-7 px-2 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold">{dashboardData.pendingAppraisalsCount}</span>
+                                        </div>
+
+                                        <!-- Quick Links -->
+                                        <div class="grid grid-cols-2 gap-3 p-5 sm:p-6 border-t border-slate-100">
+                                            <button class="flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl text-sm font-medium hover:-translate-y-0.5 hover:shadow-lg transition-all" onclick={navigateToLeave}>
+                                                <lightning-icon icon-name="utility:event" size="x-small" class="text-white"></lightning-icon>
+                                                Request Leave
+                                            </button>
+                                            <button class="flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl text-sm font-medium hover:-translate-y-0.5 hover:shadow-lg transition-all" onclick={navigateToAttendance}>
+                                                <lightning-icon icon-name="utility:clock" size="x-small" class="text-white"></lightning-icon>
+                                                Clock In/Out
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </template>
+</template>

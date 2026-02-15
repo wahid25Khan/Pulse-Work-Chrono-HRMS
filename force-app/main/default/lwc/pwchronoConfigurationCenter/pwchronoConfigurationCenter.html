@@ -1,0 +1,412 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 01-17-2026
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <c-pwchrono-main-layout>
+    <div slot="main-content">
+      <div class="page-wrapper">
+        <c-pwchrono-header
+          title="Configuration Center"
+          icon-name="standard:custom_settings"
+        ></c-pwchrono-header>
+
+        <template if:true={isSaving}>
+          <div class="flex justify-center items-center h-64 p-6">
+            <div
+              class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"
+            ></div>
+          </div>
+        </template>
+
+        <template if:false={isSaving}>
+          <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
+            <!-- Tab Navigation -->
+            <div class="flex border-b border-gray-200 mb-6 gap-1">
+              <button
+                class={usersTabClass}
+                onclick={handleTabChange}
+                data-tab="users"
+              >
+                <span class="inline-flex items-center gap-2">
+                  <lightning-icon
+                    icon-name="standard:people"
+                    size="small"
+                  ></lightning-icon>
+                  User Management
+                </span>
+              </button>
+              <button
+                class={settingsTabClass}
+                onclick={handleTabChange}
+                data-tab="settings"
+              >
+                <span class="inline-flex items-center gap-2">
+                  <lightning-icon
+                    icon-name="standard:custom_settings"
+                    size="small"
+                  ></lightning-icon>
+                  Global Settings
+                </span>
+              </button>
+              <button
+                class={leaveTabClass}
+                onclick={handleTabChange}
+                data-tab="leave"
+              >
+                <span class="inline-flex items-center gap-2">
+                  <lightning-icon
+                    icon-name="standard:event"
+                    size="small"
+                  ></lightning-icon>
+                  Leave Settings
+                </span>
+              </button>
+              <button
+                class={attendanceTabClass}
+                onclick={handleTabChange}
+                data-tab="attendance"
+              >
+                <span class="inline-flex items-center gap-2">
+                  <lightning-icon
+                    icon-name="standard:timesheet"
+                    size="small"
+                  ></lightning-icon>
+                  Attendance Settings
+                </span>
+              </button>
+            </div>
+
+            <!-- User Management Tab -->
+            <template if:true={isUserManagementTab}>
+              <div class="mb-6">
+                <!-- Loading State -->
+                <template if:true={isLoading}>
+                  <div class="flex flex-col items-center justify-center py-12">
+                    <div
+                      class="w-12 h-12 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin mb-4"
+                    ></div>
+                    <p class="text-gray-500">Loading users...</p>
+                  </div>
+                </template>
+
+                <template if:false={isLoading}>
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4"
+                  >
+                    <div class="flex-1 w-full md:max-w-md">
+                      <lightning-input
+                        type="search"
+                        placeholder="Search users..."
+                        onchange={handleUserSearch}
+                        value={searchTerm}
+                        variant="label-hidden"
+                        class="w-full"
+                      >
+                      </lightning-input>
+                    </div>
+                    <div class="flex gap-3 items-center">
+                      <div class="w-[100px]">
+                        <lightning-combobox
+                          value={pageSize}
+                          options={pageSizeOptions}
+                          onchange={handlePageSizeChange}
+                          variant="label-hidden"
+                        >
+                        </lightning-combobox>
+                      </div>
+                      <lightning-button
+                        label="New User"
+                        icon-name="utility:add"
+                        onclick={handleNewUser}
+                        variant="brand"
+                      >
+                      </lightning-button>
+                    </div>
+                  </div>
+
+                  <template if:true={hasUsers}>
+                    <div
+                      class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-x-auto"
+                    >
+                      <lightning-datatable
+                        key-field="userId"
+                        data={paginatedUsers}
+                        columns={userColumns}
+                        onrowaction={handleRowAction}
+                        hide-checkbox-column="true"
+                      >
+                      </lightning-datatable>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div
+                      class="flex items-center justify-between mt-4 p-3 bg-gray-50 rounded-lg"
+                    >
+                      <span class="text-sm text-gray-600"
+                        >{paginationInfo}</span
+                      >
+                      <div class="flex gap-2 items-center">
+                        <lightning-button-icon
+                          icon-name="utility:chevronleft"
+                          alternative-text="Previous"
+                          onclick={handlePrevPage}
+                          disabled={isPrevDisabled}
+                          variant="border-filled"
+                        >
+                        </lightning-button-icon>
+                        <span class="px-3 py-1 text-sm text-gray-700"
+                          >Page {currentPage} of {totalPages}</span
+                        >
+                        <lightning-button-icon
+                          icon-name="utility:chevronright"
+                          alternative-text="Next"
+                          onclick={handleNextPage}
+                          disabled={isNextDisabled}
+                          variant="border-filled"
+                        >
+                        </lightning-button-icon>
+                      </div>
+                    </div>
+                  </template>
+
+                  <template if:false={hasUsers}>
+                    <div
+                      class="flex flex-col items-center justify-center py-12 text-center bg-gray-50 rounded-xl"
+                    >
+                      <div
+                        class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+                      >
+                        <lightning-icon
+                          icon-name="standard:people"
+                          size="medium"
+                          class="text-gray-400"
+                        ></lightning-icon>
+                      </div>
+                      <p class="text-gray-500">No users found.</p>
+                      <p class="text-sm text-gray-400 mt-1">
+                        Click "New User" to add one.
+                      </p>
+                    </div>
+                  </template>
+                </template>
+              </div>
+            </template>
+
+            <!-- Global Settings Tab -->
+            <template if:true={isGlobalSettingsTab}>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- Module Settings Card -->
+                <div
+                  class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+                >
+                  <div
+                    class="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-white"
+                  >
+                    <h3 class="text-base font-semibold text-gray-800">
+                      Module Settings
+                    </h3>
+                  </div>
+                  <div class="p-5 space-y-4">
+                    <lightning-input
+                      type="toggle"
+                      label="Enable Payroll Module"
+                      checked={globalSettings.Enable_Payroll_Module__c}
+                      onchange={handleGlobalSettingChange}
+                      data-field="Enable_Payroll_Module__c"
+                    ></lightning-input>
+                    <lightning-input
+                      type="toggle"
+                      label="Enable Recruitment Module"
+                      checked={globalSettings.Enable_Recruitment_Module__c}
+                      onchange={handleGlobalSettingChange}
+                      data-field="Enable_Recruitment_Module__c"
+                    ></lightning-input>
+                    <lightning-input
+                      type="toggle"
+                      label="Enable Performance Module"
+                      checked={globalSettings.Enable_Performance_Module__c}
+                      onchange={handleGlobalSettingChange}
+                      data-field="Enable_Performance_Module__c"
+                    ></lightning-input>
+                    <lightning-input
+                      type="toggle"
+                      label="Enable Training Module"
+                      checked={globalSettings.Enable_Training_Module__c}
+                      onchange={handleGlobalSettingChange}
+                      data-field="Enable_Training_Module__c"
+                    ></lightning-input>
+                  </div>
+                </div>
+
+                <!-- System Settings Card -->
+                <div
+                  class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+                >
+                  <div
+                    class="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-green-50 to-white"
+                  >
+                    <h3 class="text-base font-semibold text-gray-800">
+                      System Settings
+                    </h3>
+                  </div>
+                  <div class="p-5 space-y-4">
+                    <lightning-input
+                      type="toggle"
+                      label="Enable Self Service Portal"
+                      checked={globalSettings.Enable_Self_Service_Portal__c}
+                      onchange={handleGlobalSettingChange}
+                      data-field="Enable_Self_Service_Portal__c"
+                    ></lightning-input>
+                    <lightning-input
+                      type="toggle"
+                      label="Auto Approve Attendance"
+                      checked={globalSettings.Auto_Approve_Attendance_Request__c}
+                      onchange={handleGlobalSettingChange}
+                      data-field="Auto_Approve_Attendance_Request__c"
+                    ></lightning-input>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 flex justify-end">
+                <lightning-button
+                  label="Save Global Settings"
+                  variant="brand"
+                  onclick={handleSaveGlobalSettings}
+                ></lightning-button>
+              </div>
+            </template>
+
+            <!-- Leave Settings Tab -->
+            <template if:true={isLeaveTab}>
+              <c-pwchrono-leave-settings></c-pwchrono-leave-settings>
+            </template>
+
+            <!-- Attendance Settings Tab -->
+            <template if:true={isAttendanceTab}>
+              <c-pwchrono-attendance-settings></c-pwchrono-attendance-settings>
+            </template>
+          </div>
+        </template>
+      </div>
+    </div>
+  </c-pwchrono-main-layout>
+
+  <!-- New User Modal -->
+  <template if:true={showNewUserModal}>
+    <c-pwchrono-new-user-form
+      onclose={handleCloseNewUserModal}
+      onusersaved={handleUserSaved}
+    >
+    </c-pwchrono-new-user-form>
+  </template>
+
+  <!-- Manage Access Modal -->
+  <template if:true={showUserFeatureModal}>
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div
+        class="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+      >
+        <!-- Modal Header -->
+        <div
+          class="flex justify-between items-start p-6 border-b border-gray-200"
+        >
+          <div>
+            <h2 class="text-xl font-bold text-gray-900">
+              Manage Access: {selectedUser.userName}
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">
+              Role: {selectedUser.profileName}
+            </p>
+          </div>
+          <lightning-button-icon
+            icon-name="utility:close"
+            variant="bare"
+            onclick={closeModal}
+            alternative-text="Close"
+            class="text-gray-400 hover:text-gray-600"
+          ></lightning-button-icon>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="p-6">
+          <div
+            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6"
+          >
+            <h3 class="text-lg font-semibold text-gray-900">Feature Access</h3>
+            <div class="flex gap-2">
+              <lightning-button
+                label="Select All"
+                onclick={handleSelectAllFeatures}
+                variant="neutral"
+              ></lightning-button>
+              <lightning-button
+                label="Deselect All"
+                onclick={handleDeselectAllFeatures}
+                variant="neutral"
+              ></lightning-button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <template for:each={features} for:item="feature">
+              <div
+                key={feature.name}
+                class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-between"
+              >
+                <div class="flex items-center gap-3 flex-1">
+                  <lightning-icon
+                    icon-name={feature.iconName}
+                    size="medium"
+                    variant={feature.iconVariant}
+                  ></lightning-icon>
+                  <div>
+                    <div class="font-semibold text-gray-900">
+                      {feature.name}
+                    </div>
+                    <div class="text-sm text-gray-600">
+                      {feature.description}
+                    </div>
+                  </div>
+                </div>
+                <lightning-input
+                  type="toggle"
+                  label="Access"
+                  variant="label-hidden"
+                  checked={feature.hasAccess}
+                  data-name={feature.name}
+                  onchange={handleFeatureToggle}
+                  message-toggle-active="On"
+                  message-toggle-inactive="Off"
+                >
+                </lightning-input>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div
+          class="flex justify-end gap-2 p-6 border-t border-gray-200 bg-gray-50"
+        >
+          <lightning-button
+            label="Cancel"
+            variant="neutral"
+            onclick={closeModal}
+          ></lightning-button>
+          <lightning-button
+            label="Save Changes"
+            variant="brand"
+            onclick={handleSaveUserFeatures}
+          ></lightning-button>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

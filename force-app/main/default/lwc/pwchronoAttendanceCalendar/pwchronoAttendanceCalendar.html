@@ -1,0 +1,81 @@
+<template>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-teal-500 to-teal-600 px-6 py-5 text-white flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-bold">Attendance Calendar</h1>
+        <p class="text-sm text-white/80 mt-1">Track your monthly attendance</p>
+      </div>
+      <lightning-button-group>
+        <lightning-button-icon
+          icon-name="utility:chevronleft"
+          onclick={handlePreviousMonth}
+          alternative-text="Previous Month"
+        ></lightning-button-icon>
+        <lightning-button label={monthLabel} variant="brand"></lightning-button>
+        <lightning-button-icon
+          icon-name="utility:chevronright"
+          onclick={handleNextMonth}
+          alternative-text="Next Month"
+        ></lightning-button-icon>
+      </lightning-button-group>
+    </div>
+
+    <div class="p-4 md:p-6">
+      <template if:true={isLoading}>
+        <div class="flex justify-center items-center p-8">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+        </div>
+      </template>
+
+      <div class="calendar-grid mb-2">
+        <div class="calendar-header">Sun</div>
+        <div class="calendar-header">Mon</div>
+        <div class="calendar-header">Tue</div>
+        <div class="calendar-header">Wed</div>
+        <div class="calendar-header">Thu</div>
+        <div class="calendar-header">Fri</div>
+        <div class="calendar-header">Sat</div>
+      </div>
+
+      <div class="calendar-grid">
+        <template for:each={calendarDays} for:item="day">
+          <div key={day.attendanceDate} class={day.cssClass}>
+            <div class="flex items-center justify-between">
+              <span class="day-number">{day.dayNumber}</span>
+            </div>
+
+            <template if:true={day.isCurrentMonth}>
+              <div class={day.statusClass}>{day.status}</div>
+
+              <template if:true={day.holidayName}>
+                <div class="text-xs truncate text-blue-600 mt-1" title={day.holidayName}>
+                  {day.holidayName}
+                </div>
+              </template>
+
+              <template if:true={day.leaveType}>
+                <div class="text-xs truncate text-orange-600 mt-1" title={day.leaveType}>
+                  {day.leaveType}
+                </div>
+              </template>
+
+              <template if:true={day.checkIn}>
+                <div class="time-info">
+                  In:
+                  <lightning-formatted-time value={day.checkIn}></lightning-formatted-time>
+                </div>
+              </template>
+              <template if:true={day.checkOut}>
+                <div class="time-info">
+                  Out:
+                  <lightning-formatted-time value={day.checkOut}></lightning-formatted-time>
+                </div>
+              </template>
+            </template>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</template>

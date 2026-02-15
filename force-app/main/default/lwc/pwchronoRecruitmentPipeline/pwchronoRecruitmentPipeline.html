@@ -1,0 +1,113 @@
+<template>
+  <template if:true={hasAccess}>
+    <div class="page-wrapper">
+      <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
+        <!-- PwChrono Standard Header -->
+        <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+            <div class="my-auto mb-2">
+                <h2 class="mb-1 text-2xl font-bold text-gray-900">Recruitment Pipeline</h2>
+                <p class="text-muted text-sm text-gray-500">Manage applicants through hiring stages</p>
+            </div>
+            <div class="d-flex my-xl-auto right-content">
+                <lightning-button-icon
+                    icon-name="utility:refresh"
+                    variant="border-filled"
+                    onclick={handleRefresh}
+                    alternative-text="Refresh"
+                ></lightning-button-icon>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="p-4 md:p-6">
+        <template if:true={isLoading}>
+          <div class="flex justify-center items-center p-8">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-500"></div>
+          </div>
+        </template>
+
+        <template if:true={error}>
+          <div class="p-4 bg-red-50 border border-red-200 rounded-xl">
+            <div class="flex items-center gap-3">
+              <lightning-icon icon-name="utility:error" alternative-text="Error" variant="error"></lightning-icon>
+              <div>
+                <p class="font-semibold text-red-800">Error loading recruitment pipeline</p>
+                <p class="text-sm text-red-600">{error}</p>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <template if:false={isLoading}>
+          <div class="kanban-container">
+            <template for:each={columns} for:item="column">
+              <div key={column.value} class="kanban-column">
+                <div class="column-header">
+                  <span>{column.label}</span>
+                  <span class="count-badge">{column.count}</span>
+                </div>
+                <ul
+                  class="column-content list-unstyled m-0 p-0"
+                  data-status={column.value}
+                  aria-label={column.label}
+                >
+                  <template for:each={column.applicants} for:item="applicant">
+                    <li key={applicant.Id}>
+                      <button
+                        type="button"
+                        class="applicant-card text-start w-100"
+                        draggable="true"
+                        data-id={applicant.Id}
+                        data-status={column.value}
+                        ondragstart={handleDragStart}
+                        ondragend={handleDragEnd}
+                        ondragover={handleDragOver}
+                        ondragleave={handleDragLeave}
+                        ondrop={handleDrop}
+                      >
+                        <div class="card-title">{applicant.Applicant_Name__c}</div>
+                        <div class="card-detail">{applicant.jobTitle}</div>
+                        <div class="card-detail text-sm text-gray-500">
+                          {applicant.formattedDate}
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                          <lightning-badge label={applicant.Source__c}></lightning-badge>
+                        </div>
+                      </button>
+                    </li>
+                  </template>
+                  <li>
+                    <button
+                      type="button"
+                      class="w-100 bg-transparent border-0 p-2"
+                      data-status={column.value}
+                      ondragover={handleDragOver}
+                      ondragleave={handleDragLeave}
+                      ondrop={handleDrop}
+                    >
+                      <span class="visually-hidden">Drop here</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+      </div>
+    </div>
+  </div>
+  </template>
+
+  <template if:false={hasAccess}>
+    <div class="min-h-[60vh] flex items-center justify-center p-6">
+      <div class="bg-white rounded-2xl shadow-xl p-10 text-center max-w-md">
+        <div class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-red-100 rounded-full">
+          <lightning-icon icon-name="utility:lock" size="large" class="text-red-500"></lightning-icon>
+        </div>
+        <h2 class="text-xl font-bold text-gray-800 mb-2">Access Denied</h2>
+        <p class="text-gray-500">You do not have permission to view Recruitment Pipeline.</p>
+      </div>
+    </div>
+  </template>
+</template>

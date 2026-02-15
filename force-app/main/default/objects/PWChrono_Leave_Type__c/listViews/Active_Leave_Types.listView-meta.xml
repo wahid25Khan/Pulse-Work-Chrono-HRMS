@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Leave_Types</fullName>
+    <columns>NAME</columns>
+    <columns>Max_Days_Allowed__c</columns>
+    <columns>Is_Carry_Forward__c</columns>
+    <columns>Is_Encashable__c</columns>
+    <columns>Is_Unpaid__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Is_Active__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Active Leave Types</label>
+</ListView>
