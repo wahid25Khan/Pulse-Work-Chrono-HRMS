@@ -1,0 +1,35 @@
+{
+	"inputs": [
+		{
+			"id": "SONARQUBE_TOKEN",
+			"type": "promptString",
+			"description": "Your SonarQube USER token",
+			"password": true
+		},
+		{
+			"id": "SONARQUBE_ORG",
+			"type": "promptString",
+			"description": "Your SonarQube Cloud organization key (if using SonarQube Cloud)",
+			"password": true
+		},
+		{
+			"id": "SONARQUBE_URL",
+			"type": "promptString",
+			"description": "Your SonarQube Server URL (if using SonarQube Server)",
+			"password": true
+		},
+		{
+			"id": "PROMPTS_API_KEY",
+			"type": "promptString",
+			"description": "API key for authenticated requests (enables save_prompt tool)",
+			"password": true
+		},
+		{
+			"id": "PROMPTS_QUERY",
+			"type": "promptString",
+			"description": "Query string to filter prompts (e.g., users=a,b&categories=c,d&tags=e,f)",
+			"password": false
+		}
+	],
+	"servers": {}
+}
