@@ -97,6 +97,29 @@ Extract common logic like `getCurrentEmployeeId` into a utility class to reduce 
 
 > ✅ This document is a living artifact. Regular reviews and updates are encouraged to reflect the evolving state of the codebase.
 
+## 🤖 Agents Details (Updated 2026-02-15)
+
+To keep reviews and maintenance consistent, the project uses the following agent workflow responsibilities:
+
+- **Code Review Agent**
+	- Audits Apex, LWC, triggers, and metadata for anti-patterns, security risks, and consistency gaps.
+	- Produces actionable findings and severity-based prioritization.
+
+- **QA & Coverage Agent**
+	- Tracks missing unit tests and weak coverage areas for critical business logic.
+	- Flags risky modules first (salary, approvals, authentication, and policy logic).
+
+- **Repo & Release Agent**
+	- Handles branch hygiene, commit quality, push validation, and remote sync checks.
+	- Ensures local and remote branches are aligned before and after release actions.
+
+### Agent Operating Rules
+
+1. Keep recommendations traceable to file paths and symbols.
+2. Prioritize security/accessibility/governor-limit issues before refactors.
+3. Validate changes with focused checks before broad verification.
+4. Keep documentation and issue tracking updated after each review cycle.
+
 ## 🧾 Audit Addendum (2026-02-15)
 
 ### Scope
