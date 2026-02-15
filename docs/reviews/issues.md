@@ -52,6 +52,23 @@ This document tracks identified issues, code smells, and opportunities for impro
 | **Shared Constants** | Move shared constants like currency codes to a centralized `Constants` class. | `PWChrono_Constants.cls`, `PWChrono_SalarySlipTriggerHandler.cls` | Low |
 | **Refactor Shared Logic** | Extract common logic like `getCurrentEmployeeId` into a utility class. | `PWChrono_Utils.cls`, `PWChrono_AccessController.cls` | Medium |
 
+## 🤖 Agents Details (Updated 2026-02-15)
+
+The following agent responsibilities are used to keep issue tracking actionable and consistent:
+
+| Agent | Responsibility | Primary Outcome |
+|-------|----------------|-----------------|
+| **Code Review Agent** | Detects anti-patterns, security risks, architecture inconsistencies, and accessibility issues. | Prioritized, reproducible findings with clear locations. |
+| **QA & Coverage Agent** | Tracks test gaps and validates critical coverage for controllers, handlers, and triggers. | Reduced regression risk in high-impact modules. |
+| **Repo & Release Agent** | Maintains commit hygiene, branch sync, and GitHub push/release readiness. | Reliable source control state and clean release flow. |
+
+### Agent Operating Rules
+
+1. Map every issue to concrete files/classes/components.
+2. Prioritize security, data-access, and accessibility blockers first.
+3. Keep issue statuses updated after each audit cycle.
+4. Include remediation guidance with severity and impact.
+
 ## 📌 Recommendations
 
 1. **Implement a Centralized Logger**: Replace `System.debug()` with a robust logging framework or wrapper.
