@@ -2,7 +2,7 @@
  * @description Controller for Attendance Management LWC Components
  * @author PWChrono Team
  */
-public without sharing class PWChrono_AttendanceController {
+public inherited sharing class PWChrono_AttendanceController {
 
   private static Boolean hasFeature(String accessFeatures, String featureName) {
     if (String.isBlank(accessFeatures) || String.isBlank(featureName)) {

@@ -24,10 +24,10 @@ public class PWChrono_GoogleChatProvider implements PWChrono_IChatProvider {
         try {
             HttpResponse res = http.send(req);
             if (res.getStatusCode() != 200) {
-                System.debug('Error sending Google Chat message: ' + res.getBody());
+                PWChrono_Logger.warn('Google Chat send returned non-200 response: ' + res.getStatusCode());
             }
         } catch(Exception e) {
-            System.debug('Callout Exception: ' + e.getMessage());
+            PWChrono_Logger.error('Google Chat send callout exception.', e);
             throw new PWChrono_ChatException('Failed to send Google Chat message: ' + e.getMessage());
         }
     }
@@ -87,7 +87,7 @@ public class PWChrono_GoogleChatProvider implements PWChrono_IChatProvider {
                 }
             }
         } catch(Exception e) {
-            System.debug('Callout Exception: ' + e.getMessage());
+            PWChrono_Logger.error('Google Chat getMessages callout exception.', e);
         }
         
         return messages;
@@ -125,7 +125,7 @@ public class PWChrono_GoogleChatProvider implements PWChrono_IChatProvider {
                 }
             }
         } catch(Exception e) {
-             System.debug('Callout Exception: ' + e.getMessage());
+               PWChrono_Logger.error('Google Chat getContacts callout exception.', e);
         }
         
         return contacts;

@@ -1,0 +1,10 @@
+.smarthr-scope .card {
+    border: none !important;
+    box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08) !important;
+}
+
+.legend-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+}

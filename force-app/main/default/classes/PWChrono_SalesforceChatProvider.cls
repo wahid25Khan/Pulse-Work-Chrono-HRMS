@@ -3,7 +3,7 @@ public class PWChrono_SalesforceChatProvider implements PWChrono_IChatProvider {
     public void sendMessage(String recipientId, String content) {
         // TODO: Implement logic to save message to Salesforce Custom Object (e.g., Chat_Message__c)
         // For now, this is a mock implementation
-        System.debug('Sending message to ' + recipientId + ': ' + content);
+        PWChrono_Logger.info('Mock Salesforce chat send invoked.');
     }
     
     public List<PWChrono_ChatMessage> getMessages(String recipientId) {

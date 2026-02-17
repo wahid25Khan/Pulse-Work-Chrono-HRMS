@@ -2,7 +2,7 @@
  * @description Controller for Onboarding Management LWC Components
  * @author PWChrono Team
  */
-public without sharing class PWChrono_OnboardingController {
+public inherited sharing class PWChrono_OnboardingController {
   /**
    * @description Get onboarding tasks for the current user
    * @return List of onboarding tasks

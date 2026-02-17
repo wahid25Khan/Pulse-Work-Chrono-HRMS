@@ -3,7 +3,7 @@
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD.ApexSOQLInjection')
-public without sharing class PWChrono_PayrollController {
+public inherited sharing class PWChrono_PayrollController {
   private static Id resolveVerifiedPortalEmployeeId(
     String portalUserId,
     String sessionToken

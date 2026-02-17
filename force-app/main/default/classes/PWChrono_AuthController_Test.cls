@@ -111,6 +111,8 @@ private class PWChrono_AuthController_Test {
     // Set OTP
     user.One_Time_Password__c = TEST_OTP;
     user.OTP_Generated_Time__c = System.now();
+    user.Session_Failed_Attempts__c = 3;
+    user.Session_Locked_Until__c = System.now().addMinutes(10);
     update user;
 
     Test.startTest();
@@ -126,7 +128,11 @@ private class PWChrono_AuthController_Test {
 
     // Verify OTP cleared
     Portal_Users__c updatedUser = [
-      SELECT One_Time_Password__c, OTP_Generated_Time__c
+      SELECT
+        One_Time_Password__c,
+        OTP_Generated_Time__c,
+        Session_Failed_Attempts__c,
+        Session_Locked_Until__c
       FROM Portal_Users__c
       WHERE Id = :user.Id
     ];
@@ -139,6 +145,16 @@ private class PWChrono_AuthController_Test {
       null,
       updatedUser.OTP_Generated_Time__c,
       'OTP Generated Time should be cleared'
+    );
+    System.assertEquals(
+      0,
+      Integer.valueOf(updatedUser.Session_Failed_Attempts__c),
+      'Session failed attempts should reset after successful verification.'
+    );
+    System.assertEquals(
+      null,
+      updatedUser.Session_Locked_Until__c,
+      'Session lockout timestamp should clear after successful verification.'
     );
   }
 
@@ -163,7 +179,7 @@ private class PWChrono_AuthController_Test {
 
   @IsTest
   static void verifyOTPInvalidOTP() {
-    Portal_Users__c user = [SELECT Email__c FROM Portal_Users__c LIMIT 1];
+    Portal_Users__c user = [SELECT Id, Email__c FROM Portal_Users__c LIMIT 1];
 
     // Set OTP
     user.One_Time_Password__c = TEST_OTP;
@@ -177,6 +193,22 @@ private class PWChrono_AuthController_Test {
     } catch (Exception e) {
       System.assert(e != null, 'Should throw exception for invalid OTP');
     }
+
+    Portal_Users__c updatedUser = [
+      SELECT One_Time_Password__c, OTP_Generated_Time__c
+      FROM Portal_Users__c
+      WHERE Id = :user.Id
+    ];
+    System.assertEquals(
+      null,
+      updatedUser.One_Time_Password__c,
+      'OTP should be invalidated after a failed verification attempt.'
+    );
+    System.assertNotEquals(
+      null,
+      updatedUser.OTP_Generated_Time__c,
+      'OTP timestamp should be updated to enforce resend cooldown after failed attempt.'
+    );
     Test.stopTest();
   }
 
@@ -395,6 +427,21 @@ private class PWChrono_AuthController_Test {
       System.assert(true, 'Rate limit enforced: ' + e.getMessage());
     }
     Test.stopTest();
+  }
+
+  @IsTest
+  static void testSendOTPTrimsEmailInput() {
+    Portal_Users__c user = [SELECT Email__c FROM Portal_Users__c LIMIT 1];
+
+    Test.startTest();
+    String result = PWChrono_AuthController.sendOTP('  ' + user.Email__c + '  ');
+    Test.stopTest();
+
+    System.assertEquals(
+      'Success',
+      result,
+      'sendOTP should trim incoming email input before lookup.'
+    );
   }
 
   @IsTest

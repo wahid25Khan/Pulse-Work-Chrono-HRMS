@@ -2,7 +2,7 @@
  * @description Controller for Holiday Calendar LWC Components
  * @author PWChrono Team
  */
-public without sharing class PWChrono_HolidayController {
+public inherited sharing class PWChrono_HolidayController {
   /**
    * @description Get upcoming holidays
    * @return List of holidays

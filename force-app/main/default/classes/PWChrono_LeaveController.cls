@@ -2,7 +2,7 @@
  * @description Controller for Leave Management LWC Components
  * @author PWChrono Team
  */
-public without sharing class PWChrono_LeaveController {
+public inherited sharing class PWChrono_LeaveController {
   /**
    * @description Get current employee's leave balance
    * @param employeeId Optional employee ID (Portal_Users__c). If null, uses current user's employee record.

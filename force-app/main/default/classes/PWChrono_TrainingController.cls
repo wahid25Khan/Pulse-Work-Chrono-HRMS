@@ -3,7 +3,7 @@
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class PWChrono_TrainingController {
+public inherited sharing class PWChrono_TrainingController {
   private static Id resolveCurrentEmployeeId(
     String portalUserId,
     String sessionToken

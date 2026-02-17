@@ -1,5 +1,5 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class PWChrono_RoleFeatureMappingController {
+public inherited sharing class PWChrono_RoleFeatureMappingController {
   @AuraEnabled(cacheable=false)
   public static List<PWChrono_Role_Feature_Mapping__mdt> getMappings() {
     // Security Check

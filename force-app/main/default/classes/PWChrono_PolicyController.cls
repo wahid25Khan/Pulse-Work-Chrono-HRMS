@@ -3,7 +3,7 @@
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD.ApexSOQLInjection')
-public without sharing class PWChrono_PolicyController {
+public inherited sharing class PWChrono_PolicyController {
   /**
    * @description Get company policies
    * @param category Optional category filter

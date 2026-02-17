@@ -1,4 +1,4 @@
-public without sharing class PWChrono_Constants {
+public inherited sharing class PWChrono_Constants {
   public static final String ROLE_HR_ADMIN = 'HR Admin';
   public static final String ROLE_EMPLOYEE = 'Employee';
   public static final String ROLE_MANAGER = 'Manager';
@@ -29,11 +29,19 @@ public without sharing class PWChrono_Constants {
 
   public static final String CURRENCY_CODE = 'USD';
   public static final String COMPANY_NAME = 'TechCorp Solutions';
+
+  public static String getEffectiveCurrencyCode() {
+    String userCurrency = UserInfo.getDefaultCurrency();
+    return String.isNotBlank(userCurrency) ? userCurrency : CURRENCY_CODE;
+  }
   
   public static final Integer OTP_EXPIRATION_MINUTES = 10;
+  public static final Integer OTP_RESEND_COOLDOWN_MINUTES = 1;
   public static final Integer OTP_COUNTDOWN_SECONDS = 60;
 
   // Portal session token lifetime after OTP verification (Guest runtime).
   // Keep this reasonably short; users can re-authenticate via OTP as needed.
   public static final Integer PORTAL_SESSION_EXPIRATION_MINUTES = 480; // 8 hours
+  public static final Integer PORTAL_SESSION_MAX_FAILED_ATTEMPTS = 5;
+  public static final Integer PORTAL_SESSION_LOCKOUT_MINUTES = 15;
 }

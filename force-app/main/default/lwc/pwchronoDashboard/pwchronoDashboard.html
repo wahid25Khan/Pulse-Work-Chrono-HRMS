@@ -191,7 +191,7 @@
                                     </div>
                                     <div>
                                         <!-- Pending Approvals -->
-                                        <div class="flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors border-b border-slate-100" onclick={navigateToPendingApprovals}>
+                                        <button type="button" class="w-full text-left flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors border-b border-slate-100" aria-label="Open pending approvals" onclick={navigateToPendingApprovals}>
                                             <div class="flex items-center gap-3">
                                                 <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
                                                     <lightning-icon icon-name="utility:approval" size="small" class="text-amber-600"></lightning-icon>
@@ -204,10 +204,10 @@
                                             <template if:true={dashboardData.pendingApprovals}>
                                                 <span class="min-w-[28px] h-7 px-2 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-sm font-bold">{dashboardData.pendingApprovals.total}</span>
                                             </template>
-                                        </div>
+                                        </button>
 
                                         <!-- Active Goals -->
-                                        <div class="flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors border-b border-slate-100" onclick={navigateToGoals}>
+                                        <button type="button" class="w-full text-left flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors border-b border-slate-100" aria-label="Open active goals" onclick={navigateToGoals}>
                                             <div class="flex items-center gap-3">
                                                 <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
                                                     <lightning-icon icon-name="utility:target" size="small" class="text-emerald-600"></lightning-icon>
@@ -218,10 +218,10 @@
                                                 </div>
                                             </div>
                                             <span class="min-w-[28px] h-7 px-2 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm font-bold">{dashboardData.activeGoalsCount}</span>
-                                        </div>
+                                        </button>
 
                                         <!-- Pending Appraisals -->
-                                        <div class="flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick={navigateToAppraisals}>
+                                        <button type="button" class="w-full text-left flex justify-between items-center px-5 sm:px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors" aria-label="Open pending appraisals" onclick={navigateToAppraisals}>
                                             <div class="flex items-center gap-3">
                                                 <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
                                                     <lightning-icon icon-name="utility:trending" size="small" class="text-blue-600"></lightning-icon>
@@ -232,7 +232,7 @@
                                                 </div>
                                             </div>
                                             <span class="min-w-[28px] h-7 px-2 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold">{dashboardData.pendingAppraisalsCount}</span>
-                                        </div>
+                                        </button>
 
                                         <!-- Quick Links -->
                                         <div class="grid grid-cols-2 gap-3 p-5 sm:p-6 border-t border-slate-100">

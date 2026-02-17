@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+  <types>
+    <members>pwchronoApprovals</members>
+    <members>pwchronoApprovalsPage</members>
+    <members>pwchronoExpenseManagement</members>
+    <members>pwchronoExpenseManagementPage</members>
+    <members>pwchronoLeaveManagement</members>
+    <members>pwchronoOnboarding</members>
+    <members>pwchronoOnboardingPage</members>
+    <members>pwchronoPayroll</members>
+    <members>pwchronoPayrollPage</members>
+    <members>pwchronoRecruitment</members>
+    <members>pwchronoRecruitmentPage</members>
+    <members>pwchronoReportsDashboard</members>
+    <members>pwchronoReportsDashboardPage</members>
+    <members>pwchronoTrainingManagement</members>
+    <members>pwchronoTrainingManagementPage</members>
+    <name>LightningComponentBundle</name>
+  </types>
+  <version>65.0</version>
+</Package>

@@ -1,4 +1,4 @@
-public without sharing class PWChrono_ProjectController {
+public inherited sharing class PWChrono_ProjectController {
 
     @AuraEnabled(cacheable=true)
     public static List<Case> getTasks(Id projectId) {

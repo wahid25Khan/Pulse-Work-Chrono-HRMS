@@ -13,7 +13,11 @@ public without sharing class PWChrono_GuestSession {
     // Internal Salesforce users or authenticated Experience users.
     if (UserInfo.getUserType() != 'Guest') {
       if (String.isNotBlank(portalUserId)) {
-        return (Id) portalUserId;
+        try {
+          return (Id) portalUserId;
+        } catch (Exception e) {
+          throw new AuraHandledException('Session invalid.');
+        }
       }
       return PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
     }
@@ -31,7 +35,13 @@ public without sharing class PWChrono_GuestSession {
     }
 
     List<Portal_Users__c> users = [
-      SELECT Id, Is_Active__c, Session_Token__c, Session_Expires_At__c
+      SELECT
+        Id,
+        Is_Active__c,
+        Session_Token__c,
+        Session_Expires_At__c,
+        Session_Failed_Attempts__c,
+        Session_Locked_Until__c
       FROM Portal_Users__c
       WHERE Id = :pid
       LIMIT 1
@@ -46,18 +56,63 @@ public without sharing class PWChrono_GuestSession {
       throw new AuraHandledException('Account is inactive.');
     }
 
+    if (
+      u.Session_Locked_Until__c != null &&
+      u.Session_Locked_Until__c > System.now()
+    ) {
+      throw new AuraHandledException(
+        'Too many invalid session attempts. Please try again later.'
+      );
+    }
+
     if (String.isBlank(u.Session_Token__c) || u.Session_Expires_At__c == null) {
       throw new AuraHandledException('Session expired. Please log in again.');
     }
 
     if (u.Session_Expires_At__c <= System.now()) {
+      clearSessionValidationState(u);
       throw new AuraHandledException('Session expired. Please log in again.');
     }
 
     if (u.Session_Token__c != sessionToken) {
+      registerFailedSessionAttempt(u);
       throw new AuraHandledException('Session invalid. Please log in again.');
     }
 
+    clearSessionValidationState(u);
+
     return u.Id;
+  }
+
+  @TestVisible
+  private static void registerFailedSessionAttempt(Portal_Users__c userRecord) {
+    Integer attempts = (userRecord.Session_Failed_Attempts__c == null)
+      ? 0
+      : Integer.valueOf(userRecord.Session_Failed_Attempts__c);
+    attempts++;
+
+    userRecord.Session_Failed_Attempts__c = attempts;
+    if (attempts >= PWChrono_Constants.PORTAL_SESSION_MAX_FAILED_ATTEMPTS) {
+      userRecord.Session_Failed_Attempts__c = 0;
+      userRecord.Session_Locked_Until__c = System.now()
+        .addMinutes(PWChrono_Constants.PORTAL_SESSION_LOCKOUT_MINUTES);
+      userRecord.Session_Token__c = null;
+      userRecord.Session_Expires_At__c = null;
+    }
+    update userRecord;
+  }
+
+  @TestVisible
+  private static void clearSessionValidationState(Portal_Users__c userRecord) {
+    if (
+      userRecord.Session_Failed_Attempts__c == null &&
+      userRecord.Session_Locked_Until__c == null
+    ) {
+      return;
+    }
+
+    userRecord.Session_Failed_Attempts__c = 0;
+    userRecord.Session_Locked_Until__c = null;
+    update userRecord;
   }
 }

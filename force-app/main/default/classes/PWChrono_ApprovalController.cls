@@ -1,5 +1,5 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class PWChrono_ApprovalController {
+public inherited sharing class PWChrono_ApprovalController {
   public class ApprovalRequestWrapper {
     @AuraEnabled
     public Id workItemId;

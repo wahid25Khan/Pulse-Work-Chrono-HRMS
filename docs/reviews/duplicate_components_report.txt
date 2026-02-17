@@ -1,0 +1,5 @@
+EXACT DUPLICATE SOURCE FILES (by normalized content):
+- None found
+
+HIGH-SIMILARITY HTML COMPONENT PAIRS (>=0.97):
+- None found at threshold

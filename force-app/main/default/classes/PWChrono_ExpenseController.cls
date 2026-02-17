@@ -2,7 +2,7 @@
  * @description Controller for Expense Claim LWC Components
  * @author PWChrono Team
  */
-public without sharing class PWChrono_ExpenseController {
+public inherited sharing class PWChrono_ExpenseController {
   /**
    * @description Get expense claims for current employee
    * @param employeeId Optional employee ID (Portal_Users__c). If null, uses current user's employee record.

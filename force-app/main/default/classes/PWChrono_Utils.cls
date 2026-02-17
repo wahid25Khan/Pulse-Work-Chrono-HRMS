@@ -2,7 +2,7 @@
  * @description Utility class for common helper methods
  * @author PWChrono Team
  */
-public without sharing class PWChrono_Utils {
+public inherited sharing class PWChrono_Utils {
   /**
    * @description Get current employee ID from user ID
    * @param userId Current user ID

@@ -3,7 +3,7 @@
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD.ApexSOQLInjection, PMD.ApexCRUDViolation')
-public without sharing class PWChrono_PerformanceController {
+public inherited sharing class PWChrono_PerformanceController {
   /**
    * @description Get appraisals for current employee
    * @param statusFilter Status filter

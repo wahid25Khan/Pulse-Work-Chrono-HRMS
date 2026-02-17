@@ -1,7 +1,7 @@
 /**
  * @description Controller for Project Manager Dashboard (portal)
  */
-public without sharing class PWChrono_PMDashboardController {
+public inherited sharing class PWChrono_PMDashboardController {
   public class ProjectRow {
     @AuraEnabled public Id id;
     @AuraEnabled public String name;

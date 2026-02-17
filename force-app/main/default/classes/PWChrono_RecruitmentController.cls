@@ -3,7 +3,7 @@
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD.CognitiveComplexity')
-public without sharing class PWChrono_RecruitmentController {
+public inherited sharing class PWChrono_RecruitmentController {
   private static Boolean hasFeature(String accessFeatures, String featureName) {
     if (String.isBlank(accessFeatures) || String.isBlank(featureName)) {
       return false;

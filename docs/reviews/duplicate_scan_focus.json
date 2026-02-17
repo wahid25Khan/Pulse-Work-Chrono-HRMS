@@ -1,0 +1,106 @@
+{
+  "counts": {
+    "apex_all": 87,
+    "apex_prod": 55,
+    "lwc_all": 345,
+    "lwc_source": 231
+  },
+  "apex_exact": [],
+  "apex_near": [],
+  "lwc_exact_all": [
+    [
+      "force-app/main/default/lwc/pwchronoAdminSettings/pwchronoAdminSettings.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAppraisalForm/pwchronoAppraisalForm.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAttendanceRequest/pwchronoAttendanceRequest.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoCompanyPolicies/pwchronoCompanyPolicies.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoConfigurationCenter/pwchronoConfigurationCenter.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboard/pwchronoDashboard.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoEmployeeDirectory/pwchronoEmployeeDirectory.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoExpenseClaimPortal/pwchronoExpenseClaimPortal.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoGoalManagement/pwchronoGoalManagement.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoHolidayCalendar/pwchronoHolidayCalendar.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoInterviewScheduler/pwchronoInterviewScheduler.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoJobOpeningsViewer/pwchronoJobOpeningsViewer.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoManagerApprovalDashboard/pwchronoManagerApprovalDashboard.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoManagerDashboard/pwchronoManagerDashboard.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoOnboardingChecklist/pwchronoOnboardingChecklist.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoSalarySlipViewer/pwchronoSalarySlipViewer.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoTrainingRegistration/pwchronoTrainingRegistration.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoDashboardBirthdays/pwchronoDashboardBirthdays.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardEmployeesTable/pwchronoDashboardEmployeesTable.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardInvoicesTable/pwchronoDashboardInvoicesTable.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardProjectsTable/pwchronoDashboardProjectsTable.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardProjectsTasksSection/pwchronoDashboardProjectsTasksSection.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardTasksStatistics/pwchronoDashboardTasksStatistics.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoAttendanceCalendar/pwchronoAttendanceCalendar.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoLeaveApplication/pwchronoLeaveApplication.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoLeaveBalanceWidget/pwchronoLeaveBalanceWidget.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoLeaveCalendar/pwchronoLeaveCalendar.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoShiftRosterView/pwchronoShiftRosterView.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwChronoTaskItem/pwChronoTaskItem.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardAttendanceSection/pwchronoDashboardAttendanceSection.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardJobsTasksSection/pwchronoDashboardJobsTasksSection.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardSalesProjectsSection/pwchronoDashboardSalesProjectsSection.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardSchedulesActivitySection/pwchronoDashboardSchedulesActivitySection.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoAttendanceManagement/pwchronoAttendanceManagement.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAttendanceModal/pwchronoAttendanceModal.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAvatar/pwchronoAvatar.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoUiAssets/pwchronoUiAssets.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoAdminSettingsPanel/pwchronoAdminSettingsPanel.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoOfferLetterGenerator/pwchronoOfferLetterGenerator.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoRecruitmentPipeline/pwchronoRecruitmentPipeline.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoPerformanceAppraisal/pwchronoPerformanceAppraisal.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoPerformanceManagement/pwchronoPerformanceManagement.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoPageShell/pwchronoPageShell.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoPlaceholderCard/pwchronoPlaceholderCard.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoNewUserForm/pwchronoNewUserForm.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoProjectManagerDashboard/pwchronoProjectManagerDashboard.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoLogin/pwchronoLogin.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoMainLayout/pwchronoMainLayout.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoLeaveAdmin/pwchronoLeaveAdmin.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoLeaveEmployee/pwchronoLeaveEmployee.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoDebugPanel/pwchronoDebugPanel.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoRouter/pwchronoRouter.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoConstants/pwchronoConstants.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardCounters/pwchronoDashboardCounters.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoBootstrapCompat/pwchronoBootstrapCompat.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoErrorHandler/pwchronoErrorHandler.js-meta.xml"
+    ]
+  ],
+  "lwc_exact_source": [],
+  "lwc_near_source": [
+    {
+      "score": 0.9517,
+      "a": "force-app/main/default/lwc/pwchronoHeader/pwchronoHeader.css",
+      "b": "force-app/main/default/lwc/pwchronoSidebar/pwchronoSidebar.css",
+      "lenA": 276,
+      "lenB": 304
+    }
+  ]
+}

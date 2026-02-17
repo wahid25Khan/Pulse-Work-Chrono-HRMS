@@ -1,4 +1,4 @@
-public without sharing class PWChrono_AccessController {
+public inherited sharing class PWChrono_AccessController {
   /**
    * @description All available features in the PWChrono Portal.
    *              Salesforce internal users get access to ALL these features.

@@ -2,7 +2,7 @@
  * @description Controller for Portal Authentication and Permissions
  * @author PWChrono Team
  */
-public without sharing class PWChrono_AuthController {
+public inherited sharing class PWChrono_AuthController {
   /**
    * @description Returns portal user + permissions for the currently authenticated Salesforce user.
    *              This supports running PWChrono as a Lightning App/Tab without requiring OTP.
@@ -60,11 +60,13 @@ public without sharing class PWChrono_AuthController {
         throw new IllegalArgumentException('Email cannot be empty.');
       }
 
+      email = email.trim();
+
       Portal_Users__c user = null;
       try {
         user = getUserByEmail(email);
       } catch (Exception queryEx) {
-        System.debug('Query Error: ');
+        PWChrono_Logger.error('Failed querying portal user for OTP send.', queryEx);
         throw new IllegalArgumentException(
           'Could not query user. Error: '
         );
@@ -79,7 +81,8 @@ public without sharing class PWChrono_AuthController {
       // Rate Limiting: Check if OTP was generated recently (e.g., last 1 minute)
       if (
         user.OTP_Generated_Time__c != null &&
-        user.OTP_Generated_Time__c > System.now().addMinutes(-1)
+        user.OTP_Generated_Time__c >
+          System.now().addMinutes(-PWChrono_Constants.OTP_RESEND_COOLDOWN_MINUTES)
       ) {
         throw new IllegalArgumentException(
           'Please wait before requesting another OTP.'
@@ -133,32 +136,33 @@ public without sharing class PWChrono_AuthController {
         
         if (results[0].isSuccess()) {
           emailSent = true;
-          System.debug('OTP email sent successfully to: ' + email);
+          PWChrono_Logger.info('OTP email sent successfully.');
         } else {
           for (Messaging.SendEmailError err : results[0].getErrors()) {
-            System.debug('Email Error: ' + err.getMessage() + ' (Status Code: ' + err.getStatusCode() + ')');
+            PWChrono_Logger.warn(
+              'OTP email error: ' +
+              err.getStatusCode() +
+              ' - ' +
+              err.getMessage()
+            );
           }
         }
       } catch (Exception emailEx) {
-        System.debug('Email Exception: ' + ' Stack: ' + emailEx.getStackTraceString());
+        PWChrono_Logger.error('OTP email send exception.', emailEx);
     }
       
       if (emailSent) {
         return 'Success';
       } else {
         // Email failed but OTP is stored - return indicator for debugging
-        System.debug('Email delivery failed. OTP stored in database for user: ' + email);
+        PWChrono_Logger.warn('OTP stored but email delivery failed.');
         return 'Success_NoEmail';
       }
 
     } catch (IllegalArgumentException iae) {
       throw new AuraHandledException(iae.getMessage());
     } catch (Exception e) {
-      System.debug(
-        'General Error: ' +
-          ' Stack: ' +
-          e.getStackTraceString()
-      );
+      PWChrono_Logger.error('Unhandled sendOTP error.', e);
       throw new AuraHandledException(
         'An error occurred while sending OTP: '
       );
@@ -185,7 +189,12 @@ public without sharing class PWChrono_AuthController {
 
       // Compare provided OTP with stored OTP
       if (user.One_Time_Password__c != otp) {
-        throw new IllegalArgumentException('Invalid OTP.');
+        user.One_Time_Password__c = null;
+        user.OTP_Generated_Time__c = System.now();
+        update user;
+        throw new IllegalArgumentException(
+          'Invalid OTP. Please request a new code.'
+        );
       }
 
       // Check for OTP expiration (10 minutes)
@@ -206,6 +215,8 @@ public without sharing class PWChrono_AuthController {
       );
       user.Session_Token__c = token;
       user.Session_Expires_At__c = System.now().addMinutes(PWChrono_Constants.PORTAL_SESSION_EXPIRATION_MINUTES);
+      user.Session_Failed_Attempts__c = 0;
+      user.Session_Locked_Until__c = null;
       user.Is_Verification__c = true;
 
       // Clear OTP after successful login
@@ -217,9 +228,7 @@ public without sharing class PWChrono_AuthController {
     } catch (IllegalArgumentException iae) {
       throw new AuraHandledException(iae.getMessage());
     } catch (Exception e) {
-      System.debug(
-        'Verify Error: ' + ' Stack: ' + e.getStackTraceString()
-      );
+      PWChrono_Logger.error('Unhandled verifyOTP error.', e);
       throw new AuraHandledException(
         'An error occurred during verification: '
       );

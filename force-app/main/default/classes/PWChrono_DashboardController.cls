@@ -2,7 +2,7 @@
  * @description Controller for Employee Dashboard LWC Component
  * @author PWChrono Team
  */
-public without sharing class PWChrono_DashboardController {
+public inherited sharing class PWChrono_DashboardController {
 
   // -----------------------------
   // Public API

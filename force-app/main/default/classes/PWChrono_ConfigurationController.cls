@@ -2,7 +2,7 @@
  * @description Controller for Portal Configuration and Feature Management
  * @author PWChrono Team
  */
-public without sharing class PWChrono_ConfigurationController {
+public inherited sharing class PWChrono_ConfigurationController {
   // --- Guest portal authorization helpers (Configuration/Admin) ---
   private static void requireAdminSettingsAccessForGuest(
     String callerPortalUserId,

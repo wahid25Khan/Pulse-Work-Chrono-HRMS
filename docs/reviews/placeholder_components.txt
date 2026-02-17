@@ -1,0 +1,9 @@
+8
+pwchronoApprovals
+pwchronoExpenseManagement
+pwchronoLeaveManagement
+pwchronoOnboarding
+pwchronoPayroll
+pwchronoRecruitment
+pwchronoReportsDashboard
+pwchronoTrainingManagement

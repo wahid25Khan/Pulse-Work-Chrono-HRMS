@@ -1,4 +1,4 @@
-public without sharing class PWChrono_Mdt_Deploy_Callback implements Metadata.DeployCallback {
+public inherited sharing class PWChrono_Mdt_Deploy_Callback implements Metadata.DeployCallback {
   public void handleResult(
     Metadata.DeployResult result,
     Metadata.DeployCallbackContext context

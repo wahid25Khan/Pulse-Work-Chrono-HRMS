@@ -2,7 +2,7 @@
  * @description Handler for salary slip trigger to maintain salary history
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class PWChrono_SalarySlipTriggerHandler {
+public inherited sharing class PWChrono_SalarySlipTriggerHandler {
   /**
    * @description Create salary history records when new slips are generated
    * This helps track compensation changes over time
@@ -29,7 +29,7 @@ public without sharing class PWChrono_SalarySlipTriggerHandler {
         history.Net_Salary__c = slip.Net_Pay__c;
         history.Total_Deductions__c = 0; // Calculate from details if needed
         history.Total_Allowances__c = 0; // Calculate from details if needed
-        history.Currency_Code__c = PWChrono_Constants.CURRENCY_CODE; // Default, can be made dynamic
+        history.Currency_Code__c = PWChrono_Constants.getEffectiveCurrencyCode();
         history.Change_Reason__c = 'Salary Slip Generated';
         history.Salary_Slip__c = slip.Id;
 
@@ -45,6 +45,13 @@ public without sharing class PWChrono_SalarySlipTriggerHandler {
           'Error creating salary history: ' + e.getMessage()
         );
         PWChrono_Logger.error('Stack trace: ' + e.getStackTraceString());
+        if (salarySlips != null && !salarySlips.isEmpty()) {
+          for (PWChrono_Salary_Slip__c slip : salarySlips) {
+            slip.addError(
+              'Unable to create salary history for one or more salary slips. Please contact your administrator.'
+            );
+          }
+        }
       }
     }
   }

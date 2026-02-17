@@ -1,4 +1,4 @@
-public without sharing class PWChrono_NotificationController {
+public inherited sharing class PWChrono_NotificationController {
 
     private static Id resolveNotificationOwnerUserId(String portalUserId, String sessionToken) {
         if (UserInfo.getUserType() != 'Guest') {

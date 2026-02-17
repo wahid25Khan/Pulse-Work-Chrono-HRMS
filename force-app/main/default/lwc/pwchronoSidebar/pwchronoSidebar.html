@@ -1,215 +1,124 @@
-<!--
-  @description       : 
-  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
-  @group             : 
-  @last modified on  : 01-21-2026
-  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
--->
 <template lwc:render-mode="light">
-  <c-pwchrono-ui-assets></c-pwchrono-ui-assets>
-
-  <div
-    class="sidebar"
-    id="sidebar"
-    data-region="sidebar"
-    data-pwchrono="pwchronoSidebar"
-  >
-    <!-- Logo (matches SmartHR template structure) -->
-    <div class="sidebar-logo" data-region="sidebarLogo">
-      <a href={communityHomeHref} class="logo logo-normal">
-        <template if:false={logoLightErrored}>
-          <img
-            src={logoLightUrl}
-            alt="Logo"
-            data-variant="light"
-            onerror={handleLogoError}
-          />
-        </template>
-        <template if:true={logoLightErrored}>
-          <span class="logo-fallback" aria-label="Logo">{brandInitials}</span>
-        </template>
-      </a>
-      <a href={communityHomeHref} class="logo-small">
-        <template if:false={logoSmallErrored}>
-          <img
-            src={logoSmallUrl}
-            alt="Logo"
-            data-variant="small"
-            onerror={handleLogoError}
-          />
-        </template>
-        <template if:true={logoSmallErrored}>
-          <span class="logo-fallback logo-small-fallback" aria-label="Logo"
-            >{brandInitials}</span
-          >
-        </template>
-      </a>
-      <a href={communityHomeHref} class="dark-logo">
-        <template if:false={logoDarkErrored}>
-          <img
-            src={logoDarkUrl}
-            alt="Logo"
-            data-variant="dark"
-            onerror={handleLogoError}
-          />
-        </template>
-        <template if:true={logoDarkErrored}>
-          <span class="logo-fallback" aria-label="Logo">{brandInitials}</span>
-        </template>
-      </a>
-    </div>
-
-    <!-- Profile blocks (optional; uses existing template classes) -->
-    <div class="modern-profile p-3 pb-0" data-region="sidebarProfile">
-      <div class="sidebar-nav mb-3">
-        <ul
-          class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified bg-transparent"
-          role="tablist"
-        >
-          <li class="nav-item">
-            <button type="button" class={menuTabClass} role="tab">Menu</button>
-          </li>
-        </ul>
-      </div>
-      <div class="text-center rounded bg-light p-3 mb-4 user-profile">
-        <c-pwchrono-avatar
-          container-class="avatar avatar-lg online mb-3"
-          image-url={userAvatarUrl}
-          name={userName}
-          alt-text={userAvatarAlt}
-          image-class="img-fluid rounded-circle"
-          title-class="avatar-title rounded-circle"
-        ></c-pwchrono-avatar>
-        <h6 class="fs-12 fw-normal mb-1">{userName}</h6>
-        <p class="fs-10">{userRole}</p>
-      </div>
-    </div>
-
-    <div class="sidebar-header p-3 pb-0 pt-2" data-region="sidebarHeader">
-      <div class="input-group input-group-flat d-inline-flex mb-4">
-        <span class="input-icon-addon" aria-hidden="true">
-          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-        </span>
-        <input
-          type="search"
-          class="form-control"
-          placeholder="Search"
-          aria-label="Search"
-          role="searchbox"
-          onkeyup={handleSearch}
-        />
-        <span class="input-group-text" aria-hidden="true">
-          <kbd>CTRL + / </kbd>
-        </span>
-      </div>
-    </div>
-
-    <template if:true={isMenuTab}>
-      <div class="sidebar-inner slimscroll" data-region="sidebarMenu">
-        <div id="sidebar-menu" class="sidebar-menu">
-          <ul data-list="sidebarMenuGroups">
-            <template for:each={sidebarMenuGroups} for:item="grp">
-              <li key={grp.key} class="menu-title" data-repeat="menuGroup">
-                <span>{grp.label}</span>
-              </li>
-
-              <template if:false={grp.hasItems}>
-                <li
-                  key={grp.emptyKey}
-                  class="menu-empty"
-                  data-state="emptyMenu"
-                >
-                  <span>{grp.emptyText}</span>
-                </li>
-              </template>
-
-              <template if:true={grp.hasItems}>
-                <template for:each={grp.items} for:item="item">
-                  <li
-                    key={item.key}
-                    data-repeat="menuItem"
-                    class={item.liClass}
-                  >
-                    <template if:true={item.hasChildren}>
-                      <template if:true={item.isExpanded}>
-                        <a
-                          href={item.hrefOrToggle}
-                          data-key={item.key}
-                          onclick={handleItemClick}
-                          class={item.linkClass}
-                          aria-expanded="true"
-                          aria-controls={item.childId}
-                        >
-                          <i class={item.iconClass} aria-hidden="true"></i>
-                          <span>{item.label}</span>
-                          <template if:true={item.hasBadge}>
-                            <span class={item.badgeClass}
-                              >{item.badgeText}</span
-                            >
-                          </template>
-                          <span class="menu-arrow"></span>
-                        </a>
-                      </template>
-
-                      <template if:false={item.isExpanded}>
-                        <a
-                          href={item.hrefOrToggle}
-                          data-key={item.key}
-                          onclick={handleItemClick}
-                          class={item.linkClass}
-                          aria-expanded="false"
-                          aria-controls={item.childId}
-                        >
-                          <i class={item.iconClass} aria-hidden="true"></i>
-                          <span>{item.label}</span>
-                          <template if:true={item.hasBadge}>
-                            <span class={item.badgeClass}
-                              >{item.badgeText}</span
-                            >
-                          </template>
-                          <span class="menu-arrow"></span>
-                        </a>
-                      </template>
-                    </template>
-
-                    <template if:false={item.hasChildren}>
-                      <a
-                        href={item.hrefOrToggle}
-                        data-key={item.key}
-                        onclick={handleItemClick}
-                        class={item.linkClass}
-                      >
-                        <i class={item.iconClass} aria-hidden="true"></i>
-                        <span>{item.label}</span>
-                        <template if:true={item.hasBadge}>
-                          <span class={item.badgeClass}>{item.badgeText}</span>
-                        </template>
-                      </a>
-                    </template>
-
-                    <template if:true={item.hasChildren}>
-                      <ul class={item.childClass} id={item.childId}>
-                        <template for:each={item.children} for:item="child">
-                          <li key={child.key} data-repeat="child">
-                            <a
-                              href={child.href}
-                              data-key={child.key}
-                              onclick={handleItemClick}
-                              class={child.linkClass}
-                            >
-                              {child.label}
-                            </a>
-                          </li>
-                        </template>
-                      </ul>
-                    </template>
-                  </li>
-                </template>
-              </template>
-            </template>
-          </ul>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <a href="index.html" class="logo logo-normal">
+                <img src={logoUrl} alt="Logo">
+            </a>
+            <a href="index.html" class="logo-small">
+                <img src={logoSmallUrl} alt="Logo">
+            </a>
+            <a href="index.html" class="dark-logo">
+                <img src={logoWhiteUrl} alt="Logo">
+            </a>
         </div>
-      </div>
-    </template>
-  </div>
+        <!-- /Logo -->
+
+        <div class="modern-profile p-3 pb-0">
+            <div class="text-center rounded bg-light p-3 mb-4 user-profile">
+                <div class="avatar avatar-lg online mb-3">
+                    <img src={profileAvatarUrl} alt="Img" class="img-fluid rounded-circle">
+                </div>
+                <h6 class="fs-12 fw-normal mb-1">Adrian Herman</h6>
+                <p class="fs-10">System Admin</p>
+            </div>
+            <div class="sidebar-nav mb-3">
+                <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified bg-transparent">
+                    <li class="nav-item"><a class="nav-link active border-0" href="#">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link border-0" href="chat.html">Chats</a></li>
+                    <li class="nav-item"><a class="nav-link border-0" href="email.html">Inbox</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sidebar-header p-3 pb-0 pt-2">
+            <div class="text-center rounded bg-light p-2 mb-4 sidebar-profile d-flex align-items-center">
+                <div class="avatar avatar-md online">
+                    <img src={profileAvatarUrl} alt="Img" class="img-fluid rounded-circle">
+                </div>
+                <div class="text-start sidebar-profile-info ms-2">
+                    <h6 class="fs-12 fw-normal mb-1">Adrian Herman</h6>
+                    <p class="fs-10">System Admin</p>
+                </div>
+            </div>
+
+            <div class="input-group input-group-flat d-inline-flex mb-4">
+                <span class="input-icon-addon">
+                    <i class="ti ti-search"></i>
+                </span>
+                <input type="text" class="form-control" placeholder="Search in HRMS">
+                <span class="input-group-text">
+                    <kbd>CTRL + / </kbd>
+                </span>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between menu-item mb-3">
+                <div class="me-3">
+                    <a href="calendar.html" class="btn btn-menubar">
+                        <i class="ti ti-layout-grid-remove"></i>
+                    </a>
+                </div>
+                <div class="me-3">
+                    <a href="chat.html" class="btn btn-menubar position-relative">
+                        <i class="ti ti-brand-hipchat"></i>
+                        <span class="badge bg-info rounded-pill d-flex align-items-center justify-content-center header-badge">5</span>
+                    </a>
+                </div>
+                <div class="me-3 notification-item">
+                    <a href="activity.html" class="btn btn-menubar position-relative me-1">
+                        <i class="ti ti-bell"></i>
+                        <span class="notification-status-dot"></span>
+                    </a>
+                </div>
+                <div class="me-0">
+                    <a href="email.html" class="btn btn-menubar">
+                        <i class="ti ti-message"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-inner slimscroll">
+            <div id="sidebar-menu" class="sidebar-menu">
+                <ul>
+                    <li class="menu-title"><span>MAIN MENU</span></li>
+                    <li>
+                        <ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="active subdrop">
+                                    <i class="ti ti-smart-home"></i>
+                                    <span>Dashboard</span>
+                                    <span class="badge badge-danger fs-10 fw-medium text-white p-1">Hot</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="index.html">Admin Dashboard</a></li>
+                                    <li><a href="employee-dashboard.html">Employee Dashboard</a></li>
+                                    <li><a href="deals-dashboard.html">Deals Dashboard</a></li>
+                                    <li><a href="leads-dashboard.html">Leads Dashboard</a></li>
+                                    <li>
+                                        <a href="hr-dashboard.html" class="active">
+                                            HR Dashboard <span class="badge badge-danger fs-10 fw-medium text-white p-1">New</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="payroll-dashboard.html">Payroll Dashboard<span class="badge badge-danger fs-10 fw-medium text-white p-1">New</span></a></li>
+                                    <li><a href="recruitment-dashboard.html">Recruitment Dashboard</a></li>
+                                    <li><a href="attendance-dashboard.html">Attendance Dashboard</a></li>
+                                    <li><a href="finance-dashboard.html">Finance Dashboard</a></li>
+                                    <li><a href="it-admin-dashboard.html">IT Admin Dashboard</a></li>
+                                    <li><a href="asset-dashboard.html">Asset Dashboard</a></li>
+                                    <li><a href="help-desk-dashboard.html">Help Desk Dashboard</a></li>
+                                </ul>
+                            </li>
+
+                            <!-- The remaining menu items below should be pasted exactly as they appear in HR Dashboard.html
+                                 starting immediately after the Dashboard submenu inside #sidebar-menu -->
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Sidebar -->
 </template>

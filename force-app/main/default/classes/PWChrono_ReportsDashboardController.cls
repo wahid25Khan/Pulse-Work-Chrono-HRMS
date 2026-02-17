@@ -4,7 +4,7 @@
  * @author      PWChrono Team
  * @date        2025-12-31
  */
-public without sharing class PWChrono_ReportsDashboardController {
+public inherited sharing class PWChrono_ReportsDashboardController {
 
     private static Boolean hasFeature(String accessFeatures, String featureName) {
         if (String.isBlank(accessFeatures) || String.isBlank(featureName)) {

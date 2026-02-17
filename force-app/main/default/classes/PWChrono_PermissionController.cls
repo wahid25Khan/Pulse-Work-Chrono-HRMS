@@ -2,7 +2,7 @@
  * @description Controller for managing Portal User Profile permissions
  * @author PWChrono Team
  */
-public without sharing class PWChrono_PermissionController {
+public inherited sharing class PWChrono_PermissionController {
 
     // --- Guest portal authorization helpers (Admin Settings) ---
     // Permissions management is an admin/config function.

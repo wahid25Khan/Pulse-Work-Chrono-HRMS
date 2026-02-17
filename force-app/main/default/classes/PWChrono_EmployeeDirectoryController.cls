@@ -1,4 +1,4 @@
-public without sharing class PWChrono_EmployeeDirectoryController {
+public inherited sharing class PWChrono_EmployeeDirectoryController {
   /**
    * Lightweight, user-facing exception for this controller.
    * (Used instead of AuraHandledException to avoid IDE type resolution issues.)

@@ -1,5 +1,5 @@
 @isTest
-public without sharing class PWChrono_TestDataFactory {
+public inherited sharing class PWChrono_TestDataFactory {
   public static Portal_Users__c createPortalUser(
     String name,
     String email,

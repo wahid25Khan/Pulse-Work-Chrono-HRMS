@@ -3,7 +3,7 @@
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class PWChrono_ProfileController {
+public inherited sharing class PWChrono_ProfileController {
 
   /**
    * @description Resolve the target employee record Id for a profile operation.

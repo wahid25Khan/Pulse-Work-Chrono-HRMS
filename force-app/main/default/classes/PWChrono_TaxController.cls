@@ -2,7 +2,7 @@
  * @description Controller for Tax Declaration LWC Components
  * @author PWChrono Team
  */
-public without sharing class PWChrono_TaxController {
+public inherited sharing class PWChrono_TaxController {
   /**
    * @description Get tax declarations for current employee
    * @return List of tax declarations

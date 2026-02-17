@@ -290,4 +290,78 @@ private class PWChrono_AttendanceController_Test {
       System.assert(!shifts.isEmpty(), 'Should return team shifts');
     }
   }
+
+  @isTest
+  static void testProcessAttendanceApproval_Reject() {
+    Portal_Users__c manager = [
+      SELECT User__c
+      FROM Portal_Users__c
+      WHERE Role__c = :PWChrono_Constants.ROLE_MANAGER
+      LIMIT 1
+    ];
+    User managerUser = [SELECT Id FROM User WHERE Id = :manager.User__c];
+
+    Portal_Users__c employee = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE User__c != null AND Role__c != :PWChrono_Constants.ROLE_MANAGER
+      LIMIT 1
+    ];
+
+    PWChrono_Attendance_Request__c rejectRequest = new PWChrono_Attendance_Request__c(
+      Employees__c = employee.Id,
+      Attendance_Date__c = Date.today().addDays(-1),
+      From_Time__c = Time.newInstance(9, 0, 0, 0),
+      To_Time__c = Time.newInstance(18, 0, 0, 0),
+      Reason__c = 'Reject path coverage',
+      Status__c = PWChrono_Constants.STATUS_SUBMITTED,
+      Approvers__c = [SELECT Id FROM Portal_Users__c WHERE User__c = :managerUser.Id LIMIT 1].Id
+    );
+    insert rejectRequest;
+
+    System.runAs(managerUser) {
+      Test.startTest();
+      PWChrono_Attendance_Request__c processedRequest = PWChrono_AttendanceController.processAttendanceApproval(
+        rejectRequest.Id,
+        'Reject',
+        'Rejected by Manager'
+      );
+      Test.stopTest();
+
+      System.assertEquals(
+        PWChrono_Constants.STATUS_REJECTED,
+        processedRequest.Status__c,
+        'Status should be Rejected'
+      );
+    }
+  }
+
+  @isTest
+  static void testProcessAttendanceApproval_InvalidRequestId() {
+    Portal_Users__c manager = [
+      SELECT User__c
+      FROM Portal_Users__c
+      WHERE Role__c = :PWChrono_Constants.ROLE_MANAGER
+      LIMIT 1
+    ];
+    User managerUser = [SELECT Id FROM User WHERE Id = :manager.User__c];
+
+    System.runAs(managerUser) {
+      Test.startTest();
+      try {
+        PWChrono_AttendanceController.processAttendanceApproval(
+          (Id) 'a0Z000000000001AAA',
+          'Approve',
+          'Invalid id path'
+        );
+        System.assert(false, 'Expected controlled exception for invalid request id.');
+      } catch (Exception e) {
+        System.assert(
+          e.getMessage().contains('Error processing attendance approval'),
+          'Should return controlled approval-processing error message.'
+        );
+      }
+      Test.stopTest();
+    }
+  }
 }

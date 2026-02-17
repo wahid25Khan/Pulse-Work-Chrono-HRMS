@@ -2,7 +2,58 @@
  * @description Debug utility for testing portal functionality
  * @author PWChrono Team
  */
-public without sharing class PWChrono_DebugUtil {
+public inherited sharing class PWChrono_DebugUtil {
+  private static final String DEBUG_ACCESS_DENIED_MESSAGE =
+    'Access Denied: Debug utility access is restricted.';
+
+  private static String safeText(String value) {
+    return value == null ? '' : value.escapeHtml4();
+  }
+
+  private static String maskEmail(String email) {
+    if (String.isBlank(email) || !email.contains('@')) {
+      return '';
+    }
+
+    List<String> parts = email.split('@');
+    String local = parts[0];
+    String domain = parts.size() > 1 ? parts[1] : '';
+    if (local.length() <= 2) {
+      return '**@' + domain;
+    }
+
+    return local.substring(0, 2) + '***@' + domain;
+  }
+
+  private static void requireDebugAccess() {
+    if (!PWChrono_AccessController.isSalesforceInternalUser()) {
+      throw new AuraHandledException(DEBUG_ACCESS_DENIED_MESSAGE);
+    }
+
+    // Prefer explicit custom permission when configured.
+    if (FeatureManagement.checkPermission('PWChrono_Debug_Access')) {
+      return;
+    }
+
+    // Fallback: allow only highly privileged Salesforce users.
+    User currentUser = [
+      SELECT UserPermissionsModifyAllData, UserPermissionsViewSetup
+      FROM User
+      WHERE Id = :UserInfo.getUserId()
+      LIMIT 1
+    ];
+
+    if (
+      currentUser == null ||
+      (
+        currentUser.UserPermissionsModifyAllData != true &&
+        currentUser.UserPermissionsViewSetup != true
+      )
+    ) {
+      throw new AuraHandledException(DEBUG_ACCESS_DENIED_MESSAGE);
+    }
+  }
+
   /**
    * @description Get comprehensive system debug information
    * @return Map with debug data
@@ -12,11 +63,7 @@ public without sharing class PWChrono_DebugUtil {
     Map<String, Object> debugInfo = new Map<String, Object>();
 
     try {
-      // Security Check: Debug utility should only be available to Salesforce internal users.
-      // (The Debug Panel can be toggled via URL param and must not be exposed to portal/guest contexts.)
-      if (!PWChrono_AccessController.isSalesforceInternalUser()) {
-        throw new AuraHandledException('Access Denied: Admin privileges required.');
-      }
+      requireDebugAccess();
 
       // Current user info
       Id currentUserId = UserInfo.getUserId();
@@ -72,7 +119,7 @@ public without sharing class PWChrono_DebugUtil {
       Integer totalPortalUsers = [SELECT COUNT() FROM Portal_Users__c];
       debugInfo.put('totalPortalUsers', totalPortalUsers);
     } catch (Exception e) {
-      debugInfo.put('error', e.getMessage());
+      debugInfo.put('error', 'Unable to fetch debug information.');
     }
 
     return debugInfo;
@@ -88,12 +135,9 @@ public without sharing class PWChrono_DebugUtil {
     Map<String, Object> result = new Map<String, Object>();
 
     try {
-      // Security Check: Debug utility should only be available to Salesforce internal users.
-      if (!PWChrono_AccessController.isSalesforceInternalUser()) {
-        throw new AuraHandledException('Access Denied: Admin privileges required.');
-      }
+      requireDebugAccess();
 
-      result.put('step1_findUser', 'Finding user with email: ' + email);
+      result.put('step1_findUser', 'Finding user with email: ' + maskEmail(email));
       Portal_Users__c user = [
         SELECT Id, Name, Email__c, OTP_Generated_Time__c, One_Time_Password__c
         FROM Portal_Users__c
@@ -104,8 +148,8 @@ public without sharing class PWChrono_DebugUtil {
         'step2_userFound',
         new Map<String, String>{
           'Id' => user.Id,
-          'Name' => user.Name,
-          'Email' => user.Email__c
+          'Name' => safeText(user.Name),
+          'Email' => maskEmail(user.Email__c)
         }
       );
 
@@ -114,12 +158,9 @@ public without sharing class PWChrono_DebugUtil {
       String otp = String.valueOf(
         Math.mod(Math.abs(randomInt), 900000) + 100000
       );
-      result.put(
-        'step4_otpGenerated',
-        'OTP: ' + otp + ' (Length: ' + otp.length() + ')'
-      );
+      result.put('step4_otpGenerated', 'OTP generated successfully.');
 
-      result.put('step5_sendingEmail', 'Email recipient: ' + email);
+      result.put('step5_sendingEmail', 'Email recipient: ' + maskEmail(email));
       Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
       mail.setToAddresses(new List<String>{ email });
       mail.setSubject('TEST: Your Login OTP for PWChrono');
@@ -148,8 +189,7 @@ public without sharing class PWChrono_DebugUtil {
       result.put('success', true);
     } catch (Exception e) {
       result.put('success', false);
-      result.put('error', e.getMessage());
-      result.put('errorType', e.getTypeName());
+      result.put('error', 'OTP debug operation failed.');
     }
 
     return result;
@@ -169,14 +209,7 @@ public without sharing class PWChrono_DebugUtil {
     Map<String, Object> result = new Map<String, Object>();
 
     try {
-      // Security Check: Only Admins can access debug info
-      Map<String, Object> userAccess = PWChrono_AccessController.getUserAccess();
-      String role = (String)userAccess.get('role');
-      Boolean isSalesforceUser = (Boolean)userAccess.get('isSalesforceUser');
-      
-      if (isSalesforceUser != true && role != 'HR Admin' && role != 'System Admin') {
-        throw new AuraHandledException('Access Denied: Admin privileges required.');
-      }
+      requireDebugAccess();
 
       result.put(
         'step1_checkPortalUser',
@@ -188,7 +221,7 @@ public without sharing class PWChrono_DebugUtil {
         WHERE Id = :portalUserId
         LIMIT 1
       ];
-      result.put('step2_userFound', user.Name);
+      result.put('step2_userFound', safeText(user.Name));
 
       result.put(
         'step3_checkExistingAccess',
@@ -244,8 +277,7 @@ public without sharing class PWChrono_DebugUtil {
       result.put('success', true);
     } catch (Exception e) {
       result.put('success', false);
-      result.put('error', e.getMessage());
-      result.put('errorType', e.getTypeName());
+      result.put('error', 'Feature assignment debug operation failed.');
     }
 
     return result;
@@ -260,14 +292,7 @@ public without sharing class PWChrono_DebugUtil {
     List<Map<String, String>> testUsers = new List<Map<String, String>>();
 
     try {
-      // Security Check: Only Admins can access debug info
-      Map<String, Object> access = PWChrono_AccessController.getUserAccess();
-      String role = (String)access.get('role');
-      Boolean isSalesforceUser = (Boolean)access.get('isSalesforceUser');
-      
-      if (isSalesforceUser != true && role != 'HR Admin' && role != 'System Admin') {
-        throw new AuraHandledException('Access Denied: Admin privileges required.');
-      }
+      requireDebugAccess();
 
       List<Portal_Users__c> users = [
         SELECT Id, Name, Email__c, Is_Active__c
@@ -280,8 +305,8 @@ public without sharing class PWChrono_DebugUtil {
         testUsers.add(
           new Map<String, String>{
             'Id' => user.Id,
-            'Name' => user.Name,
-            'Email' => user.Email__c != null ? user.Email__c : 'N/A',
+            'Name' => safeText(user.Name),
+            'Email' => user.Email__c != null ? maskEmail(user.Email__c) : 'N/A',
             'Active' => String.valueOf(user.Is_Active__c)
           }
         );

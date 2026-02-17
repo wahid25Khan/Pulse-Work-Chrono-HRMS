@@ -3,7 +3,7 @@
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class PWChrono_AdminController {
+public inherited sharing class PWChrono_AdminController {
   // --- Guest portal authorization helpers (Admin Settings) ---
   // The portal runs in Guest runtime with a server-issued session token.
   // For admin/config endpoints we require a verified portal session AND

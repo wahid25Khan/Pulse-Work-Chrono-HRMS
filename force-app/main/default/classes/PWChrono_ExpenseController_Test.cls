@@ -203,4 +203,111 @@ private class PWChrono_ExpenseController_Test {
       System.assert(claims.isEmpty(), 'Claim should be deleted');
     }
   }
+
+  @isTest
+  static void testGetMyClaims_WithExplicitEmployeeId() {
+    User testUser = [
+      SELECT Id
+      FROM User
+      WHERE LastName = 'Standard User'
+      LIMIT 1
+    ];
+
+    Portal_Users__c currentEmployee = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE User__c = :testUser.Id
+      LIMIT 1
+    ];
+
+    System.runAs(testUser) {
+      Test.startTest();
+      List<PWChrono_Expense_Claim__c> claims = PWChrono_ExpenseController.getMyClaims(
+        currentEmployee.Id,
+        null
+      );
+      Test.stopTest();
+
+      System.assertNotEquals(null, claims, 'Claims list should not be null.');
+      System.assertEquals(1, claims.size(), 'Explicit employee id should return owned claims.');
+    }
+  }
+
+  @isTest
+  static void testGetClaimItems_UnknownClaimIdReturnsEmptyList() {
+    User testUser = [
+      SELECT Id
+      FROM User
+      WHERE LastName = 'Standard User'
+      LIMIT 1
+    ];
+
+    System.runAs(testUser) {
+      Test.startTest();
+      List<PWChrono_Expense_Item__c> items = PWChrono_ExpenseController.getClaimItems(
+        (Id) 'a0J000000000001AAA',
+        null,
+        null
+      );
+      Test.stopTest();
+
+      System.assertNotEquals(null, items, 'Items list should not be null for unknown claim id.');
+      System.assertEquals(0, items.size(), 'Unknown claim id should return empty list.');
+    }
+  }
+
+  @isTest
+  static void testSaveClaim_EnforcesServerSideOwnership() {
+    User testUser = [
+      SELECT Id
+      FROM User
+      WHERE LastName = 'Standard User'
+      LIMIT 1
+    ];
+
+    Portal_Users__c currentEmployee = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE User__c = :testUser.Id
+      LIMIT 1
+    ];
+
+    Id bogusEmployeeId = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Id != :currentEmployee.Id
+      LIMIT 1
+    ].Id;
+
+    System.runAs(testUser) {
+      PWChrono_Expense_Claim__c newClaim = new PWChrono_Expense_Claim__c(
+        Claim_Date__c = Date.today(),
+        Description__c = 'Ownership enforcement',
+        Status__c = PWChrono_Constants.STATUS_DRAFT,
+        Employees__c = bogusEmployeeId
+      );
+
+      List<PWChrono_Expense_Item__c> items = new List<PWChrono_Expense_Item__c>();
+
+      Test.startTest();
+      PWChrono_Expense_Claim__c savedClaim = PWChrono_ExpenseController.saveClaim(
+        newClaim,
+        items,
+        currentEmployee.Id,
+        null
+      );
+      Test.stopTest();
+
+      PWChrono_Expense_Claim__c persisted = [
+        SELECT Employees__c
+        FROM PWChrono_Expense_Claim__c
+        WHERE Id = :savedClaim.Id
+      ];
+      System.assertEquals(
+        currentEmployee.Id,
+        persisted.Employees__c,
+        'Server-side save should enforce verified portal user ownership.'
+      );
+    }
+  }
 }

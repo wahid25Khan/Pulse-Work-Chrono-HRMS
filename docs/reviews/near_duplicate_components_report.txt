@@ -1,0 +1,2 @@
+NEAR-DUPLICATE LWC HTML COMPONENTS (>=0.92 similarity)
+- None

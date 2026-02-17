@@ -162,3 +162,180 @@ To keep reviews and maintenance consistent, the project uses the following agent
 2. Correct form label associations and table header semantics.
 3. Remove TODO/commented-out artifacts.
 4. Re-evaluate `without sharing` usage in policy retrieval controller.
+
+## 🔁 Duplicate Analysis Addendum (2026-02-15)
+
+### Scope & Method
+- Scanned all Apex classes (`87`) and all LWC files (`339`).
+- Ran exact-match and near-duplicate similarity checks on normalized code.
+- Separately evaluated source duplicates (`.js`, `.html`, `.css`) vs metadata duplicates (`.js-meta.xml`).
+
+### Apex Findings
+- **No duplicate Apex class implementations detected** (exact or near-duplicate) across production or test classes.
+- Dashboard/report-related classes were spot-checked and appear functionally distinct:
+	- `PWChrono_DashboardController` (employee-focused summary)
+	- `PWChrono_PMDashboardController` (project manager metrics)
+	- `PWChrono_ReportsDashboardController` (org-wide reporting aggregates)
+
+### LWC Findings
+- **Expected metadata duplication** exists across many `.js-meta.xml` files (not a code smell by itself).
+- **One exact source duplicate** was found:
+	- `pwchronoPerformanceAppraisal.css` and `pwchronoPerformanceReview.css`
+
+- **High-similarity source templates** (likely scaffold/page-shell reuse):
+	- `pwchronoProfileUpdateSalesforce.html` ↔ `pwchronoProfileUpdateSalesforceAction.html` (~98%)
+	- `pwchronoAdminDashboard.html` ↔ `pwchronoAdminDashboardDesign.html` (~89.5%)
+	- `pwchronoPayroll.html` ↔ `pwchronoRecruitment.html` (~96%)
+	- Multiple `*Page.html` wrappers (`ApprovalsPage`, `PayrollPage`, `OnboardingPage`, `RecruitmentPage`, `TrainingManagementPage`, `ReportsDashboardPage`) share a near-identical shell around different child components.
+
+### Interpretation for Dashboard/Report Components
+- Your direction is valid: some similarity is **intentional** when each dashboard/report component keeps its own container/page shell.
+- Current duplication is mostly in presentation wrappers, not business logic.
+- If desired later, this can be reduced with a shared page-shell/base component, but it is not mandatory for correctness.
+
+### Artifacts Generated
+- Raw scan output: `docs/reviews/duplicate_scan_raw.json`
+- Focused scan output: `docs/reviews/duplicate_scan_focus.json`
+
+## 🧹 Targeted Duplicate Cleanup Plan (Preserve Dashboard/Report Separation)
+
+### Goal
+- Remove only accidental duplication.
+- Keep intentional per-component dashboard/report wrappers and ownership boundaries.
+
+### Phase 1 (Safe, Immediate)
+1. **Resolve exact CSS duplicate**
+	 - Files:
+		 - `force-app/main/default/lwc/pwchronoPerformanceAppraisal/pwchronoPerformanceAppraisal.css`
+		 - `force-app/main/default/lwc/pwchronoPerformanceReview/pwchronoPerformanceReview.css`
+	 - Action:
+		 - Keep one canonical style source and align the other to only component-specific overrides.
+	 - Risk: Low
+
+2. **De-duplicate near-identical profile update wrappers**
+	 - Files:
+		 - `force-app/main/default/lwc/pwchronoProfileUpdateSalesforce/pwchronoProfileUpdateSalesforce.html`
+		 - `force-app/main/default/lwc/pwchronoProfileUpdateSalesforceAction/pwchronoProfileUpdateSalesforceAction.html`
+	 - Action:
+		 - Keep one wrapper pattern and reduce the other to true action-specific behavior only.
+	 - Risk: Low
+
+### Phase 2 (Selective Consolidation)
+3. **Decide source-of-truth for admin dashboard template**
+	 - Files:
+		 - `force-app/main/default/lwc/pwchronoAdminDashboard/pwchronoAdminDashboard.html`
+		 - `force-app/main/default/lwc/pwchronoAdminDashboardDesign/pwchronoAdminDashboardDesign.html`
+	 - Action:
+		 - Pick one as canonical implementation.
+		 - Convert the other into either:
+			 - a minimal variant for demo/design-only use, or
+			 - a thin wrapper that delegates to canonical markup/data.
+	 - Risk: Medium
+
+4. **Normalize repeated page-shell scaffolds**
+	 - Files (highly similar wrappers):
+		 - `pwchronoApprovalsPage`, `pwchronoPayrollPage`, `pwchronoOnboardingPage`, `pwchronoRecruitmentPage`, `pwchronoTrainingManagementPage`, `pwchronoReportsDashboardPage`
+	 - Action:
+		 - Keep each page component (as requested), but standardize shared shell blocks (breadcrumb/header/loading) via a common pattern.
+		 - Do not merge business-specific child components.
+	 - Risk: Medium
+
+### Phase 3 (Guardrails)
+5. **Prevent regressions**
+	 - Keep `scripts/dup_scan.py` and run it as a pre-release check.
+	 - Add a review checklist item: “new page wrappers must differ by behavior, not only label text”.
+	 - Risk: Low
+
+### Explicit Non-Goals
+- Do **not** merge distinct dashboard/report components into one monolith.
+- Do **not** remove role-specific Apex controllers (`Dashboard`, `PMDashboard`, `ReportsDashboard`) since current implementation is intentionally separated.
+
+### Recommended Execution Order
+1. Phase 1 tasks
+2. Admin dashboard canonicalization
+3. Page-shell normalization
+4. Re-run duplicate scan and confirm no unintended re-introductions
+
+### Execution Status (2026-02-16)
+- ✅ **Phase 1 completed** (exact source duplicate removed and wrapper de-duplication done).
+- ✅ **Phase 2 completed**:
+	- Added shared shell component: `force-app/main/default/lwc/pwchronoPageShell/*`
+	- Normalized wrappers to shared shell:
+		- `pwchronoApprovalsPage`
+		- `pwchronoPayrollPage`
+		- `pwchronoOnboardingPage`
+		- `pwchronoRecruitmentPage`
+		- `pwchronoTrainingManagementPage`
+		- `pwchronoReportsDashboardPage`
+	- Canonicalized admin dashboard design component:
+		- `pwchronoAdminDashboardDesign` now delegates to `pwchronoAdminDashboard`.
+
+- ✅ Post-change scan confirms:
+	- `lwc_exact_source`: **empty**
+	- Large wrapper-page near-duplicates removed from top findings.
+
+### Final Cleanup Complete (2026-02-16)
+- ✅ Ran repo-wide duplicate scan (including ignored areas such as `.husky`) and captured output in:
+	- `docs/reviews/duplicate_scan_repowide.json`
+- Summary from final repo-wide scan:
+	- Files scanned: `925`
+	- Exact duplicate groups: `38` (primarily expected metadata parity across Salesforce descriptor files)
+	- Near-duplicate pairs: `2348` (majority from metadata/templates and intentionally similar scaffolds)
+- ✅ Confirmed cleanup objectives achieved for actionable source duplication:
+	- Apex duplicate implementations: none detected
+	- LWC exact source duplication: none detected
+	- Wrapper/page-shell duplication: normalized via shared components (`pwchronoPageShell`, `pwchronoPlaceholderCard`)
+
+### Accessibility Remediation Progress (2026-02-16)
+- ✅ Fixed form label associations (`label[for]` ↔ `id`) in modal forms:
+	- `force-app/main/default/lwc/pwchronoTrainingList/pwchronoTrainingList.html`
+	- `force-app/main/default/lwc/pwchronoDashboardTasksStatistics/pwchronoDashboardTasksStatistics.html`
+- ✅ Added semantic table headers (`<thead>/<th>`) for metric tables:
+	- `force-app/main/default/lwc/pwchronoAdminDashboardReports/pwchronoAdminDashboardReports.html`
+- ✅ Replaced clickable non-semantic containers with native buttons for keyboard/device accessibility:
+	- `force-app/main/default/lwc/pwchronoDashboard/pwchronoDashboard.html`
+- ✅ Removed unsupported `role="progressbar"` usage on non-`<progress>` elements to satisfy accessibility lint rules:
+	- `force-app/main/default/lwc/pwchronoAdminDashboardReports/pwchronoAdminDashboardReports.html`
+- ✅ Validation status: no compile/accessibility errors in the updated files.
+
+### Current Step Status (Live)
+- ✅ Accessibility batch completed (labels, table headers, semantic buttons, progress-role cleanup).
+- ✅ `SOQL in loops` (`PWChrono_LeaveTriggerHandler.cls`) revalidated as not reproducible in current source.
+- ✅ `Unsecured debug endpoints` remediated in `PWChrono_DebugUtil.cls` with centralized strict access control.
+- ✅ Added dedicated unit tests for salary slip trigger handler (`PWChrono_SalarySlipTriggerHandler_Test.cls`).
+- ✅ `Potential XSS in Debug Util` mitigated (sanitized text, masked emails, generic error responses).
+- ✅ Missing-sharing safe subset remediated (`PWChrono_Utils`, `PWChrono_Logger`, `PWChrono_DebugUtil` now use `inherited sharing`).
+- ✅ Salary-slip trigger error handling improved (`PWChrono_SalarySlipTriggerHandler` now surfaces failures across all affected records).
+- ✅ Centralized logger hardened (`PWChrono_Logger` now uses permission-gated, normalized, safer log output).
+- ✅ Salary-history flow no longer relies on fixed currency literal (`PWChrono_Constants.getEffectiveCurrencyCode()` applied).
+- ✅ OTP flow hardened against brute-force retries (`PWChrono_AuthController` invalidates OTP on failed verification and enforces cooldown).
+- ✅ Appraisal locking scope improved (`PWChrono_AppraisalTriggerHandler` now locks active salary assignment rows directly).
+- ✅ Added dedicated appraisal trigger handler tests (`PWChrono_AppraisalTriggerHandler_Test.cls`) for salary increment and performance bonus outcomes.
+- ✅ Expanded appraisal handler edge-case coverage (`PWChrono_AppraisalTriggerHandler_Test`) to assert no salary/bonus side effects when status does not transition to completed.
+- ✅ Added appraisal completed-zero-amount edge-case coverage (`PWChrono_AppraisalTriggerHandler_Test`) to assert no financial record creation.
+- ✅ Guest session validation hardened (`PWChrono_GuestSession`) with failed-attempt tracking and temporary lockout controls.
+- ✅ Added dedicated guest session tests (`PWChrono_GuestSession_Test.cls`) covering lockout threshold and state reset behavior.
+- ✅ Hardened non-guest session-id parsing in `PWChrono_GuestSession` to return controlled errors for invalid portal-user IDs; added test coverage for invalid-id handling.
+- ✅ Tightened guest lockout tests to assert failed-attempt counter reset when lockout is applied.
+- ✅ Added dedicated debug utility tests (`PWChrono_DebugUtil_Test`) for hardened debug endpoints and controlled failure paths.
+- ✅ Expanded debug utility test coverage to include `getTestUsers` execution and sanitized payload presence checks.
+- ✅ Expanded OTP success-path tests (`PWChrono_AuthController_Test`) to verify guest session lockout counters/timestamps are reset after successful verification.
+- ✅ Added auth input-normalization coverage (`PWChrono_AuthController_Test`) to verify `sendOTP` trims padded email input.
+- ✅ Added dedicated navigation controller tests (`PWChrono_NavigationController_Test`) for safe empty-list behavior across menu-name inputs.
+- ✅ Added dedicated reports dashboard controller tests (`PWChrono_ReportsDashboardController_Test`) covering summary and individual metric endpoints in default no-data state.
+- ✅ Added dedicated chat controller tests (`PWChrono_ChatController_Test`) covering wrapper execution paths for contacts, messages, and send-message calls.
+- ✅ Expanded approval controller edge-case coverage (`PWChrono_ApprovalController_Test`) for invalid-workitem controlled error paths and safe no-pending list-return behavior.
+- ✅ Expanded attendance controller approval edge-case coverage (`PWChrono_AttendanceController_Test`) for reject-path status transition and invalid-request-id controlled error behavior.
+- ✅ Added employee directory controller coverage (`PWChrono_EmployeeDirectoryController_Test`) for blank/prefix search execution and record-access true/false paths.
+- ✅ Expanded expense controller edge-case coverage (`PWChrono_ExpenseController_Test`) for explicit employee-id retrieval, unknown-claim item lookup, and server-side ownership enforcement on save.
+- ✅ Added role-feature mapping controller coverage (`PWChrono_RoleFeatureMappingController_Test`) for metadata mapping list retrieval and save/delete deployment request paths.
+- ✅ Bulk-aligned controller sharing to caller context by converting `PWChrono_*Controller` classes from `without sharing` to `inherited sharing`.
+- ✅ Continued sharing sweep beyond controllers by converting helper/handler classes to caller-context sharing:
+	- `PWChrono_AppraisalTriggerHandler`, `PWChrono_LeaveTriggerHandler`, `PWChrono_SalarySlipTriggerHandler`, `PWChrono_EmailHandler`, `PWChrono_Mdt_Deploy_Callback`, `PWChrono_TestDataFactory` → `inherited sharing`.
+	- Remaining `without sharing` classes are treated as intentional exceptions pending review (guest/session/security utilities and batch/schedulable + select guest-oriented services).
+- ✅ Direct production `System.debug` usage removed from non-logger classes (`PWChrono_GoogleChatProvider`, `PWChrono_SalesforceChatProvider`, `PWChrono_NavigationController`).
+- ✅ Constants utility aligned to caller-context sharing (`PWChrono_Constants` → `inherited sharing`).
+- ✅ Trigger guard consistency revalidated (`isExecuting` present in both appraisal and leave trigger handlers).
+- ✅ Navigation controller sharing aligned to caller context (`PWChrono_NavigationController` → `inherited sharing`).
+- 🔄 Current in progress: remaining medium-severity hardening from `docs/reviews/issues.md` (broader controller edge-case coverage expansion).
+- ⏭️ Next planned: continue medium-priority remediation pass with targeted controller edge-case test additions.

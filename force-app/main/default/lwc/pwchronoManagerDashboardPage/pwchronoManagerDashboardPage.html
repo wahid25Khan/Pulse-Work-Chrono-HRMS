@@ -1,3 +1,33 @@
 <template>
-    <c-pwchrono-manager-dashboard></c-pwchrono-manager-dashboard>
+    <ul class="nav nav-tabs tab-style-1 nav-justified d-sm-flex d-block p-0 mb-4">
+        <li class="nav-item">
+            <button
+                type="button"
+                class="nav-link fw-medium active"
+                data-bs-toggle="tab"
+                data-bs-target="#managerDashboardTab"
+            >
+                Manager Dashboard
+            </button>
+        </li>
+        <li class="nav-item">
+            <button
+                type="button"
+                class="nav-link fw-medium"
+                data-bs-toggle="tab"
+                data-bs-target="#hrDashboardTab"
+            >
+                HR Dashboard
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="managerDashboardTab">
+            <c-pwchrono-manager-dashboard></c-pwchrono-manager-dashboard>
+        </div>
+        <div class="tab-pane fade" id="hrDashboardTab">
+            <c-pwchrono-h-r-dashboard></c-pwchrono-h-r-dashboard>
+        </div>
+    </div>
 </template>

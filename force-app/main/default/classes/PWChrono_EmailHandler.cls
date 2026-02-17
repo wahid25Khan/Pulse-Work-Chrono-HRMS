@@ -2,7 +2,7 @@
  * @description Helper class for sending emails
  * @author PWChrono Team
  */
-public without sharing class PWChrono_EmailHandler {
+public inherited sharing class PWChrono_EmailHandler {
   public static void sendAppraisalNotifications(
     List<PWChrono_Appraisal__c> appraisals
   ) {

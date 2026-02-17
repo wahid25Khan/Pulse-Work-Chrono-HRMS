@@ -95,17 +95,50 @@ private class PWChrono_ApprovalController_Test {
   @isTest
   static void testProcessRequest() {
     // Since we can't easily create a workitem without an active approval process,
-    // we will try to cover the exception handling or just the method signature.
+    // assert the controlled invalid-workitem handling path.
 
     Test.startTest();
     try {
       PWChrono_ApprovalController.processRequest(null, 'Approve', 'Comments');
+      System.assert(false, 'Expected controlled exception for null work item id.');
     } catch (Exception e) {
       System.assert(
-        e.getMessage().contains('Error processing approval request'),
-        'Should catch exception'
+        e.getMessage().contains('Approval request not found or already processed'),
+        'Should return controlled not-found/processed message.'
       );
     }
     Test.stopTest();
+  }
+
+  @isTest
+  static void testProcessRequest_InvalidWorkItemId() {
+    // Use a syntactically valid ProcessInstanceWorkitem-like Id that does not exist.
+    Id fakeWorkItemId = (Id) '04i000000000001AAA';
+
+    Test.startTest();
+    try {
+      PWChrono_ApprovalController.processRequest(
+        fakeWorkItemId,
+        'Reject',
+        'Invalid work item test'
+      );
+      System.assert(false, 'Expected controlled exception for unknown work item id.');
+    } catch (Exception e) {
+      System.assert(
+        e.getMessage().contains('Approval request not found or already processed'),
+        'Should return controlled not-found/processed message.'
+      );
+    }
+    Test.stopTest();
+  }
+
+  @isTest
+  static void testGetPendingApprovals_NoPendingSafeReturn() {
+    Test.startTest();
+    List<PWChrono_ApprovalController.ApprovalRequestWrapper> approvals =
+      PWChrono_ApprovalController.getPendingApprovals();
+    Test.stopTest();
+
+    System.assertNotEquals(null, approvals, 'Method should always return a list.');
   }
 }

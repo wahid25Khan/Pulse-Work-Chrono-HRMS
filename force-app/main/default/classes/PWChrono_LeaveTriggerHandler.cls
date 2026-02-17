@@ -2,7 +2,7 @@
  * @description Handler class for PWChrono_Leave__c trigger
  * Updates leave allocation used days when leaves are approved/rejected
  */
-public without sharing class PWChrono_LeaveTriggerHandler {
+public inherited sharing class PWChrono_LeaveTriggerHandler {
   public static Boolean isExecuting = false;
 
   /**

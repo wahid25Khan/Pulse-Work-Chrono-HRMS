@@ -3,7 +3,7 @@
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class PWChrono_AppraisalTriggerHandler {
+public inherited sharing class PWChrono_AppraisalTriggerHandler {
   public static Boolean isExecuting = false;
 
   public static void handleAfterUpdate(
@@ -76,22 +76,13 @@ public without sharing class PWChrono_AppraisalTriggerHandler {
       employeeIds.add(appraisal.Employees__c);
     }
 
-    // Lock Employee records to prevent race conditions
-    if (!employeeIds.isEmpty()) {
-      List<Portal_Users__c> lockedEmployees = [
-        SELECT Id
-        FROM Portal_Users__c
-        WHERE Id IN :employeeIds
-        FOR UPDATE
-      ];
-    }
-
-    // Get current salary assignments to update them
+    // Lock active salary assignments for affected employees to reduce update contention.
     Map<Id, PWChrono_Salary_Assignment__c> currentAssignments = new Map<Id, PWChrono_Salary_Assignment__c>();
     for (PWChrono_Salary_Assignment__c sa : [
       SELECT Id, Name, Employees__c, Base_Salary__c, From_Date__c
       FROM PWChrono_Salary_Assignment__c
       WHERE Employees__c IN :employeeIds AND Is_Active__c = TRUE
+      FOR UPDATE
     ]) {
       currentAssignments.put(sa.Employees__c, sa);
     }

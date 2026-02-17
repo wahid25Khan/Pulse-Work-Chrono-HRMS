@@ -1,0 +1,804 @@
+{
+  "counts": {
+    "files": 925,
+    "exact_groups": 38,
+    "near_pairs": 2348
+  },
+  "exact_groups_top": [
+    [
+      "force-app/main/default/classes/PWChrono_LeaveService.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_GoogleChatProvider.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_Mdt_Deploy_Callback_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ApprovalController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_TaxController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_PermissionController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_RecruitmentController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AdminController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_TrainingController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_Constants.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_OnboardingController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AccessController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ConfigurationController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_LeaveAllocationService.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_SecurityUtils.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_LeaveBalanceService.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_RecruitmentService.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_PolicyController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_PerformanceController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_EmpDirectoryCtrl_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AttendanceController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_TestDataFactory.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ExpenseController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_NotificationController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ExpenseService.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_DashboardController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_PayrollController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ProfileController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_HolidayController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_RoleFeatMapCtrl_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_LeaveController_Test.cls-meta.xml"
+    ],
+    [
+      "force-app/main/default/classes/PWChrono_AttendanceController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_Logger.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ChatController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_SalesforceChatProvider.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_Utils.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ChatContact.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_PayrollController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AccessController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AdminController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_IChatProvider.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ChatServiceFactory.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ChatException.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ConfigurationController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_LeaveController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_Logger_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_RecruitmentController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_LeaveAllocationScheduler_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_Utils_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ChatMessage.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_PerformanceController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_LeaveAllocationBatch_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_EmployeeDirectoryController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_DashboardController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_SecurityUtils_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AppraisalGeneratorBatch_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_LeaveTriggerHandler.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ApprovalController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_NotificationController.cls-meta.xml"
+    ],
+    [
+      "force-app/main/default/classes/PWChrono_ProjectController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_TaxController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_RoleFeatureMappingController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_PolicyController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_NewMgrDashboardCtrl.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_OnboardingController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ExpenseController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_NavigationController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_EmailHandler.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_HolidayController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_TrainingController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_Mdt_Deploy_Callback.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_NewMgrDashboardCtrl_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ProjectController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AppraisalGeneratorBatch.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AuthController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AppraisalTriggerHandler.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ProfileController.cls-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoSalarySlipViewer/pwchronoSalarySlipViewer.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoInterviewScheduler/pwchronoInterviewScheduler.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAppraisalForm/pwchronoAppraisalForm.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoEmployeeDirectory/pwchronoEmployeeDirectory.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAdminSettings/pwchronoAdminSettings.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoHolidayCalendar/pwchronoHolidayCalendar.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoExpenseClaimPortal/pwchronoExpenseClaimPortal.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoOnboardingChecklist/pwchronoOnboardingChecklist.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoManagerDashboard/pwchronoManagerDashboard.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoGoalManagement/pwchronoGoalManagement.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoCompanyPolicies/pwchronoCompanyPolicies.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoTrainingRegistration/pwchronoTrainingRegistration.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAttendanceRequest/pwchronoAttendanceRequest.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboard/pwchronoDashboard.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoManagerApprovalDashboard/pwchronoManagerApprovalDashboard.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoConfigurationCenter/pwchronoConfigurationCenter.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoJobOpeningsViewer/pwchronoJobOpeningsViewer.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoDashboardTasksStatistics/pwchronoDashboardTasksStatistics.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardProjectsTable/pwchronoDashboardProjectsTable.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardEmployeesTable/pwchronoDashboardEmployeesTable.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardInvoicesTable/pwchronoDashboardInvoicesTable.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardBirthdays/pwchronoDashboardBirthdays.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardProjectsTasksSection/pwchronoDashboardProjectsTasksSection.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/classes/PWChrono_LeaveAllocationScheduler.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_SalarySlipTriggerHandler.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_LeaveAllocationBatch.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_ReportsDashboardController.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_AuthController_Test.cls-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwChronoTaskItem/pwChronoTaskItem.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardSchedulesActivitySection/pwchronoDashboardSchedulesActivitySection.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardAttendanceSection/pwchronoDashboardAttendanceSection.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardSalesProjectsSection/pwchronoDashboardSalesProjectsSection.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardJobsTasksSection/pwchronoDashboardJobsTasksSection.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoLeaveApplication/pwchronoLeaveApplication.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAttendanceCalendar/pwchronoAttendanceCalendar.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoLeaveBalanceWidget/pwchronoLeaveBalanceWidget.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoLeaveCalendar/pwchronoLeaveCalendar.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoShiftRosterView/pwchronoShiftRosterView.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/Portal_Object__c/listViews/All.listView-meta.xml",
+      "force-app/main/default/objects/Portal_Object_Permission__c/listViews/All.listView-meta.xml",
+      "force-app/main/default/objects/Portal_Users__c/listViews/All.listView-meta.xml",
+      "force-app/main/default/objects/Portal_Field_Permission__c/listViews/All.listView-meta.xml",
+      "force-app/main/default/objects/TLG_Task_Notifications__c/listViews/All.listView-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoAvatar/pwchronoAvatar.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAttendanceManagement/pwchronoAttendanceManagement.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAttendanceModal/pwchronoAttendanceModal.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoUiAssets/pwchronoUiAssets.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Performance_Cycle__c/fields/Is_Active__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Is_Active__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Is_Active__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/Is_Active__c.field-meta.xml"
+    ],
+    [
+      "force-app/main/default/classes/PWChrono_PermissionController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_GuestSession.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_DebugUtil.cls-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoRecruitmentPipeline/pwchronoRecruitmentPipeline.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoOfferLetterGenerator/pwchronoOfferLetterGenerator.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoAdminSettingsPanel/pwchronoAdminSettingsPanel.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Holiday__c/fields/Description__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Description__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Onboarding_Task__c/fields/Description__c.field-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Leave_Type__c/fields/Is_Active__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Department__c/fields/Is_Active__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Designation__c/fields/Is_Active__c.field-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Project__c/fields/Description__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Goal__c/fields/Description__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Description__c.field-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Shift_Assignment__c/fields/From_Date__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Leave__c/fields/From_Date__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/From_Date__c.field-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Shift_Assignment__c/fields/To_Date__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Leave__c/fields/To_Date__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/To_Date__c.field-meta.xml"
+    ],
+    [
+      "force-app/main/default/classes/PWChrono_PMDashboardController_Test.cls-meta.xml",
+      "force-app/main/default/classes/PWChrono_PMDashboardController.cls-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoBootstrapCompat/pwchronoBootstrapCompat.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoErrorHandler/pwchronoErrorHandler.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoConstants/pwchronoConstants.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDashboardCounters/pwchronoDashboardCounters.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoLeaveAdmin/pwchronoLeaveAdmin.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoLeaveEmployee/pwchronoLeaveEmployee.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoMainLayout/pwchronoMainLayout.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoLogin/pwchronoLogin.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoNewUserForm/pwchronoNewUserForm.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoProjectManagerDashboard/pwchronoProjectManagerDashboard.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoPageShell/pwchronoPageShell.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoPlaceholderCard/pwchronoPlaceholderCard.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoPerformanceAppraisal/pwchronoPerformanceAppraisal.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoPerformanceManagement/pwchronoPerformanceManagement.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/lwc/pwchronoRouter/pwchronoRouter.js-meta.xml",
+      "force-app/main/default/lwc/pwchronoDebugPanel/pwchronoDebugPanel.js-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Attendance_Request__c/fields/Reason__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Leave__c/fields/Reason__c.field-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Invoice__c/fields/Amount__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Structure_Component__c/fields/Amount__c.field-meta.xml"
+    ],
+    [
+      "force-app/main/default/objects/PWChrono_Invoice__c/fields/Description__c.field-meta.xml",
+      "force-app/main/default/objects/PWChrono_Expense_Claim__c/fields/Description__c.field-meta.xml"
+    ]
+  ],
+  "near_pairs_top": [
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoLeaveAdmin/pwchronoLeaveAdmin.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoLeaveEmployee/pwchronoLeaveEmployee.js-meta.xml",
+      "lenA": 271,
+      "lenB": 271
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoRecruitmentPipeline/pwchronoRecruitmentPipeline.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoOfferLetterGenerator/pwchronoOfferLetterGenerator.js-meta.xml",
+      "lenA": 290,
+      "lenB": 290
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoRecruitmentPipeline/pwchronoRecruitmentPipeline.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoAdminSettingsPanel/pwchronoAdminSettingsPanel.js-meta.xml",
+      "lenA": 290,
+      "lenB": 290
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardTasksStatistics/pwchronoDashboardTasksStatistics.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardProjectsTable/pwchronoDashboardProjectsTable.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardTasksStatistics/pwchronoDashboardTasksStatistics.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardEmployeesTable/pwchronoDashboardEmployeesTable.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardTasksStatistics/pwchronoDashboardTasksStatistics.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardInvoicesTable/pwchronoDashboardInvoicesTable.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardTasksStatistics/pwchronoDashboardTasksStatistics.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardBirthdays/pwchronoDashboardBirthdays.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardTasksStatistics/pwchronoDashboardTasksStatistics.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardProjectsTasksSection/pwchronoDashboardProjectsTasksSection.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoOfferLetterGenerator/pwchronoOfferLetterGenerator.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoAdminSettingsPanel/pwchronoAdminSettingsPanel.js-meta.xml",
+      "lenA": 290,
+      "lenB": 290
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoLeaveApplication/pwchronoLeaveApplication.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoAttendanceCalendar/pwchronoAttendanceCalendar.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoLeaveApplication/pwchronoLeaveApplication.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoLeaveBalanceWidget/pwchronoLeaveBalanceWidget.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoLeaveApplication/pwchronoLeaveApplication.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoLeaveCalendar/pwchronoLeaveCalendar.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoLeaveApplication/pwchronoLeaveApplication.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoShiftRosterView/pwchronoShiftRosterView.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardProjectsTable/pwchronoDashboardProjectsTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardEmployeesTable/pwchronoDashboardEmployeesTable.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardProjectsTable/pwchronoDashboardProjectsTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardInvoicesTable/pwchronoDashboardInvoicesTable.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardProjectsTable/pwchronoDashboardProjectsTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardBirthdays/pwchronoDashboardBirthdays.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardProjectsTable/pwchronoDashboardProjectsTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardProjectsTasksSection/pwchronoDashboardProjectsTasksSection.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardEmployeesTable/pwchronoDashboardEmployeesTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardInvoicesTable/pwchronoDashboardInvoicesTable.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardEmployeesTable/pwchronoDashboardEmployeesTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardBirthdays/pwchronoDashboardBirthdays.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardEmployeesTable/pwchronoDashboardEmployeesTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardProjectsTasksSection/pwchronoDashboardProjectsTasksSection.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardInvoicesTable/pwchronoDashboardInvoicesTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardBirthdays/pwchronoDashboardBirthdays.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardInvoicesTable/pwchronoDashboardInvoicesTable.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardProjectsTasksSection/pwchronoDashboardProjectsTasksSection.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoAttendanceCalendar/pwchronoAttendanceCalendar.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoLeaveBalanceWidget/pwchronoLeaveBalanceWidget.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoAttendanceCalendar/pwchronoAttendanceCalendar.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoLeaveCalendar/pwchronoLeaveCalendar.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoAttendanceCalendar/pwchronoAttendanceCalendar.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoShiftRosterView/pwchronoShiftRosterView.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoLeaveBalanceWidget/pwchronoLeaveBalanceWidget.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoLeaveCalendar/pwchronoLeaveCalendar.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoLeaveBalanceWidget/pwchronoLeaveBalanceWidget.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoShiftRosterView/pwchronoShiftRosterView.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoDashboardBirthdays/pwchronoDashboardBirthdays.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoDashboardProjectsTasksSection/pwchronoDashboardProjectsTasksSection.js-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoLeaveCalendar/pwchronoLeaveCalendar.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoShiftRosterView/pwchronoShiftRosterView.js-meta.xml",
+      "lenA": 258,
+      "lenB": 258
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoMainLayout/pwchronoMainLayout.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoLogin/pwchronoLogin.js-meta.xml",
+      "lenA": 345,
+      "lenB": 345
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/lwc/pwchronoPerformanceAppraisal/pwchronoPerformanceAppraisal.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoPerformanceManagement/pwchronoPerformanceManagement.js-meta.xml",
+      "lenA": 330,
+      "lenB": 330
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Leave_Type__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Department__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 231,
+      "lenB": 231
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Leave_Type__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Designation__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 231,
+      "lenB": 231
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Leave_Type__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Department__c/fields/Description__c.field-meta.xml",
+      "lenA": 259,
+      "lenB": 259
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/Portal_Object_Permission__c/fields/Can_View__c.field-meta.xml",
+      "b": "force-app/main/default/objects/Portal_Field_Permission__c/fields/Can_View__c.field-meta.xml",
+      "lenA": 265,
+      "lenB": 265
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/Portal_Object_Permission__c/fields/Can_Edit__c.field-meta.xml",
+      "b": "force-app/main/default/objects/Portal_Field_Permission__c/fields/Can_Edit__c.field-meta.xml",
+      "lenA": 265,
+      "lenB": 265
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Holiday__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Holiday__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Onboarding_Task__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Invoice__c/fields/Amount__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Structure_Component__c/fields/Amount__c.field-meta.xml",
+      "lenA": 296,
+      "lenB": 296
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Invoice__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Expense_Claim__c/fields/Description__c.field-meta.xml",
+      "lenA": 334,
+      "lenB": 334
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Project__c/fields/End_Date__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Appraisal__c/fields/End_Date__c.field-meta.xml",
+      "lenA": 253,
+      "lenB": 253
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Project__c/fields/Start_Date__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Appraisal__c/fields/Start_Date__c.field-meta.xml",
+      "lenA": 257,
+      "lenB": 257
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Project__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Goal__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Project__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Tax_Declaration__c/fields/Status__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Expense_Claim__c/fields/Status__c.field-meta.xml",
+      "lenA": 750,
+      "lenB": 750
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/Portal_Users__c/fields/Email__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Job_Applicant__c/fields/Email__c.field-meta.xml",
+      "lenA": 302,
+      "lenB": 302
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/Portal_Users__c/fields/Phone__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Job_Applicant__c/fields/Phone__c.field-meta.xml",
+      "lenA": 248,
+      "lenB": 248
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Goal__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Performance_Cycle__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 266,
+      "lenB": 266
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Performance_Cycle__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 266,
+      "lenB": 266
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Performance_Cycle__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 266,
+      "lenB": 266
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 266,
+      "lenB": 266
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 266,
+      "lenB": 266
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Department__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Designation__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 231,
+      "lenB": 231
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Shift_Assignment__c/fields/From_Date__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Leave__c/fields/From_Date__c.field-meta.xml",
+      "lenA": 255,
+      "lenB": 255
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Shift_Assignment__c/fields/From_Date__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/From_Date__c.field-meta.xml",
+      "lenA": 255,
+      "lenB": 255
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Shift_Assignment__c/fields/To_Date__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Leave__c/fields/To_Date__c.field-meta.xml",
+      "lenA": 251,
+      "lenB": 251
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Shift_Assignment__c/fields/To_Date__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/To_Date__c.field-meta.xml",
+      "lenA": 251,
+      "lenB": 251
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Attendance_Request__c/fields/Reason__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Leave__c/fields/Reason__c.field-meta.xml",
+      "lenA": 284,
+      "lenB": 284
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Is_Active__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/Is_Active__c.field-meta.xml",
+      "lenA": 266,
+      "lenB": 266
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Onboarding_Task__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Leave__c/fields/From_Date__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/From_Date__c.field-meta.xml",
+      "lenA": 255,
+      "lenB": 255
+    },
+    {
+      "score": 1.0,
+      "a": "force-app/main/default/objects/PWChrono_Leave__c/fields/To_Date__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Salary_Assignment__c/fields/To_Date__c.field-meta.xml",
+      "lenA": 251,
+      "lenB": 251
+    },
+    {
+      "score": 0.9982,
+      "a": "force-app/main/default/lwc/pwchronoLeaveAdmin/pwchronoLeaveAdmin.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoChat/pwchronoChat.js-meta.xml",
+      "lenA": 271,
+      "lenB": 272
+    },
+    {
+      "score": 0.9982,
+      "a": "force-app/main/default/lwc/pwchronoLeaveEmployee/pwchronoLeaveEmployee.js-meta.xml",
+      "b": "force-app/main/default/lwc/pwchronoChat/pwchronoChat.js-meta.xml",
+      "lenA": 271,
+      "lenB": 272
+    },
+    {
+      "score": 0.9972,
+      "a": "force-app/main/default/objects/PWChrono_Shift_Assignment__c/PWChrono_Shift_Assignment__c.object-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Salary_Assignment__c/PWChrono_Salary_Assignment__c.object-meta.xml",
+      "lenA": 4287,
+      "lenB": 4291
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Holiday__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Project__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Holiday__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Goal__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Holiday__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Project__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Project__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Onboarding_Task__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Goal__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Goal__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Onboarding_Task__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Shift_Type__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9966,
+      "a": "force-app/main/default/objects/PWChrono_Training_Program__c/fields/Description__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Onboarding_Task__c/fields/Description__c.field-meta.xml",
+      "lenA": 294,
+      "lenB": 294
+    },
+    {
+      "score": 0.9965,
+      "a": "force-app/main/default/objects/PWChrono_Interview__c/fields/Feedback__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Training_Attendance__c/fields/Feedback__c.field-meta.xml",
+      "lenA": 288,
+      "lenB": 288
+    },
+    {
+      "score": 0.996,
+      "a": "force-app/main/default/objects/Portal_Object__c/Portal_Object__c.object-meta.xml",
+      "b": "force-app/main/default/objects/Portal_Object_Permission__c/Portal_Object_Permission__c.object-meta.xml",
+      "lenA": 4261,
+      "lenB": 4295
+    },
+    {
+      "score": 0.9954,
+      "a": "force-app/main/default/objects/PWChrono_Interview__c/PWChrono_Interview__c.object-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Invoice__c/PWChrono_Invoice__c.object-meta.xml",
+      "lenA": 4271,
+      "lenB": 4264
+    },
+    {
+      "score": 0.9953,
+      "a": "force-app/main/default/objects/PWChrono_Tax_Declaration__c/fields/Status__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Attendance_Request__c/fields/Status__c.field-meta.xml",
+      "lenA": 750,
+      "lenB": 751
+    },
+    {
+      "score": 0.9953,
+      "a": "force-app/main/default/objects/PWChrono_Attendance_Request__c/fields/Status__c.field-meta.xml",
+      "b": "force-app/main/default/objects/PWChrono_Expense_Claim__c/fields/Status__c.field-meta.xml",
+      "lenA": 751,
+      "lenB": 750
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-public without sharing class PWChrono_NavigationController {
+public inherited sharing class PWChrono_NavigationController {
     @AuraEnabled(cacheable=true)
     public static List<ConnectApi.NavigationMenuItem> getNavigationMenuItems(String menuName, String publishedState) {
         if (String.isBlank(menuName)) {
@@ -35,7 +35,7 @@ public without sharing class PWChrono_NavigationController {
                 return items.menuItems;
             }
         } catch (Exception e) {
-            System.debug('Error fetching navigation items: ' + e.getMessage());
+            PWChrono_Logger.error('Error fetching navigation items.', e);
         }
         
         return new List<ConnectApi.NavigationMenuItem>();
