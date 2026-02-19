@@ -5,5 +5,24 @@
     "**/.sf": true,
     "**/.sfdx": true
   },
-  "xml.preferences.showSchemaDocumentationType": "none"
+  "xml.preferences.showSchemaDocumentationType": "none",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact"
+  ],
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrap": "on"
+  },
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "markdownlint.config": {
+    "MD013": false
+  },
+  "mermaid-editor.preview.defaultMermaidConfig": "{\"theme\":\"default\"}"
 }

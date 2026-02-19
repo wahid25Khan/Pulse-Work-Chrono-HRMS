@@ -1,3 +1,5 @@
+/* stylelint-disable */
+
 /*
  * Layout for this page is controlled by the global SmartHR theme CSS
  * (e.g., `.page-wrapper` offsets for sidebar). This file is intentionally
@@ -5,15 +7,6 @@
  * wraps the component in a flex container.
  */
 
-.page-wrapper {
-	width: 100%;
-	flex: 1 1 auto;
-}
 
-.page-wrapper .content {
-	width: 100%;
-}
 
-.page-wrapper .card {
-	width: 100%;
-}
+/* stylelint-enable */

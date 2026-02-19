@@ -54,21 +54,25 @@ export default class TrainingManagement extends LightningElement {
                 this.selectedTraining = { id: Date.now().toString(), status: 'Active', employees: [], extraCount: '+0' };
                 this.isModalOpen = true;
                 break;
-            case 'edit':
+            case 'edit': {
                 this.isEditing = true;
                 const record = this.trainingData.find(item => item.id === recordId);
                 this.selectedTraining = { ...record };
                 this.isModalOpen = true;
                 break;
-            case 'delete':
+            }
+            case 'delete': {
                 const filtered = this.trainingData.filter(item => item.id !== recordId);
                 this.refreshTable(filtered);
                 break;
+            }
             case 'closeModal':
                 this.isModalOpen = false;
                 break;
             case 'save':
                 this.handleSave();
+                break;
+            default:
                 break;
         }
     }
@@ -81,9 +85,12 @@ export default class TrainingManagement extends LightningElement {
         let updatedList = [...this.trainingData];
         if (this.isEditing) {
             // Logic for EDIT
-            updatedList = updatedList.map(item => 
-                item.id === this.selectedTraining.id ? { ...this.selectedTraining } : item
-            );
+            updatedList = updatedList.map((item) => {
+                if (item.id === this.selectedTraining.id) {
+                    return { ...this.selectedTraining };
+                }
+                return item;
+            });
         } else {
             // Logic for ADD
             updatedList.push({ ...this.selectedTraining });

@@ -29,7 +29,6 @@ export default class PwchronoHRDashboard extends LightningElement {
             }
         } catch (e) {
             this.summary = undefined;
-            // eslint-disable-next-line no-console
             console.error("HR Dashboard summary load failed:", e);
         } finally {
             this._loading = false;
@@ -267,7 +266,6 @@ export default class PwchronoHRDashboard extends LightningElement {
             this._chartsInitialized = true;
             this.initCharts();
         } catch (e) {
-            // eslint-disable-next-line no-console
             console.error("HR Dashboard assets load failed:", e);
         }
     }

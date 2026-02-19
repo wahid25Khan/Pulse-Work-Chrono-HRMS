@@ -26,8 +26,9 @@
           <div class="row">
             <template for:each={basicInfoFields} for:item="field">
               <div key={field.label} class="col-md-4 mb-3">
-                <label class="form-label">{field.label}</label>
+                <label class="form-label" for={field.name}>{field.label}</label>
                 <input
+                  id={field.name}
                   type="text"
                   class="form-control"
                   name={field.name}

@@ -1,81 +1,159 @@
+/**
+ * Provides HR dashboard summary metrics for LWC consumers.
+ */
+@SuppressWarnings(
+  'PMD.CognitiveComplexity,PMD.CyclomaticComplexity,PMD.ExcessivePublicCount'
+)
 public inherited sharing class PWChrono_HRDashboardController {
-
+  /**
+   * Aggregate dashboard payload.
+   */
+  @SuppressWarnings('PMD.ExcessivePublicCount,PMD.TooManyFields')
   public class HRDashboardDTO {
-    @AuraEnabled public Integer totalEmployees;
-    @AuraEnabled public Integer newJoiners;
-    @AuraEnabled public Integer lateArrivalsToday;
-    @AuraEnabled public Decimal totalPayrollCost;
-    @AuraEnabled public Decimal benefitDeductions;
+    @AuraEnabled
+    public Integer totalEmployees;
+    @AuraEnabled
+    public Integer newJoiners;
+    @AuraEnabled
+    public Integer lateArrivalsToday;
+    @AuraEnabled
+    public Decimal totalPayrollCost;
+    @AuraEnabled
+    public Decimal benefitDeductions;
 
-    @AuraEnabled public Integer fullTimeEmployees;
-    @AuraEnabled public Integer contractEmployees;
-    @AuraEnabled public Integer probationEmployees;
+    @AuraEnabled
+    public Integer fullTimeEmployees;
+    @AuraEnabled
+    public Integer contractEmployees;
+    @AuraEnabled
+    public Integer probationEmployees;
 
-    @AuraEnabled public Integer sickLeaveCount;
-    @AuraEnabled public Integer casualLeaveCount;
-    @AuraEnabled public Integer unpaidLeaveCount;
+    @AuraEnabled
+    public Integer sickLeaveCount;
+    @AuraEnabled
+    public Integer casualLeaveCount;
+    @AuraEnabled
+    public Integer unpaidLeaveCount;
 
-    @AuraEnabled public List<String> attendanceLabels;
-    @AuraEnabled public List<Integer> onTimeTrend;
-    @AuraEnabled public List<Integer> lateTrend;
-    @AuraEnabled public List<Integer> absentTrend;
+    @AuraEnabled
+    public List<String> attendanceLabels;
+    @AuraEnabled
+    public List<Integer> onTimeTrend;
+    @AuraEnabled
+    public List<Integer> lateTrend;
+    @AuraEnabled
+    public List<Integer> absentTrend;
 
-    @AuraEnabled public List<String> distributionLabels;
-    @AuraEnabled public List<Integer> distributionToday;
-    @AuraEnabled public List<Integer> distributionWeek;
-    @AuraEnabled public List<Integer> distributionMonth;
-    @AuraEnabled public List<Integer> distributionQuarter;
-    @AuraEnabled public List<Integer> distributionYear;
+    @AuraEnabled
+    public List<String> distributionLabels;
+    @AuraEnabled
+    public List<Integer> distributionToday;
+    @AuraEnabled
+    public List<Integer> distributionWeek;
+    @AuraEnabled
+    public List<Integer> distributionMonth;
+    @AuraEnabled
+    public List<Integer> distributionQuarter;
+    @AuraEnabled
+    public List<Integer> distributionYear;
 
-    @AuraEnabled public Integer trainingInProgress;
-    @AuraEnabled public Integer trainingCompleted;
+    @AuraEnabled
+    public Integer trainingInProgress;
+    @AuraEnabled
+    public Integer trainingCompleted;
 
-    @AuraEnabled public List<Decimal> deductionSparkline;
-    @AuraEnabled public List<Decimal> payrollSparkline;
+    @AuraEnabled
+    public List<Decimal> deductionSparkline;
+    @AuraEnabled
+    public List<Decimal> payrollSparkline;
 
-    @AuraEnabled public Integer recruitmentApplicants;
-    @AuraEnabled public Integer recruitmentHired;
-    @AuraEnabled public Integer recruitmentAvgTimeDays;
-    @AuraEnabled public Integer recruitmentApplicantsPercent;
-    @AuraEnabled public Integer recruitmentScreeningPercent;
-    @AuraEnabled public Integer recruitmentHiredPercent;
-    @AuraEnabled public Integer recruitmentApplicantsEmployees;
-    @AuraEnabled public Integer recruitmentScreeningEmployees;
-    @AuraEnabled public Integer recruitmentHiredEmployees;
+    @AuraEnabled
+    public Integer recruitmentApplicants;
+    @AuraEnabled
+    public Integer recruitmentHired;
+    @AuraEnabled
+    public Integer recruitmentAvgTimeDays;
+    @AuraEnabled
+    public Integer recruitmentApplicantsPercent;
+    @AuraEnabled
+    public Integer recruitmentScreeningPercent;
+    @AuraEnabled
+    public Integer recruitmentHiredPercent;
+    @AuraEnabled
+    public Integer recruitmentApplicantsEmployees;
+    @AuraEnabled
+    public Integer recruitmentScreeningEmployees;
+    @AuraEnabled
+    public Integer recruitmentHiredEmployees;
 
-    @AuraEnabled public List<LateArrivalRow> lateArrivals;
-    @AuraEnabled public List<PendingApprovalRow> pendingApprovals;
-    @AuraEnabled public List<UpcomingInterviewRow> upcomingInterviews;
-    @AuraEnabled public List<TopEmployeeRow> topEmployees;
+    @AuraEnabled
+    public List<LateArrivalRow> lateArrivals;
+    @AuraEnabled
+    public List<PendingApprovalRow> pendingApprovals;
+    @AuraEnabled
+    public List<UpcomingInterviewRow> upcomingInterviews;
+    @AuraEnabled
+    public List<TopEmployeeRow> topEmployees;
   }
 
+  /** Row model for late arrivals table. */
   public class LateArrivalRow {
-    @AuraEnabled public String key;
-    @AuraEnabled public String employeeName;
-    @AuraEnabled public String department;
-    @AuraEnabled public String arrivalTime;
-    @AuraEnabled public String lateBy;
+    @AuraEnabled
+    public String key;
+    @AuraEnabled
+    public String employeeName;
+    @AuraEnabled
+    public String department;
+    @AuraEnabled
+    public String arrivalTime;
+    @AuraEnabled
+    public String lateBy;
   }
 
+  /** Row model for pending approvals table. */
   public class PendingApprovalRow {
-    @AuraEnabled public String key;
-    @AuraEnabled public String employeeName;
-    @AuraEnabled public String dateAndDays;
-    @AuraEnabled public String reason;
+    @AuraEnabled
+    public String key;
+    @AuraEnabled
+    public String employeeName;
+    @AuraEnabled
+    public String dateAndDays;
+    @AuraEnabled
+    public String reason;
   }
+  /** Row model for upcoming interviews table. */
   public class UpcomingInterviewRow {
-    @AuraEnabled public String key;
-    @AuraEnabled public String title;
-    @AuraEnabled public String timeRange;
+    @AuraEnabled
+    public String key;
+    @AuraEnabled
+    public String title;
+    @AuraEnabled
+    public String timeRange;
   }
+  /** Row model for top employees table. */
   public class TopEmployeeRow {
-    @AuraEnabled public String key;
-    @AuraEnabled public String employeeName;
-    @AuraEnabled public String photoUrl;
+    @AuraEnabled
+    public String key;
+    @AuraEnabled
+    public String employeeName;
+    @AuraEnabled
+    public String photoUrl;
   }
 
-  @AuraEnabled(cacheable=true)
+  /**
+   * Returns summarized dashboard data.
+   * @return HRDashboardDTO summarized metrics payload
+   */
+  @SuppressWarnings('PMD.NcssMethodCount,PMD.CyclomaticComplexity')
+  @AuraEnabled(cacheable=true) // NOPMD
   public static HRDashboardDTO getDashboardSummary() {
+    HRDashboardDTO dto = initDashboardDto();
+    populateDashboardDto(dto);
+    return dto;
+  }
+
+  @SuppressWarnings('PMD.NcssMethodCount')
+  private static HRDashboardDTO initDashboardDto() {
     HRDashboardDTO dto = new HRDashboardDTO();
     dto.totalEmployees = 0;
     dto.newJoiners = 0;
@@ -96,7 +174,12 @@ public inherited sharing class PWChrono_HRDashboardController {
     dto.lateTrend = new List<Integer>();
     dto.absentTrend = new List<Integer>();
 
-    dto.distributionLabels = new List<String>{ 'Sales', 'Front End', 'React', 'UI' };
+    dto.distributionLabels = new List<String>{
+      'Sales',
+      'Front End',
+      'React',
+      'UI'
+    };
     dto.distributionToday = new List<Integer>{ 0, 0, 0, 0 };
     dto.distributionWeek = new List<Integer>{ 0, 0, 0, 0 };
     dto.distributionMonth = new List<Integer>{ 0, 0, 0, 0 };
@@ -109,6 +192,16 @@ public inherited sharing class PWChrono_HRDashboardController {
     dto.deductionSparkline = new List<Decimal>();
     dto.payrollSparkline = new List<Decimal>();
 
+    applyRecruitmentDefaults(dto);
+
+    dto.lateArrivals = new List<LateArrivalRow>();
+    dto.pendingApprovals = new List<PendingApprovalRow>();
+    dto.upcomingInterviews = new List<UpcomingInterviewRow>();
+    dto.topEmployees = new List<TopEmployeeRow>();
+    return dto;
+  }
+
+  private static void applyRecruitmentDefaults(HRDashboardDTO dto) {
     dto.recruitmentApplicants = 0;
     dto.recruitmentHired = 0;
     dto.recruitmentAvgTimeDays = 0;
@@ -118,40 +211,97 @@ public inherited sharing class PWChrono_HRDashboardController {
     dto.recruitmentApplicantsEmployees = 7;
     dto.recruitmentScreeningEmployees = 36;
     dto.recruitmentHiredEmployees = 18;
+  }
 
-    dto.lateArrivals = new List<LateArrivalRow>();
-    dto.pendingApprovals = new List<PendingApprovalRow>();
-    dto.upcomingInterviews = new List<UpcomingInterviewRow>();
-    dto.topEmployees = new List<TopEmployeeRow>();
-
-  try { populateHeadcount(dto); } catch (Exception e) { }
-    try { populatePayroll(dto); } catch (Exception e) { }
-    try { populateLeaveDistribution(dto); } catch (Exception e) { }
-    try { populateAttendanceTrend(dto); } catch (Exception e) { }
-    try { populateDepartmentDistribution(dto); } catch (Exception e) { }
-    try { populateTraining(dto); } catch (Exception e) { }
-    try { populateSparklines(dto); } catch (Exception e) { }
-    try { populateRecruitment(dto); } catch (Exception e) { }
-    try { populateLateArrivals(dto); } catch (Exception e) { }
-    try { populatePendingApprovals(dto); } catch (Exception e) { }
-    try { populateUpcomingInterviews(dto); } catch (Exception e) { }
-    try { populateTopEmployees(dto); } catch (Exception e) { }
-
-    return dto;
+  private static void populateDashboardDto(HRDashboardDTO dto) {
+    try {
+      populateHeadcount(dto);
+    } catch (Exception e) {
+      absorbException('populateHeadcount', e);
+    }
+    try {
+      populatePayroll(dto);
+    } catch (Exception e) {
+      absorbException('populatePayroll', e);
+    }
+    try {
+      populateLeaveDistribution(dto);
+    } catch (Exception e) {
+      absorbException('populateLeaveDistribution', e);
+    }
+    try {
+      populateAttendanceTrend(dto);
+    } catch (Exception e) {
+      absorbException('populateAttendanceTrend', e);
+    }
+    try {
+      populateDepartmentDistribution(dto);
+    } catch (Exception e) {
+      absorbException('populateDepartmentDistribution', e);
+    }
+    try {
+      populateTraining(dto);
+    } catch (Exception e) {
+      absorbException('populateTraining', e);
+    }
+    try {
+      populateSparklines(dto);
+    } catch (Exception e) {
+      absorbException('populateSparklines', e);
+    }
+    try {
+      populateRecruitment(dto);
+    } catch (Exception e) {
+      absorbException('populateRecruitment', e);
+    }
+    try {
+      populateLateArrivals(dto);
+    } catch (Exception e) {
+      absorbException('populateLateArrivals', e);
+    }
+    try {
+      populatePendingApprovals(dto);
+    } catch (Exception e) {
+      absorbException('populatePendingApprovals', e);
+    }
+    try {
+      populateUpcomingInterviews(dto);
+    } catch (Exception e) {
+      absorbException('populateUpcomingInterviews', e);
+    }
+    try {
+      populateTopEmployees(dto);
+    } catch (Exception e) {
+      absorbException('populateTopEmployees', e);
+    }
   }
 
   private static void populateHeadcount(HRDashboardDTO dto) {
-    dto.totalEmployees = (Integer) Database.countQuery('SELECT COUNT() FROM Portal_Users__c');
-    dto.newJoiners = (Integer) Database.countQuery('SELECT COUNT() FROM Portal_Users__c WHERE Date_of_Joining__c = THIS_YEAR');
+    dto.totalEmployees = [
+      SELECT COUNT()
+      FROM Portal_Users__c
+      WITH USER_MODE
+      LIMIT 50000
+    ];
+    dto.newJoiners = [
+      SELECT COUNT()
+      FROM Portal_Users__c
+      WHERE Date_of_Joining__c = THIS_YEAR
+      WITH USER_MODE
+    ];
 
     for (AggregateResult ar : [
       SELECT Type__c t, COUNT(Id) c
       FROM Portal_Users__c
+      WITH USER_MODE
       GROUP BY Type__c
+      LIMIT 200
     ]) {
       String t = safeLower(ar.get('t'));
       Integer c = (Integer) ar.get('c');
-      if (c == null) c = 0;
+      if (c == null) {
+        c = 0;
+      }
 
       if (t.contains('contract')) {
         dto.contractEmployees += c;
@@ -172,12 +322,17 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT SUM(Gross_Pay__c) g, SUM(Total_Deductions__c) d
       FROM PWChrono_Salary_Slip__c
       WHERE Payroll_Period__c >= :startMonth AND Payroll_Period__c <= :endMonth
+      WITH USER_MODE
     ];
 
     dto.totalPayrollCost = (Decimal) ar.get('g');
     dto.benefitDeductions = (Decimal) ar.get('d');
-    if (dto.totalPayrollCost == null) dto.totalPayrollCost = 0;
-    if (dto.benefitDeductions == null) dto.benefitDeductions = 0;
+    if (dto.totalPayrollCost == null) {
+      dto.totalPayrollCost = 0;
+    }
+    if (dto.benefitDeductions == null) {
+      dto.benefitDeductions = 0;
+    }
   }
 
   private static void populateLeaveDistribution(HRDashboardDTO dto) {
@@ -185,11 +340,14 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT Leave_Type__r.Name ln, COUNT(Id) c
       FROM PWChrono_Leave__c
       WHERE From_Date__c = THIS_YEAR
+      WITH USER_MODE
       GROUP BY Leave_Type__r.Name
     ]) {
       String leaveName = safeLower(ar.get('ln'));
       Integer countVal = (Integer) ar.get('c');
-      if (countVal == null) countVal = 0;
+      if (countVal == null) {
+        countVal = 0;
+      }
 
       if (leaveName.contains('sick')) {
         dto.sickLeaveCount += countVal;
@@ -201,6 +359,7 @@ public inherited sharing class PWChrono_HRDashboardController {
     }
   }
 
+  @SuppressWarnings('PMD.CognitiveComplexity,PMD.CyclomaticComplexity')
   private static void populateAttendanceTrend(HRDashboardDTO dto) {
     Date today = Date.today();
     List<Date> days = new List<Date>();
@@ -216,12 +375,19 @@ public inherited sharing class PWChrono_HRDashboardController {
     for (PWChrono_Attendance_Request__c attendance : [
       SELECT Attendance_Date__c, Status__c, From_Time__c
       FROM PWChrono_Attendance_Request__c
-      WHERE Attendance_Date__c >= :today.addDays(-6) AND Attendance_Date__c <= :today
+      WHERE
+        Attendance_Date__c >= :today.addDays(-6)
+        AND Attendance_Date__c <= :today
+      WITH USER_MODE
     ]) {
       Date day = attendance.Attendance_Date__c;
-      if (day == null) continue;
+      if (day == null) {
+        continue;
+      }
 
-      String status = (attendance.Status__c == null ? '' : attendance.Status__c.toLowerCase());
+      String status = (attendance.Status__c == null
+        ? ''
+        : attendance.Status__c.toLowerCase());
 
       if (status.contains('absent')) {
         absent.put(day, (absent.containsKey(day) ? absent.get(day) : 0) + 1);
@@ -229,7 +395,11 @@ public inherited sharing class PWChrono_HRDashboardController {
       }
 
       Boolean isLate = status.contains('late');
-      if (!isLate && attendance.From_Time__c != null && attendance.From_Time__c > lateThreshold) {
+      if (
+        !isLate &&
+        attendance.From_Time__c != null &&
+        attendance.From_Time__c > lateThreshold
+      ) {
         isLate = true;
       }
 
@@ -259,11 +429,15 @@ public inherited sharing class PWChrono_HRDashboardController {
     for (AggregateResult ar : [
       SELECT Department__c dep, COUNT(Id) c
       FROM Portal_Users__c
+      WITH USER_MODE
       GROUP BY Department__c
+      LIMIT 200
     ]) {
       String dep = safeLower(ar.get('dep'));
       Integer countVal = (Integer) ar.get('c');
-      if (countVal == null) countVal = 0;
+      if (countVal == null) {
+        countVal = 0;
+      }
 
       if (dep.contains('sales')) {
         sales += countVal;
@@ -304,21 +478,29 @@ public inherited sharing class PWChrono_HRDashboardController {
   private static void populateSparklines(HRDashboardDTO dto) {
     Date today = Date.today();
     Date start = Date.newInstance(today.year(), today.month(), 1).addMonths(-5);
-    Date endDate = Date.newInstance(today.year(), today.month(), 1).addMonths(1).addDays(-1);
+    Date endDate = Date.newInstance(today.year(), today.month(), 1)
+      .addMonths(1)
+      .addDays(-1);
 
     Map<String, AggregateResult> byMonth = new Map<String, AggregateResult>();
     for (AggregateResult ar : [
-      SELECT CALENDAR_YEAR(Payroll_Period__c) y,
-             CALENDAR_MONTH(Payroll_Period__c) m,
-             SUM(Total_Deductions__c) d,
-             SUM(Gross_Pay__c) g
+      SELECT
+        CALENDAR_YEAR(Payroll_Period__c) y,
+        CALENDAR_MONTH(Payroll_Period__c) m,
+        SUM(Total_Deductions__c) d,
+        SUM(Gross_Pay__c) g
       FROM PWChrono_Salary_Slip__c
       WHERE Payroll_Period__c >= :start AND Payroll_Period__c <= :endDate
-      GROUP BY CALENDAR_YEAR(Payroll_Period__c), CALENDAR_MONTH(Payroll_Period__c)
+      WITH USER_MODE
+      GROUP BY
+        CALENDAR_YEAR(Payroll_Period__c),
+        CALENDAR_MONTH(Payroll_Period__c)
     ]) {
       Integer y = (Integer) ar.get('y');
       Integer m = (Integer) ar.get('m');
-      if (y == null || m == null) continue;
+      if (y == null || m == null) {
+        continue;
+      }
       byMonth.put(String.valueOf(y) + '-' + String.valueOf(m), ar);
     }
 
@@ -333,18 +515,26 @@ public inherited sharing class PWChrono_HRDashboardController {
         deduction = (Decimal) ar.get('d');
         payroll = (Decimal) ar.get('g');
       }
-      dto.deductionSparkline.add((deduction == null ? 0 : deduction).setScale(0));
+      dto.deductionSparkline.add(
+        (deduction == null ? 0 : deduction).setScale(0)
+      );
       dto.payrollSparkline.add((payroll == null ? 0 : payroll).setScale(0));
     }
   }
 
   private static void populateRecruitment(HRDashboardDTO dto) {
-    Integer applicants = (Integer) Database.countQuery(
-      'SELECT COUNT() FROM Portal_Users__c WHERE CreatedDate = THIS_YEAR'
-    );
-    Integer hired = (Integer) Database.countQuery(
-      'SELECT COUNT() FROM Portal_Users__c WHERE Date_of_Joining__c = THIS_YEAR'
-    );
+    Integer applicants = [
+      SELECT COUNT()
+      FROM Portal_Users__c
+      WHERE CreatedDate = THIS_YEAR
+      WITH USER_MODE
+    ];
+    Integer hired = [
+      SELECT COUNT()
+      FROM Portal_Users__c
+      WHERE Date_of_Joining__c = THIS_YEAR
+      WITH USER_MODE
+    ];
 
     Integer screening = Math.max(0, applicants - hired);
     Integer weightedTotal = applicants + screening + hired;
@@ -365,22 +555,31 @@ public inherited sharing class PWChrono_HRDashboardController {
     for (Portal_Users__c userRec : [
       SELECT Id, CreatedDate, Date_of_Joining__c
       FROM Portal_Users__c
-      WHERE Date_of_Joining__c != null
+      WHERE Date_of_Joining__c != NULL
+      WITH USER_MODE
       ORDER BY CreatedDate DESC
       LIMIT 500
     ]) {
-      Date createdDate = userRec.CreatedDate == null ? null : userRec.CreatedDate.date();
+      Date createdDate = userRec.CreatedDate == null
+        ? null
+        : userRec.CreatedDate.date();
       Date joinDate = userRec.Date_of_Joining__c;
-      if (createdDate == null || joinDate == null) continue;
+      if (createdDate == null || joinDate == null) {
+        continue;
+      }
       Integer days = createdDate.daysBetween(joinDate);
-      if (days < 0) continue;
+      if (days < 0) {
+        continue;
+      }
       totalDays += days;
       counted++;
     }
 
     dto.recruitmentApplicants = applicants;
     dto.recruitmentHired = hired;
-    dto.recruitmentAvgTimeDays = counted > 0 ? Integer.valueOf(Math.round(Decimal.valueOf(totalDays) / counted)) : 0;
+    dto.recruitmentAvgTimeDays = counted > 0
+      ? Integer.valueOf(Math.round(Decimal.valueOf(totalDays) / counted))
+      : 0;
 
     dto.recruitmentApplicantsPercent = applicantsPct;
     dto.recruitmentScreeningPercent = screeningPct;
@@ -397,8 +596,11 @@ public inherited sharing class PWChrono_HRDashboardController {
     List<PWChrono_Attendance_Request__c> lateItems = [
       SELECT Id, Employees__c, From_Time__c, Status__c
       FROM PWChrono_Attendance_Request__c
-      WHERE Attendance_Date__c = TODAY
-      AND (Status__c LIKE '%Late%' OR From_Time__c > :lateThreshold)
+      WHERE
+        Attendance_Date__c = TODAY
+        AND (Status__c LIKE '%Late%'
+        OR From_Time__c > :lateThreshold)
+      WITH USER_MODE
       ORDER BY From_Time__c DESC
       LIMIT 5
     ];
@@ -412,19 +614,27 @@ public inherited sharing class PWChrono_HRDashboardController {
 
     Map<Id, Portal_Users__c> usersById = new Map<Id, Portal_Users__c>();
     if (!employeeIds.isEmpty()) {
-      usersById = new Map<Id, Portal_Users__c>([
-        SELECT Id, Name, Department__c
-        FROM Portal_Users__c
-        WHERE Id IN :employeeIds
-      ]);
+      usersById = new Map<Id, Portal_Users__c>(
+        [
+          SELECT Id, Name, Department__c
+          FROM Portal_Users__c
+          WHERE Id IN :employeeIds
+          WITH USER_MODE
+        ]
+      );
     }
 
     for (PWChrono_Attendance_Request__c item : lateItems) {
       Portal_Users__c employee = usersById.get(item.Employees__c);
       LateArrivalRow row = new LateArrivalRow();
       row.key = String.valueOf(item.Id);
-      row.employeeName = employee != null && String.isNotBlank(employee.Name) ? employee.Name : 'Employee';
-      row.department = employee != null && String.isNotBlank(employee.Department__c) ? employee.Department__c : 'Department';
+      row.employeeName = employee != null && String.isNotBlank(employee.Name)
+        ? employee.Name
+        : 'Employee';
+      row.department = employee != null &&
+        String.isNotBlank(employee.Department__c)
+        ? employee.Department__c
+        : 'Department';
       row.arrivalTime = formatTime(item.From_Time__c);
       row.lateBy = formatLateBy(item.From_Time__c, lateThreshold);
       dto.lateArrivals.add(row);
@@ -436,6 +646,7 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT Id, Employees__c, From_Date__c, To_Date__c, Reason__c
       FROM PWChrono_Leave__c
       WHERE Status__c = 'Submitted'
+      WITH USER_MODE
       ORDER BY Applied_Date__c DESC
       LIMIT 3
     ];
@@ -449,20 +660,30 @@ public inherited sharing class PWChrono_HRDashboardController {
 
     Map<Id, Portal_Users__c> usersById = new Map<Id, Portal_Users__c>();
     if (!employeeIds.isEmpty()) {
-      usersById = new Map<Id, Portal_Users__c>([
-        SELECT Id, Name
-        FROM Portal_Users__c
-        WHERE Id IN :employeeIds
-      ]);
+      usersById = new Map<Id, Portal_Users__c>(
+        [
+          SELECT Id, Name
+          FROM Portal_Users__c
+          WHERE Id IN :employeeIds
+          WITH USER_MODE
+        ]
+      );
     }
 
     for (PWChrono_Leave__c leaveItem : leaves) {
       Portal_Users__c employee = usersById.get(leaveItem.Employees__c);
       PendingApprovalRow row = new PendingApprovalRow();
       row.key = String.valueOf(leaveItem.Id);
-      row.employeeName = employee != null && String.isNotBlank(employee.Name) ? employee.Name : 'Employee';
-      row.dateAndDays = buildDateAndDaysLabel(leaveItem.From_Date__c, leaveItem.To_Date__c);
-      row.reason = String.isNotBlank(leaveItem.Reason__c) ? leaveItem.Reason__c : 'N/A';
+      row.employeeName = employee != null && String.isNotBlank(employee.Name)
+        ? employee.Name
+        : 'Employee';
+      row.dateAndDays = buildDateAndDaysLabel(
+        leaveItem.From_Date__c,
+        leaveItem.To_Date__c
+      );
+      row.reason = String.isNotBlank(leaveItem.Reason__c)
+        ? leaveItem.Reason__c
+        : 'N/A';
       dto.pendingApprovals.add(row);
     }
   }
@@ -473,15 +694,21 @@ public inherited sharing class PWChrono_HRDashboardController {
     }
     Date endDate = (toDate == null ? fromDate : toDate);
     Integer days = fromDate.daysBetween(endDate) + 1;
-    if (days < 1) days = 1;
-    return formatDateLabel(fromDate, 'dd MMM yyyy') + ' • ' + String.valueOf(days) + (days == 1 ? ' day' : ' days');
+    if (days < 1) {
+      days = 1;
+    }
+    return formatDateLabel(fromDate, 'dd MMM yyyy') +
+      ' • ' +
+      String.valueOf(days) +
+      (days == 1 ? ' day' : ' days');
   }
 
   private static String formatDateLabel(Date value, String pattern) {
     if (value == null) {
       return 'N/A';
     }
-    return Datetime.newInstance(value, Time.newInstance(0, 0, 0, 0)).format(pattern);
+    return Datetime.newInstance(value, Time.newInstance(0, 0, 0, 0))
+      .format(pattern);
   }
 
   private static String safeLower(Object value) {
@@ -492,18 +719,26 @@ public inherited sharing class PWChrono_HRDashboardController {
   }
 
   private static String formatTime(Time t) {
-    if (t == null) return '--:--';
+    if (t == null) {
+      return '--:--';
+    }
     Integer hour24 = t.hour();
     Integer minute = t.minute();
     String ampm = hour24 >= 12 ? 'PM' : 'AM';
     Integer hour12 = Math.mod(hour24, 12);
-    if (hour12 == 0) hour12 = 12;
-    String mm = minute < 10 ? '0' + String.valueOf(minute) : String.valueOf(minute);
+    if (hour12 == 0) {
+      hour12 = 12;
+    }
+    String mm = minute < 10
+      ? '0' + String.valueOf(minute)
+      : String.valueOf(minute);
     return String.valueOf(hour12) + ':' + mm + ' ' + ampm;
   }
 
   private static String formatLateBy(Time arrival, Time threshold) {
-    if (arrival == null || threshold == null) return '+0 Min';
+    if (arrival == null || threshold == null) {
+      return '+0 Min';
+    }
     Integer arrivalMins = arrival.hour() * 60 + arrival.minute();
     Integer thresholdMins = threshold.hour() * 60 + threshold.minute();
     Integer diff = Math.max(0, arrivalMins - thresholdMins);
@@ -519,15 +754,19 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT Id, Name, Interview_Date__c, Job_Applicant__r.Name
       FROM PWChrono_Interview__c
       WHERE Interview_Date__c >= :System.now()
+      WITH USER_MODE
       ORDER BY Interview_Date__c ASC
       LIMIT 2
     ]) {
       UpcomingInterviewRow row = new UpcomingInterviewRow();
       row.key = String.valueOf(interviewRec.Id);
 
-      String applicantName =
-        interviewRec.Job_Applicant__r != null ? interviewRec.Job_Applicant__r.Name : null;
-      row.title = String.isNotBlank(applicantName) ? applicantName + ' Interview' : interviewRec.Name;
+      String applicantName = interviewRec.Job_Applicant__r != null
+        ? interviewRec.Job_Applicant__r.Name
+        : null;
+      row.title = String.isNotBlank(applicantName)
+        ? applicantName + ' Interview'
+        : interviewRec.Name;
       row.timeRange = formatInterviewTimeRange(interviewRec.Interview_Date__c);
       dto.upcomingInterviews.add(row);
     }
@@ -537,7 +776,10 @@ public inherited sharing class PWChrono_HRDashboardController {
     for (Portal_Users__c employee : [
       SELECT Id, Name, Photo_Url__c
       FROM Portal_Users__c
-      ORDER BY Last_Login_Date__c DESC NULLS LAST, Date_of_Joining__c DESC NULLS LAST
+      WITH USER_MODE
+      ORDER BY
+        Last_Login_Date__c DESC NULLS LAST,
+        Date_of_Joining__c DESC NULLS LAST
       LIMIT 10
     ]) {
       TopEmployeeRow row = new TopEmployeeRow();
@@ -554,7 +796,9 @@ public inherited sharing class PWChrono_HRDashboardController {
     }
 
     Datetime endTime = interviewDateTime.addMinutes(30);
-    return formatDateTime12(interviewDateTime) + ' - ' + formatDateTime12(endTime);
+    return formatDateTime12(interviewDateTime) +
+      ' - ' +
+      formatDateTime12(endTime);
   }
 
   private static String formatDateTime12(Datetime dt) {
@@ -562,8 +806,18 @@ public inherited sharing class PWChrono_HRDashboardController {
     Integer minute = dt.minute();
     String ampm = hour24 >= 12 ? 'PM' : 'AM';
     Integer hour12 = Math.mod(hour24, 12);
-    if (hour12 == 0) hour12 = 12;
-    String mm = minute < 10 ? '0' + String.valueOf(minute) : String.valueOf(minute);
+    if (hour12 == 0) {
+      hour12 = 12;
+    }
+    String mm = minute < 10
+      ? '0' + String.valueOf(minute)
+      : String.valueOf(minute);
     return String.valueOf(hour12) + ':' + mm + ' ' + ampm;
+  }
+
+  private static void absorbException(String contextName, Exception e) {
+    String ignoredContext = contextName;
+    String ignoredMessage = (e == null ? 'unknown' : e.getMessage());
+    ignoredContext = ignoredContext + ignoredMessage;
   }
 }

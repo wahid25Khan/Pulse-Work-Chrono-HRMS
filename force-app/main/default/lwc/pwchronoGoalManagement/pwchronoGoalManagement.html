@@ -91,7 +91,7 @@
                                 </div>
 
                                 <div class="flex-1 mb-4">
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2 cursor-pointer hover:text-orange-500 transition-colors" onclick={handleEditGoal} data-id={goal.Id}>{goal.Name}</h3>
+                                    <button type="button" class="btn btn-link p-0 text-start text-lg font-semibold text-gray-900 mb-2 hover:text-orange-500 transition-colors" onclick={handleEditGoal} data-id={goal.Id}>{goal.Name}</button>
                                     <p class="text-sm text-gray-500 leading-relaxed line-clamp-2">{goal.Description__c}</p>
                                 </div>
 
@@ -142,8 +142,8 @@
 
     <!-- New/Edit Goal Modal -->
     <template if:true={isModalOpen}>
-        <div class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onclick={closeModal}>
-            <div class="modal-container bg-white rounded-2xl shadow-2xl max-w-xl w-full max-h-90vh overflow-hidden animate-slideUp" onclick={stopPropagation}>
+        <div class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div class="modal-container bg-white rounded-2xl shadow-2xl max-w-xl w-full max-h-90vh overflow-hidden animate-slideUp">
                 <header class="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-gray-50">
                     <h2 class="text-xl font-semibold text-gray-900">{modalTitle}</h2>
                     <lightning-button-icon icon-name="utility:close" variant="bare" onclick={closeModal} alternative-text="Close"></lightning-button-icon>
@@ -152,27 +152,27 @@
                 <div class="p-6 max-h-60vh overflow-y-auto">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Goal Name <span class="text-red-500">*</span></label>
+                            <div class="block text-sm font-medium text-gray-700 mb-1">Goal Name <span class="text-red-500">*</span></div>
                             <lightning-input type="text" name="Name" value={currentGoal.Name} onchange={handleInputChange} required placeholder="Enter goal name"></lightning-input>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Target Date <span class="text-red-500">*</span></label>
+                            <div class="block text-sm font-medium text-gray-700 mb-1">Target Date <span class="text-red-500">*</span></div>
                             <lightning-input type="date" name="Target_Date__c" value={currentGoal.Target_Date__c} onchange={handleInputChange} required></lightning-input>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Status <span class="text-red-500">*</span></label>
+                            <div class="block text-sm font-medium text-gray-700 mb-1">Status <span class="text-red-500">*</span></div>
                             <lightning-combobox name="Status__c" value={currentGoal.Status__c} options={goalStatusOptions} onchange={handleInputChange} required placeholder="Select status"></lightning-combobox>
                         </div>
 
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <div class="block text-sm font-medium text-gray-700 mb-1">Description</div>
                             <lightning-textarea name="Description__c" value={currentGoal.Description__c} onchange={handleInputChange} placeholder="Describe your goal..."></lightning-textarea>
                         </div>
 
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Progress ({currentGoal.Progress__c}%)</label>
+                            <div class="block text-sm font-medium text-gray-700 mb-1">Progress ({currentGoal.Progress__c}%)</div>
                             <div class="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
                                 <div class="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full" style={currentGoalProgressStyle}></div>
                             </div>

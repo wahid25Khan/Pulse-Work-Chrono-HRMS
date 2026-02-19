@@ -1,0 +1,69 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Lint: JS",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "lint"
+      ],
+      "group": "test",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ]
+    },
+    {
+      "label": "Test: LWC Unit",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "test:unit"
+      ],
+      "group": "test"
+    },
+    {
+      "label": "Format Check: Prettier",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "prettier:verify"
+      ],
+      "group": "test"
+    },
+    {
+      "label": "Lint: Docs",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "lint:docs"
+      ],
+      "group": "test"
+    },
+    {
+      "label": "Format: Prettier Write",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "prettier"
+      ],
+      "group": "none"
+    },
+    {
+      "label": "Quality Gate",
+      "dependsOn": [
+        "Lint: JS",
+        "Test: LWC Unit",
+        "Format Check: Prettier",
+        "Lint: Docs"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    }
+  ]
+}

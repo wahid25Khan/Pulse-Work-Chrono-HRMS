@@ -2,15 +2,14 @@
   <c-pwchrono-ui-assets></c-pwchrono-ui-assets>
 
   <div class="bg-white">
-    <div
+    <output
       id="global-loader"
       style={globalLoaderStyle}
-      role="status"
       aria-live="polite"
       aria-label="Loading"
     >
       <div class="page-loader" aria-hidden="true"></div>
-    </div>
+    </output>
 
     <div class="main-wrapper">
       <div class="container-fuild">
@@ -23,9 +22,9 @@
                 class="login-background position-relative d-lg-flex align-items-center justify-content-center d-none flex-wrap vh-100"
               >
                 <div class="bg-overlay-img">
-                  <img src={bg01Url} class="bg-1" alt="" onerror={handleDecorativeImgError} />
-                  <img src={bg02Url} class="bg-2" alt="" onerror={handleDecorativeImgError} />
-                  <img src={bg03Url} class="bg-3" alt="" onerror={handleDecorativeImgError} />
+                  <img src={bg01Url} class="bg-1" alt="" />
+                  <img src={bg02Url} class="bg-2" alt="" />
+                  <img src={bg03Url} class="bg-3" alt="" />
                 </div>
                 <div class="authentication-card w-100">
                   <div class="authen-overlay-item border w-100">
@@ -37,7 +36,7 @@
                     <div class="my-4 mx-auto authen-overlay-img">
                       <div class="row g-0 align-items-end">
                         <div class="col">
-                          <img src={authBg01Url} alt="" onerror={handleDecorativeImgError} />
+                          <img src={authBg01Url} alt="" />
                         </div>
                         <div class="col-auto d-flex justify-content-end">
                           <template if:false={tlgSantaLogoError}>
@@ -45,7 +44,6 @@
                               src={tlgSantaLogoUrl}
                               class="img-fluid w-75"
                               alt="TLG Santa"
-                              onerror={handleTlgSantaLogoError}
                             />
                           </template>
                           <template if:true={tlgSantaLogoError}>

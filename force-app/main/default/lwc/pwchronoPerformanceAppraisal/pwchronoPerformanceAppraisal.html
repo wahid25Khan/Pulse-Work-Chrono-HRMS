@@ -117,9 +117,9 @@
   </div>
 
   <template lwc:if={isModalOpen}>
-    <div
+    <dialog
       class="modal custom-modal fade show d-block"
-      role="dialog"
+      open
       style="background: rgba(0, 0, 0, 0.6); z-index: 1050"
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -156,6 +156,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   </template>
 </template>

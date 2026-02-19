@@ -14,6 +14,7 @@ export default class PwchronoChat extends LightningElement {
   @track searchTerm = "";
 
   _refreshInterval;
+  _scrollPending = false;
 
   connectedCallback() {
     const session = getSession();
@@ -78,15 +79,24 @@ export default class PwchronoChat extends LightningElement {
       const result = await getMessages({ recipientId: this.selectedContactId });
       this.messages = result.map((m) => ({
         ...m,
-        wrapperClass: m.isMe ? "message-right" : "message-left",
+        wrapperClass: m.isMe
+          ? "message-right slds-grid slds-grid_align-end"
+          : "message-left slds-grid slds-grid_align-start",
         timeFormatted: new Date(m.timestamp).toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit"
         })
       }));
-      this.scrollToBottom();
+      this._scrollPending = true;
     } catch (error) {
       console.error("Error loading messages", error);
+    }
+  }
+
+  renderedCallback() {
+    if (this._scrollPending) {
+      this._scrollPending = false;
+      this.scrollToBottom();
     }
   }
 
@@ -138,13 +148,9 @@ export default class PwchronoChat extends LightningElement {
   }
 
   scrollToBottom() {
-    // Wait for DOM update before scrolling
-    // eslint-disable-next-line @lwc/lwc/no-async-operation
-    setTimeout(() => {
-      const chatBody = this.template.querySelector(".chat-body");
-      if (chatBody) {
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }
-    }, 50);
+    const chatBody = this.template.querySelector(".chat-body");
+    if (chatBody) {
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
   }
 }
