@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div class="page-wrapper" style="min-height: 732px; margin-left:280px !important;">
     <div class="content">
       <!-- Breadcrumb -->
       <div
@@ -10,9 +10,9 @@
           <nav>
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
-                <button type="button" class="btn btn-link p-0" aria-label="Home">
-                  <i class="fa-solid fa-house" aria-hidden="true"></i>
-                </button>
+                <a href="javascript:void(0);"
+                  ><i class="fa-solid fa-house"></i
+                ></a>
               </li>
               <li class="breadcrumb-item">Dashboard</li>
               <li class="breadcrumb-item active" aria-current="page">
@@ -26,23 +26,23 @@
         >
           <div class="me-2 mb-2">
             <div class="dropdown">
-              <button
-                type="button"
+              <a
+                href="javascript:void(0);"
                 class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                 data-bs-toggle="dropdown"
               >
                 <i class="fa-solid fa-file-export me-1"></i>Export
-              </button>
+              </a>
               <ul class="dropdown-menu dropdown-menu-end p-3">
                 <li>
-                  <button type="button" class="dropdown-item rounded-1">
-                    <i class="fa-solid fa-file-pdf me-1" aria-hidden="true"></i>Export as PDF
-                  </button>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    ><i class="fa-solid fa-file-pdf me-1"></i>Export as PDF</a
+                  >
                 </li>
                 <li>
-                  <button type="button" class="dropdown-item rounded-1">
-                    <i class="fa-solid fa-file-excel me-1" aria-hidden="true"></i>Export as Excel
-                  </button>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    ><i class="fa-solid fa-file-excel me-1"></i>Export as Excel
+                  </a>
                 </li>
               </ul>
             </div>
@@ -144,14 +144,14 @@
             class="nav nav-tabs tab-style-1 nav-justified d-sm-flex d-block p-0 mb-4"
           >
             <li class="nav-item">
-              <button type="button" class="nav-link fw-medium active">
+              <a class="nav-link fw-medium active" href="javascript:void(0);">
                 Leave Requests <span class="badge bg-primary ms-1">14</span>
-              </button>
+              </a>
             </li>
             <li class="nav-item">
-              <button type="button" class="nav-link fw-medium">
+              <a class="nav-link fw-medium" href="javascript:void(0);">
                 Attendance Requests <span class="badge bg-primary ms-1">7</span>
-              </button>
+              </a>
             </li>
           </ul>
 
@@ -342,9 +342,9 @@
               >
                 <h6>Recent Activities</h6>
                 <div>
-                  <button type="button" class="btn btn-sm btn-light px-3">
-                    View All
-                  </button>
+                  <a href="javascript:void(0);" class="btn btn-sm btn-light px-3"
+                    >View All</a
+                  >
                 </div>
               </div>
             </div>
@@ -400,7 +400,7 @@
       <p class="mb-0">2014 - 2026 © SmartHR.</p>
       <p>
         Designed &amp; Developed By
-        <span class="text-primary">Dreams</span>
+        <a href="javascript:void(0);" class="text-primary">Dreams</a>
       </p>
     </div>
   </div>

@@ -1,15 +1,3 @@
-import { LightningElement } from "lwc";
-import {
-	initBootstrapCompat,
-	teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
+import { LightningElement } from 'lwc';
 
-export default class PwchronoManagerDashboardPage extends LightningElement {
-	renderedCallback() {
-		initBootstrapCompat(this);
-	}
-
-	disconnectedCallback() {
-		teardownBootstrapCompat(this);
-	}
-}
+export default class PwchronoManagerDashboardPage extends LightningElement {}

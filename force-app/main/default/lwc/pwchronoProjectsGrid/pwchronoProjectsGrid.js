@@ -236,125 +236,18 @@ export default class PwchronoProjectsGrid extends LightningElement {
   }
 
   handleExportPdf() {
-    try {
-      this.showExportDropdown = false;
-
-      const rows = Array.isArray(this.projects) ? this.projects : [];
-      if (!rows.length) {
-        this.showToast("Info", "No projects to export.", "info");
-        return;
-      }
-
-      const w = globalThis?.window?.open?.("", "_blank");
-      if (!w) {
-        this.showToast(
-          "Info",
-          "Popup blocked. Please allow popups to export as PDF.",
-          "info"
-        );
-        return;
-      }
-
-      const html = this.buildProjectsPrintHtml(rows);
-      w.document.open();
-      w.document.write(html);
-      w.document.close();
-
-      // Print once the new document has finished loading.
-      // (Avoid setTimeout to comply with LWC lint rules.)
-      w.onload = () => {
-        try {
-          w.focus();
-          w.print();
-        } catch {
-          // ignore
-        }
-      };
-    } catch (e) {
-      logError("pwchronoProjectsGrid.exportPdf", e);
-      this.showToast("Error", "Export failed. Please try again.", "error");
-    }
+    // UI parity: PDF export not implemented yet.
+    this.showExportDropdown = false;
+    this.showToast(
+      "Info",
+      "PDF export isn't available yet. Use Excel export for now.",
+      "info"
+    );
   }
 
   handleExportExcel() {
-    // Backwards compatibility: Excel can open CSV.
+    // Excel can open CSV; keep label consistent with SmartHR template.
     this.handleExportCsv();
-  }
-
-  buildProjectsPrintHtml(rows) {
-    const escapeHtml = (v) => {
-      const s = v === null || v === undefined ? "" : String(v);
-      return s
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
-    };
-
-    const headers = [
-      "Name",
-      "Client",
-      "Leader",
-      "Deadline",
-      "Priority",
-      "Status",
-      "Team Size",
-      "Hours Logged",
-      "Total Hours",
-      "Amount"
-    ];
-
-    const bodyRows = rows
-      .map(
-        (p) => `
-          <tr>
-            <td>${escapeHtml(p?.name)}</td>
-            <td>${escapeHtml(p?.clientName)}</td>
-            <td>${escapeHtml(p?.leaderName)}</td>
-            <td>${escapeHtml(p?.deadline)}</td>
-            <td>${escapeHtml(p?.priority)}</td>
-            <td>${escapeHtml(p?.status)}</td>
-            <td style="text-align:right;">${escapeHtml(p?.teamSize)}</td>
-            <td style="text-align:right;">${escapeHtml(p?.hoursLogged)}</td>
-            <td style="text-align:right;">${escapeHtml(p?.hours)}</td>
-            <td style="text-align:right;">${escapeHtml(p?.amount)}</td>
-          </tr>`
-      )
-      .join("");
-
-    const headerCells = headers
-      .map((h) => `<th scope="col">${escapeHtml(h)}</th>`)
-      .join("");
-
-    const today = new Date().toISOString().slice(0, 10);
-
-    return `<!doctype html>
-      <html>
-        <head>
-          <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>Projects Export</title>
-          <style>
-            :root { color-scheme: light; }
-            body { font-family: Arial, Helvetica, sans-serif; padding: 24px; }
-            h1 { font-size: 18px; margin: 0 0 6px; }
-            .meta { color: #666; font-size: 12px; margin: 0 0 16px; }
-            table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid #ddd; padding: 8px; font-size: 12px; vertical-align: top; }
-            th { background: #f6f6f6; text-align: left; }
-            @media print { body { padding: 0; } }
-          </style>
-        </head>
-        <body>
-          <h1>Projects</h1>
-          <p class="meta">Generated ${escapeHtml(today)} • Rows: ${escapeHtml(rows.length)}</p>
-          <table>
-            <thead><tr>${headerCells}</tr></thead>
-            <tbody>${bodyRows}</tbody>
-          </table>
-        </body>
-      </html>`;
   }
 
   handleExportCsv() {
@@ -661,9 +554,7 @@ export default class PwchronoProjectsGrid extends LightningElement {
       : [];
     const teamPreview = members.slice(0, 3).map((name, idx) => ({
       key: `${shortId || "proj"}-${idx}`,
-      name,
-      initials: this.getInitials(name),
-      avatarClass: `avatar-title rounded-circle ${this.getAvatarColorClass(name)}`
+      name
     }));
     const teamExtraCount = Math.max(0, members.length - teamPreview.length);
 
@@ -729,25 +620,6 @@ export default class PwchronoProjectsGrid extends LightningElement {
     const first = parts[0]?.[0] || "";
     const last = parts.length > 1 ? parts[parts.length - 1]?.[0] : "";
     return (first + last).toUpperCase() || "PL";
-  }
-
-  getAvatarColorClass(seed) {
-    // Deterministic color for a name so the UI feels consistent without needing photos.
-    const palettes = [
-      "bg-primary text-white",
-      "bg-success text-white",
-      "bg-info text-white",
-      "bg-warning text-dark",
-      "bg-danger text-white",
-      "bg-secondary text-white"
-    ];
-    const s = String(seed || "");
-    let hash = 0;
-    for (let i = 0; i < s.length; i += 1) {
-      hash = (hash + s.charCodeAt(i) * (i + 1)) % 2147483647;
-    }
-    const idx = palettes.length ? Math.abs(hash) % palettes.length : 0;
-    return palettes[idx] || "bg-secondary text-white";
   }
 
   @track activeTab = "basic";

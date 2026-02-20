@@ -83,20 +83,20 @@
                     <div class="modal-body pb-0">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="training-type-input">Training Type</label>
-                                <input id="training-type-input" class="form-control" name="type" value={selectedTraining.type} onchange={handleInputChange}>
+                                <label class="form-label">Training Type</label>
+                                <input class="form-control" name="type" value={selectedTraining.type} onchange={handleInputChange}>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="training-trainer-input">Trainer</label>
-                                <input id="training-trainer-input" class="form-control" name="trainerName" value={selectedTraining.trainerName} onchange={handleInputChange}>
+                                <label class="form-label">Trainer</label>
+                                <input class="form-control" name="trainerName" value={selectedTraining.trainerName} onchange={handleInputChange}>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="training-cost-input">Training Cost</label>
-                                <input id="training-cost-input" class="form-control" name="cost" value={selectedTraining.cost} onchange={handleInputChange}>
+                                <label class="form-label">Training Cost</label>
+                                <input class="form-control" name="cost" value={selectedTraining.cost} onchange={handleInputChange}>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="training-status-select">Status</label>
-                                <select id="training-status-select" class="form-select" name="status" onchange={handleInputChange}>
+                                <label class="form-label">Status</label>
+                                <select class="form-select" name="status" onchange={handleInputChange}>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                 </select>

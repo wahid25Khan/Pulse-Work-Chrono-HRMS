@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div class="page-wrapper" style="min-height: 732px;">
     <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
       <!-- Page Header -->
       <div
@@ -10,9 +10,9 @@
           <nav>
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
-                <button type="button" class="btn btn-link p-0" aria-label="Home">
-                  <i class="fa-solid fa-house" aria-hidden="true"></i>
-                </button>
+                <a href="javascript:void(0);"
+                  ><i class="fa-solid fa-house"></i
+                ></a>
               </li>
               <li class="breadcrumb-item">Dashboard</li>
               <li class="breadcrumb-item active" aria-current="page">
@@ -26,23 +26,23 @@
         >
           <div class="me-2 mb-2">
             <div class="dropdown">
-              <button
-                type="button"
+              <a
+                href="javascript:void(0);"
                 class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                 data-bs-toggle="dropdown"
               >
                 <i class="fa-solid fa-file-export me-1"></i>Export
-              </button>
+              </a>
               <ul class="dropdown-menu dropdown-menu-end p-3">
                 <li>
-                  <button type="button" class="dropdown-item rounded-1">
-                    <i class="fa-solid fa-file-pdf me-1" aria-hidden="true"></i>Export as PDF
-                  </button>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    ><i class="fa-solid fa-file-pdf me-1"></i>Export as PDF</a
+                  >
                 </li>
                 <li>
-                  <button type="button" class="dropdown-item rounded-1">
-                    <i class="fa-solid fa-file-excel me-1" aria-hidden="true"></i>Export as Excel
-                  </button>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    ><i class="fa-solid fa-file-excel me-1"></i>Export as Excel
+                  </a>
                 </li>
               </ul>
             </div>
@@ -108,9 +108,9 @@
                       Upcoming Shifts
                     </h6>
                     <h3 class="mb-3">{upcomingShiftCount}</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View Details
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View Details</a
+                    >
                   </div>
                 </div>
               </div>
@@ -124,9 +124,9 @@
                       Active Goals
                     </h6>
                     <h3 class="mb-3">{activeGoalsCount}</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View All
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -140,9 +140,9 @@
                       Pending Appraisals
                     </h6>
                     <h3 class="mb-3">{pendingAppraisalsCount}</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View All
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -156,9 +156,9 @@
                       Pending Approvals
                     </h6>
                     <h3 class="mb-3">{pendingApprovalsCount}</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View All
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -174,13 +174,13 @@
               >
                 <h5 class="mb-2">Today's Attendance</h5>
                 <div class="dropdown mb-2">
-                  <button
-                    type="button"
+                  <a
+                    href="javascript:void(0);"
                     class="btn btn-white border btn-sm d-inline-flex align-items-center"
                     data-bs-toggle="dropdown"
                   >
                     <i class="fa-solid fa-calendar-days me-1"></i>Today
-                  </button>
+                  </a>
                 </div>
               </div>
               <div class="card-body">

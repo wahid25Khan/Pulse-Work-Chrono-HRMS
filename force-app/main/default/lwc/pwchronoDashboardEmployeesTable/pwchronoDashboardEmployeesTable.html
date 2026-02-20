@@ -2,7 +2,7 @@
     <div class="card flex-fill">
         <div class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap">
             <h5 class="mb-2">Employees</h5>
-            <button type="button" class="btn btn-light btn-md bg-white border fs-12 mb-2">View All</button>
+            <a href="javascript:void(0);" class="btn btn-light btn-md bg-white border fs-12 mb-2">View All</a>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -12,7 +12,7 @@
                             <tr key={emp.id}>
                                 <td class="border-0">
                                     <div class="d-flex align-items-center">
-                                        <span class="d-inline-flex">
+                                        <a href="javascript:void(0);" class="d-inline-flex">
                                             <c-pwchrono-avatar
                                               container-class="avatar avatar-rounded"
                                               image-url={emp.avatarUrl}
@@ -22,9 +22,9 @@
                                               title-class="initial-wrap"
                                               fallback-bg-class="bg-secondary"
                                             ></c-pwchrono-avatar>
-                                        </span>
+                                        </a>
                                         <div class="ms-2">
-                                            <h6 class="fw-medium"><span>{emp.name}</span></h6>
+                                            <h6 class="fw-medium"><a href="javascript:void(0);">{emp.name}</a></h6>
                                             <span class="fs-12">{emp.role}</span>
                                         </div>
                                     </div>

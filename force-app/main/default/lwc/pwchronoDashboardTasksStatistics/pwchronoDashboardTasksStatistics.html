@@ -6,29 +6,29 @@
       <h5 class="mb-2">Tasks Statistics</h5>
       <div class="d-flex align-items-center">
         <div class="dropdown mb-2">
-          <button
-            type="button"
+          <a
+            href="javascript:void(0);"
             class="btn btn-white border btn-sm d-inline-flex align-items-center"
             data-bs-toggle="dropdown"
           >
             <i class="fa-solid fa-calendar-days me-1" aria-hidden="true"></i
             >This Week
-          </button>
+          </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
             <li>
-              <button type="button" class="dropdown-item rounded-1">
-                This Month
-              </button>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                >This Month</a
+              >
             </li>
             <li>
-              <button type="button" class="dropdown-item rounded-1">
-                This Week
-              </button>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                >This Week</a
+              >
             </li>
             <li>
-              <button type="button" class="dropdown-item rounded-1">
-                Today
-              </button>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                >Today</a
+              >
             </li>
           </ul>
         </div>
@@ -91,9 +91,11 @@
           <h4 class="text-success">{summaryLine}</h4>
           <p class="fs-13 mb-0">Overall Tasks Summary</p>
         </div>
-        <button type="button" class="btn btn-sm btn-light mb-2 text-nowrap">
-          View All
-        </button>
+        <a
+          href="javascript:void(0);"
+          class="btn btn-sm btn-light mb-2 text-nowrap"
+          >View All</a
+        >
       </div>
     </div>
   </div>
@@ -118,10 +120,10 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="mb-3">
-                  <label class="form-label" for="edit-timesheet-project"
+                  <label class="form-label"
                     >Project <span class="text-danger"> *</span></label
                   >
-                  <select id="edit-timesheet-project" class="select">
+                  <select class="select">
                     <option>Select</option>
                     <option selected>Office Management</option>
                     <option>Project Management</option>
@@ -131,12 +133,11 @@
               </div>
               <div class="col-md-12">
                 <div class="mb-3">
-                  <label class="form-label" for="edit-timesheet-deadline"
+                  <label class="form-label"
                     >Deadline <span class="text-danger"> *</span></label
                   >
                   <div class="input-icon-end position-relative">
                     <input
-                      id="edit-timesheet-deadline"
                       type="text"
                       class="form-control datetimepicker"
                       placeholder="dd/mm/yyyy"
@@ -150,28 +151,27 @@
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
-                  <label class="form-label" for="edit-timesheet-total-hours"
+                  <label class="form-label"
                     >Total Hours <span class="text-danger"> *</span></label
                   >
-                  <input id="edit-timesheet-total-hours" type="text" class="form-control" value="32" />
+                  <input type="text" class="form-control" value="32" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
-                  <label class="form-label" for="edit-timesheet-remaining-hours"
+                  <label class="form-label"
                     >Remaining Hours<span class="text-danger"> *</span></label
                   >
-                  <input id="edit-timesheet-remaining-hours" type="text" class="form-control" value="8" />
+                  <input type="text" class="form-control" value="8" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
-                  <label class="form-label" for="edit-timesheet-date"
+                  <label class="form-label"
                     >Date<span class="text-danger"> *</span></label
                   >
                   <div class="input-icon-end position-relative">
                     <input
-                      id="edit-timesheet-date"
                       type="text"
                       class="form-control datetimepicker"
                       placeholder="dd/mm/yyyy"
@@ -185,10 +185,10 @@
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
-                  <label class="form-label" for="edit-timesheet-hours"
+                  <label class="form-label"
                     >Hours<span class="text-danger">*</span></label
                   >
-                  <input id="edit-timesheet-hours" type="text" class="form-control" value="13" />
+                  <input type="text" class="form-control" value="13" />
                 </div>
               </div>
             </div>
@@ -222,9 +222,12 @@
             delete.
           </p>
           <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">
-              Cancel
-            </button>
+            <a
+              href="javascript:void(0);"
+              class="btn btn-light me-3"
+              data-bs-dismiss="modal"
+              >Cancel</a
+            >
             <a href="timesheets.html" class="btn btn-danger">Yes, Delete</a>
           </div>
         </div>

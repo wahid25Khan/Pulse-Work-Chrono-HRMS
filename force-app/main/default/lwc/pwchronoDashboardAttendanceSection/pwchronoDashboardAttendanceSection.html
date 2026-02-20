@@ -5,9 +5,9 @@
                 <div class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap">
                     <h5 class="mb-2">Attendance Overview</h5>
                     <div class="dropdown mb-2">
-                        <button type="button" class="btn btn-white border btn-sm d-inline-flex align-items-center">
+                        <a href="javascript:void(0);" class="btn btn-white border btn-sm d-inline-flex align-items-center">
                             <i class="fa-solid fa-calendar-days me-1" aria-hidden="true"></i>{attendanceDateLabel}
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -33,18 +33,18 @@
                             <div class="avatar-list-stacked avatar-group-sm mb-2">
                                 <template if:true={hasAbsentees}>
                                     <template for:each={absenteeAvatars} for:item="avatar">
-                                        <span key={avatar.key} class={avatar.className} title={avatar.name}>{avatar.initials}</span>
+                                        <a key={avatar.key} class={avatar.className} href="javascript:void(0);" title={avatar.name}>{avatar.initials}</a>
                                     </template>
                                     <template if:true={hasMoreAbsentees}>
-                                        <span class="avatar bg-primary avatar-rounded text-fixed-white fs-10">
+                                        <a class="avatar bg-primary avatar-rounded text-fixed-white fs-10" href="javascript:void(0);">
                                             +{moreAbsenteesCount}
-                                        </span>
+                                        </a>
                                     </template>
                                 </template>
                                 <template if:false={hasAbsentees}>
-                                    <span class="avatar bg-success avatar-rounded text-fixed-white fs-10">
+                                    <a class="avatar bg-success avatar-rounded text-fixed-white fs-10" href="javascript:void(0);">
                                         0
-                                    </span>
+                                    </a>
                                 </template>
                             </div>
                         </div>

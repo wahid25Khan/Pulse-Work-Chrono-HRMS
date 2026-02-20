@@ -3,10 +3,6 @@ import { refreshApex } from "@salesforce/apex";
 import getProfileWithAccess from "@salesforce/apex/PWChrono_ProfileController.getProfileWithAccess";
 import updateProfileWithAccess from "@salesforce/apex/PWChrono_ProfileController.updateProfileWithAccess";
 import uploadProfileImageWithAccess from "@salesforce/apex/PWChrono_ProfileController.uploadProfileImageWithAccess";
-import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
@@ -48,14 +44,6 @@ export default class PwchronoProfileUpdate extends LightningElement {
   connectedCallback() {
     this.portalUserId = getEmployeeId();
     this.sessionToken = getSessionToken();
-  }
-
-  renderedCallback() {
-    initBootstrapCompat(this);
-  }
-
-  disconnectedCallback() {
-    teardownBootstrapCompat(this);
   }
 
   // Computed Properties

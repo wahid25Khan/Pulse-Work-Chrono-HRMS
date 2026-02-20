@@ -4,18 +4,18 @@
             <h5 class="mb-2">Projects</h5>
             <div class="d-flex align-items-center">
                 <div class="dropdown mb-2">
-                    <button type="button" class="btn btn-white border btn-sm d-inline-flex align-items-center" data-bs-toggle="dropdown">
+                    <a href="javascript:void(0);" class="btn btn-white border btn-sm d-inline-flex align-items-center" data-bs-toggle="dropdown">
                         <i class="fa-solid fa-calendar-days me-1" aria-hidden="true"></i>This Week
-                    </button>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-end p-3">
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">This Month</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">This Month</a>
                         </li>
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">This Week</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">This Week</a>
                         </li>
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">Today</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Today</a>
                         </li>
                     </ul>
                 </div>
@@ -37,25 +37,15 @@
                     <tbody>
                         <template for:each={projects} for:item="proj">
                             <tr key={proj.id}>
-                                <td>
-                                    <button type="button" class="btn btn-link p-0 link-default" data-id={proj.id} onclick={handleOpenProject}>
-                                        {proj.code}
-                                    </button>
-                                </td>
-                                <td>
-                                    <h6 class="fw-medium">
-                                        <button type="button" class="btn btn-link p-0" data-id={proj.id} onclick={handleOpenProject}>
-                                            {proj.name}
-                                        </button>
-                                    </h6>
-                                </td>
+                                <td><a href="javascript:void(0);" class="link-default" data-id={proj.id} onclick={handleOpenProject}>{proj.code}</a></td>
+                                <td><h6 class="fw-medium"><a href="javascript:void(0);" data-id={proj.id} onclick={handleOpenProject}>{proj.name}</a></h6></td>
                                 <td>
                                     <div class="avatar-list-stacked avatar-group-sm">
                                         <template for:each={proj.teamAvatars} for:item="av">
                                             <span key={av.key} class={av.className} title={av.title}>{av.text}</span>
                                         </template>
                                         <template if:true={proj.hasMoreMembers}>
-                                            <span class="avatar bg-primary avatar-rounded text-fixed-white fs-10 fw-medium">+{proj.moreCount}</span>
+                                            <a class="avatar bg-primary avatar-rounded text-fixed-white fs-10 fw-medium" href="javascript:void(0);">+{proj.moreCount}</a>
                                         </template>
                                     </div>
                                 </td>

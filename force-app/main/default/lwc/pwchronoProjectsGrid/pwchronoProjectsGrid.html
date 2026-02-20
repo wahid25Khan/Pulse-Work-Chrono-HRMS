@@ -132,10 +132,10 @@
                   <button
                     type="button"
                     class="dropdown-item rounded-1 border-0 bg-transparent text-start w-100"
-                    onclick={handleExportCsv}
+                    onclick={handleExportExcel}
                     role="menuitem"
                   >
-                    <i class="fa-solid fa-file-csv me-1" aria-hidden="true"></i>Export as CSV
+                    <i class="fa-solid fa-file-excel me-1" aria-hidden="true"></i>Export as Excel
                   </button>
               </div>
             </div>
@@ -390,9 +390,20 @@
                               class="avatar avatar-sm border avatar-rounded"
                               aria-hidden="true"
                             >
-                              <span class="avatar-title rounded-circle bg-secondary text-white">
-                                {proj.leaderInitials}
-                              </span>
+                              <template if:true={proj.showProjectLogo}>
+                                <img
+                                  src={proj.logoUrl}
+                                  alt={proj.name}
+                                  class="rounded-circle avatar-img"
+                                  data-id={proj.id}
+                                  onerror={handleProjectLogoError}
+                                />
+                              </template>
+                              <template if:false={proj.showProjectLogo}>
+                                <span class="avatar-title rounded-circle bg-secondary text-white">
+                                  {proj.projectInitials}
+                                </span>
+                              </template>
                             </span>
                             <div class="ms-2">
                               <h6 class="fw-normal mb-0">
@@ -414,10 +425,8 @@
                                 <span
                                   class="avatar avatar-md border avatar-rounded d-inline-flex align-items-center justify-content-center"
                                   title={m.name}
-                                  aria-label={m.name}
-                                  role="img"
                                 >
-                                  <span class={m.avatarClass}>{m.initials}</span>
+                                  <i class="fa-solid fa-user" aria-hidden="true"></i>
                                 </span>
                               </span>
                             </template>
@@ -559,10 +568,21 @@
                           type="button"
                           class="btn btn-link p-0 border-0 avatar avatar-sm avatar-rounded flex-shrink-0"
                         >
-                          <span
-                            class="avatar-title rounded-circle border border-white bg-secondary text-white"
-                            >{proj.leaderInitials}</span
-                          >
+                          <template if:true={proj.showProjectLogo}>
+                            <img
+                              src={proj.logoUrl}
+                              alt={proj.name}
+                              class="rounded-circle border border-white avatar-img"
+                              data-id={proj.id}
+                              onerror={handleProjectLogoError}
+                            />
+                          </template>
+                          <template if:false={proj.showProjectLogo}>
+                            <span
+                              class="avatar-title rounded-circle border border-white bg-secondary text-white"
+                              >{proj.projectInitials}</span
+                            >
+                          </template>
                         </button>
                         <div class="ms-2">
                           <h6 class="fw-normal fs-12">

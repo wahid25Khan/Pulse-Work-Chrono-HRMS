@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div class="page-wrapper" style="min-height: 732px;">
     <div class="content">
       <!-- Page Header -->
       <div
@@ -10,9 +10,9 @@
           <nav>
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
-                <button type="button" class="btn btn-link p-0" aria-label="Home">
-                  <i class="fa-solid fa-house"></i>
-                </button>
+                <a href="javascript:void(0);"
+                  ><i class="fa-solid fa-house"></i
+                ></a>
               </li>
               <li class="breadcrumb-item">Dashboard</li>
               <li class="breadcrumb-item active" aria-current="page">
@@ -26,25 +26,23 @@
         >
           <div class="me-2 mb-2">
             <div class="dropdown">
-              <button
-                type="button"
+              <a
+                href="javascript:void(0);"
                 class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                 data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
               >
                 <i class="fa-solid fa-file-export me-1"></i>Export
-              </button>
+              </a>
               <ul class="dropdown-menu dropdown-menu-end p-3">
                 <li>
-                  <button type="button" class="dropdown-item rounded-1">
-                    <i class="fa-solid fa-file-pdf me-1"></i>Export as PDF
-                  </button>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    ><i class="fa-solid fa-file-pdf me-1"></i>Export as PDF</a
+                  >
                 </li>
                 <li>
-                  <button type="button" class="dropdown-item rounded-1">
-                    <i class="fa-solid fa-file-excel me-1"></i>Export as Excel
-                  </button>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    ><i class="fa-solid fa-file-excel me-1"></i>Export as Excel
+                  </a>
                 </li>
               </ul>
             </div>
@@ -58,17 +56,16 @@
             </div>
           </div>
           <div class="ms-2 head-icons">
-            <button
-              type="button"
-              class="btn btn-link p-0"
+            <a
+              href="javascript:void(0);"
+              class=""
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               data-bs-original-title="Collapse"
               id="collapse-header"
-              aria-label="Collapse"
             >
               <i class="fa-solid fa-chevron-up"></i>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -101,9 +98,9 @@
               <div class="ms-3">
                 <h3 class="mb-2">
                   Welcome Back{welcomeNameSuffix}
-                  <button type="button" class="btn btn-link p-0 edit-icon" aria-label="Edit" title="Edit">
-                    <i class="fa-solid fa-pen-to-square fs-14"></i>
-                  </button>
+                  <a href="javascript:void(0);" class="edit-icon"
+                    ><i class="fa-solid fa-pen-to-square fs-14"></i
+                  ></a>
                 </h3>
                 <p>
                   You have
@@ -119,22 +116,20 @@
               </div>
             </div>
             <div class="d-flex align-items-center flex-wrap mb-1">
-              <button
-                type="button"
+              <a
+                href="javascript:void(0);"
                 class="btn btn-secondary btn-md me-2 mb-2"
                 data-bs-toggle="modal"
                 data-bs-target="#add_project"
+                ><i class="fa-solid fa-square-plus me-1"></i>Add Project</a
               >
-                <i class="fa-solid fa-square-plus me-1"></i>Add Project
-              </button>
-              <button
-                type="button"
+              <a
+                href="javascript:void(0);"
                 class="btn btn-primary btn-md mb-2"
                 data-bs-toggle="modal"
                 data-bs-target="#add_leaves"
+                ><i class="fa-solid fa-square-plus me-1"></i>Add Requests</a
               >
-                <i class="fa-solid fa-square-plus me-1"></i>Add Requests
-              </button>
             </div>
           </div>
         </div>
@@ -159,7 +154,9 @@
                         ><i class="fa-solid fa-caret-up me-1"></i>+2.1%</span
                       >
                     </h3>
-                    <button type="button" class="btn btn-link p-0 link-default">View Details</button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View Details</a
+                    >
                   </div>
                 </div>
               </div>
@@ -180,7 +177,9 @@
                         >
                       </template>
                     </h3>
-                    <button type="button" class="btn btn-link p-0 link-default">View All</button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -194,7 +193,9 @@
                       Total No of Clients
                     </h6>
                     <h3 class="mb-3">—</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">View All</button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -215,9 +216,9 @@
                         >
                       </template>
                     </h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View All
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -229,9 +230,9 @@
                     </span>
                     <h6 class="fs-13 fw-medium text-default mb-1">Earnings</h6>
                     <h3 class="mb-3">—</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View All
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -245,9 +246,9 @@
                       Profit This Week
                     </h6>
                     <h3 class="mb-3">—</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View All
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -261,9 +262,9 @@
                       Job Applicants
                     </h6>
                     <h3 class="mb-3">{jobApplicants.length}</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View All
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -275,9 +276,9 @@
                     </span>
                     <h6 class="fs-13 fw-medium text-default mb-1">New Hire</h6>
                     <h3 class="mb-3">—</h3>
-                    <button type="button" class="btn btn-link p-0 link-default">
-                      View All
-                    </button>
+                    <a href="javascript:void(0);" class="link-default"
+                      >View All</a
+                    >
                   </div>
                 </div>
               </div>
@@ -293,28 +294,34 @@
               >
                 <h5 class="mb-2">Employees By Department</h5>
                 <div class="dropdown mb-2">
-                  <button
-                    type="button"
+                  <a
+                    href="javascript:void(0);"
                     class="btn btn-white border btn-sm d-inline-flex align-items-center"
                     data-bs-toggle="dropdown"
                   >
                     <i class="fa-solid fa-calendar-days me-1"></i>This Week
-                  </button>
+                  </a>
                   <ul class="dropdown-menu dropdown-menu-end p-3">
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        This Month
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >This Month</a
+                      >
                     </li>
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        This Week
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >This Week</a
+                      >
                     </li>
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        Last Week
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >Last Week</a
+                      >
                     </li>
                   </ul>
                 </div>
@@ -343,28 +350,34 @@
               >
                 <h5 class="mb-2">Employee Status</h5>
                 <div class="dropdown mb-2">
-                  <button
-                    type="button"
+                  <a
+                    href="javascript:void(0);"
                     class="btn btn-white border btn-sm d-inline-flex align-items-center"
                     data-bs-toggle="dropdown"
                   >
                     <i class="fa-solid fa-calendar-days me-1"></i>This Week
-                  </button>
+                  </a>
                   <ul class="dropdown-menu dropdown-menu-end p-3">
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        This Month
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >This Month</a
+                      >
                     </li>
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        This Week
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >This Week</a
+                      >
                     </li>
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        Today
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >Today</a
+                      >
                     </li>
                   </ul>
                 </div>
@@ -455,7 +468,7 @@
                     <span class="me-2" aria-hidden="true">
                       <i class="fa-solid fa-award text-primary fs-24"></i>
                     </span>
-                    <span class="avatar avatar-md me-2">
+                    <a href="javascript:void(0);" class="avatar avatar-md me-2">
                       <c-pwchrono-avatar
                         container-class="avatar avatar-md avatar-rounded"
                         image-url={avatar24Url}
@@ -465,12 +478,10 @@
                         title-class="initial-wrap"
                         fallback-bg-class="bg-secondary"
                       ></c-pwchrono-avatar>
-                    </span>
+                    </a>
                     <div>
                       <h6 class="text-truncate mb-1 fs-14 fw-medium">
-                        <button type="button" class="btn btn-link p-0">
-                          Daniel Esbella
-                        </button>
+                        <a href="javascript:void(0);">Daniel Esbella</a>
                       </h6>
                       <p class="fs-13">IOS Developer</p>
                     </div>
@@ -480,9 +491,9 @@
                     <h5 class="text-primary">99%</h5>
                   </div>
                 </div>
-                <button type="button" class="btn btn-light btn-md w-100">
-                  View All Employees
-                </button>
+                <a href="javascript:void(0);" class="btn btn-light btn-md w-100"
+                  >View All Employees</a
+                >
               </div>
             </div>
           </div>
@@ -496,28 +507,34 @@
               >
                 <h5 class="mb-2">Attendance Overview</h5>
                 <div class="dropdown mb-2">
-                  <button
-                    type="button"
+                  <a
+                    href="javascript:void(0);"
                     class="btn btn-white border btn-sm d-inline-flex align-items-center"
                     data-bs-toggle="dropdown"
                   >
                     <i class="fa-solid fa-calendar-days me-1"></i>Today
-                  </button>
+                  </a>
                   <ul class="dropdown-menu dropdown-menu-end p-3">
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        This Month
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >This Month</a
+                      >
                     </li>
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        This Week
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >This Week</a
+                      >
                     </li>
                     <li>
-                      <button type="button" class="dropdown-item rounded-1">
-                        Today
-                      </button>
+                      <a
+                        href="javascript:void(0);"
+                        class="dropdown-item rounded-1"
+                        >Today</a
+                      >
                     </li>
                   </ul>
                 </div>
@@ -598,34 +615,40 @@
                 <h5 class="mb-2">Clock-In/Out</h5>
                 <div class="d-flex align-items-center">
                   <div class="dropdown mb-2">
-                    <button
-                      type="button"
+                    <a
+                      href="javascript:void(0);"
                       class="dropdown-toggle btn btn-white btn-sm d-inline-flex align-items-center border-0 fs-13 me-2"
                       data-bs-toggle="dropdown"
                     >
                       All Departments
-                    </button>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-end p-3">
                       <li>
-                        <button type="button" class="dropdown-item rounded-1">
-                          Finance
-                        </button>
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                          >Finance</a
+                        >
                       </li>
                       <li>
-                        <button type="button" class="dropdown-item rounded-1">
-                          Development
-                        </button>
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                          >Development</a
+                        >
                       </li>
                       <li>
-                        <button type="button" class="dropdown-item rounded-1">
-                          Marketing
-                        </button>
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                          >Marketing</a
+                        >
                       </li>
                     </ul>
                   </div>
                   <div class="dropdown mb-2">
-                    <button
-                      type="button"
+                    <a
+                      href="javascript:void(0);"
                       class="btn btn-white border btn-sm d-inline-flex align-items-center"
                       data-bs-toggle="dropdown"
                     >
@@ -634,22 +657,28 @@
                         aria-hidden="true"
                       ></i>
                       Today
-                    </button>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-end p-3">
                       <li>
-                        <button type="button" class="dropdown-item rounded-1">
-                          This Month
-                        </button>
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                          >This Month</a
+                        >
                       </li>
                       <li>
-                        <button type="button" class="dropdown-item rounded-1">
-                          This Week
-                        </button>
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                          >This Week</a
+                        >
                       </li>
                       <li>
-                        <button type="button" class="dropdown-item rounded-1">
-                          Today
-                        </button>
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                          >Today</a
+                        >
                       </li>
                     </ul>
                   </div>
@@ -661,7 +690,10 @@
                     class="d-flex align-items-center justify-content-between mb-3 p-2 border border-dashed br-5"
                   >
                     <div class="d-flex align-items-center">
-                      <span class="avatar flex-shrink-0">
+                      <a
+                        href="javascript:void(0);"
+                        class="avatar flex-shrink-0"
+                      >
                         <c-pwchrono-avatar
                           container-class="avatar avatar-rounded"
                           image-url={avatar24Url}
@@ -671,7 +703,7 @@
                           title-class="initial-wrap"
                           fallback-bg-class="bg-secondary"
                         ></c-pwchrono-avatar>
-                      </span>
+                      </a>
                       <div class="ms-2">
                         <h6 class="fs-14 fw-medium text-truncate">
                           Daniel Esbella
@@ -680,16 +712,16 @@
                       </div>
                     </div>
                     <div class="d-flex align-items-center">
-                      <button
-                        type="button"
-                        class="btn btn-link p-0 fs-12 fw-medium text-secondary me-1"
+                      <a
+                        href="javascript:void(0);"
+                        class="fs-12 fw-medium text-secondary me-1"
                       >
                         <i
                           class="fa-solid fa-clock me-1"
                           aria-hidden="true"
                         ></i>
                         Clock In
-                      </button>
+                      </a>
                       <span class="fs-12 text-gray-9">10:30 AM</span>
                     </div>
                   </div>
@@ -698,7 +730,10 @@
                     class="d-flex align-items-center justify-content-between mb-3 p-2 border border-dashed br-5"
                   >
                     <div class="d-flex align-items-center">
-                      <span class="avatar flex-shrink-0">
+                      <a
+                        href="javascript:void(0);"
+                        class="avatar flex-shrink-0"
+                      >
                         <c-pwchrono-avatar
                           container-class="avatar avatar-rounded"
                           image-url={avatar23Url}
@@ -708,7 +743,7 @@
                           title-class="initial-wrap"
                           fallback-bg-class="bg-secondary"
                         ></c-pwchrono-avatar>
-                      </span>
+                      </a>
                       <div class="ms-2">
                         <h6 class="fs-14 fw-medium text-truncate">
                           Doglas Martini
@@ -717,16 +752,16 @@
                       </div>
                     </div>
                     <div class="d-flex align-items-center">
-                      <button
-                        type="button"
-                        class="btn btn-link p-0 fs-12 fw-medium text-secondary me-1"
+                      <a
+                        href="javascript:void(0);"
+                        class="fs-12 fw-medium text-secondary me-1"
                       >
                         <i
                           class="fa-solid fa-clock me-1"
                           aria-hidden="true"
                         ></i>
                         Clock In
-                      </button>
+                      </a>
                       <span class="fs-12 text-gray-9">11:15 AM</span>
                     </div>
                   </div>
@@ -735,7 +770,10 @@
                     class="d-flex align-items-center justify-content-between mb-3 p-2 border border-dashed br-5"
                   >
                     <div class="d-flex align-items-center">
-                      <span class="avatar flex-shrink-0">
+                      <a
+                        href="javascript:void(0);"
+                        class="avatar flex-shrink-0"
+                      >
                         <c-pwchrono-avatar
                           container-class="avatar avatar-rounded"
                           image-url={avatar25Url}
@@ -745,7 +783,7 @@
                           title-class="initial-wrap"
                           fallback-bg-class="bg-secondary"
                         ></c-pwchrono-avatar>
-                      </span>
+                      </a>
                       <div class="ms-2">
                         <h6 class="fs-14 fw-medium text-truncate">
                           Brian Villalobos
@@ -754,16 +792,16 @@
                       </div>
                     </div>
                     <div class="d-flex align-items-center">
-                      <button
-                        type="button"
-                        class="btn btn-link p-0 fs-12 fw-medium text-secondary me-1"
+                      <a
+                        href="javascript:void(0);"
+                        class="fs-12 fw-medium text-secondary me-1"
                       >
                         <i
                           class="fa-solid fa-clock me-1"
                           aria-hidden="true"
                         ></i>
                         Clock In
-                      </button>
+                      </a>
                       <span class="fs-12 text-gray-9">11:45 AM</span>
                     </div>
                   </div>
@@ -772,7 +810,10 @@
                     class="d-flex align-items-center justify-content-between mb-0 p-2 border border-dashed br-5"
                   >
                     <div class="d-flex align-items-center">
-                      <span class="avatar flex-shrink-0">
+                      <a
+                        href="javascript:void(0);"
+                        class="avatar flex-shrink-0"
+                      >
                         <c-pwchrono-avatar
                           container-class="avatar avatar-rounded"
                           image-url={avatar26Url}
@@ -782,7 +823,7 @@
                           title-class="initial-wrap"
                           fallback-bg-class="bg-secondary"
                         ></c-pwchrono-avatar>
-                      </span>
+                      </a>
                       <div class="ms-2">
                         <h6 class="fs-14 fw-medium text-truncate">
                           Stephan Peralt
@@ -791,16 +832,16 @@
                       </div>
                     </div>
                     <div class="d-flex align-items-center">
-                      <button
-                        type="button"
-                        class="btn btn-link p-0 fs-12 fw-medium text-secondary me-1"
+                      <a
+                        href="javascript:void(0);"
+                        class="fs-12 fw-medium text-secondary me-1"
                       >
                         <i
                           class="fa-solid fa-clock me-1"
                           aria-hidden="true"
                         ></i>
                         Clock In
-                      </button>
+                      </a>
                       <span class="fs-12 text-gray-9">12:15 PM</span>
                     </div>
                   </div>

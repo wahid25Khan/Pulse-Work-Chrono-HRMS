@@ -1,9 +1,0 @@
-/*
- * Intentionally minimal.
- * Performance Review layout uses the shared SmartHR site theme styles.
- */
-
-:host {
-	display: block;
-	--pwchrono-performance-review-token: 1;
-}

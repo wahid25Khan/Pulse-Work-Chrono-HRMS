@@ -30,9 +30,7 @@
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <button type="button" class="btn btn-link p-0" aria-label="Home">
-                                        <i class="ti ti-smart-home" aria-hidden="true"></i>
-                                    </button>
+                                    <a href="javascript:void(0);"><i class="ti ti-smart-home"></i></a>
                                 </li>
                                 <li class="breadcrumb-item">
                                     Employee
@@ -44,62 +42,58 @@
                     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap ">
                         <div class="me-2 mb-2">
                             <div class="d-flex align-items-center border bg-white rounded p-1 me-2 icon-list">
-                                <button type="button"
+                                <a href="javascript:void(0);"
                                     class={listViewButtonClass}
                                     onclick={handleViewChange}
                                     data-view="list">
                                     <i class="ti ti-brand-days-counter"></i>
-                                </button>
-                                <button type="button"
+                                </a>
+                                <a href="javascript:void(0);"
                                     class={calendarViewButtonClass}
                                     onclick={handleViewChange}
                                     data-view="calendar">
                                     <i class="ti ti-calendar-event"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <div class="me-2 mb-2">
                             <div class="dropdown">
-                                <button type="button"
+                                <a href="javascript:void(0);"
                                     class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                                     onclick={toggleExportDropdown}>
                                     <i class="ti ti-file-export me-1"></i>Export
-                                </button>
+                                </a>
                                 <ul class={exportDropdownClass}>
                                     <li>
-                                        <button type="button" class="dropdown-item rounded-1">
-                                            <i class="ti ti-file-type-pdf me-1" aria-hidden="true"></i>PDF
-                                        </button>
+                                        <a href="javascript:void(0);" class="dropdown-item rounded-1"><i
+                                                class="ti ti-file-type-pdf me-1"></i>PDF</a>
                                     </li>
                                     <li>
-                                        <button type="button" class="dropdown-item rounded-1">
-                                            <i class="ti ti-file-type-xls me-1" aria-hidden="true"></i>Excel
-                                        </button>
+                                        <a href="javascript:void(0);" class="dropdown-item rounded-1"><i
+                                                class="ti ti-file-type-xls me-1"></i>Excel</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="mb-2">
-                            <button type="button" class="btn btn-primary d-flex align-items-center"
-                                onclick={handleAddAttendance}>
-                                <i class="ti ti-file-analytics me-2" aria-hidden="true"></i>Request Attendance
-                            </button>
+                            <a href="javascript:void(0);" class="btn btn-primary d-flex align-items-center"
+                                onclick={handleAddAttendance}><i class="ti ti-file-analytics me-2"></i>Request Attendance</a>
                         </div>
                                                 <div class="mb-2 ms-2">
-                                                        <button
-                                                            type="button"
+                                                        <a
+                                                            href="javascript:void(0);"
                                                             class="btn btn-primary d-flex align-items-center"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#attendance_report"
                                                         >
-                                                            <i class="ti ti-file-analytics me-2" aria-hidden="true"></i>Attendance Report
-                                                        </button>
+                                                            <i class="ti ti-file-analytics me-2"></i>Attendance Report
+                                                        </a>
                                                 </div>
                         <div class="ms-2 head-icons">
-                            <button type="button" class="btn btn-link p-0" data-bs-toggle="tooltip" data-bs-placement="top"
-                                data-bs-original-title="Collapse" id="collapse-header" aria-label="Collapse Header">
-                                <i class="ti ti-chevrons-up" aria-hidden="true"></i>
-                            </button>
+                            <a href="javascript:void(0);" class="" data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-original-title="Collapse" id="collapse-header">
+                                <i class="ti ti-chevrons-up"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -135,7 +129,7 @@
                                         <i class="ti ti-fingerprint text-primary me-1"></i>
                                         Attendance {presentPercentage}%
                                     </h6>
-                                    <button type="button" class="btn btn-dark w-100">Details</button>
+                                    <a href="javascript:void(0);" class="btn btn-dark w-100">Details</a>
                                 </div>
 
                             </div>
@@ -327,20 +321,20 @@
                         <div class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
                             <div class="me-3">
                                 <div class="dropdown me-2">
-                                    <button type="button"
+                                    <a href="javascript:void(0);"
                                         class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                                         onclick={toggleDateRangeDropdown}>
                                         <i class="ti ti-calendar me-1"></i> {dateRangeLabel}
-                                    </button>
+                                    </a>
                                     <ul class={dateRangeDropdownClass}>
-                                    <li><button type="button" class="dropdown-item rounded-1"
-                                        data-value="This Week" onclick={handleDateRangeSelect}>This Week</button></li>
-                                    <li><button type="button" class="dropdown-item rounded-1"
-                                        data-value="This Month" onclick={handleDateRangeSelect}>This Month</button></li>
-                                    <li><button type="button" class="dropdown-item rounded-1"
-                                        data-value="Last Month" onclick={handleDateRangeSelect}>Last Month</button></li>
-                                    <li><button type="button" class="dropdown-item rounded-1" data-value="Custom"
-                                        onclick={handleDateRangeSelect}>Custom Range</button></li>
+                                        <li><a href="javascript:void(0);" class="dropdown-item rounded-1"
+                                                data-value="This Week" onclick={handleDateRangeSelect}>This Week</a></li>
+                                        <li><a href="javascript:void(0);" class="dropdown-item rounded-1"
+                                                data-value="This Month" onclick={handleDateRangeSelect}>This Month</a></li>
+                                        <li><a href="javascript:void(0);" class="dropdown-item rounded-1"
+                                                data-value="Last Month" onclick={handleDateRangeSelect}>Last Month</a></li>
+                                        <li><a href="javascript:void(0);" class="dropdown-item rounded-1" data-value="Custom"
+                                                onclick={handleDateRangeSelect}>Custom Range</a></li>
                                     </ul>
                                 </div>
                                 <template if:true={isCustomDateMode}>
@@ -361,43 +355,43 @@
                             </div>
 
                             <div class="dropdown me-3">
-                                <button type="button"
+                                <a href="javascript:void(0);"
                                     class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                                     onclick={toggleStatusDropdown}>
                                     <i class="ti ti-filter me-1"></i>Status: {selectedStatus}
-                                </button>
+                                </a>
                                 <ul class={statusDropdownClass}>
                                     <li>
-                                        <button type="button" class="dropdown-item rounded-1" data-value="All"
-                                            onclick={handleStatusSelect}>All</button>
+                                        <a href="javascript:void(0);" class="dropdown-item rounded-1" data-value="All"
+                                            onclick={handleStatusSelect}>All</a>
                                     </li>
                                     <li>
-                                        <button type="button" class="dropdown-item rounded-1" data-value="Present"
-                                            onclick={handleStatusSelect}>Present</button>
+                                        <a href="javascript:void(0);" class="dropdown-item rounded-1" data-value="Present"
+                                            onclick={handleStatusSelect}>Present</a>
                                     </li>
                                     <li>
-                                        <button type="button" class="dropdown-item rounded-1" data-value="Absent"
-                                            onclick={handleStatusSelect}>Absent</button>
+                                        <a href="javascript:void(0);" class="dropdown-item rounded-1" data-value="Absent"
+                                            onclick={handleStatusSelect}>Absent</a>
                                     </li>
                                     <li>
-                                        <button type="button" class="dropdown-item rounded-1" data-value="Late"
-                                            onclick={handleStatusSelect}>Late</button>
+                                        <a href="javascript:void(0);" class="dropdown-item rounded-1" data-value="Late"
+                                            onclick={handleStatusSelect}>Late</a>
                                     </li>
                                 </ul>
                             </div>
 
                             <div class="dropdown">
-                                <button type="button"
+                                <a href="javascript:void(0);"
                                     class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                                     data-bs-toggle="dropdown">
                                     Sort By
-                                </button>
+                                </a>
                                 <ul class="dropdown-menu  dropdown-menu-end p-3">
                                     <li>
-                                        <button type="button" class="dropdown-item rounded-1">Date Ascending</button>
+                                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Date Ascending</a>
                                     </li>
                                     <li>
-                                        <button type="button" class="dropdown-item rounded-1">Date Descending</button>
+                                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Date Descending</a>
                                     </li>
                                 </ul>
                             </div>
@@ -454,7 +448,7 @@
 
             <div class="footer d-sm-flex align-items-center justify-content-between border-top bg-white p-3">
                 <p class="mb-0">2026 © PWChrono</p>
-                <p>Designed & developed by <span class="text-primary">PWChrono Team</span></p>
+                <p>Designed & developed by <a href="javascript:void(0);" class="text-primary">PWChrono Team</a></p>
             </div>
 
         </div>

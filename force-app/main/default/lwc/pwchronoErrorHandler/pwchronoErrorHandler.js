@@ -75,6 +75,7 @@ export function logError(context, error, showToast = false, options = {}) {
   // Note: In Experience Cloud runtime, browser console logs are often the only
   // client-side diagnostic signal available without additional telemetry.
   try {
+    // eslint-disable-next-line no-console
     console.error(`[PWChrono] ${context || "Error"}: ${errorMessage}`, error);
   } catch {
     // no-op

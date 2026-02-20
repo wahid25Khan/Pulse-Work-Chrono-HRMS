@@ -2,21 +2,19 @@ import { LightningElement, api, track } from "lwc";
 
 export default class PwchronoPerformanceManagement extends LightningElement {
   // Label placeholders (No hardcoding)
-  // Public so parent components can override, but we provide safe defaults.
-  // IMPORTANT: Do not reassign @api properties within the component.
-  @api pageTitle = "Performance Indicator";
-  @api breadcrumbParent = "Performance";
-  @api breadcrumbActive = "Performance Indicator";
-  @api addBtnLabel = "Add New Indicator";
-  @api listTitle = "Performance Indicator List";
-  @api sortByLabel = "Sort By : Last 7 Days";
+  @api pageTitle;
+  @api breadcrumbParent;
+  @api breadcrumbActive;
+  @api addBtnLabel;
+  @api listTitle;
+  @api sortByLabel;
 
   // Table Header Labels
-  @api colDesignation = "Designation";
-  @api colDepartment = "Department";
-  @api colApprovedBy = "Approved By";
-  @api colCreatedDate = "Created Date";
-  @api colStatus = "Status";
+  @api colDesignation;
+  @api colDepartment;
+  @api colApprovedBy;
+  @api colCreatedDate;
+  @api colStatus;
 
   @track indicatorData = [];
   @track isModalOpen = false;
@@ -32,6 +30,20 @@ export default class PwchronoPerformanceManagement extends LightningElement {
    */
   @api
   loadComponentData() {
+    // Labels initialization
+    this.pageTitle = "Performance Indicator";
+    this.breadcrumbParent = "Performance";
+    this.breadcrumbActive = "Performance Indicator";
+    this.addBtnLabel = "Add New Indicator";
+    this.listTitle = "Performance Indicator List";
+    this.sortByLabel = "Sort By : Last 7 Days";
+
+    this.colDesignation = "Designation";
+    this.colDepartment = "Department";
+    this.colApprovedBy = "Approved By";
+    this.colCreatedDate = "Created Date";
+    this.colStatus = "Status";
+
     // Mock Data
     const mockData = [
       {
@@ -87,9 +99,6 @@ export default class PwchronoPerformanceManagement extends LightningElement {
       case "save":
         this.handleSave();
         break;
-      default:
-        // no-op
-        break;
     }
   }
 
@@ -100,11 +109,11 @@ export default class PwchronoPerformanceManagement extends LightningElement {
   handleSave() {
     let currentData = [...this.indicatorData];
     if (this.isEditing) {
-      currentData = currentData.map((item) => {
-        return item.id === this.selectedIndicator.id
+      currentData = currentData.map((item) =>
+        item.id === this.selectedIndicator.id
           ? { ...this.selectedIndicator }
-          : item;
-      });
+          : item
+      );
     } else {
       currentData.push({
         ...this.selectedIndicator,

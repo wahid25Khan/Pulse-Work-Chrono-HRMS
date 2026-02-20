@@ -233,51 +233,15 @@ export default class PwchronoMainLayout extends NavigationMixin(
   //   document.body.classList.toggle("slide-nav");
   // }
   handleSidebarToggle() {
-    // SmartHR theme uses two different body classes:
-    // - mini-sidebar: desktop collapse (sidebar becomes narrow)
-    // - slide-nav: mobile overlay drawer
-    // Toggling both can leave the app in an inconsistent state (e.g. overlay click
-    // removes slide-nav only, then next toggle re-enables it on desktop), which
-    // makes page content appear "behind" the sidebar.
-
-    let isMobile = false;
-    try {
-      // Bootstrap-like breakpoint (lg and below considered "mobile" for the template).
-      isMobile = globalThis.matchMedia?.("(max-width: 991.98px)")?.matches;
-    } catch {
-      isMobile = false;
-    }
-
-    if (isMobile) {
-      document.body.classList.toggle("slide-nav");
-      // Prevent desktop state from sticking around on mobile.
-      document.body.classList.remove("mini-sidebar");
-    } else {
-      document.body.classList.toggle("mini-sidebar");
-      // Ensure mobile overlay state is cleared on desktop.
-      document.body.classList.remove("slide-nav");
-    }
-
-    // Nudge the layout engine + any responsive scripts to recompute widths.
-    try {
-      // eslint-disable-next-line @lwc/lwc/prefer-custom-event
-      globalThis.dispatchEvent?.(new Event("resize"));
-    } catch {
-      // no-op
-    }
-  }
+    // Desktop
+    document.body.classList.toggle("mini-sidebar");
+    // Mobile
+    document.body.classList.toggle("slide-nav");
+}
 
   handleSidebarOverlayClick() {
     try {
       document.body.classList.remove("slide-nav");
-
-      // Keep layout consistent after closing the overlay.
-      try {
-        // eslint-disable-next-line @lwc/lwc/prefer-custom-event
-        globalThis.dispatchEvent?.(new Event("resize"));
-      } catch {
-        // no-op
-      }
     } catch {
       // no-op
     }

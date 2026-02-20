@@ -1,8 +1,4 @@
 import getMyLeaves from "@salesforce/apex/PWChrono_LeaveController.getMyLeaves";
-import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
 import { getSession, getSessionToken } from "c/pwchronoSession";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track } from "lwc";
@@ -39,7 +35,6 @@ export default class PwchronoLeaveEmployee extends LightningElement {
   }
 
   renderedCallback() {
-    initBootstrapCompat(this);
     if (!this.hasRendered) {
       this.hasRendered = true;
       this._boundCloseDropdowns = this.closeDropdowns.bind(this);
@@ -48,7 +43,6 @@ export default class PwchronoLeaveEmployee extends LightningElement {
   }
 
   disconnectedCallback() {
-    teardownBootstrapCompat(this);
     if (this._boundCloseDropdowns) {
       globalThis.removeEventListener("click", this._boundCloseDropdowns);
     }
@@ -141,6 +135,11 @@ export default class PwchronoLeaveEmployee extends LightningElement {
       this.startDate = null;
     }
     this.loadLeaveRequests();
+  }
+
+  handleNewLeaveRequest(event) {
+    event?.preventDefault();
+    this.showToast("Info", "New Leave Request Modal coming soon", "info");
   }
 
   handleNoop(event) {

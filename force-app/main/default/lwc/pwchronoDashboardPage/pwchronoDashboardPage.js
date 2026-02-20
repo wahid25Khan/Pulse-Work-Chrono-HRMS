@@ -2,10 +2,6 @@ import getDashboardSummaryForPortal from "@salesforce/apex/PWChrono_DashboardCon
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { logError } from "c/pwchronoErrorHandler";
 import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
-import {
   getEmployeeId,
   getSessionToken,
   SESSION_CHANGED_EVENT
@@ -42,7 +38,6 @@ export default class PwchronoDashboardPage extends LightningElement {
   }
 
   disconnectedCallback() {
-    teardownBootstrapCompat(this);
     try {
       const w = globalThis?.window ?? globalThis;
       w?.removeEventListener?.(
@@ -53,10 +48,6 @@ export default class PwchronoDashboardPage extends LightningElement {
       // no-op
     }
     this.sessionChangedHandler = null;
-  }
-
-  renderedCallback() {
-    initBootstrapCompat(this);
   }
 
   refreshSessionFromStore() {

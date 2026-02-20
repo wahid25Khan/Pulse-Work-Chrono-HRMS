@@ -2,10 +2,6 @@ import { LightningElement, track } from "lwc";
 import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUserAccessById";
 import getAttendanceTrackerData from "@salesforce/apex/PWChrono_AttendanceController.getAttendanceTrackerData";
 import { showErrorToast, logError } from "c/pwchronoErrorHandler";
-import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
 import { getSession, getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
 
@@ -116,7 +112,6 @@ export default class PwchronoAttendanceTracker extends LightningElement {
   }
 
   renderedCallback() {
-    initBootstrapCompat(this);
     if (!this.hasRendered) {
         this.hasRendered = true;
         this._boundWindowClick = this.closeDropdowns.bind(this);
@@ -125,7 +120,6 @@ export default class PwchronoAttendanceTracker extends LightningElement {
   }
 
   disconnectedCallback() {
-      teardownBootstrapCompat(this);
       if (this._boundWindowClick) {
         window.removeEventListener('click', this._boundWindowClick);
         this._boundWindowClick = null;

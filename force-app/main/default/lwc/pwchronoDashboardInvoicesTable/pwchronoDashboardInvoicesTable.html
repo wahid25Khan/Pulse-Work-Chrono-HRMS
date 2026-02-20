@@ -4,34 +4,34 @@
             <h5 class="mb-2">Invoices</h5>
             <div class="d-flex align-items-center">
                 <div class="dropdown mb-2">
-                    <button type="button" class="dropdown-toggle btn btn-white btn-sm d-inline-flex align-items-center fs-13 me-2 border-0" data-bs-toggle="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle btn btn-white btn-sm d-inline-flex align-items-center fs-13 me-2 border-0" data-bs-toggle="dropdown">
                         Invoices
-                    </button>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-end p-3">
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">Invoices</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Invoices</a>
                         </li>
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">Paid</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Paid</a>
                         </li>
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">Unpaid</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Unpaid</a>
                         </li>
                     </ul>
                 </div>
                 <div class="dropdown mb-2">
-                    <button type="button" class="btn btn-white border btn-sm d-inline-flex align-items-center" data-bs-toggle="dropdown">
+                    <a href="javascript:void(0);" class="btn btn-white border btn-sm d-inline-flex align-items-center" data-bs-toggle="dropdown">
                         <i class="fa-solid fa-calendar-days me-1" aria-hidden="true"></i>This Week
-                    </button>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-end p-3">
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">This Month</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">This Month</a>
                         </li>
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">This Week</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">This Week</a>
                         </li>
                         <li>
-                            <button type="button" class="dropdown-item rounded-1">Today</button>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Today</a>
                         </li>
                     </ul>
                 </div>
@@ -45,7 +45,7 @@
                             <tr key={inv.id}>
                                 <td class="px-0">
                                     <div class="d-flex align-items-center">
-                                        <span class="avatar">
+                                        <a href="javascript:void(0);" class="avatar">
                                             <c-pwchrono-avatar
                                               container-class="avatar avatar-rounded"
                                               image-url={inv.avatarUrl}
@@ -56,9 +56,9 @@
                                               title-class="initial-wrap"
                                               fallback-bg-class="bg-primary"
                                             ></c-pwchrono-avatar>
-                                        </span>
+                                        </a>
                                         <div class="ms-2">
-                                            <h6 class="fw-medium"><span>{inv.title}</span></h6>
+                                            <h6 class="fw-medium"><a href="javascript:void(0);">{inv.title}</a></h6>
                                             <span class="fs-13 d-inline-flex align-items-center">{inv.invoiceId}<i class="fa-solid fa-circle fs-4 mx-1 text-primary" aria-hidden="true"></i>{inv.client}</span>
                                         </div>
                                     </div>

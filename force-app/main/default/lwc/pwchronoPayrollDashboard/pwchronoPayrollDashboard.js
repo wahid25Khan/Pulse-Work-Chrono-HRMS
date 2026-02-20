@@ -38,6 +38,7 @@ export default class PwchronoPayrollDashboard extends LightningElement {
     } catch (e) {
       this.summary = undefined;
       this._summaryLoaded = false;
+      // eslint-disable-next-line no-console
       console.error("Failed to load Payroll dashboard summary", e);
     } finally {
       this._loading = false;
@@ -84,6 +85,7 @@ export default class PwchronoPayrollDashboard extends LightningElement {
         this.initCharts();
       })
       .catch((e) => {
+        // eslint-disable-next-line no-console
         console.error("Failed to load Chart.js", e);
       });
   }

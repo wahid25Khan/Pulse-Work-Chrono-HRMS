@@ -1,9 +1,5 @@
 import getAllAttendance from "@salesforce/apex/PWChrono_AttendanceController.getAllAttendance";
 import { logError } from "c/pwchronoErrorHandler";
-import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track } from "lwc";
@@ -45,7 +41,6 @@ export default class PwchronoAttendanceAdmin extends LightningElement {
   }
 
   renderedCallback() {
-    initBootstrapCompat(this);
     if (!this.hasRendered) {
       this.hasRendered = true;
       this._boundCloseDropdowns = this.closeDropdowns.bind(this);
@@ -55,7 +50,6 @@ export default class PwchronoAttendanceAdmin extends LightningElement {
   }
 
   disconnectedCallback() {
-    teardownBootstrapCompat(this);
     try {
       const w = globalThis?.window ?? globalThis;
       if (this._boundCloseDropdowns) {

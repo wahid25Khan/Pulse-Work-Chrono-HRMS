@@ -1,6 +1,5 @@
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { logError } from "c/pwchronoErrorHandler";
-import { initBootstrapCompat } from "c/pwchronoBootstrapCompat";
 import { loadStyle } from "lightning/platformResourceLoader";
 import { LightningElement } from "lwc";
 
@@ -12,7 +11,6 @@ export default class PwchronoManagerDashboard extends LightningElement {
   stylesInitialized = false;
 
   renderedCallback() {
-    initBootstrapCompat(this);
     if (this.stylesInitialized) {
       return;
     }

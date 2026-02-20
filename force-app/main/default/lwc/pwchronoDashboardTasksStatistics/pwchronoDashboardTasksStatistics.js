@@ -1,10 +1,6 @@
 import chartjs from "@salesforce/resourceUrl/chartjs";
 import getTaskStatistics from "@salesforce/apex/PWChrono_AdminController.getTaskStatistics";
 import { logError } from "c/pwchronoErrorHandler";
-import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
 import { loadScript } from "lightning/platformResourceLoader";
 import { LightningElement, api, wire } from "lwc";
 
@@ -54,14 +50,12 @@ export default class PwchronoDashboardTasksStatistics extends LightningElement {
   }
 
   disconnectedCallback() {
-    teardownBootstrapCompat(this);
     if (this.chart) {
       this.chart.destroy();
     }
   }
 
   renderedCallback() {
-    initBootstrapCompat(this);
     if (this.chartjsLoaded) return;
     this.chartjsLoaded = true;
     loadScript(this, chartjs)
@@ -116,12 +110,7 @@ export default class PwchronoDashboardTasksStatistics extends LightningElement {
 
   get totalCount() {
     const c = this.counts;
-    return (
-      (c?.ongoing ?? 0) +
-      (c?.onHold ?? 0) +
-      (c?.overdue ?? 0) +
-      (c?.completed ?? 0)
-    );
+    return (c?.ongoing ?? 0) + (c?.onHold ?? 0) + (c?.overdue ?? 0) + (c?.completed ?? 0);
   }
 
   pct(part) {

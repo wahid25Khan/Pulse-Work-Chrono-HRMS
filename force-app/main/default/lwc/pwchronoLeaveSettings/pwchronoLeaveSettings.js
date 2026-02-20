@@ -2,10 +2,6 @@ import createLeaveType from "@salesforce/apex/PWChrono_LeaveController.createLea
 import getActiveLeaveTypes from "@salesforce/apex/PWChrono_LeaveController.getActiveLeaveTypes";
 import updateLeaveType from "@salesforce/apex/PWChrono_LeaveController.updateLeaveType";
 import { logError } from "c/pwchronoErrorHandler";
-import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track } from "lwc";
 
@@ -34,14 +30,6 @@ export default class PwchronoLeaveSettings extends LightningElement {
 
   connectedCallback() {
     this.loadLeaveTypes();
-  }
-
-  renderedCallback() {
-    initBootstrapCompat(this);
-  }
-
-  disconnectedCallback() {
-    teardownBootstrapCompat(this);
   }
 
   async loadLeaveTypes() {

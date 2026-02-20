@@ -1,9 +1,5 @@
 import getTeamLeavesForApproval from "@salesforce/apex/PWChrono_LeaveController.getTeamLeavesForApproval";
 import processLeaveApproval from "@salesforce/apex/PWChrono_LeaveController.processLeaveApproval";
-import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track } from "lwc";
 
@@ -32,14 +28,6 @@ export default class PwchronoLeaveAdmin extends LightningElement {
 
   connectedCallback() {
     this.loadTeamLeaves();
-  }
-
-  renderedCallback() {
-    initBootstrapCompat(this);
-  }
-
-  disconnectedCallback() {
-    teardownBootstrapCompat(this);
   }
 
   async loadTeamLeaves() {
@@ -134,12 +122,15 @@ export default class PwchronoLeaveAdmin extends LightningElement {
   }
 
   handleApprove(event) {
+    // Prevent default anchor behavior
+    event.preventDefault();
     this.selectedLeaveId = event.currentTarget.dataset.id;
     this.modalAction = "Approve";
     this.processApproval(); // Direct approve for now, or open modal
   }
 
   handleReject(event) {
+    event.preventDefault();
     this.selectedLeaveId = event.currentTarget.dataset.id;
     this.modalAction = "Reject";
     // For reject, we might want a reason, but for this UI we'll just trigger the action or show a simple prompt

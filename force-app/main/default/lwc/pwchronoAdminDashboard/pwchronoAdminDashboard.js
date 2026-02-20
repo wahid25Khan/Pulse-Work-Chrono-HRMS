@@ -11,13 +11,9 @@ import getJobApplicants from "@salesforce/apex/PWChrono_AdminController.getJobAp
 import getProjects from "@salesforce/apex/PWChrono_AdminController.getProjects";
 import getRecentActivities from "@salesforce/apex/PWChrono_AdminController.getRecentActivities";
 import getSalesOverview from "@salesforce/apex/PWChrono_AdminController.getSalesOverview";
-import getSchedulesPaged from "@salesforce/apex/PWChrono_AdminController.getSchedulesPaged";
-import getTodoTasksPaged from "@salesforce/apex/PWChrono_AdminController.getTodoTasksPaged";
+import getSchedules from "@salesforce/apex/PWChrono_AdminController.getSchedules";
+import getTodoTasks from "@salesforce/apex/PWChrono_AdminController.getTodoTasks";
 import { logError } from "c/pwchronoErrorHandler";
-import {
-  initBootstrapCompat,
-  teardownBootstrapCompat
-} from "c/pwchronoBootstrapCompat";
 import {
   getEmployeeId,
   getSessionToken,
@@ -119,7 +115,6 @@ export default class PwchronoAdminDashboard extends LightningElement {
   }
 
   disconnectedCallback() {
-    teardownBootstrapCompat(this);
     try {
       if (
         globalThis?.window?.removeEventListener &&
@@ -137,7 +132,6 @@ export default class PwchronoAdminDashboard extends LightningElement {
   }
 
   renderedCallback() {
-    initBootstrapCompat(this);
     if (this.isChartJsLoaded) {
       this.initCharts();
       return;
@@ -428,11 +422,9 @@ export default class PwchronoAdminDashboard extends LightningElement {
     }
   }
 
-  @wire(getTodoTasksPaged, {
+  @wire(getTodoTasks, {
     portalUserId: "$employeeId",
-    sessionToken: "$sessionToken",
-    limitSize: 6,
-    offsetSize: 0
+    sessionToken: "$sessionToken"
   })
   wiredTodoTasks({ error, data }) {
     if (Array.isArray(data)) {
@@ -442,11 +434,9 @@ export default class PwchronoAdminDashboard extends LightningElement {
     }
   }
 
-  @wire(getSchedulesPaged, {
+  @wire(getSchedules, {
     portalUserId: "$employeeId",
-    sessionToken: "$sessionToken",
-    limitSize: 10,
-    offsetSize: 0
+    sessionToken: "$sessionToken"
   })
   wiredSchedules({ error, data }) {
     if (Array.isArray(data)) {

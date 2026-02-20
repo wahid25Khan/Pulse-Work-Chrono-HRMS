@@ -48,6 +48,7 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
       // keep UI functional even if Apex fails
       this.summary = undefined;
       this._summaryLoaded = false;
+      // eslint-disable-next-line no-console
       console.error("Failed to load Help Desk dashboard summary", e);
     } finally {
       this._loading = false;
@@ -113,6 +114,7 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
         this.initCharts();
       })
       .catch((e) => {
+        // eslint-disable-next-line no-console
         console.error("Chart.js failed to load", e);
       });
   }
