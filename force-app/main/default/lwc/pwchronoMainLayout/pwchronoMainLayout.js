@@ -217,7 +217,6 @@ export default class PwchronoMainLayout extends NavigationMixin(
     this.isLoggedIn = false;
     this.redirectToLoginIfNeeded();
   }
-
   handleLogout() {
     clearSession();
     this.isLoggedIn = false;
@@ -229,23 +228,18 @@ export default class PwchronoMainLayout extends NavigationMixin(
     this.redirectToLoginIfNeeded();
   }
 
-  // handleSidebarToggle() {
-  //   document.body.classList.toggle("slide-nav");
-  // }
-  handleSidebarToggle() {
-    // Desktop
-    document.body.classList.toggle("mini-sidebar");
-    // Mobile
-    document.body.classList.toggle("slide-nav");
-}
+  handleSidebarToggle(event) {
+  const mode = event?.detail?.mode;
 
-  handleSidebarOverlayClick() {
-    try {
-      document.body.classList.remove("slide-nav");
-    } catch {
-      // no-op
-    }
+  // Mobile toggle is the slide-in drawer
+  if (mode === "mobile") {
+    document.body.classList.toggle("slide-nav");
+    return;
   }
+
+  // Desktop toggle collapses to "mini-sidebar"
+  document.body.classList.toggle("mini-sidebar");
+}
 
   handleHeaderNavigate(event) {
     const page = event.detail.page;

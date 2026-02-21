@@ -209,15 +209,16 @@ export default class PwchronoHeader extends LightningElement {
     this.showNotificationFilter = false;
   }
 
-  handleToggleSidebar() {
-    // Shell can optionally listen to this to collapse/expand sidebar.
-    this.dispatchEvent(
-      new CustomEvent("togglesidebar", {
-        bubbles: true,
-        composed: true
-      })
-    );
-  }
+handleToggleSidebar(mode) {
+  // We should optionally listen to this to collapse/expand sidebar.
+  this.dispatchEvent(
+    new CustomEvent("togglesidebar", {
+      detail: { mode },
+      bubbles: true,
+      composed: true
+    })
+  );
+}
 
   handleSearch(event) {
     const searchTerm = event.target.value;
@@ -251,8 +252,8 @@ export default class PwchronoHeader extends LightningElement {
     switch (action) {
       case "toggleSidebar":
       case "toggleSidebarMobile":
-        this.handleToggleSidebar();
-        return;
+  this.handleToggleSidebar("mobile");
+  return;
       case "toggleProfileMenu":
         this.showProfileMenu = !this.showProfileMenu;
         if (this.showProfileMenu) {
