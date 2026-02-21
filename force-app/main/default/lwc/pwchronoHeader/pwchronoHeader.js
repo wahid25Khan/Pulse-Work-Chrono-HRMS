@@ -192,6 +192,11 @@ export default class PwchronoHeader extends LightningElement {
     return 0;
   }
 
+  get chatCount() {
+    // Placeholder until chat is wired.
+    return 0;
+  }
+
   get hasNotifications() {
     return Number(this.notificationCount) > 0;
   }
@@ -209,16 +214,16 @@ export default class PwchronoHeader extends LightningElement {
     this.showNotificationFilter = false;
   }
 
-handleToggleSidebar(mode) {
-  // We should optionally listen to this to collapse/expand sidebar.
-  this.dispatchEvent(
-    new CustomEvent("togglesidebar", {
-      detail: { mode },
-      bubbles: true,
-      composed: true
-    })
-  );
-}
+  handleToggleSidebar(mode) {
+    // We should optionally listen to this to collapse/expand sidebar.
+    this.dispatchEvent(
+      new CustomEvent("togglesidebar", {
+        detail: { mode },
+        bubbles: true,
+        composed: true
+      })
+    );
+  }
 
   handleSearch(event) {
     const searchTerm = event.target.value;
@@ -251,9 +256,11 @@ handleToggleSidebar(mode) {
 
     switch (action) {
       case "toggleSidebar":
+        this.handleToggleSidebar("toggle");
+        return;
       case "toggleSidebarMobile":
-  this.handleToggleSidebar("mobile");
-  return;
+        this.handleToggleSidebar("mobile");
+        return;
       case "toggleProfileMenu":
         this.showProfileMenu = !this.showProfileMenu;
         if (this.showProfileMenu) {

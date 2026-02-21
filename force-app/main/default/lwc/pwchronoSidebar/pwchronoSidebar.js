@@ -209,25 +209,11 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
 
     if (tab === "chat") {
       this.activeSidebarTab = tab;
-      // Navigate to Chat page
-      this[NavigationMixin.Navigate]({
-        type: "comm__namedPage",
-        attributes: {
-          name: "Chat__c"
-        }
-      });
-      // Optional: also support hash routing if used
-      // navigateTo("chat");
+      navigateTo("chat");
       return;
     }
 
     this.activeSidebarTab = "menu";
-  }
-
-  handleSidebarTab(event) {
-    event?.preventDefault?.();
-    const page = event?.currentTarget?.dataset?.page;
-    if (page) navigateTo(page);
   }
 
   @wire(getNavigationMenuItems, {

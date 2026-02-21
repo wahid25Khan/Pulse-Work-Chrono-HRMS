@@ -44,7 +44,7 @@
           >
         </template>
       </a>
-      <a href={communityHomeHref} class="dark-logo">
+      <a href={communityHomeHref} class="logo-white">
         <template if:false={logoDarkErrored}>
           <img
             src={logoDarkUrl}
@@ -73,7 +73,8 @@
               data-tab="menu"
               onclick={handleSidebarTabClick}
               role="tab"
-            >Menu</a>
+              >Menu</a
+            >
           </li>
           <li class="nav-item">
             <a
@@ -82,7 +83,8 @@
               data-tab="chat"
               onclick={handleSidebarTabClick}
               role="tab"
-            >Chats</a>
+              >Chats</a
+            >
           </li>
           <li class="nav-item">
             <a
@@ -91,7 +93,8 @@
               data-tab="email"
               onclick={handleSidebarTabClick}
               role="tab"
-            >Inbox</a>
+              >Inbox</a
+            >
           </li>
         </ul>
       </div>
