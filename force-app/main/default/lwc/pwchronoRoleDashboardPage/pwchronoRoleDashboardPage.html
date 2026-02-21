@@ -10,13 +10,13 @@
     <c-pwchrono-main-layout>
       <div slot="main-content">
         <template if:true={isAdmin}>
-          <c-pwchrono-admin-dashboard></c-pwchrono-admin-dashboard>
+          <c-pwchrono-admin-dashboard-design></c-pwchrono-admin-dashboard-design>
         </template>
         <template if:true={isManager}>
-          <c-pwchrono-manager-dashboard-page></c-pwchrono-manager-dashboard-page>
+          <c-pwchrono-new-manager-dashboard></c-pwchrono-new-manager-dashboard>
         </template>
         <template if:true={isProjectManager}>
-          <c-pwchrono-project-manager-dashboard-page></c-pwchrono-project-manager-dashboard-page>
+          <c-pwchrono-project-manager-dashboard></c-pwchrono-project-manager-dashboard>
         </template>
         <template if:true={isEmployee}>
           <c-pwchrono-dashboard-page></c-pwchrono-dashboard-page>

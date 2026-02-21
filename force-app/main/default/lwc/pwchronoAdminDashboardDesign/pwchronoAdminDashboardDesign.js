@@ -19,7 +19,7 @@ import {
   SESSION_CHANGED_EVENT
 } from "c/pwchronoSession";
 
-export default class PwchronoAdminDashboard extends LightningElement {
+export default class PwchronoAdminDashboardDesign extends LightningElement {
   static renderMode = "light";
 
   // Template avatar images (served from static resource; no /assets paths in Salesforce)
