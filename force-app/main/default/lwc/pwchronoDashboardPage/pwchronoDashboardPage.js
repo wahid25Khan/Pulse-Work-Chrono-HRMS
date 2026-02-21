@@ -1,6 +1,7 @@
 import getDashboardSummaryForPortal from "@salesforce/apex/PWChrono_DashboardController.getDashboardSummaryForPortal";
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { logError } from "c/pwchronoErrorHandler";
+import { navigateTo, PAGES } from "c/pwchronoRouter";
 import {
   getEmployeeId,
   getSessionToken,
@@ -110,5 +111,33 @@ export default class PwchronoDashboardPage extends LightningElement {
 
   get todayAttendance() {
     return this.dashboardData.todayAttendance || {};
+  }
+
+  // -------------------------------------------------------
+  // Navigation handlers — use hash routing to keep the
+  // portal sidebar always visible (consistent with sidebar nav)
+  // -------------------------------------------------------
+  navigateToShifts() {
+    navigateTo(PAGES.ATTENDANCE);
+  }
+
+  navigateToGoals() {
+    navigateTo(PAGES.PERFORMANCE);
+  }
+
+  navigateToAppraisals() {
+    navigateTo(PAGES.PERFORMANCE);
+  }
+
+  navigateToApprovals() {
+    navigateTo(PAGES.APPROVALS);
+  }
+
+  navigateToLeave() {
+    navigateTo(PAGES.LEAVE);
+  }
+
+  navigateToPayroll() {
+    navigateTo(PAGES.PAYROLL);
   }
 }

@@ -1,6 +1,7 @@
 import CHART_JS from "@salesforce/resourceUrl/chartjs";
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { loadScript } from "lightning/platformResourceLoader";
+import { navigateTo, PAGES } from "c/pwchronoRouter";
 import { LightningElement, track, wire } from "lwc";
 
 import getAttendanceOverview from "@salesforce/apex/PWChrono_AdminController.getAttendanceOverview";
@@ -468,6 +469,34 @@ export default class PwchronoAdminDashboardDesign extends LightningElement {
         ? "text-sm text-gray-400 line-through"
         : "text-sm text-gray-900 font-medium"
     };
+  }
+
+  // -------------------------------------------------------
+  // Navigation handlers — use hash routing to keep the
+  // portal sidebar always visible (consistent with sidebar nav)
+  // -------------------------------------------------------
+  navigateToAttendance() {
+    navigateTo(PAGES.ATTENDANCE);
+  }
+
+  navigateToProjects() {
+    navigateTo(PAGES.PROJECTS);
+  }
+
+  navigateToPayroll() {
+    navigateTo(PAGES.PAYROLL);
+  }
+
+  navigateToRecruitment() {
+    navigateTo(PAGES.RECRUITMENT);
+  }
+
+  navigateToEmployees() {
+    navigateTo(PAGES.EMPLOYEES);
+  }
+
+  navigateToApprovals() {
+    navigateTo(PAGES.APPROVALS);
   }
 
   mapRecordToProjectRow(proj) {
