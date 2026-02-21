@@ -3,9 +3,26 @@
  * Provides centralized navigation across the portal
  */
 
+// Page constants for consistency
+export const PAGES = {
+  DASHBOARD: "dashboard",
+  ADMIN_DASHBOARD: "admin_dashboard",
+  MANAGER_DASHBOARD: "manager_dashboard",
+  EMPLOYEE_DASHBOARD: "employee_dashboard",
+  LEAVE: "leave",
+  ATTENDANCE: "attendance",
+  PROFILE: "profile",
+  CONFIGURATION: "configuration",
+  CHAT: "chat",
+  PAYROLL: "payroll",
+  RECRUITMENT: "recruitment",
+  PERFORMANCE: "performance",
+  TRAINING: "training"
+};
+
 export function getCurrentPage() {
   const w = globalThis?.window ?? globalThis;
-  return w?.location?.hash?.substring(1) || "dashboard";
+  return w?.location?.hash?.substring(1) || PAGES.EMPLOYEE_DASHBOARD;
 }
 
 export function navigateTo(page) {
@@ -39,18 +56,3 @@ export function onPageChange(callback) {
     w?.removeEventListener?.("hashchange", handler);
   };
 }
-
-// Page constants for consistency
-export const PAGES = {
-  DASHBOARD: "dashboard",
-  LEAVE: "leave",
-  ATTENDANCE: "attendance",
-  PROFILE: "profile",
-  CONFIGURATION: "configuration",
-  MANAGER_DASHBOARD: "manager-dashboard",
-  CHAT: "chat",
-  PAYROLL: "payroll",
-  RECRUITMENT: "recruitment",
-  PERFORMANCE: "performance",
-  TRAINING: "training"
-};

@@ -1,6 +1,7 @@
 import getNavigationMenuItems from "@salesforce/apex/PWChrono_NavigationController.getNavigationMenuItems";
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { getSession } from "c/pwchronoSession";
+import { navigateTo } from "c/pwchronoRouter";
 import { NavigationMixin } from "lightning/navigation";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { api, LightningElement, track, wire } from "lwc";
@@ -207,20 +208,26 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
     }
 
     if (tab === "chat") {
-       this.activeSidebarTab = tab;
-       // Navigate to Chat page
-       this[NavigationMixin.Navigate]({
-          type: "comm__namedPage",
-          attributes: {
-              name: "Chat__c"
-          }
-       });
-       // Optional: also support hash routing if used
-       // navigateTo("chat");
-       return;
+      this.activeSidebarTab = tab;
+      // Navigate to Chat page
+      this[NavigationMixin.Navigate]({
+        type: "comm__namedPage",
+        attributes: {
+          name: "Chat__c"
+        }
+      });
+      // Optional: also support hash routing if used
+      // navigateTo("chat");
+      return;
     }
 
     this.activeSidebarTab = "menu";
+  }
+
+  handleSidebarTab(event) {
+    event?.preventDefault?.();
+    const page = event?.currentTarget?.dataset?.page;
+    if (page) navigateTo(page);
   }
 
   @wire(getNavigationMenuItems, {
