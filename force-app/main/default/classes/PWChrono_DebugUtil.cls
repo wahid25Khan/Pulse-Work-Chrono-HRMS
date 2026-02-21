@@ -3,8 +3,7 @@
  * @author PWChrono Team
  */
 public inherited sharing class PWChrono_DebugUtil {
-  private static final String DEBUG_ACCESS_DENIED_MESSAGE =
-    'Access Denied: Debug utility access is restricted.';
+  private static final String DEBUG_ACCESS_DENIED_MESSAGE = 'Access Denied: Debug utility access is restricted.';
 
   private static String safeText(String value) {
     return value == null ? '' : value.escapeHtml4();
@@ -35,21 +34,16 @@ public inherited sharing class PWChrono_DebugUtil {
       return;
     }
 
-    // Fallback: allow only highly privileged Salesforce users.
-    User currentUser = [
-      SELECT UserPermissionsModifyAllData, UserPermissionsViewSetup
-      FROM User
-      WHERE Id = :UserInfo.getUserId()
+    // Fallback: allow only System Administrators (Profile.PermissionsModifyAllData).
+    // Note: UserPermissionsModifyAllData is not available in all org editions.
+    Profile userProfile = [
+      SELECT PermissionsModifyAllData
+      FROM Profile
+      WHERE Id = :UserInfo.getProfileId()
       LIMIT 1
     ];
 
-    if (
-      currentUser == null ||
-      (
-        currentUser.UserPermissionsModifyAllData != true &&
-        currentUser.UserPermissionsViewSetup != true
-      )
-    ) {
+    if (userProfile == null || userProfile.PermissionsModifyAllData != true) {
       throw new AuraHandledException(DEBUG_ACCESS_DENIED_MESSAGE);
     }
   }
@@ -137,7 +131,10 @@ public inherited sharing class PWChrono_DebugUtil {
     try {
       requireDebugAccess();
 
-      result.put('step1_findUser', 'Finding user with email: ' + maskEmail(email));
+      result.put(
+        'step1_findUser',
+        'Finding user with email: ' + maskEmail(email)
+      );
       Portal_Users__c user = [
         SELECT Id, Name, Email__c, OTP_Generated_Time__c, One_Time_Password__c
         FROM Portal_Users__c
