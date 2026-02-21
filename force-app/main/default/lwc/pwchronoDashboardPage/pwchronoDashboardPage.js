@@ -1,15 +1,17 @@
 import getDashboardSummaryForPortal from "@salesforce/apex/PWChrono_DashboardController.getDashboardSummaryForPortal";
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { logError } from "c/pwchronoErrorHandler";
-import { navigateTo, PAGES } from "c/pwchronoRouter";
 import {
   getEmployeeId,
   getSessionToken,
   SESSION_CHANGED_EVENT
 } from "c/pwchronoSession";
+import { NavigationMixin } from "lightning/navigation";
 import { LightningElement, track } from "lwc";
 
-export default class PwchronoDashboardPage extends LightningElement {
+export default class PwchronoDashboardPage extends NavigationMixin(
+  LightningElement
+) {
   static renderMode = "light";
   @track isLoading = true;
   @track dashboardData = {};
@@ -114,30 +116,63 @@ export default class PwchronoDashboardPage extends LightningElement {
   }
 
   // -------------------------------------------------------
-  // Navigation handlers — use hash routing to keep the
-  // portal sidebar always visible (consistent with sidebar nav)
+  // Navigation helpers
   // -------------------------------------------------------
+  _communityUrl(pagePath) {
+    try {
+      const path = globalThis.location?.pathname || "";
+      const idx = path.indexOf("/s/");
+      const base =
+        idx >= 0
+          ? path.substring(0, idx) + "/s"
+          : path.endsWith("/s")
+            ? path
+            : "/" + (path.split("/").filter(Boolean)[0] || "s");
+      return `${base}${pagePath}`;
+    } catch {
+      return pagePath;
+    }
+  }
+
   navigateToShifts() {
-    navigateTo(PAGES.ATTENDANCE);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/Empattendance") }
+    });
   }
 
   navigateToGoals() {
-    navigateTo(PAGES.PERFORMANCE);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/performance") }
+    });
   }
 
   navigateToAppraisals() {
-    navigateTo(PAGES.PERFORMANCE);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/performance") }
+    });
   }
 
   navigateToApprovals() {
-    navigateTo(PAGES.APPROVALS);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/leaves") }
+    });
   }
 
   navigateToLeave() {
-    navigateTo(PAGES.LEAVE);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/leaves") }
+    });
   }
 
   navigateToPayroll() {
-    navigateTo(PAGES.PAYROLL);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/payroll") }
+    });
   }
 }

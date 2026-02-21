@@ -17,10 +17,7 @@ export const PAGES = {
   PAYROLL: "payroll",
   RECRUITMENT: "recruitment",
   PERFORMANCE: "performance",
-  TRAINING: "training",
-  APPROVALS: "approvals",
-  PROJECTS: "projects",
-  EMPLOYEES: "employees"
+  TRAINING: "training"
 };
 
 export function getCurrentPage() {

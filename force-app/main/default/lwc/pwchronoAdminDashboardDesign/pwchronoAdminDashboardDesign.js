@@ -1,7 +1,7 @@
 import CHART_JS from "@salesforce/resourceUrl/chartjs";
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { loadScript } from "lightning/platformResourceLoader";
-import { navigateTo, PAGES } from "c/pwchronoRouter";
+import { NavigationMixin } from "lightning/navigation";
 import { LightningElement, track, wire } from "lwc";
 
 import getAttendanceOverview from "@salesforce/apex/PWChrono_AdminController.getAttendanceOverview";
@@ -20,7 +20,9 @@ import {
   SESSION_CHANGED_EVENT
 } from "c/pwchronoSession";
 
-export default class PwchronoAdminDashboardDesign extends LightningElement {
+export default class PwchronoAdminDashboardDesign extends NavigationMixin(
+  LightningElement
+) {
   static renderMode = "light";
 
   // Template avatar images (served from static resource; no /assets paths in Salesforce)
@@ -472,31 +474,57 @@ export default class PwchronoAdminDashboardDesign extends LightningElement {
   }
 
   // -------------------------------------------------------
-  // Navigation handlers — use hash routing to keep the
-  // portal sidebar always visible (consistent with sidebar nav)
+  // Navigation helpers
   // -------------------------------------------------------
+  _communityUrl(pagePath) {
+    try {
+      const path = globalThis.location?.pathname || "";
+      const idx = path.indexOf("/s/");
+      const base =
+        idx >= 0
+          ? path.substring(0, idx) + "/s"
+          : path.endsWith("/s")
+            ? path
+            : "/" + (path.split("/").filter(Boolean)[0] || "s");
+      return `${base}${pagePath}`;
+    } catch {
+      return pagePath;
+    }
+  }
+
   navigateToAttendance() {
-    navigateTo(PAGES.ATTENDANCE);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/attendance-admin") }
+    });
   }
 
   navigateToProjects() {
-    navigateTo(PAGES.PROJECTS);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/project-list") }
+    });
   }
 
   navigateToPayroll() {
-    navigateTo(PAGES.PAYROLL);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/payroll") }
+    });
   }
 
   navigateToRecruitment() {
-    navigateTo(PAGES.RECRUITMENT);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/recruitment") }
+    });
   }
 
   navigateToEmployees() {
-    navigateTo(PAGES.EMPLOYEES);
-  }
-
-  navigateToApprovals() {
-    navigateTo(PAGES.APPROVALS);
+    this[NavigationMixin.Navigate]({
+      type: "standard__webPage",
+      attributes: { url: this._communityUrl("/directory") }
+    });
   }
 
   mapRecordToProjectRow(proj) {
