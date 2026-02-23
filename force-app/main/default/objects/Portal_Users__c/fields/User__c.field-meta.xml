@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>User__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
-    <description>Links the Portal User record to a Salesforce User for authentication and identity management.</description>
-    <inlineHelpText>Select the Salesforce User associated with this employee record.</inlineHelpText>
+    <description
+  >Links the Portal User record to a Salesforce User for authentication and identity management.</description>
+    <inlineHelpText
+  >Select the Salesforce User associated with this employee record.</inlineHelpText>
     <label>User</label>
     <referenceTo>User</referenceTo>
     <relationshipLabel>Portal Users</relationshipLabel>

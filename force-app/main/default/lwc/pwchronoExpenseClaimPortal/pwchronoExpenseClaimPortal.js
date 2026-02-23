@@ -8,15 +8,20 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import LightningConfirm from "lightning/confirm";
 import { refreshApex } from "@salesforce/apex";
 import { getSession, getSessionToken } from "c/pwchronoSession";
-import { CONSTANTS } from 'c/pwchronoConstants';
+import { CONSTANTS } from "c/pwchronoConstants";
 
 const COLUMNS = [
-  { label: "Claim Date", fieldName: "Claim_Date__c", type: "date", sortable: true },
+  {
+    label: "Claim Date",
+    fieldName: "Claim_Date__c",
+    type: "date",
+    sortable: true
+  },
   { label: "Description", fieldName: "Description__c" },
-  { 
-    label: "Total Amount", 
-    fieldName: "Total_Amount__c", 
-    type: "currency", 
+  {
+    label: "Total Amount",
+    fieldName: "Total_Amount__c",
+    type: "currency",
     sortable: true,
     typeAttributes: { currencyCode: CONSTANTS.CURRENCY_CODE }
   },
@@ -49,29 +54,26 @@ export default class PwchronoExpenseClaimPortal extends LightningElement {
   @track claims = [];
   // Store only a plain string here (not a wire error object / Proxy)
   // to avoid recursion issues in Experience Live Preview.
-  @track error = '';
+  @track error = "";
   @track isLoading = true;
   columns = COLUMNS;
   wiredClaimsResult;
 
   normalizeWireError(err) {
     try {
-      if (!err) return 'Unknown error';
+      if (!err) return "Unknown error";
       const body = err.body;
       if (Array.isArray(body)) {
-        return body
-          .map((e) => e?.message)
-          .filter(Boolean)
-          .join('; ') || 'Unknown error';
+        return (
+          body
+            .map((e) => e?.message)
+            .filter(Boolean)
+            .join("; ") || "Unknown error"
+        );
       }
-      return (
-        body?.message ||
-        err.message ||
-        err.statusText ||
-        'Unknown error'
-      );
+      return body?.message || err.message || err.statusText || "Unknown error";
     } catch {
-      return 'Unknown error';
+      return "Unknown error";
     }
   }
 
@@ -85,26 +87,26 @@ export default class PwchronoExpenseClaimPortal extends LightningElement {
   @track pageSize = 10;
 
   // Filters
-  @track statusFilter = '';
-  @track searchFilter = '';
+  @track statusFilter = "";
+  @track searchFilter = "";
 
   employeeId;
   sessionToken;
 
   statusOptions = [
-    { label: 'All Statuses', value: '' },
-    { label: 'Draft', value: 'Draft' },
-    { label: 'Submitted', value: 'Submitted' },
-    { label: 'Approved', value: 'Approved' },
-    { label: 'Rejected', value: 'Rejected' },
-    { label: 'Paid', value: 'Paid' }
+    { label: "All Statuses", value: "" },
+    { label: "Draft", value: "Draft" },
+    { label: "Submitted", value: "Submitted" },
+    { label: "Approved", value: "Approved" },
+    { label: "Rejected", value: "Rejected" },
+    { label: "Paid", value: "Paid" }
   ];
 
   pageSizeOptions = [
-    { label: '5', value: '5' },
-    { label: '10', value: '10' },
-    { label: '25', value: '25' },
-    { label: '50', value: '50' }
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "25", value: "25" },
+    { label: "50", value: "50" }
   ];
 
   connectedCallback() {
@@ -136,7 +138,10 @@ export default class PwchronoExpenseClaimPortal extends LightningElement {
     );
   }
 
-  @wire(getMyClaims, { employeeId: "$employeeId", sessionToken: "$sessionToken" })
+  @wire(getMyClaims, {
+    employeeId: "$employeeId",
+    sessionToken: "$sessionToken"
+  })
   wiredClaims(result) {
     this.wiredClaimsResult = result;
     this.isLoading = true;
@@ -145,7 +150,7 @@ export default class PwchronoExpenseClaimPortal extends LightningElement {
         ...row,
         isLocked: row.Status__c !== "Draft" && row.Status__c !== "Rejected"
       }));
-      this.error = '';
+      this.error = "";
       this.applyFilters();
     } else if (result.error) {
       this.error = this.normalizeWireError(result.error);
@@ -160,13 +165,17 @@ export default class PwchronoExpenseClaimPortal extends LightningElement {
     let filtered = [...this.allClaims];
 
     if (this.statusFilter) {
-      filtered = filtered.filter(item => item.Status__c === this.statusFilter);
+      filtered = filtered.filter(
+        (item) => item.Status__c === this.statusFilter
+      );
     }
 
     if (this.searchFilter) {
       const search = this.searchFilter.toLowerCase();
-      filtered = filtered.filter(item => 
-        (item.Description__c && item.Description__c?.toLowerCase().includes(search))
+      filtered = filtered.filter(
+        (item) =>
+          item.Description__c &&
+          item.Description__c?.toLowerCase().includes(search)
       );
     }
 
@@ -220,7 +229,9 @@ export default class PwchronoExpenseClaimPortal extends LightningElement {
   }
 
   get startRecord() {
-    return this.totalRecords === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
+    return this.totalRecords === 0
+      ? 0
+      : (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get endRecord() {
@@ -317,7 +328,11 @@ export default class PwchronoExpenseClaimPortal extends LightningElement {
     });
 
     if (result) {
-      deleteClaim({ claimId: row.Id, portalUserId: this.employeeId, sessionToken: this.sessionToken })
+      deleteClaim({
+        claimId: row.Id,
+        portalUserId: this.employeeId,
+        sessionToken: this.sessionToken
+      })
         .then(() => {
           this.showToast("Success", "Claim deleted", "success");
           return refreshApex(this.wiredClaimsResult);
@@ -392,7 +407,11 @@ export default class PwchronoExpenseClaimPortal extends LightningElement {
   }
 
   handleSubmit() {
-    submitClaim({ claimId: this.currentClaim.Id, portalUserId: this.employeeId, sessionToken: this.sessionToken })
+    submitClaim({
+      claimId: this.currentClaim.Id,
+      portalUserId: this.employeeId,
+      sessionToken: this.sessionToken
+    })
       .then(() => {
         this.showToast("Success", "Claim submitted successfully", "success");
         this.isModalOpen = false;

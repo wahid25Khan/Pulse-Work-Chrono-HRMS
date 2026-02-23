@@ -1,21 +1,32 @@
 <template lwc:render-mode="light">
-    <div class="page-wrapper">
-        <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
-            <lightning-card title="Attendance Management" icon-name="standard:checkin">
-                <div class="slds-p-around_medium">
-                    <lightning-layout vertical-align="stretch" multiple-rows="true">
-                        <lightning-layout-item size="12" padding="around-small">
-                            <c-pwchrono-attendance-tracker></c-pwchrono-attendance-tracker>
-                        </lightning-layout-item>
-                        <lightning-layout-item size="12" large-device-size="8" padding="around-small">
-                            <c-pwchrono-attendance-calendar></c-pwchrono-attendance-calendar>
-                        </lightning-layout-item>
-                        <lightning-layout-item size="12" large-device-size="4" padding="around-small">
-                            <c-pwchrono-attendance-request></c-pwchrono-attendance-request>
-                        </lightning-layout-item>
-                    </lightning-layout>
-                </div>
-            </lightning-card>
+  <div class="page-wrapper">
+    <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
+      <lightning-card
+        title="Attendance Management"
+        icon-name="standard:checkin"
+      >
+        <div class="slds-p-around_medium">
+          <lightning-layout vertical-align="stretch" multiple-rows="true">
+            <lightning-layout-item size="12" padding="around-small">
+              <c-pwchrono-attendance-tracker></c-pwchrono-attendance-tracker>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              large-device-size="8"
+              padding="around-small"
+            >
+              <c-pwchrono-attendance-calendar></c-pwchrono-attendance-calendar>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              large-device-size="4"
+              padding="around-small"
+            >
+              <c-pwchrono-attendance-request></c-pwchrono-attendance-request>
+            </lightning-layout-item>
+          </lightning-layout>
         </div>
+      </lightning-card>
     </div>
+  </div>
 </template>

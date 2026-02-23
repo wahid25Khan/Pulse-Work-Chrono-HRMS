@@ -21,14 +21,22 @@ private class PWChrono_PayrollDashboardController_Test {
     };
 
     Test.startTest();
-    PWChrono_PayrollDashboardController.PayrollDashboardDTO dto =
-      PWChrono_PayrollDashboardController.getDashboardSummary();
+    PWChrono_PayrollDashboardController.PayrollDashboardDTO dto = PWChrono_PayrollDashboardController.getDashboardSummary();
     Test.stopTest();
 
     System.assertNotEquals(null, dto, 'DTO should not be null');
     System.assert(dto.totalGross > 0, 'Gross should be summed');
-    System.assert(dto.salaryRangeLabels != null && dto.salaryRangeLabels.size() == 5, 'Range labels');
-    System.assert(dto.salaryRangeCounts != null && dto.salaryRangeCounts.size() == 5, 'Range counts');
-    System.assert(dto.trendLabels != null && dto.trendLabels.size() == 6, 'Trend labels');
+    System.assert(
+      dto.salaryRangeLabels != null && dto.salaryRangeLabels.size() == 5,
+      'Range labels'
+    );
+    System.assert(
+      dto.salaryRangeCounts != null && dto.salaryRangeCounts.size() == 5,
+      'Range counts'
+    );
+    System.assert(
+      dto.trendLabels != null && dto.trendLabels.size() == 6,
+      'Trend labels'
+    );
   }
 }

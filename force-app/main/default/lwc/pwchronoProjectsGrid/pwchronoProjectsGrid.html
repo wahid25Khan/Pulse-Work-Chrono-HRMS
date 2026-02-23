@@ -106,7 +106,8 @@
                   aria-expanded="true"
                   aria-haspopup="true"
                 >
-                  <i class="fa-solid fa-file-export me-1" aria-hidden="true"></i>Export
+                  <i class="fa-solid fa-file-export me-1" aria-hidden="true"></i
+                  >Export
                 </button>
               </template>
               <template if:false={showExportDropdown}>
@@ -117,38 +118,38 @@
                   aria-expanded="false"
                   aria-haspopup="true"
                 >
-                  <i class="fa-solid fa-file-export me-1" aria-hidden="true"></i>Export
+                  <i class="fa-solid fa-file-export me-1" aria-hidden="true"></i
+                  >Export
                 </button>
               </template>
               <div class={exportDropdownClass} role="menu">
-                  <button
-                    type="button"
-                    class="dropdown-item rounded-1 border-0 bg-transparent text-start w-100"
-                    onclick={handleExportPdf}
-                    role="menuitem"
-                  >
-                    <i class="fa-solid fa-file-pdf me-1" aria-hidden="true"></i>Export as PDF
-                  </button>
-                  <button
-                    type="button"
-                    class="dropdown-item rounded-1 border-0 bg-transparent text-start w-100"
-                    onclick={handleExportExcel}
-                    role="menuitem"
-                  >
-                    <i class="fa-solid fa-file-excel me-1" aria-hidden="true"></i>Export as Excel
-                  </button>
+                <button
+                  type="button"
+                  class="dropdown-item rounded-1 border-0 bg-transparent text-start w-100"
+                  onclick={handleExportPdf}
+                  role="menuitem"
+                >
+                  <i class="fa-solid fa-file-pdf me-1" aria-hidden="true"></i
+                  >Export as PDF
+                </button>
+                <button
+                  type="button"
+                  class="dropdown-item rounded-1 border-0 bg-transparent text-start w-100"
+                  onclick={handleExportExcel}
+                  role="menuitem"
+                >
+                  <i class="fa-solid fa-file-excel me-1" aria-hidden="true"></i
+                  >Export as Excel
+                </button>
               </div>
             </div>
           </div>
 
           <!-- Primary action -->
           <div class="mb-2">
-            <button
-              type="button"
-              class="btn btn-primary"
-              onclick={openModal}
-            >
-              <i class="fa-solid fa-square-plus me-1" aria-hidden="true"></i>Add Project
+            <button type="button" class="btn btn-primary" onclick={openModal}>
+              <i class="fa-solid fa-square-plus me-1" aria-hidden="true"></i>Add
+              Project
             </button>
           </div>
 
@@ -213,42 +214,42 @@
                     </button>
                   </template>
                   <div class={filterDropdownClass} role="menu">
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="All"
-                        onclick={handleFilterSelect}
-                        role="menuitem"
-                      >
-                        All
-                      </button>
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="Active"
-                        onclick={handleFilterSelect}
-                        role="menuitem"
-                      >
-                        Active
-                      </button>
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="On Hold"
-                        onclick={handleFilterSelect}
-                        role="menuitem"
-                      >
-                        On Hold
-                      </button>
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="Completed"
-                        onclick={handleFilterSelect}
-                        role="menuitem"
-                      >
-                        Completed
-                      </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="All"
+                      onclick={handleFilterSelect}
+                      role="menuitem"
+                    >
+                      All
+                    </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="Active"
+                      onclick={handleFilterSelect}
+                      role="menuitem"
+                    >
+                      Active
+                    </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="On Hold"
+                      onclick={handleFilterSelect}
+                      role="menuitem"
+                    >
+                      On Hold
+                    </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="Completed"
+                      onclick={handleFilterSelect}
+                      role="menuitem"
+                    >
+                      Completed
+                    </button>
                   </div>
                 </div>
 
@@ -278,51 +279,51 @@
                     </button>
                   </template>
                   <div class={sortDropdownClass} role="menu">
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="Recent"
-                        onclick={handleSortSelect}
-                        role="menuitem"
-                      >
-                        Recent
-                      </button>
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="Name A-Z"
-                        onclick={handleSortSelect}
-                        role="menuitem"
-                      >
-                        Name A-Z
-                      </button>
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="Name Z-A"
-                        onclick={handleSortSelect}
-                        role="menuitem"
-                      >
-                        Name Z-A
-                      </button>
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="Deadline ↑"
-                        onclick={handleSortSelect}
-                        role="menuitem"
-                      >
-                        Deadline ↑
-                      </button>
-                      <button
-                        type="button"
-                        class="dropdown-item rounded-1"
-                        data-value="Deadline ↓"
-                        onclick={handleSortSelect}
-                        role="menuitem"
-                      >
-                        Deadline ↓
-                      </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="Recent"
+                      onclick={handleSortSelect}
+                      role="menuitem"
+                    >
+                      Recent
+                    </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="Name A-Z"
+                      onclick={handleSortSelect}
+                      role="menuitem"
+                    >
+                      Name A-Z
+                    </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="Name Z-A"
+                      onclick={handleSortSelect}
+                      role="menuitem"
+                    >
+                      Name Z-A
+                    </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="Deadline ↑"
+                      onclick={handleSortSelect}
+                      role="menuitem"
+                    >
+                      Deadline ↑
+                    </button>
+                    <button
+                      type="button"
+                      class="dropdown-item rounded-1"
+                      data-value="Deadline ↓"
+                      onclick={handleSortSelect}
+                      role="menuitem"
+                    >
+                      Deadline ↓
+                    </button>
                   </div>
                 </div>
               </div>
@@ -400,7 +401,9 @@
                                 />
                               </template>
                               <template if:false={proj.showProjectLogo}>
-                                <span class="avatar-title rounded-circle bg-secondary text-white">
+                                <span
+                                  class="avatar-title rounded-circle bg-secondary text-white"
+                                >
                                   {proj.projectInitials}
                                 </span>
                               </template>
@@ -426,7 +429,10 @@
                                   class="avatar avatar-md border avatar-rounded d-inline-flex align-items-center justify-content-center"
                                   title={m.name}
                                 >
-                                  <i class="fa-solid fa-user" aria-hidden="true"></i>
+                                  <i
+                                    class="fa-solid fa-user"
+                                    aria-hidden="true"
+                                  ></i>
                                 </span>
                               </span>
                             </template>
@@ -443,7 +449,11 @@
                         <td>{proj.deadline}</td>
                         <td>
                           <span class={proj.priorityPillClass}>
-                            <i class="fa-solid fa-circle me-1" aria-hidden="true"></i>{proj.priority}
+                            <i
+                              class="fa-solid fa-circle me-1"
+                              aria-hidden="true"
+                            ></i
+                            >{proj.priority}
                           </span>
                         </td>
                         <td>
@@ -455,7 +465,10 @@
                             title="Edit"
                             aria-label="Edit Project"
                           >
-                            <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                            <i
+                              class="fa-solid fa-pen-to-square"
+                              aria-hidden="true"
+                            ></i>
                           </button>
                           <button
                             type="button"
@@ -475,9 +488,7 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </template>
+        </template>
 
         <!-- Grid View -->
         <template if:true={isGridView}>
@@ -512,7 +523,10 @@
                             aria-haspopup="true"
                             aria-expanded="true"
                           >
-                            <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+                            <i
+                              class="fa-solid fa-ellipsis-vertical"
+                              aria-hidden="true"
+                            ></i>
                           </button>
                         </template>
                         <template if:false={proj.isMenuOpen}>
@@ -525,7 +539,10 @@
                             aria-haspopup="true"
                             aria-expanded="false"
                           >
-                            <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+                            <i
+                              class="fa-solid fa-ellipsis-vertical"
+                              aria-hidden="true"
+                            ></i>
                           </button>
                         </template>
                         <template if:true={proj.isMenuOpen}>
@@ -533,24 +550,32 @@
                             class="dropdown-menu dropdown-menu-end p-3 show"
                             role="menu"
                           >
-                              <button
-                                type="button"
-                                class="dropdown-item rounded-1"
-                                data-id={proj.id}
-                                onclick={handleEditProject}
-                                role="menuitem"
-                              >
-                                <i class="fa-solid fa-pen-to-square me-2" aria-hidden="true"></i>Edit
-                              </button>
-                              <button
-                                type="button"
-                                class="dropdown-item rounded-1"
-                                data-id={proj.id}
-                                onclick={handleDeleteProject}
-                                role="menuitem"
-                              >
-                                <i class="fa-solid fa-trash me-1" aria-hidden="true"></i>Delete
-                              </button>
+                            <button
+                              type="button"
+                              class="dropdown-item rounded-1"
+                              data-id={proj.id}
+                              onclick={handleEditProject}
+                              role="menuitem"
+                            >
+                              <i
+                                class="fa-solid fa-pen-to-square me-2"
+                                aria-hidden="true"
+                              ></i
+                              >Edit
+                            </button>
+                            <button
+                              type="button"
+                              class="dropdown-item rounded-1"
+                              data-id={proj.id}
+                              onclick={handleDeleteProject}
+                              role="menuitem"
+                            >
+                              <i
+                                class="fa-solid fa-trash me-1"
+                                aria-hidden="true"
+                              ></i
+                              >Delete
+                            </button>
                           </div>
                         </template>
                       </div>
@@ -610,7 +635,10 @@
                         <span
                           class="avatar avatar-sm avatar-rounded bg-success-transparent flex-shrink-0 me-2"
                         >
-                          <i class="fa-solid fa-list-check text-success fs-16" aria-hidden="true"></i>
+                          <i
+                            class="fa-solid fa-list-check text-success fs-16"
+                            aria-hidden="true"
+                          ></i>
                         </span>
                         <p>
                           <small>Hours Logged : </small>
@@ -643,7 +671,9 @@
                 class="modal-header header-border align-items-center justify-content-between"
               >
                 <div class="d-flex align-items-center">
-                  <h5 id="modal-title-id" class="modal-title me-2">{modalTitle}</h5>
+                  <h5 id="modal-title-id" class="modal-title me-2">
+                    {modalTitle}
+                  </h5>
                 </div>
                 <button
                   type="button"
@@ -722,7 +752,12 @@
                 </div>
                 <div class="tab-content">
                   <template if:true={isBasicTab}>
-                    <div class="tab-pane fade show active p-3" role="tabpanel" id="basic-tab-pane" aria-labelledby="basic-tab-selected">
+                    <div
+                      class="tab-pane fade show active p-3"
+                      role="tabpanel"
+                      id="basic-tab-pane"
+                      aria-labelledby="basic-tab-selected"
+                    >
                       <div class="row">
                         <div class="col-md-12">
                           <div
@@ -731,7 +766,10 @@
                             <div
                               class="d-flex align-items-center justify-content-center avatar avatar-xxl rounded-circle border border-dashed me-2 flex-shrink-0 text-dark frames"
                             >
-                              <i class="fa-solid fa-image text-gray-2 fs-16" aria-hidden="true"></i>
+                              <i
+                                class="fa-solid fa-image text-gray-2 fs-16"
+                                aria-hidden="true"
+                              ></i>
                             </div>
                             <div class="profile-upload">
                               <div class="mb-2">
@@ -764,28 +802,28 @@
                           </div>
                         </div>
                         <div class="col-md-12">
-                            <lightning-input
-                                label="Project Name"
-                                data-field="Name"
-                                value={currentProject.Name}
-                                onchange={handleFieldChange}
-                                class="mb-3"
-                            ></lightning-input>
+                          <lightning-input
+                            label="Project Name"
+                            data-field="Name"
+                            value={currentProject.Name}
+                            onchange={handleFieldChange}
+                            class="mb-3"
+                          ></lightning-input>
                         </div>
                         <div class="col-md-12">
-                            <lightning-combobox
-                                label="Client"
-                                data-field="Account__c"
-                                value={currentProject.Account__c}
-                                options={clientOptions}
-                                onchange={handleFieldChange}
-                                disabled={clientsLoading}
-                                placeholder="Select Client"
-                                class="mb-3"
-                            ></lightning-combobox>
-                            <template if:true={clientsLoading}>
-                              <div class="form-text">Loading clients…</div>
-                            </template>
+                          <lightning-combobox
+                            label="Client"
+                            data-field="Account__c"
+                            value={currentProject.Account__c}
+                            options={clientOptions}
+                            onchange={handleFieldChange}
+                            disabled={clientsLoading}
+                            placeholder="Select Client"
+                            class="mb-3"
+                          ></lightning-combobox>
+                          <template if:true={clientsLoading}>
+                            <div class="form-text">Loading clients…</div>
+                          </template>
                         </div>
                         <div class="col-md-12">
                           <div class="row">
@@ -810,14 +848,14 @@
                               ></lightning-input>
                             </div>
                             <div class="col-md-4">
-                                <lightning-combobox
-                                    label="Priority"
-                                    data-field="Priority__c"
-                                    value={currentProject.Priority__c}
-                                    options={priorityOptions}
-                                    onchange={handleFieldChange}
-                                    class="mb-3"
-                                ></lightning-combobox>
+                              <lightning-combobox
+                                label="Priority"
+                                data-field="Priority__c"
+                                value={currentProject.Priority__c}
+                                options={priorityOptions}
+                                onchange={handleFieldChange}
+                                class="mb-3"
+                              ></lightning-combobox>
                             </div>
                             <div class="col-md-4">
                               <lightning-input
@@ -830,14 +868,14 @@
                               ></lightning-input>
                             </div>
                             <div class="col-md-4">
-                                <lightning-combobox
-                                    label="Status"
-                                    data-field="Status__c"
-                                    value={currentProject.Status__c}
-                                    options={statusOptions}
-                                    onchange={handleFieldChange}
-                                    class="mb-3"
-                                ></lightning-combobox>
+                              <lightning-combobox
+                                label="Status"
+                                data-field="Status__c"
+                                value={currentProject.Status__c}
+                                options={statusOptions}
+                                onchange={handleFieldChange}
+                                class="mb-3"
+                              ></lightning-combobox>
                             </div>
 
                             <div class="col-md-6">
@@ -862,23 +900,23 @@
                             </div>
 
                             <div class="col-md-6">
-                                <lightning-input
-                                    type="number"
-                                    label="Total Working Hours"
-                                    data-field="Total_Hours__c"
-                                    value={currentProject.Total_Hours__c}
-                                    onchange={handleFieldChange}
-                                    class="mb-3"
-                                ></lightning-input>
+                              <lightning-input
+                                type="number"
+                                label="Total Working Hours"
+                                data-field="Total_Hours__c"
+                                value={currentProject.Total_Hours__c}
+                                onchange={handleFieldChange}
+                                class="mb-3"
+                              ></lightning-input>
                             </div>
                             <div class="col-md-6">
-                                <lightning-input
-                                    type="number"
-                                    label="Extra Time"
-                                    value={computedExtraTime}
-                                    disabled
-                                    class="mb-3"
-                                ></lightning-input>
+                              <lightning-input
+                                type="number"
+                                label="Extra Time"
+                                value={computedExtraTime}
+                                disabled
+                                class="mb-3"
+                              ></lightning-input>
                             </div>
                           </div>
                         </div>
@@ -912,15 +950,20 @@
                   </template>
 
                   <template if:true={isMembersTab}>
-                    <div class="tab-pane fade show active p-3" role="tabpanel" id="members-tab-pane" aria-labelledby="members-tab-selected">
+                    <div
+                      class="tab-pane fade show active p-3"
+                      role="tabpanel"
+                      id="members-tab-pane"
+                      aria-labelledby="members-tab-selected"
+                    >
                       <div class="row">
                         <div class="col-md-12">
                           <div class="mb-3">
                             <lightning-textarea
-                                label="Team Members"
-                                data-field="Project_Members__c"
-                                value={currentProject.Project_Members__c}
-                                onchange={handleFieldChange}
+                              label="Team Members"
+                              data-field="Project_Members__c"
+                              value={currentProject.Project_Members__c}
+                              onchange={handleFieldChange}
                             ></lightning-textarea>
                             <div class="form-text">
                               Enter names separated by commas.
@@ -930,31 +973,31 @@
 
                         <div class="col-md-6">
                           <lightning-input
-                                label="Team Leader"
-                                data-field="Project_Leader__c"
-                                value={currentProject.Project_Leader__c}
-                                onchange={handleFieldChange}
-                                class="mb-3"
+                            label="Team Leader"
+                            data-field="Project_Leader__c"
+                            value={currentProject.Project_Leader__c}
+                            onchange={handleFieldChange}
+                            class="mb-3"
                           ></lightning-input>
                         </div>
 
                         <div class="col-md-6">
-                            <lightning-input
-                                label="Project Manager"
-                                data-field="Project_Manager_Name__c"
-                                value={currentProject.Project_Manager_Name__c}
-                                onchange={handleFieldChange}
-                                class="mb-3"
-                            ></lightning-input>
+                          <lightning-input
+                            label="Project Manager"
+                            data-field="Project_Manager_Name__c"
+                            value={currentProject.Project_Manager_Name__c}
+                            onchange={handleFieldChange}
+                            class="mb-3"
+                          ></lightning-input>
                         </div>
 
                         <div class="col-md-12">
                           <div class="mb-0">
                             <lightning-input
-                                label="Tags"
-                                data-field="Project_Tags__c"
-                                value={currentProject.Project_Tags__c}
-                                onchange={handleFieldChange}
+                              label="Tags"
+                              data-field="Project_Tags__c"
+                              value={currentProject.Project_Tags__c}
+                              onchange={handleFieldChange}
                             ></lightning-input>
                             <div class="form-text">
                               Example: UI, Backend, Urgent
@@ -1000,7 +1043,9 @@
               <div
                 class="modal-header header-border align-items-center justify-content-between"
               >
-                <h5 class="modal-title" id="delete-modal-title">Delete Project</h5>
+                <h5 class="modal-title" id="delete-modal-title">
+                  Delete Project
+                </h5>
                 <button
                   type="button"
                   class="btn-close custom-btn-close"

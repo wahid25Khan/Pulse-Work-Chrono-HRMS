@@ -229,17 +229,17 @@ export default class PwchronoMainLayout extends NavigationMixin(
   }
 
   handleSidebarToggle(event) {
-  const mode = event?.detail?.mode;
+    const mode = event?.detail?.mode;
 
-  // Mobile toggle is the slide-in drawer
-  if (mode === "mobile") {
-    document.body.classList.toggle("slide-nav");
-    return;
+    // Mobile toggle is the slide-in drawer
+    if (mode === "mobile") {
+      document.body.classList.toggle("slide-nav");
+      return;
+    }
+
+    // Desktop toggle collapses to "mini-sidebar"
+    document.body.classList.toggle("mini-sidebar");
   }
-
-  // Desktop toggle collapses to "mini-sidebar"
-  document.body.classList.toggle("mini-sidebar");
-}
 
   handleHeaderNavigate(event) {
     const page = event.detail.page;

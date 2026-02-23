@@ -29,14 +29,19 @@ public without sharing class PWChrono_LeaveAllocationBatch implements Database.B
     List<Portal_Users__c> scope
   ) {
     List<PWChrono_Leave_Type__c> leaveTypes = [
-      SELECT Id, Name, Max_Days_Allowed__c, Is_Carry_Forward__c, Max_Carry_Forward_Days__c
+      SELECT
+        Id,
+        Name,
+        Max_Days_Allowed__c,
+        Is_Carry_Forward__c,
+        Max_Carry_Forward_Days__c
       FROM PWChrono_Leave_Type__c
       WHERE Is_Active__c = TRUE
       LIMIT 100
     ];
     Date startDate = getFiscalYearStartDate();
     Date endDate = startDate.addYears(1).addDays(-1);
-    
+
     // Previous year dates for carry forward calculation
     Date prevStartDate = startDate.addYears(-1);
     Date prevEndDate = startDate.addDays(-1);
@@ -50,37 +55,45 @@ public without sharing class PWChrono_LeaveAllocationBatch implements Database.B
       startDate,
       endDate
     );
-    
+
     // Fetch previous year's allocations and usage for carry forward calculation
     Map<String, Decimal> prevYearBalanceMap = getPreviousYearBalances(
-        employeeIds, 
-        leaveTypeIds, 
-        prevStartDate, 
-        prevEndDate
+      employeeIds,
+      leaveTypeIds,
+      prevStartDate,
+      prevEndDate
     );
 
     List<PWChrono_Leave_Allocation__c> allocationsToInsert = new List<PWChrono_Leave_Allocation__c>();
     for (Portal_Users__c employee : scope) {
       for (PWChrono_Leave_Type__c leaveType : leaveTypes) {
         if (!existingKeys.contains(employee.Id + '-' + leaveType.Id)) {
-            Decimal carryForward = 0;
-            
-            // Calculate Carry Forward if enabled
-            if (leaveType.Is_Carry_Forward__c == true) {
-                String key = employee.Id + '-' + leaveType.Id;
-                if (prevYearBalanceMap.containsKey(key)) {
-                    Decimal remaining = prevYearBalanceMap.get(key);
-                    Decimal maxCarry = leaveType.Max_Carry_Forward_Days__c != null ? leaveType.Max_Carry_Forward_Days__c : 0;
-                    
-                    if (remaining > 0) {
-                        carryForward = (remaining > maxCarry) ? maxCarry : remaining;
-                    }
-                }
+          Decimal carryForward = 0;
+
+          // Calculate Carry Forward if enabled
+          if (leaveType.Is_Carry_Forward__c == true) {
+            String key = employee.Id + '-' + leaveType.Id;
+            if (prevYearBalanceMap.containsKey(key)) {
+              Decimal remaining = prevYearBalanceMap.get(key);
+              Decimal maxCarry = leaveType.Max_Carry_Forward_Days__c != null
+                ? leaveType.Max_Carry_Forward_Days__c
+                : 0;
+
+              if (remaining > 0) {
+                carryForward = (remaining > maxCarry) ? maxCarry : remaining;
+              }
             }
-            
-            allocationsToInsert.add(
-                createAllocation(employee, leaveType, startDate, endDate, carryForward)
-            );
+          }
+
+          allocationsToInsert.add(
+            createAllocation(
+              employee,
+              leaveType,
+              startDate,
+              endDate,
+              carryForward
+            )
+          );
         }
       }
     }
@@ -137,8 +150,10 @@ public without sharing class PWChrono_LeaveAllocationBatch implements Database.B
     allocation.Employees__c = employee.Id;
     allocation.Leave_Type__c = leaveType.Id;
     allocation.Carry_Forwarded_Leaves__c = carryForward;
-    
-    Decimal baseAllocation = leaveType.Max_Days_Allowed__c != null ? leaveType.Max_Days_Allowed__c : 0;
+
+    Decimal baseAllocation = leaveType.Max_Days_Allowed__c != null
+      ? leaveType.Max_Days_Allowed__c
+      : 0;
     allocation.Total_Leaves_Allocated__c = baseAllocation + carryForward;
     allocation.Total_Leaves_Used__c = 0;
     allocation.Total_Leaves_Encashed__c = 0;
@@ -146,7 +161,7 @@ public without sharing class PWChrono_LeaveAllocationBatch implements Database.B
     allocation.To_Date__c = endDate;
     return allocation;
   }
-  
+
   private Map<String, Decimal> getPreviousYearBalances(
     Set<Id> employeeIds,
     Set<Id> leaveTypeIds,
@@ -154,50 +169,64 @@ public without sharing class PWChrono_LeaveAllocationBatch implements Database.B
     Date endDate
   ) {
     Map<String, Decimal> balanceMap = new Map<String, Decimal>();
-    
+
     // 1. Get Allocations
     List<PWChrono_Leave_Allocation__c> prevAllocations = [
-      SELECT Id, Employees__c, Leave_Type__c, Total_Leaves_Allocated__c, Total_Leaves_Encashed__c
+      SELECT
+        Id,
+        Employees__c,
+        Leave_Type__c,
+        Total_Leaves_Allocated__c,
+        Total_Leaves_Encashed__c
       FROM PWChrono_Leave_Allocation__c
-      WHERE Employees__c IN :employeeIds
-      AND Leave_Type__c IN :leaveTypeIds
-      AND From_Date__c = :startDate
-      AND To_Date__c = :endDate
+      WHERE
+        Employees__c IN :employeeIds
+        AND Leave_Type__c IN :leaveTypeIds
+        AND From_Date__c = :startDate
+        AND To_Date__c = :endDate
     ];
-    
+
     Map<String, Decimal> allocatedMap = new Map<String, Decimal>();
-    for(PWChrono_Leave_Allocation__c alloc : prevAllocations) {
-        String key = alloc.Employees__c + '-' + alloc.Leave_Type__c;
-        Decimal total = alloc.Total_Leaves_Allocated__c != null ? alloc.Total_Leaves_Allocated__c : 0;
-        Decimal encashed = alloc.Total_Leaves_Encashed__c != null ? alloc.Total_Leaves_Encashed__c : 0;
-        allocatedMap.put(key, total - encashed);
+    for (PWChrono_Leave_Allocation__c alloc : prevAllocations) {
+      String key = alloc.Employees__c + '-' + alloc.Leave_Type__c;
+      Decimal total = alloc.Total_Leaves_Allocated__c != null
+        ? alloc.Total_Leaves_Allocated__c
+        : 0;
+      Decimal encashed = alloc.Total_Leaves_Encashed__c != null
+        ? alloc.Total_Leaves_Encashed__c
+        : 0;
+      allocatedMap.put(key, total - encashed);
     }
 
     // 2. Get Usage (Approved Leaves)
     List<AggregateResult> usageResults = [
-      SELECT Employees__c empId, Leave_Type__c typeId, SUM(Total_Days__c) totalUsed
+      SELECT
+        Employees__c empId,
+        Leave_Type__c typeId,
+        SUM(Total_Days__c) totalUsed
       FROM PWChrono_Leave__c
-      WHERE Employees__c IN :employeeIds
-      AND Leave_Type__c IN :leaveTypeIds
-      AND Status__c = :PWChrono_Constants.STATUS_APPROVED
-      AND From_Date__c >= :startDate
-      AND To_Date__c <= :endDate
+      WHERE
+        Employees__c IN :employeeIds
+        AND Leave_Type__c IN :leaveTypeIds
+        AND Status__c = :PWChrono_Constants.STATUS_APPROVED
+        AND From_Date__c >= :startDate
+        AND To_Date__c <= :endDate
       GROUP BY Employees__c, Leave_Type__c
     ];
 
     Map<String, Decimal> usageMap = new Map<String, Decimal>();
-    for(AggregateResult ar : usageResults) {
-      String key = (Id)ar.get('empId') + '-' + (Id)ar.get('typeId');
-      usageMap.put(key, (Decimal)ar.get('totalUsed'));
+    for (AggregateResult ar : usageResults) {
+      String key = (Id) ar.get('empId') + '-' + (Id) ar.get('typeId');
+      usageMap.put(key, (Decimal) ar.get('totalUsed'));
     }
 
     // 3. Calculate Balance
-    for(String key : allocatedMap.keySet()) {
+    for (String key : allocatedMap.keySet()) {
       Decimal allocatedMinusEncash = allocatedMap.get(key);
       Decimal used = usageMap.containsKey(key) ? usageMap.get(key) : 0;
       balanceMap.put(key, allocatedMinusEncash - used);
     }
-    
+
     return balanceMap;
   }
 

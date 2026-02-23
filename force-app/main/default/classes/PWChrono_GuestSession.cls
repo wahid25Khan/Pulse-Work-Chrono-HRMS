@@ -9,7 +9,10 @@ public without sharing class PWChrono_GuestSession {
    *              - Non-Guest: uses provided portalUserId if present, otherwise maps current Salesforce user.
    *              - Guest: requires portalUserId + sessionToken and validates against Portal_Users__c.
    */
-  public static Id requireVerifiedPortalUserId(String portalUserId, String sessionToken) {
+  public static Id requireVerifiedPortalUserId(
+    String portalUserId,
+    String sessionToken
+  ) {
     // Internal Salesforce users or authenticated Experience users.
     if (UserInfo.getUserType() != 'Guest') {
       if (String.isNotBlank(portalUserId)) {
@@ -24,7 +27,9 @@ public without sharing class PWChrono_GuestSession {
 
     // Guest runtime MUST prove identity with a server-issued token.
     if (String.isBlank(portalUserId) || String.isBlank(sessionToken)) {
-      throw new AuraHandledException('Session invalid or expired. Please log in again.');
+      throw new AuraHandledException(
+        'Session invalid or expired. Please log in again.'
+      );
     }
 
     Id pid;

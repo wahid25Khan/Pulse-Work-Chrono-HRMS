@@ -60,7 +60,12 @@ private class PWChrono_OnboardingController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      PWChrono_OnboardingController.updateTaskStatus(task.Id, 'Completed', null, null);
+      PWChrono_OnboardingController.updateTaskStatus(
+        task.Id,
+        'Completed',
+        null,
+        null
+      );
       Test.stopTest();
 
       PWChrono_Onboarding_Task__c updatedTask = [

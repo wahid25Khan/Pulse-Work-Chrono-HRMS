@@ -93,7 +93,11 @@ private class PWChrono_AppraisalGeneratorBatch_Test {
       SELECT Id
       FROM PWChrono_Appraisal__c
     ];
-    System.assertEquals(0, appraisals.size(), 'Should not create appraisals without cycle');
+    System.assertEquals(
+      0,
+      appraisals.size(),
+      'Should not create appraisals without cycle'
+    );
   }
 
   @isTest
@@ -123,15 +127,21 @@ private class PWChrono_AppraisalGeneratorBatch_Test {
       SELECT Id
       FROM PWChrono_Appraisal__c
     ];
-    System.assertEquals(0, appraisals.size(), 'Should not create appraisals for inactive cycle');
+    System.assertEquals(
+      0,
+      appraisals.size(),
+      'Should not create appraisals for inactive cycle'
+    );
   }
 
   @isTest
   static void testBatchMultipleEmployees() {
     User testUser1 = [SELECT Id FROM User WHERE Alias = 'tuser' LIMIT 1];
     User testUser2 = PWChrono_TestDataFactory.createTestUser('Employee2');
-    
-    Portal_Users__c employee2 = PWChrono_TestDataFactory.createTestEmployee(testUser2.Id);
+
+    Portal_Users__c employee2 = PWChrono_TestDataFactory.createTestEmployee(
+      testUser2.Id
+    );
     employee2.Date_of_Joining__c = Date.today().addYears(-1);
     update employee2;
 
@@ -160,14 +170,20 @@ private class PWChrono_AppraisalGeneratorBatch_Test {
       SELECT Id
       FROM PWChrono_Appraisal__c
     ];
-    System.assertEquals(2, appraisals.size(), 'Should create appraisals for all eligible employees');
+    System.assertEquals(
+      2,
+      appraisals.size(),
+      'Should create appraisals for all eligible employees'
+    );
   }
 
   @isTest
   static void testBatchNewEmployee() {
     // Create employee with recent joining date (not eligible)
     User testUserNew = PWChrono_TestDataFactory.createTestUser('NewEmployee');
-    Portal_Users__c newEmployee = PWChrono_TestDataFactory.createTestEmployee(testUserNew.Id);
+    Portal_Users__c newEmployee = PWChrono_TestDataFactory.createTestEmployee(
+      testUserNew.Id
+    );
     newEmployee.Date_of_Joining__c = Date.today().addMonths(-2); // Only 2 months
     update newEmployee;
 
@@ -197,7 +213,11 @@ private class PWChrono_AppraisalGeneratorBatch_Test {
       FROM PWChrono_Appraisal__c
       WHERE Employees__c = :newEmployee.Id
     ];
-    System.assertEquals(0, appraisals.size(), 'Should not create appraisals for ineligible employees');
+    System.assertEquals(
+      0,
+      appraisals.size(),
+      'Should not create appraisals for ineligible employees'
+    );
   }
 
   @isTest
@@ -207,7 +227,10 @@ private class PWChrono_AppraisalGeneratorBatch_Test {
     PWChrono_AppraisalGeneratorBatch batch = new PWChrono_AppraisalGeneratorBatch();
     try {
       Database.executeBatch(batch, 1);
-      System.assert(true, 'Batch should execute without throwing uncaught exceptions');
+      System.assert(
+        true,
+        'Batch should execute without throwing uncaught exceptions'
+      );
     } catch (Exception e) {
       System.assert(false, 'Batch failed: ' + e.getMessage());
     }

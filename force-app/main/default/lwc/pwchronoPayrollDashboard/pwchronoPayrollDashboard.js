@@ -35,11 +35,9 @@ export default class PwchronoPayrollDashboard extends LightningElement {
       if (this._isInitialized) {
         this.initCharts();
       }
-    } catch (e) {
+    } catch {
       this.summary = undefined;
       this._summaryLoaded = false;
-      // eslint-disable-next-line no-console
-      console.error("Failed to load Payroll dashboard summary", e);
     } finally {
       this._loading = false;
     }
@@ -84,9 +82,8 @@ export default class PwchronoPayrollDashboard extends LightningElement {
       .then(() => {
         this.initCharts();
       })
-      .catch((e) => {
-        // eslint-disable-next-line no-console
-        console.error("Failed to load Chart.js", e);
+      .catch(() => {
+        // Ignore error
       });
   }
 
@@ -117,9 +114,10 @@ export default class PwchronoPayrollDashboard extends LightningElement {
 
     this._charts.push(this.createSalaryRangeChart());
     this._charts.push(
-      this.createBatchSparkline("batchProcessChart1", [
-        10, 14, 13, 18, 16, 20, 19
-      ])
+      this.createBatchSparkline(
+        "batchProcessChart1",
+        [10, 14, 13, 18, 16, 20, 19]
+      )
     );
     this._charts.push(
       this.createBatchSparkline("batchProcessChart2", [4, 6, 7, 8, 7, 9, 8])
@@ -220,7 +218,14 @@ export default class PwchronoPayrollDashboard extends LightningElement {
 
     if (canvas.parentElement) canvas.parentElement.style.height = "220px";
 
-    const labels = this.summary?.trendLabels || ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"];
+    const labels = this.summary?.trendLabels || [
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan"
+    ];
     const tax = this.summary?.taxTrend || [120, 118, 122, 110, 108, 112];
     const deduction = this.summary?.deductionTrend || [90, 92, 93, 88, 85, 89];
 

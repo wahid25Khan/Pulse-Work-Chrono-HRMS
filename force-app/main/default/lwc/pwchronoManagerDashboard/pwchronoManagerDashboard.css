@@ -1,14 +1,12 @@
 /* Overriding External DXP Styles and ensuring no margin */
 
 :host {
-    margin-left: 0 !important;
-    display: block;
-    width: 100%;
+  display: block;
+  width: 100%;
 }
 
 .page-wrapper {
-    margin-left: 0 !important;
-    padding-left: 0 !important; /* Ensuring generic reset */
+  /* Ensuring generic reset */
 }
 
 /* 
@@ -17,6 +15,5 @@
    The :host selector above is the more robust long-term fix.
 */
 .dxpStyle_62a60304-0280-4a7e-95d6-c692e4b27b64 {
-    margin-left: 0 !important;
-    --dxp-style-c-margin-left: 0;
+  --dxp-style-c-margin-left: 0;
 }

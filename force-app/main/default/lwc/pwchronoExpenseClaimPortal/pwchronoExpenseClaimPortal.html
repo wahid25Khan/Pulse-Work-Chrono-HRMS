@@ -45,7 +45,10 @@
             >
               <div class="flex flex-wrap gap-4 items-end">
                 <div class="flex-1 min-w-[200px]">
-                  <label for="expense-claim-search" class="block text-xs font-medium text-gray-600 mb-1">
+                  <label
+                    for="expense-claim-search"
+                    class="block text-xs font-medium text-gray-600 mb-1"
+                  >
                     Search Description
                   </label>
                   <input
@@ -58,7 +61,11 @@
                   />
                 </div>
                 <div class="w-[180px]">
-                  <label for="expense-claim-status" class="block text-xs font-medium text-gray-600 mb-1">Status</label>
+                  <label
+                    for="expense-claim-status"
+                    class="block text-xs font-medium text-gray-600 mb-1"
+                    >Status</label
+                  >
                   <lightning-combobox
                     id="expense-claim-status"
                     value={statusFilter}
@@ -70,7 +77,11 @@
                   </lightning-combobox>
                 </div>
                 <div class="w-[100px]">
-                  <label for="expense-claim-page-size" class="block text-xs font-medium text-gray-600 mb-1">Per Page</label>
+                  <label
+                    for="expense-claim-page-size"
+                    class="block text-xs font-medium text-gray-600 mb-1"
+                    >Per Page</label
+                  >
                   <lightning-combobox
                     id="expense-claim-page-size"
                     value={pageSize}

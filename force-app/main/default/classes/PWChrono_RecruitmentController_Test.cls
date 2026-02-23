@@ -126,7 +126,11 @@ private class PWChrono_RecruitmentController_Test {
         break;
       }
     }
-    System.assertNotEquals(null, roundValue, 'Round__c must have at least one active picklist value');
+    System.assertNotEquals(
+      null,
+      roundValue,
+      'Round__c must have at least one active picklist value'
+    );
 
     System.runAs(testUser) {
       PWChrono_Interview__c interview = new PWChrono_Interview__c(
@@ -240,7 +244,10 @@ private class PWChrono_RecruitmentController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      List<PWChrono_Department__c> depts = PWChrono_RecruitmentController.getActiveDepartments(null, null);
+      List<PWChrono_Department__c> depts = PWChrono_RecruitmentController.getActiveDepartments(
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertEquals(1, depts.size(), 'Should return 1 active department');
@@ -253,7 +260,10 @@ private class PWChrono_RecruitmentController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      List<PWChrono_Designation__c> desigs = PWChrono_RecruitmentController.getActiveDesignations(null, null);
+      List<PWChrono_Designation__c> desigs = PWChrono_RecruitmentController.getActiveDesignations(
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertEquals(
@@ -270,7 +280,10 @@ private class PWChrono_RecruitmentController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      List<Portal_Users__c> interviewers = PWChrono_RecruitmentController.getPotentialInterviewers(null, null);
+      List<Portal_Users__c> interviewers = PWChrono_RecruitmentController.getPotentialInterviewers(
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assert(

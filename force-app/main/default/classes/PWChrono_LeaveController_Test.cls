@@ -137,7 +137,12 @@ private class PWChrono_LeaveController_Test {
 
       Test.startTest();
       // Get the employee ID for the current user
-      Portal_Users__c currentEmployee = [SELECT Id FROM Portal_Users__c WHERE User__c = :testUser.Id LIMIT 1];
+      Portal_Users__c currentEmployee = [
+        SELECT Id
+        FROM Portal_Users__c
+        WHERE User__c = :testUser.Id
+        LIMIT 1
+      ];
       PWChrono_Leave__c savedLeave = PWChrono_LeaveController.saveLeaveApplication(
         newLeave,
         currentEmployee.Id,

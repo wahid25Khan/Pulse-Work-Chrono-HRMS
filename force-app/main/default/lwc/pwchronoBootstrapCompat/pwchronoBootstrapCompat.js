@@ -45,7 +45,8 @@ function closeAllDropdowns(root) {
 
 function isEventInsideRoot(event, root) {
   try {
-    const path = typeof event.composedPath === "function" ? event.composedPath() : null;
+    const path =
+      typeof event.composedPath === "function" ? event.composedPath() : null;
     if (Array.isArray(path)) {
       return path.includes(root);
     }
@@ -55,7 +56,11 @@ function isEventInsideRoot(event, root) {
 
   // Fallback check (best-effort)
   const target = event && event.target;
-  return !!(target && typeof root.contains === "function" && root.contains(target));
+  return !!(
+    target &&
+    typeof root.contains === "function" &&
+    root.contains(target)
+  );
 }
 
 export function initBootstrapCompat(rootLike) {
@@ -63,66 +68,69 @@ export function initBootstrapCompat(rootLike) {
   if (!root) return;
 
   // Tooltip: map data-bs-original-title -> title (native tooltip).
-  root
-    .querySelectorAll('[data-bs-toggle="tooltip"]')
-    .forEach((el) => {
-      if (el.dataset.pwchronoTooltipInit === "true") return;
-      el.dataset.pwchronoTooltipInit = "true";
+  root.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
+    if (el.dataset.pwchronoTooltipInit === "true") return;
+    el.dataset.pwchronoTooltipInit = "true";
 
-      const existingTitle = el.getAttribute("title");
-      if (existingTitle) return;
+    const existingTitle = el.getAttribute("title");
+    if (existingTitle) return;
 
-      const original = el.getAttribute("data-bs-original-title");
-      if (original) {
-        el.setAttribute("title", original);
-      }
-    });
+    const original = el.getAttribute("data-bs-original-title");
+    if (original) {
+      el.setAttribute("title", original);
+    }
+  });
 
   // Dropdown toggles.
-  root
-    .querySelectorAll('[data-bs-toggle="dropdown"]')
-    .forEach((toggle) => {
-      if (toggle.dataset.pwchronoDropdownInit === "true") return;
-      toggle.dataset.pwchronoDropdownInit = "true";
+  root.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((toggle) => {
+    if (toggle.dataset.pwchronoDropdownInit === "true") return;
+    toggle.dataset.pwchronoDropdownInit = "true";
 
-      // Ensure a11y defaults.
-      if (!toggle.hasAttribute("aria-expanded")) {
-        toggle.setAttribute("aria-expanded", "false");
+    // Ensure a11y defaults.
+    if (!toggle.hasAttribute("aria-expanded")) {
+      toggle.setAttribute("aria-expanded", "false");
+    }
+    if (!toggle.hasAttribute("aria-haspopup")) {
+      toggle.setAttribute("aria-haspopup", "true");
+    }
+
+    const onToggleClick = (event) => {
+      // Stop click-outside handler from immediately closing.
+      event?.stopPropagation?.();
+
+      // For <a href="#"> etc.
+      if (toggle.tagName === "A") {
+        event?.preventDefault?.();
       }
-      if (!toggle.hasAttribute("aria-haspopup")) {
-        toggle.setAttribute("aria-haspopup", "true");
+
+      const dropdown = toggle.closest(".dropdown");
+      const menu = dropdown ? dropdown.querySelector(".dropdown-menu") : null;
+      if (!menu) return;
+
+      const isOpen = menu.classList.contains("show");
+      closeAllDropdowns(root);
+
+      if (!isOpen) {
+        dropdown?.classList?.add("show");
+        toggle.classList.add("show");
+        menu.classList.add("show");
+        toggle.setAttribute("aria-expanded", "true");
       }
+    };
 
-      const onToggleClick = (event) => {
-        // Stop click-outside handler from immediately closing.
-        event?.stopPropagation?.();
+    toggle.addEventListener("click", onToggleClick);
 
-        // For <a href="#"> etc.
-        if (toggle.tagName === "A") {
-          event?.preventDefault?.();
-        }
-
-        const dropdown = toggle.closest(".dropdown");
-        const menu = dropdown ? dropdown.querySelector(".dropdown-menu") : null;
-        if (!menu) return;
-
-        const isOpen = menu.classList.contains("show");
-        closeAllDropdowns(root);
-
-        if (!isOpen) {
-          dropdown?.classList?.add("show");
-          toggle.classList.add("show");
-          menu.classList.add("show");
-          toggle.setAttribute("aria-expanded", "true");
-        }
-      };
-
-      toggle.addEventListener("click", onToggleClick);
-
-      const state = ROOT_STATE.get(root) || { elementListeners: [], documentListeners: null };
-      state.elementListeners.push({ el: toggle, type: "click", fn: onToggleClick });
-      ROOT_STATE.set(root, state);
+    const state = ROOT_STATE.get(root) || {
+      elementListeners: [],
+      documentListeners: null
+    };
+    state.elementListeners.push({
+      el: toggle,
+      type: "click",
+      fn: onToggleClick
     });
+    ROOT_STATE.set(root, state);
+  });
 
   // One document-level click/keydown handler per root.
   const existing = ROOT_STATE.get(root);

@@ -142,13 +142,28 @@ private class PWChrono_AdminController_Test {
 
     System.runAs(adminUser) {
       Test.startTest();
-      PWChrono_AdminController.EmployeeStatusOverview res = PWChrono_AdminController.getEmployeeStatusOverview(null, null);
+      PWChrono_AdminController.EmployeeStatusOverview res = PWChrono_AdminController.getEmployeeStatusOverview(
+        null,
+        null
+      );
       Test.stopTest();
 
-      System.assertNotEquals(null, res, 'Should return employee status overview');
+      System.assertNotEquals(
+        null,
+        res,
+        'Should return employee status overview'
+      );
       System.assert(res.total >= 1, 'Total should be at least 1');
-      System.assertEquals(1, res.contract, 'Should count manager as Contract bucket');
-      System.assertEquals(1, res.probation, 'Should count Is_New__c user as Probation bucket');
+      System.assertEquals(
+        1,
+        res.contract,
+        'Should count manager as Contract bucket'
+      );
+      System.assertEquals(
+        1,
+        res.probation,
+        'Should count Is_New__c user as Probation bucket'
+      );
     }
   }
 
@@ -158,11 +173,19 @@ private class PWChrono_AdminController_Test {
 
     System.runAs(adminUser) {
       Test.startTest();
-      PWChrono_AdminController.AttendanceOverview res = PWChrono_AdminController.getAttendanceOverview(Date.today(), null, null);
+      PWChrono_AdminController.AttendanceOverview res = PWChrono_AdminController.getAttendanceOverview(
+        Date.today(),
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertNotEquals(null, res, 'Should return attendance overview');
-      System.assertEquals(Date.today(), res.day, 'Should reflect requested date');
+      System.assertEquals(
+        Date.today(),
+        res.day,
+        'Should reflect requested date'
+      );
       System.assertEquals(1, res.present, 'Approved should map to Present');
       System.assertEquals(1, res.late, 'Submitted should map to Late');
       System.assertEquals(1, res.permission, 'Draft should map to Permission');
@@ -211,7 +234,10 @@ private class PWChrono_AdminController_Test {
 
     System.runAs(adminUser) {
       Test.startTest();
-      PWChrono_Feature_Settings__c settings = PWChrono_AdminController.getFeatureSettings(null, null);
+      PWChrono_Feature_Settings__c settings = PWChrono_AdminController.getFeatureSettings(
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertNotEquals(null, settings, 'Should return feature settings');
@@ -258,7 +284,10 @@ private class PWChrono_AdminController_Test {
     System.runAs(adminUser) {
       Test.startTest();
       // This might return null if no metadata exists in the org, but code handles it
-      PWChrono_Settings__mdt settings = PWChrono_AdminController.getGlobalSettings(null, null);
+      PWChrono_Settings__mdt settings = PWChrono_AdminController.getGlobalSettings(
+        null,
+        null
+      );
       Test.stopTest();
 
       // We can't assert much here as MDT depends on org config, but we ensure no exception
@@ -359,12 +388,25 @@ private class PWChrono_AdminController_Test {
 
     System.runAs(adminUser) {
       Test.startTest();
-      List<PWChrono_AdminController.ChartPoint> points = PWChrono_AdminController.getEmployeesByDepartment(null, null);
+      List<PWChrono_AdminController.ChartPoint> points = PWChrono_AdminController.getEmployeesByDepartment(
+        null,
+        null
+      );
       Test.stopTest();
 
-      System.assertNotEquals(null, points, 'Should return department chart points');
-      System.assert(!points.isEmpty(), 'Should return at least one department point');
-      System.assert(points[0].value >= 1, 'Top department count should be >= 1');
+      System.assertNotEquals(
+        null,
+        points,
+        'Should return department chart points'
+      );
+      System.assert(
+        !points.isEmpty(),
+        'Should return at least one department point'
+      );
+      System.assert(
+        points[0].value >= 1,
+        'Top department count should be >= 1'
+      );
     }
   }
 
@@ -375,14 +417,26 @@ private class PWChrono_AdminController_Test {
     System.runAs(adminUser) {
       Integer y = Date.today().year();
       Test.startTest();
-      List<PWChrono_AdminController.ChartPoint> points = PWChrono_AdminController.getSalesOverview(y, null, null);
+      List<PWChrono_AdminController.ChartPoint> points = PWChrono_AdminController.getSalesOverview(
+        y,
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertEquals(12, points.size(), 'Should return 12 months');
       // Values are in $k, based on test setup (25k in Jan, 50k in Feb)
-      System.assertEquals('Jan', points[0].label, 'First month label should be Jan');
+      System.assertEquals(
+        'Jan',
+        points[0].label,
+        'First month label should be Jan'
+      );
       System.assertEquals(25, points[0].value, 'Jan should be 25k');
-      System.assertEquals('Feb', points[1].label, 'Second month label should be Feb');
+      System.assertEquals(
+        'Feb',
+        points[1].label,
+        'Second month label should be Feb'
+      );
       System.assertEquals(50, points[1].value, 'Feb should be 50k');
     }
   }

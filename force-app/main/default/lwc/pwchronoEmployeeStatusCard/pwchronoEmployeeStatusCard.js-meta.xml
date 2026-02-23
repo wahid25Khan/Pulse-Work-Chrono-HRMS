@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>64.0</apiVersion>
     <isExposed>true</isExposed>
@@ -10,5 +10,6 @@
         <target>lightningCommunity__Default</target>
     </targets>
     <masterLabel>PWChrono Employee Status Card</masterLabel>
-    <description>Employee Status card showing breakdown by employment type and top performer</description>
+    <description
+  >Employee Status card showing breakdown by employment type and top performer</description>
 </LightningComponentBundle>

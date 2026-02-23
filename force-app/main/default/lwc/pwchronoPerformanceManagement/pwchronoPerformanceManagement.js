@@ -2,19 +2,19 @@ import { LightningElement, api, track } from "lwc";
 
 export default class PwchronoPerformanceManagement extends LightningElement {
   // Label placeholders (No hardcoding)
-  @api pageTitle;
-  @api breadcrumbParent;
-  @api breadcrumbActive;
-  @api addBtnLabel;
-  @api listTitle;
-  @api sortByLabel;
+  pageTitle;
+  breadcrumbParent;
+  breadcrumbActive;
+  addBtnLabel;
+  listTitle;
+  sortByLabel;
 
   // Table Header Labels
-  @api colDesignation;
-  @api colDepartment;
-  @api colApprovedBy;
-  @api colCreatedDate;
-  @api colStatus;
+  colDesignation;
+  colDepartment;
+  colApprovedBy;
+  colCreatedDate;
+  colStatus;
 
   @track indicatorData = [];
   @track isModalOpen = false;
@@ -99,6 +99,8 @@ export default class PwchronoPerformanceManagement extends LightningElement {
       case "save":
         this.handleSave();
         break;
+      default:
+        break;
     }
   }
 
@@ -109,11 +111,12 @@ export default class PwchronoPerformanceManagement extends LightningElement {
   handleSave() {
     let currentData = [...this.indicatorData];
     if (this.isEditing) {
-      currentData = currentData.map((item) =>
-        item.id === this.selectedIndicator.id
-          ? { ...this.selectedIndicator }
-          : item
-      );
+      currentData = currentData.map((item) => {
+        if (item.id === this.selectedIndicator.id) {
+          return { ...this.selectedIndicator };
+        }
+        return item;
+      });
     } else {
       currentData.push({
         ...this.selectedIndicator,

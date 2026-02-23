@@ -34,7 +34,7 @@ public inherited sharing class PWChrono_Constants {
     String userCurrency = UserInfo.getDefaultCurrency();
     return String.isNotBlank(userCurrency) ? userCurrency : CURRENCY_CODE;
   }
-  
+
   public static final Integer OTP_EXPIRATION_MINUTES = 10;
   public static final Integer OTP_RESEND_COOLDOWN_MINUTES = 1;
   public static final Integer OTP_COUNTDOWN_SECONDS = 60;

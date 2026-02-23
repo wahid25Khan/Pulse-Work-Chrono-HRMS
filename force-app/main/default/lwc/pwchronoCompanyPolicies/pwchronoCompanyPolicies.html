@@ -1,92 +1,125 @@
 <template lwc:render-mode="light">
   <div class="page-wrapper">
     <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
-            <!-- PwChrono Standard Header -->
-            <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-                <div class="my-auto mb-2">
-                    <h2 class="mb-1 text-2xl font-bold text-gray-900">Company Policies</h2>
-                    <p class="text-muted text-sm text-gray-500">Review organizational policies and guidelines</p>
-                </div>
-                <div class="d-flex my-xl-auto right-content">
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 md:p-6">
-      <!-- Filter -->
-      <div class="max-w-xs mb-6">
-        <lightning-combobox
-          name="category"
-          label="Filter by Category"
-          value={selectedCategory}
-          placeholder="Select Category"
-          options={categoryOptions}
-          onchange={handleCategoryChange}
-        ></lightning-combobox>
+      <!-- PwChrono Standard Header -->
+      <div
+        class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
+      >
+        <div class="my-auto mb-2">
+          <h2 class="mb-1 text-2xl font-bold text-gray-900">
+            Company Policies
+          </h2>
+          <p class="text-muted text-sm text-gray-500">
+            Review organizational policies and guidelines
+          </p>
+        </div>
+        <div class="d-flex my-xl-auto right-content"></div>
       </div>
 
-      <!-- Policy List -->
-      <!-- Loading State -->
-      <template if:true={isLoading}>
-        <div class="flex items-center justify-center py-12">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-          <span class="ml-3 text-gray-600">Loading policies...</span>
-        </div>
-      </template>
-
-      <template if:false={isLoading}>
-      <template if:true={policies}>
-        <template if:true={hasPolicies}>
-          <div class="space-y-4">
-            <lightning-accordion allow-multiple-sections-open>
-              <template for:each={policies} for:item="policy">
-                <lightning-accordion-section
-                  key={policy.Id}
-                  name={policy.Id}
-                  label={policy.Name}
-                >
-                  <div class="p-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Category</p>
-                        <p class="text-gray-800">{policy.Category__c}</p>
-                      </div>
-                      <div>
-                        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Effective Date</p>
-                        <p class="text-gray-800">
-                          <lightning-formatted-date-time
-                            value={policy.Effective_Date__c}
-                          ></lightning-formatted-date-time>
-                        </p>
-                      </div>
-                    </div>
-                    <div class="prose prose-sm max-w-none text-gray-700">
-                      <lightning-formatted-rich-text
-                        value={policy.Description__c}
-                      ></lightning-formatted-rich-text>
-                    </div>
-                  </div>
-                </lightning-accordion-section>
-              </template>
-            </lightning-accordion>
+      <div
+        class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+      >
+        <div class="p-4 md:p-6">
+          <!-- Filter -->
+          <div class="max-w-xs mb-6">
+            <lightning-combobox
+              name="category"
+              label="Filter by Category"
+              value={selectedCategory}
+              placeholder="Select Category"
+              options={categoryOptions}
+              onchange={handleCategoryChange}
+            ></lightning-combobox>
           </div>
-        </template>
-        <template if:false={hasPolicies}>
-          <div class="flex flex-col items-center justify-center py-12 text-center">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-              <lightning-icon icon-name="utility:file" size="medium" class="text-gray-400"></lightning-icon>
+
+          <!-- Policy List -->
+          <!-- Loading State -->
+          <template if:true={isLoading}>
+            <div class="flex items-center justify-center py-12">
+              <div
+                class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"
+              ></div>
+              <span class="ml-3 text-gray-600">Loading policies...</span>
             </div>
-            <p class="text-gray-500">No policies found for this category.</p>
-          </div>
-        </template>
-      </template>
-      </template>
+          </template>
 
-      <template if:true={error}>
-        <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600">{error}</div>
-      </template>
+          <template if:false={isLoading}>
+            <template if:true={policies}>
+              <template if:true={hasPolicies}>
+                <div class="space-y-4">
+                  <lightning-accordion allow-multiple-sections-open>
+                    <template for:each={policies} for:item="policy">
+                      <lightning-accordion-section
+                        key={policy.Id}
+                        name={policy.Id}
+                        label={policy.Name}
+                      >
+                        <div class="p-4">
+                          <div
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4"
+                          >
+                            <div>
+                              <p
+                                class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+                              >
+                                Category
+                              </p>
+                              <p class="text-gray-800">{policy.Category__c}</p>
+                            </div>
+                            <div>
+                              <p
+                                class="text-xs text-gray-500 uppercase tracking-wide font-medium"
+                              >
+                                Effective Date
+                              </p>
+                              <p class="text-gray-800">
+                                <lightning-formatted-date-time
+                                  value={policy.Effective_Date__c}
+                                ></lightning-formatted-date-time>
+                              </p>
+                            </div>
+                          </div>
+                          <div class="prose prose-sm max-w-none text-gray-700">
+                            <lightning-formatted-rich-text
+                              value={policy.Description__c}
+                            ></lightning-formatted-rich-text>
+                          </div>
+                        </div>
+                      </lightning-accordion-section>
+                    </template>
+                  </lightning-accordion>
+                </div>
+              </template>
+              <template if:false={hasPolicies}>
+                <div
+                  class="flex flex-col items-center justify-center py-12 text-center"
+                >
+                  <div
+                    class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+                  >
+                    <lightning-icon
+                      icon-name="utility:file"
+                      size="medium"
+                      class="text-gray-400"
+                    ></lightning-icon>
+                  </div>
+                  <p class="text-gray-500">
+                    No policies found for this category.
+                  </p>
+                </div>
+              </template>
+            </template>
+          </template>
+
+          <template if:true={error}>
+            <div
+              class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600"
+            >
+              {error}
+            </div>
+          </template>
+        </div>
+      </div>
     </div>
-  </div>
-  </div>
   </div>
 </template>

@@ -1,7 +1,12 @@
 import { refreshApex } from "@salesforce/apex";
 import getMyAttendanceRequests from "@salesforce/apex/PWChrono_AttendanceController.getMyAttendanceRequests";
 import saveAttendanceRequest from "@salesforce/apex/PWChrono_AttendanceController.saveAttendanceRequest";
-import { getEmployeeId, getSessionToken, hasFieldPermission, hasPermission } from "c/pwchronoSession";
+import {
+  getEmployeeId,
+  getSessionToken,
+  hasFieldPermission,
+  hasPermission
+} from "c/pwchronoSession";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, api, track, wire } from "lwc";
 
@@ -133,7 +138,10 @@ export default class PwchronoAttendanceRequest extends LightningElement {
 
   get pageInfo() {
     const start = (this.currentPage - 1) * this.pageSize + 1;
-    const end = Math.min(this.currentPage * this.pageSize, this.allRequests.length);
+    const end = Math.min(
+      this.currentPage * this.pageSize,
+      this.allRequests.length
+    );
     return `${start}–${end} of ${this.allRequests.length}`;
   }
 

@@ -5,7 +5,9 @@ import { showErrorToast, logError } from "c/pwchronoErrorHandler";
 import { NavigationMixin } from "lightning/navigation";
 import { getEmployeeId } from "c/pwchronoSession";
 
-export default class PwchronoDashboard extends NavigationMixin(LightningElement) {
+export default class PwchronoDashboard extends NavigationMixin(
+  LightningElement
+) {
   @track dashboardData = {
     leaveBalance: [],
     pendingApprovals: { total: 0 },
@@ -31,7 +33,10 @@ export default class PwchronoDashboard extends NavigationMixin(LightningElement)
 
       // Load access first - pass employeeId for portal users
       const accessData = await getUserAccessById({ employeeId: employeeId });
-      this.hasAccess = accessData?.hasAccess && accessData?.features?.includes("Dashboard") ? true : false;
+      this.hasAccess =
+        accessData?.hasAccess && accessData?.features?.includes("Dashboard")
+          ? true
+          : false;
       this.accessLoaded = true;
 
       if (!this.hasAccess) {
@@ -82,8 +87,13 @@ export default class PwchronoDashboard extends NavigationMixin(LightningElement)
 
   // Computed property for today's date
   get todayDate() {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date().toLocaleDateString('en-US', options);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    };
+    return new Date().toLocaleDateString("en-US", options);
   }
 
   formatTime(timeValue) {
@@ -130,8 +140,18 @@ export default class PwchronoDashboard extends NavigationMixin(LightningElement)
     try {
       const date = new Date(periodDate);
       const monthNames = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
       ];
       return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
     } catch (error) {

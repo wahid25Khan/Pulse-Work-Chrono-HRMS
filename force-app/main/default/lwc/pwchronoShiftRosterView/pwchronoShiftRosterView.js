@@ -4,7 +4,7 @@ import { showErrorToast, logError } from "c/pwchronoErrorHandler";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
 export default class PwchronoShiftRosterView extends LightningElement {
-  static renderMode = 'light';
+  static renderMode = "light";
   @track currentWeekStart;
   @track weekDays = [];
   @track isLoading = true;
@@ -22,11 +22,11 @@ export default class PwchronoShiftRosterView extends LightningElement {
   }
 
   get workingDaysCount() {
-    return this.weekDays.filter(day => day.shift).length;
+    return this.weekDays.filter((day) => day.shift).length;
   }
 
   get offDaysCount() {
-    return this.weekDays.filter(day => !day.shift).length;
+    return this.weekDays.filter((day) => !day.shift).length;
   }
 
   formatDate(date) {
@@ -149,7 +149,7 @@ export default class PwchronoShiftRosterView extends LightningElement {
       if (day.isToday) cardClass += " today";
       if (hasShift) cardClass += " working";
       else cardClass += " off";
-      
+
       return {
         ...day,
         shift: shiftMap[day.isoDate],

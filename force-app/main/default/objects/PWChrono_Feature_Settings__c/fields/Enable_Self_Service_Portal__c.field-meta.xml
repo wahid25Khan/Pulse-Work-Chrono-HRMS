@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Enable_Self_Service_Portal__c</fullName>
     <defaultValue>true</defaultValue>
-    <description>Enable employee self-service features for leave application, attendance viewing, and payslip access.</description>
-    <inlineHelpText>Allows employees to access their own PWChrono data and submit requests through portal.</inlineHelpText>
+    <description
+  >Enable employee self-service features for leave application, attendance viewing, and payslip access.</description>
+    <inlineHelpText
+  >Allows employees to access their own PWChrono data and submit requests through portal.</inlineHelpText>
     <label>Enable Self Service Portal</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

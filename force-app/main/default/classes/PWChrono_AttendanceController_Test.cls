@@ -304,7 +304,7 @@ private class PWChrono_AttendanceController_Test {
     Portal_Users__c employee = [
       SELECT Id
       FROM Portal_Users__c
-      WHERE User__c != null AND Role__c != :PWChrono_Constants.ROLE_MANAGER
+      WHERE User__c != NULL AND Role__c != :PWChrono_Constants.ROLE_MANAGER
       LIMIT 1
     ];
 
@@ -315,7 +315,13 @@ private class PWChrono_AttendanceController_Test {
       To_Time__c = Time.newInstance(18, 0, 0, 0),
       Reason__c = 'Reject path coverage',
       Status__c = PWChrono_Constants.STATUS_SUBMITTED,
-      Approvers__c = [SELECT Id FROM Portal_Users__c WHERE User__c = :managerUser.Id LIMIT 1].Id
+      Approvers__c = [
+        SELECT Id
+        FROM Portal_Users__c
+        WHERE User__c = :managerUser.Id
+        LIMIT 1
+      ]
+      .Id
     );
     insert rejectRequest;
 
@@ -354,7 +360,10 @@ private class PWChrono_AttendanceController_Test {
           'Approve',
           'Invalid id path'
         );
-        System.assert(false, 'Expected controlled exception for invalid request id.');
+        System.assert(
+          false,
+          'Expected controlled exception for invalid request id.'
+        );
       } catch (Exception e) {
         System.assert(
           e.getMessage().contains('Error processing attendance approval'),

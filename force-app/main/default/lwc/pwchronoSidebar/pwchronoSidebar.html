@@ -18,12 +18,7 @@
     <div class="sidebar-logo" data-region="sidebarLogo">
       <a href={communityHomeHref} class="logo logo-normal">
         <template if:false={logoLightErrored}>
-          <img
-            src={logoLightUrl}
-            alt="Logo"
-            data-variant="light"
-            onerror={handleLogoError}
-          />
+          <img src={logoLightUrl} alt="Logo" data-variant="light" />
         </template>
         <template if:true={logoLightErrored}>
           <span class="logo-fallback" aria-label="Logo">{brandInitials}</span>
@@ -31,12 +26,7 @@
       </a>
       <a href={communityHomeHref} class="logo-small">
         <template if:false={logoSmallErrored}>
-          <img
-            src={logoSmallUrl}
-            alt="Logo"
-            data-variant="small"
-            onerror={handleLogoError}
-          />
+          <img src={logoSmallUrl} alt="Logo" data-variant="small" />
         </template>
         <template if:true={logoSmallErrored}>
           <span class="logo-fallback logo-small-fallback" aria-label="Logo"
@@ -46,12 +36,7 @@
       </a>
       <a href={communityHomeHref} class="logo-white">
         <template if:false={logoDarkErrored}>
-          <img
-            src={logoDarkUrl}
-            alt="Logo"
-            data-variant="dark"
-            onerror={handleLogoError}
-          />
+          <img src={logoDarkUrl} alt="Logo" data-variant="dark" />
         </template>
         <template if:true={logoDarkErrored}>
           <span class="logo-fallback" aria-label="Logo">{brandInitials}</span>
@@ -64,37 +49,36 @@
       <div class="sidebar-nav mb-3">
         <ul
           class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified bg-transparent"
-          role="tablist"
         >
           <li class="nav-item">
-            <a
+            <button
               class={menuTabClass}
-              href="#"
               data-tab="menu"
               onclick={handleSidebarTabClick}
               role="tab"
-              >Menu</a
             >
+              Menu
+            </button>
           </li>
           <li class="nav-item">
-            <a
+            <button
               class={chatTabClass}
-              href="#"
               data-tab="chat"
               onclick={handleSidebarTabClick}
               role="tab"
-              >Chats</a
             >
+              Chats
+            </button>
           </li>
           <li class="nav-item">
-            <a
+            <button
               class={emailTabClass}
-              href="#"
               data-tab="email"
               onclick={handleSidebarTabClick}
               role="tab"
-              >Inbox</a
             >
+              Inbox
+            </button>
           </li>
         </ul>
       </div>
@@ -242,9 +226,9 @@
     <template if:true={isChatTab}>
       <div class="sidebar-inner slimscroll" data-region="sidebarChat">
         <div class="p-3">
-          <div class="alert alert-info mb-0" role="status">
+          <output class="alert alert-info mb-0 block">
             Chat is coming soon.
-          </div>
+          </output>
         </div>
       </div>
     </template>
@@ -252,9 +236,9 @@
     <template if:true={isEmailTab}>
       <div class="sidebar-inner slimscroll" data-region="sidebarEmail">
         <div class="p-3">
-          <div class="alert alert-info mb-0" role="status">
+          <output class="alert alert-info mb-0 block">
             Email is coming soon.
-          </div>
+          </output>
         </div>
       </div>
     </template>

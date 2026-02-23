@@ -101,13 +101,20 @@ export default class PwchronoDashboardProjectsTable extends LightningElement {
 
     const totalHours = Number(proj?.Total_Hours__c ?? 0);
     const hoursLogged = Number(proj?.Hours_Logged__c ?? 0);
-    const safeTotal = Number.isFinite(totalHours) && totalHours > 0 ? totalHours : 0;
-    const safeLogged = Number.isFinite(hoursLogged) && hoursLogged > 0 ? hoursLogged : 0;
-    const progressPct = safeTotal ? Math.max(0, Math.min(100, Math.round((safeLogged / safeTotal) * 100))) : 0;
+    const safeTotal =
+      Number.isFinite(totalHours) && totalHours > 0 ? totalHours : 0;
+    const safeLogged =
+      Number.isFinite(hoursLogged) && hoursLogged > 0 ? hoursLogged : 0;
+    const progressPct = safeTotal
+      ? Math.max(0, Math.min(100, Math.round((safeLogged / safeTotal) * 100)))
+      : 0;
 
     const members = this.parseTeamMembers(proj?.Project_Members__c);
     const teamSizeRaw = Number(proj?.Team_Size__c);
-    const teamSize = Number.isFinite(teamSizeRaw) && teamSizeRaw > 0 ? teamSizeRaw : members.length;
+    const teamSize =
+      Number.isFinite(teamSizeRaw) && teamSizeRaw > 0
+        ? teamSizeRaw
+        : members.length;
 
     const avatarColors = ["bg-primary", "bg-secondary", "bg-success"];
     const teamAvatars = members.slice(0, 3).map((name, idx) => ({
@@ -121,7 +128,8 @@ export default class PwchronoDashboardProjectsTable extends LightningElement {
 
     return {
       id: proj?.Id,
-      code: "PRO-" + (proj?.Id ? proj.Id.substring(8, 13).toUpperCase() : "000"),
+      code:
+        "PRO-" + (proj?.Id ? proj.Id.substring(8, 13).toUpperCase() : "000"),
       name: proj?.Name || "Untitled Project",
       description: (proj?.Description__c || "").toString(),
       date: proj?.End_Date__c
@@ -131,7 +139,9 @@ export default class PwchronoDashboardProjectsTable extends LightningElement {
             year: "numeric"
           })
         : "—",
-      hoursText: safeTotal ? `${safeLogged}/${safeTotal} Hrs` : `${safeLogged} Hrs`,
+      hoursText: safeTotal
+        ? `${safeLogged}/${safeTotal} Hrs`
+        : `${safeLogged} Hrs`,
       progressPct,
       progressWidthStyle: `width: ${progressPct}%`,
       priority,

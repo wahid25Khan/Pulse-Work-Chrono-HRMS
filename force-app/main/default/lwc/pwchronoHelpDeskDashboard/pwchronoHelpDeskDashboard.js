@@ -44,12 +44,10 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
       if (this._chartJsLoaded) {
         this.initCharts();
       }
-    } catch (e) {
+    } catch {
       // keep UI functional even if Apex fails
       this.summary = undefined;
       this._summaryLoaded = false;
-      // eslint-disable-next-line no-console
-      console.error("Failed to load Help Desk dashboard summary", e);
     } finally {
       this._loading = false;
     }
@@ -113,9 +111,8 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
       .then(() => {
         this.initCharts();
       })
-      .catch((e) => {
-        // eslint-disable-next-line no-console
-        console.error("Chart.js failed to load", e);
+      .catch(() => {
+        // Ignore error
       });
   }
 
@@ -145,11 +142,15 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
     const ticketStatusCanvas = this.template.querySelector(
       "canvas#ticket-status-chart"
     );
-    const slaCanvas = this.template.querySelector("canvas#sla-compliance-chart");
+    const slaCanvas = this.template.querySelector(
+      "canvas#sla-compliance-chart"
+    );
     const backlogCanvas = this.template.querySelector(
       "canvas#backlog-growth-chart"
     );
-    const categoryCanvas = this.template.querySelector("canvas#ticket-category");
+    const categoryCanvas = this.template.querySelector(
+      "canvas#ticket-category"
+    );
 
     // Global defaults (keep minimal so SmartHR styling stays dominant)
     Chart.defaults.responsive = true;
@@ -160,9 +161,21 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
     if (ticketTrendsCanvas) {
       ticketTrendsCanvas.parentElement.style.height = "240px";
 
-      const labels = this.summary?.trendLabels || ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      const created = this.summary?.createdTrend || [140, 155, 190, 150, 160, 175, 180];
-      const resolved = this.summary?.resolvedTrend || [40, 65, 105, 70, 85, 75, 90];
+      const labels = this.summary?.trendLabels || [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ];
+      const created = this.summary?.createdTrend || [
+        140, 155, 190, 150, 160, 175, 180
+      ];
+      const resolved = this.summary?.resolvedTrend || [
+        40, 65, 105, 70, 85, 75, 90
+      ];
 
       const c = new Chart(ticketTrendsCanvas.getContext("2d"), {
         type: "line",
@@ -234,7 +247,10 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
 
       const open = Number(this.openTickets || 0);
       const overdue = Number(this.overdueTickets || 0);
-      const slaValue = open > 0 ? Math.max(0, Math.min(100, ((open - overdue) / open) * 100)) : 100;
+      const slaValue =
+        open > 0
+          ? Math.max(0, Math.min(100, ((open - overdue) / open) * 100))
+          : 100;
       const c = new Chart(slaCanvas.getContext("2d"), {
         type: "doughnut",
         data: {
@@ -261,8 +277,18 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
     if (backlogCanvas) {
       backlogCanvas.parentElement.style.height = "200px";
 
-      const labels = this.summary?.trendLabels || ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      const created = this.summary?.createdTrend || [120, 300, 340, 410, 460, 520, 560];
+      const labels = this.summary?.trendLabels || [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ];
+      const created = this.summary?.createdTrend || [
+        120, 300, 340, 410, 460, 520, 560
+      ];
       const resolved = this.summary?.resolvedTrend || [0, 0, 0, 0, 0, 0, 0];
       const backlog = [];
       let running = 0;
@@ -315,7 +341,14 @@ export default class PwchronoHelpDeskDashboard extends LightningElement {
       const c = new Chart(categoryCanvas.getContext("2d"), {
         type: "doughnut",
         data: {
-          labels: ["IT Support", "HR", "Payroll", "Access", "Hardware", "Other"],
+          labels: [
+            "IT Support",
+            "HR",
+            "Payroll",
+            "Access",
+            "Hardware",
+            "Other"
+          ],
           datasets: [
             {
               data: categoryData,

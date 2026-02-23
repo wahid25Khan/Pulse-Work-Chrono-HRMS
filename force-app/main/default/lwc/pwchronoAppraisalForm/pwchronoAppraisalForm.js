@@ -7,8 +7,18 @@ import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUse
 import { getSession, getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
 const COLUMNS = [
-  { label: "Period", fieldName: "Appraisal_Period__c", type: "text", sortable: true },
-  { label: "Start Date", fieldName: "Start_Date__c", type: "date", sortable: true },
+  {
+    label: "Period",
+    fieldName: "Appraisal_Period__c",
+    type: "text",
+    sortable: true
+  },
+  {
+    label: "Start Date",
+    fieldName: "Start_Date__c",
+    type: "date",
+    sortable: true
+  },
   { label: "End Date", fieldName: "End_Date__c", type: "date", sortable: true },
   { label: "Status", fieldName: "Status__c", type: "text", sortable: true },
   { label: "Self Rating", fieldName: "Self_Rating__c", type: "number" },
@@ -41,24 +51,24 @@ export default class PwchronoAppraisalForm extends LightningElement {
   @track pageSize = 10;
 
   // Filters
-  @track statusFilter = '';
-  @track searchFilter = '';
+  @track statusFilter = "";
+  @track searchFilter = "";
 
   employeeId;
   sessionToken;
 
   filterStatusOptions = [
-    { label: 'All Statuses', value: '' },
-    { label: 'Draft', value: 'Draft' },
-    { label: 'Submitted', value: 'Submitted' },
-    { label: 'In Progress', value: 'In Progress' },
-    { label: 'Completed', value: 'Completed' }
+    { label: "All Statuses", value: "" },
+    { label: "Draft", value: "Draft" },
+    { label: "Submitted", value: "Submitted" },
+    { label: "In Progress", value: "In Progress" },
+    { label: "Completed", value: "Completed" }
   ];
 
   pageSizeOptions = [
-    { label: '5', value: '5' },
-    { label: '10', value: '10' },
-    { label: '25', value: '25' }
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "25", value: "25" }
   ];
 
   connectedCallback() {
@@ -71,8 +81,15 @@ export default class PwchronoAppraisalForm extends LightningElement {
   async checkAccess() {
     try {
       const employeeId = getEmployeeId();
-      const accessData = await getUserAccessById({ employeeId: employeeId, sessionToken: this.sessionToken });
-      if (accessData && accessData.features && accessData.features.includes("Performance Management")) {
+      const accessData = await getUserAccessById({
+        employeeId: employeeId,
+        sessionToken: this.sessionToken
+      });
+      if (
+        accessData &&
+        accessData.features &&
+        accessData.features.includes("Performance Management")
+      ) {
         this.hasAccess = true;
       }
     } catch (error) {
@@ -95,7 +112,11 @@ export default class PwchronoAppraisalForm extends LightningElement {
     return this.currentAppraisal.Id ? "Edit Appraisal" : "New Appraisal";
   }
 
-  @wire(getMyAppraisals, { statusFilter: "All", employeeId: "$employeeId", sessionToken: "$sessionToken" })
+  @wire(getMyAppraisals, {
+    statusFilter: "All",
+    employeeId: "$employeeId",
+    sessionToken: "$sessionToken"
+  })
   wiredAppraisals(result) {
     this.wiredAppraisalsResult = result;
     this.isLoading = true;
@@ -104,7 +125,7 @@ export default class PwchronoAppraisalForm extends LightningElement {
       this.error = undefined;
       this.applyFilters();
     } else if (result.error) {
-      this.error = result.error.body?.message || 'Failed to load appraisals';
+      this.error = result.error.body?.message || "Failed to load appraisals";
       this.allAppraisals = [];
       this.appraisals = [];
     }
@@ -116,13 +137,17 @@ export default class PwchronoAppraisalForm extends LightningElement {
     let filtered = [...this.allAppraisals];
 
     if (this.statusFilter) {
-      filtered = filtered.filter(item => item.Status__c === this.statusFilter);
+      filtered = filtered.filter(
+        (item) => item.Status__c === this.statusFilter
+      );
     }
 
     if (this.searchFilter) {
       const search = this.searchFilter.toLowerCase();
-      filtered = filtered.filter(item => 
-        (item.Appraisal_Period__c && item.Appraisal_Period__c.toLowerCase().includes(search))
+      filtered = filtered.filter(
+        (item) =>
+          item.Appraisal_Period__c &&
+          item.Appraisal_Period__c.toLowerCase().includes(search)
       );
     }
 
@@ -174,7 +199,7 @@ export default class PwchronoAppraisalForm extends LightningElement {
   }
 
   get paginationInfo() {
-    if (this.totalRecords === 0) return '0 records';
+    if (this.totalRecords === 0) return "0 records";
     const start = (this.currentPage - 1) * this.pageSize + 1;
     const end = Math.min(this.currentPage * this.pageSize, this.totalRecords);
     return `${start}-${end} of ${this.totalRecords}`;
@@ -193,7 +218,9 @@ export default class PwchronoAppraisalForm extends LightningElement {
   }
 
   get hasNoAppraisals() {
-    return !this.isLoading && (!this.appraisals || this.appraisals.length === 0);
+    return (
+      !this.isLoading && (!this.appraisals || this.appraisals.length === 0)
+    );
   }
 
   handleNewAppraisal() {

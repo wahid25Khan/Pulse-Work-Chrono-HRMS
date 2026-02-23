@@ -280,20 +280,17 @@ public inherited sharing class PWChrono_HRDashboardController {
     dto.totalEmployees = [
       SELECT COUNT()
       FROM Portal_Users__c
-      WITH USER_MODE
       LIMIT 50000
     ];
     dto.newJoiners = [
       SELECT COUNT()
       FROM Portal_Users__c
       WHERE Date_of_Joining__c = THIS_YEAR
-      WITH USER_MODE
     ];
 
     for (AggregateResult ar : [
       SELECT Type__c t, COUNT(Id) c
       FROM Portal_Users__c
-      WITH USER_MODE
       GROUP BY Type__c
       LIMIT 200
     ]) {
@@ -322,7 +319,6 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT SUM(Gross_Pay__c) g, SUM(Total_Deductions__c) d
       FROM PWChrono_Salary_Slip__c
       WHERE Payroll_Period__c >= :startMonth AND Payroll_Period__c <= :endMonth
-      WITH USER_MODE
     ];
 
     dto.totalPayrollCost = (Decimal) ar.get('g');
@@ -340,7 +336,6 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT Leave_Type__r.Name ln, COUNT(Id) c
       FROM PWChrono_Leave__c
       WHERE From_Date__c = THIS_YEAR
-      WITH USER_MODE
       GROUP BY Leave_Type__r.Name
     ]) {
       String leaveName = safeLower(ar.get('ln'));
@@ -378,7 +373,6 @@ public inherited sharing class PWChrono_HRDashboardController {
       WHERE
         Attendance_Date__c >= :today.addDays(-6)
         AND Attendance_Date__c <= :today
-      WITH USER_MODE
     ]) {
       Date day = attendance.Attendance_Date__c;
       if (day == null) {
@@ -429,7 +423,6 @@ public inherited sharing class PWChrono_HRDashboardController {
     for (AggregateResult ar : [
       SELECT Department__c dep, COUNT(Id) c
       FROM Portal_Users__c
-      WITH USER_MODE
       GROUP BY Department__c
       LIMIT 200
     ]) {
@@ -491,7 +484,6 @@ public inherited sharing class PWChrono_HRDashboardController {
         SUM(Gross_Pay__c) g
       FROM PWChrono_Salary_Slip__c
       WHERE Payroll_Period__c >= :start AND Payroll_Period__c <= :endDate
-      WITH USER_MODE
       GROUP BY
         CALENDAR_YEAR(Payroll_Period__c),
         CALENDAR_MONTH(Payroll_Period__c)
@@ -527,13 +519,11 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT COUNT()
       FROM Portal_Users__c
       WHERE CreatedDate = THIS_YEAR
-      WITH USER_MODE
     ];
     Integer hired = [
       SELECT COUNT()
       FROM Portal_Users__c
       WHERE Date_of_Joining__c = THIS_YEAR
-      WITH USER_MODE
     ];
 
     Integer screening = Math.max(0, applicants - hired);
@@ -556,7 +546,6 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT Id, CreatedDate, Date_of_Joining__c
       FROM Portal_Users__c
       WHERE Date_of_Joining__c != NULL
-      WITH USER_MODE
       ORDER BY CreatedDate DESC
       LIMIT 500
     ]) {
@@ -600,7 +589,6 @@ public inherited sharing class PWChrono_HRDashboardController {
         Attendance_Date__c = TODAY
         AND (Status__c LIKE '%Late%'
         OR From_Time__c > :lateThreshold)
-      WITH USER_MODE
       ORDER BY From_Time__c DESC
       LIMIT 5
     ];
@@ -619,7 +607,6 @@ public inherited sharing class PWChrono_HRDashboardController {
           SELECT Id, Name, Department__c
           FROM Portal_Users__c
           WHERE Id IN :employeeIds
-          WITH USER_MODE
         ]
       );
     }
@@ -646,7 +633,6 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT Id, Employees__c, From_Date__c, To_Date__c, Reason__c
       FROM PWChrono_Leave__c
       WHERE Status__c = 'Submitted'
-      WITH USER_MODE
       ORDER BY Applied_Date__c DESC
       LIMIT 3
     ];
@@ -665,7 +651,6 @@ public inherited sharing class PWChrono_HRDashboardController {
           SELECT Id, Name
           FROM Portal_Users__c
           WHERE Id IN :employeeIds
-          WITH USER_MODE
         ]
       );
     }
@@ -754,7 +739,6 @@ public inherited sharing class PWChrono_HRDashboardController {
       SELECT Id, Name, Interview_Date__c, Job_Applicant__r.Name
       FROM PWChrono_Interview__c
       WHERE Interview_Date__c >= :System.now()
-      WITH USER_MODE
       ORDER BY Interview_Date__c ASC
       LIMIT 2
     ]) {
@@ -776,7 +760,6 @@ public inherited sharing class PWChrono_HRDashboardController {
     for (Portal_Users__c employee : [
       SELECT Id, Name, Photo_Url__c
       FROM Portal_Users__c
-      WITH USER_MODE
       ORDER BY
         Last_Login_Date__c DESC NULLS LAST,
         Date_of_Joining__c DESC NULLS LAST

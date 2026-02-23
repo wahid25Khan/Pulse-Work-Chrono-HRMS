@@ -58,41 +58,92 @@ private class PWChrono_PMDashboardController_Test {
 
   @isTest
   static void testGetDashboardData_ProjectManagerAllowed() {
-    User pmUser = [SELECT Id FROM User WHERE LastName = 'ProjectManager' LIMIT 1];
+    User pmUser = [
+      SELECT Id
+      FROM User
+      WHERE LastName = 'ProjectManager'
+      LIMIT 1
+    ];
 
     System.runAs(pmUser) {
       Test.startTest();
-      PWChrono_PMDashboardController.DashboardDTO dto =
-        PWChrono_PMDashboardController.getDashboardData(null, null);
+      PWChrono_PMDashboardController.DashboardDTO dto = PWChrono_PMDashboardController.getDashboardData(
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertNotEquals(null, dto, 'DTO should be returned');
       System.assertEquals(4, dto.totalProjects, 'Total projects should match');
-      System.assertEquals(3, dto.activeProjects, 'Active projects should match');
+      System.assertEquals(
+        3,
+        dto.activeProjects,
+        'Active projects should match'
+      );
       System.assertEquals(
         1,
         dto.highPriorityActiveProjects,
         'High priority active projects should match'
       );
-      System.assertEquals(2, dto.endingSoonProjects, 'Ending soon projects should match');
-      System.assertNotEquals(null, dto.recentProjects, 'Recent projects should be returned');
-      System.assert(dto.recentProjects.size() > 0, 'Recent projects should not be empty');
+      System.assertEquals(
+        2,
+        dto.endingSoonProjects,
+        'Ending soon projects should match'
+      );
+      System.assertNotEquals(
+        null,
+        dto.recentProjects,
+        'Recent projects should be returned'
+      );
+      System.assert(
+        dto.recentProjects.size() > 0,
+        'Recent projects should not be empty'
+      );
 
       // New PM metrics
-      System.assertEquals(35000, dto.activeProjectValue, 'Active project value should sum');
-      System.assertEquals(85, dto.activeHoursLogged, 'Active hours logged should sum');
-      System.assertEquals(190, dto.activeHoursPlanned, 'Active planned hours should sum');
-      System.assertEquals(10, dto.activeTeamSize, 'Active team size should sum');
+      System.assertEquals(
+        35000,
+        dto.activeProjectValue,
+        'Active project value should sum'
+      );
+      System.assertEquals(
+        85,
+        dto.activeHoursLogged,
+        'Active hours logged should sum'
+      );
+      System.assertEquals(
+        190,
+        dto.activeHoursPlanned,
+        'Active planned hours should sum'
+      );
+      System.assertEquals(
+        10,
+        dto.activeTeamSize,
+        'Active team size should sum'
+      );
       System.assertEquals(1, dto.atRiskProjects, 'At-risk count should match');
       System.assertEquals(1, dto.overrunProjects, 'Overrun count should match');
-      System.assertEquals(true, dto.atRiskProjectRows != null && dto.atRiskProjectRows.size() > 0, 'At-risk rows should be returned');
-      System.assertEquals(true, dto.overrunProjectRows != null && dto.overrunProjectRows.size() > 0, 'Overrun rows should be returned');
+      System.assertEquals(
+        true,
+        dto.atRiskProjectRows != null && dto.atRiskProjectRows.size() > 0,
+        'At-risk rows should be returned'
+      );
+      System.assertEquals(
+        true,
+        dto.overrunProjectRows != null && dto.overrunProjectRows.size() > 0,
+        'Overrun rows should be returned'
+      );
     }
   }
 
   @isTest
   static void testGetDashboardData_EmployeeDenied() {
-    User empUser = [SELECT Id FROM User WHERE LastName = 'RegularEmployee' LIMIT 1];
+    User empUser = [
+      SELECT Id
+      FROM User
+      WHERE LastName = 'RegularEmployee'
+      LIMIT 1
+    ];
 
     System.runAs(empUser) {
       Test.startTest();

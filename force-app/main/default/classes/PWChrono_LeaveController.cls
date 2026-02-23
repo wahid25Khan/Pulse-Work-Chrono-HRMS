@@ -23,7 +23,9 @@ public inherited sharing class PWChrono_LeaveController {
       } else if (String.isNotBlank(employeeId)) {
         targetEmployeeId = (Id) employeeId;
       } else {
-        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
       }
 
       if (targetEmployeeId == null) {
@@ -36,9 +38,7 @@ public inherited sharing class PWChrono_LeaveController {
     } catch (Exception e) {
       PWChrono_Logger.error('Error fetching leave balance: ');
       PWChrono_Logger.error('Stack trace: ' + e.getStackTraceString());
-      throw new AuraHandledException(
-        'Error fetching leave balance: '
-      );
+      throw new AuraHandledException('Error fetching leave balance: ');
     }
   }
 
@@ -70,9 +70,13 @@ public inherited sharing class PWChrono_LeaveController {
         );
       } else {
         Id currentUserId = UserInfo.getUserId();
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
+        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          currentUserId
+        );
         if (currentEmployeeId == null) {
-          throw new AuraHandledException('No employee record found for current user.');
+          throw new AuraHandledException(
+            'No employee record found for current user.'
+          );
         }
 
         // Security Check: Only Admins can view other employees' data
@@ -114,7 +118,8 @@ public inherited sharing class PWChrono_LeaveController {
       return (List<PWChrono_Leave__c>) Database.query(query);
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      String detail = (Test.isRunningTest() && String.isNotBlank(e.getMessage()))
+      String detail = (Test.isRunningTest() &&
+        String.isNotBlank(e.getMessage()))
         ? (' ' + e.getMessage())
         : '';
       throw new AuraHandledException('Error fetching leaves.' + detail);
@@ -161,9 +166,7 @@ public inherited sharing class PWChrono_LeaveController {
       ];
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException(
-        'Error fetching team leaves: '
-      );
+      throw new AuraHandledException('Error fetching team leaves: ');
     }
   }
 
@@ -192,9 +195,18 @@ public inherited sharing class PWChrono_LeaveController {
       } else {
         // If updating, verify ownership
         // Note: We query without sharing because we are the gatekeeper
-        List<PWChrono_Leave__c> existing = [SELECT Employees__c FROM PWChrono_Leave__c WHERE Id = :leaveRecord.Id LIMIT 1];
-        if (existing.isEmpty() || existing[0].Employees__c != verifiedPortalUserId) {
-             throw new AuraHandledException('Unauthorized access to this leave record.');
+        List<PWChrono_Leave__c> existing = [
+          SELECT Employees__c
+          FROM PWChrono_Leave__c
+          WHERE Id = :leaveRecord.Id
+          LIMIT 1
+        ];
+        if (
+          existing.isEmpty() || existing[0].Employees__c != verifiedPortalUserId
+        ) {
+          throw new AuraHandledException(
+            'Unauthorized access to this leave record.'
+          );
         }
 
         // Do not allow changing Employees__c on update.
@@ -241,14 +253,15 @@ public inherited sharing class PWChrono_LeaveController {
     } catch (AuraHandledException ahe) {
       throw ahe;
     } catch (Exception e) {
-      PWChrono_Logger.error(
-        'Error saving leave application: '
-      );
+      PWChrono_Logger.error('Error saving leave application: ');
       PWChrono_Logger.error('Stack trace: ' + e.getStackTraceString());
-      String detail = (Test.isRunningTest() && String.isNotBlank(e.getMessage()))
+      String detail = (Test.isRunningTest() &&
+        String.isNotBlank(e.getMessage()))
         ? (' ' + e.getMessage())
         : '';
-      throw new AuraHandledException('Error saving leave application.' + detail);
+      throw new AuraHandledException(
+        'Error saving leave application.' + detail
+      );
     }
   }
 
@@ -270,15 +283,25 @@ public inherited sharing class PWChrono_LeaveController {
       Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
 
       PWChrono_Leave__c leave = [
-        SELECT Id, Status__c, Rejection_Reason__c, Approval_Date__c, Employees__r.Reports_To__c
+        SELECT
+          Id,
+          Status__c,
+          Rejection_Reason__c,
+          Approval_Date__c,
+          Employees__r.Reports_To__c
         FROM PWChrono_Leave__c
         WHERE Id = :leaveId
         LIMIT 1
       ];
 
       // Security Check: Only Admin or Manager (Reports To) can approve
-      if (leave.Employees__r.Reports_To__c != currentEmployeeId && !PWChrono_AccessController.isAdmin(currentEmployeeId)) {
-        throw new AuraHandledException('Access Denied: You are not authorized to process this request.');
+      if (
+        leave.Employees__r.Reports_To__c != currentEmployeeId &&
+        !PWChrono_AccessController.isAdmin(currentEmployeeId)
+      ) {
+        throw new AuraHandledException(
+          'Access Denied: You are not authorized to process this request.'
+        );
       }
 
       // Validate status transition - only allow processing from Submitted status
@@ -306,12 +329,8 @@ public inherited sharing class PWChrono_LeaveController {
 
       return leave;
     } catch (Exception e) {
-      PWChrono_Logger.error(
-        'Error processing leave approval: '
-      );
-      throw new AuraHandledException(
-        'Error processing leave approval: '
-      );
+      PWChrono_Logger.error('Error processing leave approval: ');
+      throw new AuraHandledException('Error processing leave approval: ');
     }
   }
 
@@ -354,9 +373,7 @@ public inherited sharing class PWChrono_LeaveController {
       ];
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException(
-        'Error fetching calendar data: '
-      );
+      throw new AuraHandledException('Error fetching calendar data: ');
     }
   }
 
@@ -389,9 +406,7 @@ public inherited sharing class PWChrono_LeaveController {
       ];
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException(
-        'Error fetching holidays: '
-      );
+      throw new AuraHandledException('Error fetching holidays: ');
     }
   }
 
@@ -403,16 +418,22 @@ public inherited sharing class PWChrono_LeaveController {
   public static List<PWChrono_Leave_Type__c> getActiveLeaveTypes() {
     try {
       return [
-        SELECT Id, Name, Max_Days_Allowed__c, Is_Carry_Forward__c, Max_Carry_Forward_Days__c, Requires_Approval__c, Requires_Certificate__c, Is_Active__c
+        SELECT
+          Id,
+          Name,
+          Max_Days_Allowed__c,
+          Is_Carry_Forward__c,
+          Max_Carry_Forward_Days__c,
+          Requires_Approval__c,
+          Requires_Certificate__c,
+          Is_Active__c
         FROM PWChrono_Leave_Type__c
         WHERE Is_Active__c = TRUE
         ORDER BY Name
       ];
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException(
-        'Error fetching leave types: '
-      );
+      throw new AuraHandledException('Error fetching leave types: ');
     }
   }
 
@@ -425,16 +446,19 @@ public inherited sharing class PWChrono_LeaveController {
     try {
       // Security check: Ensure user is admin (handled by sharing rules or explicit check if needed)
       // For now, relying on without sharing class but ideally should check permission set
-      
+
       // Log the update activity
-      PWChrono_Logger.info('Updating Leave Type Settings: ' + leaveType.Id + ' - ' + JSON.serialize(leaveType));
-      
+      PWChrono_Logger.info(
+        'Updating Leave Type Settings: ' +
+          leaveType.Id +
+          ' - ' +
+          JSON.serialize(leaveType)
+      );
+
       update leaveType;
     } catch (Exception e) {
       PWChrono_Logger.error('Error updating leave type: ');
-      throw new AuraHandledException(
-        'Error updating leave type: '
-      );
+      throw new AuraHandledException('Error updating leave type: ');
     }
   }
 
@@ -446,14 +470,14 @@ public inherited sharing class PWChrono_LeaveController {
   public static void createLeaveType(PWChrono_Leave_Type__c leaveType) {
     try {
       // Log the creation activity
-      PWChrono_Logger.info('Creating New Leave Type: ' + JSON.serialize(leaveType));
-      
+      PWChrono_Logger.info(
+        'Creating New Leave Type: ' + JSON.serialize(leaveType)
+      );
+
       insert leaveType;
     } catch (Exception e) {
       PWChrono_Logger.error('Error creating leave type: ');
-      throw new AuraHandledException(
-        'Error creating leave type: '
-      );
+      throw new AuraHandledException('Error creating leave type: ');
     }
   }
 

@@ -1,69 +1,110 @@
 <template>
   <div class="page-wrapper">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-    <!-- Header -->
-    <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-5 text-white">
-      <h1 class="text-xl font-bold">Holiday Calendar</h1>
-      <p class="text-sm text-white/80 mt-1">View upcoming holidays and weekly offs</p>
-    </div>
+    <div
+      class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+    >
+      <!-- Header -->
+      <div
+        class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-5 text-white"
+      >
+        <h1 class="text-xl font-bold">Holiday Calendar</h1>
+        <p class="text-sm text-white/80 mt-1">
+          View upcoming holidays and weekly offs
+        </p>
+      </div>
 
-    <div class="p-4 md:p-6">
-      <!-- Loading State -->
-      <template if:true={isLoading}>
-        <div class="flex items-center justify-center py-12">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span class="ml-3 text-gray-600">Loading holidays...</span>
-        </div>
-      </template>
+      <div class="p-4 md:p-6">
+        <!-- Loading State -->
+        <template if:true={isLoading}>
+          <div class="flex items-center justify-center py-12">
+            <div
+              class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"
+            ></div>
+            <span class="ml-3 text-gray-600">Loading holidays...</span>
+          </div>
+        </template>
 
-      <template if:false={isLoading}>
-      <template if:true={holidays}>
-        <template if:true={hasHolidays}>
-          <div class="space-y-3">
-            <template for:each={holidays} for:item="holiday">
-              <div key={holiday.Id} class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                  </svg>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                    <h3 class="text-base font-semibold text-gray-800">{holiday.Description__c}</h3>
-                    <p class="text-sm text-gray-500">
-                      <lightning-formatted-date-time
-                        value={holiday.Holiday_Date__c}
-                        weekday="long"
-                        month="long"
-                        day="numeric"
-                        year="numeric"
-                      ></lightning-formatted-date-time>
-                    </p>
+        <template if:false={isLoading}>
+          <template if:true={holidays}>
+            <template if:true={hasHolidays}>
+              <div class="space-y-3">
+                <template for:each={holidays} for:item="holiday">
+                  <div
+                    key={holiday.Id}
+                    class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                  >
+                    <div
+                      class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
+                    >
+                      <svg
+                        class="w-6 h-6 text-blue-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div
+                        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1"
+                      >
+                        <h3 class="text-base font-semibold text-gray-800">
+                          {holiday.Description__c}
+                        </h3>
+                        <p class="text-sm text-gray-500">
+                          <lightning-formatted-date-time
+                            value={holiday.Holiday_Date__c}
+                            weekday="long"
+                            month="long"
+                            day="numeric"
+                            year="numeric"
+                          ></lightning-formatted-date-time>
+                        </p>
+                      </div>
+                      <template if:true={holiday.Is_Weekly_Off__c}>
+                        <span
+                          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-2"
+                        >
+                          Weekly Off
+                        </span>
+                      </template>
+                    </div>
                   </div>
-                  <template if:true={holiday.Is_Weekly_Off__c}>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-2">
-                      Weekly Off
-                    </span>
-                  </template>
-                </div>
+                </template>
               </div>
             </template>
+            <template if:false={hasHolidays}>
+              <div
+                class="flex flex-col items-center justify-center py-12 text-center"
+              >
+                <div
+                  class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+                >
+                  <lightning-icon
+                    icon-name="utility:event"
+                    size="medium"
+                    class="text-gray-400"
+                  ></lightning-icon>
+                </div>
+                <p class="text-gray-500">No upcoming holidays found.</p>
+              </div>
+            </template>
+          </template>
+        </template>
+        <template if:true={error}>
+          <div
+            class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600"
+          >
+            {error}
           </div>
         </template>
-        <template if:false={hasHolidays}>
-          <div class="flex flex-col items-center justify-center py-12 text-center">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-              <lightning-icon icon-name="utility:event" size="medium" class="text-gray-400"></lightning-icon>
-            </div>
-            <p class="text-gray-500">No upcoming holidays found.</p>
-          </div>
-        </template>
-      </template>
-      </template>
-      <template if:true={error}>
-        <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600">{error}</div>
-      </template>
+      </div>
     </div>
-  </div>
   </div>
 </template>

@@ -21,7 +21,9 @@ public inherited sharing class PWChrono_ExpenseController {
           sessionToken
         );
       } else if (String.isNotBlank(employeeId)) {
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
         if (currentEmployeeId != null && employeeId != currentEmployeeId) {
           if (PWChrono_AccessController.isAdmin(currentEmployeeId)) {
             targetEmployeeId = (Id) employeeId;
@@ -32,7 +34,9 @@ public inherited sharing class PWChrono_ExpenseController {
           targetEmployeeId = (Id) employeeId;
         }
       } else {
-        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
       }
 
       if (targetEmployeeId == null) {
@@ -88,7 +92,9 @@ public inherited sharing class PWChrono_ExpenseController {
           WHERE Id = :claimId
           LIMIT 1
         ];
-        if (claims.isEmpty() || claims[0].Employees__c != verifiedPortalUserId) {
+        if (
+          claims.isEmpty() || claims[0].Employees__c != verifiedPortalUserId
+        ) {
           throw new AuraHandledException('Access Denied.');
         }
       }
@@ -146,7 +152,11 @@ public inherited sharing class PWChrono_ExpenseController {
    * @param claimId Record ID
    */
   @AuraEnabled
-  public static void submitClaim(Id claimId, String portalUserId, String sessionToken) {
+  public static void submitClaim(
+    Id claimId,
+    String portalUserId,
+    String sessionToken
+  ) {
     try {
       Id verifiedPortalUserId = PWChrono_GuestSession.requireVerifiedPortalUserId(
         portalUserId,
@@ -168,7 +178,11 @@ public inherited sharing class PWChrono_ExpenseController {
    * @param claimId Record ID
    */
   @AuraEnabled
-  public static void deleteClaim(Id claimId, String portalUserId, String sessionToken) {
+  public static void deleteClaim(
+    Id claimId,
+    String portalUserId,
+    String sessionToken
+  ) {
     try {
       Id verifiedPortalUserId = PWChrono_GuestSession.requireVerifiedPortalUserId(
         portalUserId,

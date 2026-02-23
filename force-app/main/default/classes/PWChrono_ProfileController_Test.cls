@@ -17,7 +17,10 @@ private class PWChrono_ProfileController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      Portal_Users__c profile = PWChrono_ProfileController.getProfile(null, null);
+      Portal_Users__c profile = PWChrono_ProfileController.getProfile(
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertNotEquals(null, profile, 'Should return profile');
@@ -44,7 +47,11 @@ private class PWChrono_ProfileController_Test {
         WHERE User__c = :testUser.Id
         LIMIT 1
       ];
-      PWChrono_ProfileController.updateProfile(profileData, currentEmployee.Id, null);
+      PWChrono_ProfileController.updateProfile(
+        profileData,
+        currentEmployee.Id,
+        null
+      );
       Test.stopTest();
 
       Portal_Users__c updatedProfile = [
@@ -71,7 +78,10 @@ private class PWChrono_ProfileController_Test {
 
     System.runAs(adminUser) {
       Test.startTest();
-      Portal_Users__c profile = PWChrono_ProfileController.getProfile(null, null);
+      Portal_Users__c profile = PWChrono_ProfileController.getProfile(
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertEquals(

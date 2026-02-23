@@ -2,21 +2,31 @@
  * @description Data controller for Payroll Dashboard LWC.
  */
 public inherited sharing class PWChrono_PayrollDashboardController {
-
   public class PayrollDashboardDTO {
-    @AuraEnabled public Decimal totalGross;
-    @AuraEnabled public Decimal totalNet;
-    @AuraEnabled public Decimal totalDeductions;
-    @AuraEnabled public Decimal highestGross;
-    @AuraEnabled public Decimal lowestGross;
-    @AuraEnabled public Decimal averageGross;
+    @AuraEnabled
+    public Decimal totalGross;
+    @AuraEnabled
+    public Decimal totalNet;
+    @AuraEnabled
+    public Decimal totalDeductions;
+    @AuraEnabled
+    public Decimal highestGross;
+    @AuraEnabled
+    public Decimal lowestGross;
+    @AuraEnabled
+    public Decimal averageGross;
 
-    @AuraEnabled public List<String> salaryRangeLabels;
-    @AuraEnabled public List<Integer> salaryRangeCounts;
+    @AuraEnabled
+    public List<String> salaryRangeLabels;
+    @AuraEnabled
+    public List<Integer> salaryRangeCounts;
 
-    @AuraEnabled public List<String> trendLabels;
-    @AuraEnabled public List<Decimal> taxTrend;
-    @AuraEnabled public List<Decimal> deductionTrend;
+    @AuraEnabled
+    public List<String> trendLabels;
+    @AuraEnabled
+    public List<Decimal> taxTrend;
+    @AuraEnabled
+    public List<Decimal> deductionTrend;
   }
 
   @AuraEnabled(cacheable=true)
@@ -35,7 +45,14 @@ public inherited sharing class PWChrono_PayrollDashboardController {
     try {
       populateSixMonthTrend(dto, startMonth);
     } catch (Exception e) {
-      dto.trendLabels = new List<String>{ 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan' };
+      dto.trendLabels = new List<String>{
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+        'Jan'
+      };
       dto.taxTrend = new List<Decimal>{ 0, 0, 0, 0, 0, 0 };
       dto.deductionTrend = new List<Decimal>{ 0, 0, 0, 0, 0, 0 };
     }
@@ -59,13 +76,23 @@ public inherited sharing class PWChrono_PayrollDashboardController {
       '$100k+'
     };
     dto.salaryRangeCounts = new List<Integer>{ 0, 0, 0, 0, 0 };
-    dto.trendLabels = new List<String>{ 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan' };
+    dto.trendLabels = new List<String>{
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+      'Jan'
+    };
     dto.taxTrend = new List<Decimal>{ 0, 0, 0, 0, 0, 0 };
     dto.deductionTrend = new List<Decimal>{ 0, 0, 0, 0, 0, 0 };
     return dto;
   }
 
-  private static PayrollDashboardDTO buildSummaryForRange(Date startDate, Date endDate) {
+  private static PayrollDashboardDTO buildSummaryForRange(
+    Date startDate,
+    Date endDate
+  ) {
     PayrollDashboardDTO dto = new PayrollDashboardDTO();
     dto.totalGross = 0;
     dto.totalNet = 0;
@@ -96,8 +123,10 @@ public inherited sharing class PWChrono_PayrollDashboardController {
       dto.totalNet += net;
       dto.totalDeductions += ded;
 
-      if (highest == null || gross > highest) highest = gross;
-      if (lowest == null || gross < lowest) lowest = gross;
+      if (highest == null || gross > highest)
+        highest = gross;
+      if (lowest == null || gross < lowest)
+        lowest = gross;
       sumGross += gross;
       counted++;
 
@@ -125,14 +154,21 @@ public inherited sharing class PWChrono_PayrollDashboardController {
 
   private static Integer salaryBinIndex(Decimal gross) {
     Decimal g = (gross == null ? 0 : gross);
-    if (g < 25000) return 0;
-    if (g < 50000) return 1;
-    if (g < 75000) return 2;
-    if (g < 100000) return 3;
+    if (g < 25000)
+      return 0;
+    if (g < 50000)
+      return 1;
+    if (g < 75000)
+      return 2;
+    if (g < 100000)
+      return 3;
     return 4;
   }
 
-  private static void populateSixMonthTrend(PayrollDashboardDTO dto, Date startMonth) {
+  private static void populateSixMonthTrend(
+    PayrollDashboardDTO dto,
+    Date startMonth
+  ) {
     Date start = startMonth.addMonths(-5);
     Date endDate = startMonth.addMonths(1).addDays(-1);
 
@@ -146,11 +182,14 @@ public inherited sharing class PWChrono_PayrollDashboardController {
         SUM(Total_Deductions__c) d
       FROM PWChrono_Salary_Slip__c
       WHERE Payroll_Period__c >= :start AND Payroll_Period__c <= :endDate
-      GROUP BY CALENDAR_YEAR(Payroll_Period__c), CALENDAR_MONTH(Payroll_Period__c)
+      GROUP BY
+        CALENDAR_YEAR(Payroll_Period__c),
+        CALENDAR_MONTH(Payroll_Period__c)
     ]) {
       Integer y = (Integer) ar.get('y');
       Integer m = (Integer) ar.get('m');
-      if (y == null || m == null) continue;
+      if (y == null || m == null)
+        continue;
       byKey.put(String.valueOf(y) + '-' + String.valueOf(m), ar);
     }
 
@@ -183,6 +222,7 @@ public inherited sharing class PWChrono_PayrollDashboardController {
     if (value == null) {
       return '';
     }
-    return Datetime.newInstance(value, Time.newInstance(0, 0, 0, 0)).format(pattern);
+    return Datetime.newInstance(value, Time.newInstance(0, 0, 0, 0))
+      .format(pattern);
   }
 }

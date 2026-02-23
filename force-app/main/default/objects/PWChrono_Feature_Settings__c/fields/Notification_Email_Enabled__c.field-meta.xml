@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Notification_Email_Enabled__c</fullName>
     <defaultValue>true</defaultValue>
-    <description>Send email notifications for leave approvals, rejections, attendance requests, and salary slip generation.</description>
-    <inlineHelpText>When enabled, automatic email notifications will be sent for all PWChrono transactions.</inlineHelpText>
+    <description
+  >Send email notifications for leave approvals, rejections, attendance requests, and salary slip generation.</description>
+    <inlineHelpText
+  >When enabled, automatic email notifications will be sent for all PWChrono transactions.</inlineHelpText>
     <label>Notification Email Enabled</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

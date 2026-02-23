@@ -50,7 +50,13 @@ private class PWChrono_SalarySlipTriggerHandler_Test {
   @isTest
   static void testCreateSalaryHistory_OnlyForPaidPositiveNetPay() {
     List<PWChrono_Salary_Slip__c> allSlips = [
-      SELECT Id, Employees__c, Payroll_Period__c, Gross_Pay__c, Net_Pay__c, Status__c
+      SELECT
+        Id,
+        Employees__c,
+        Payroll_Period__c,
+        Gross_Pay__c,
+        Net_Pay__c,
+        Status__c
       FROM PWChrono_Salary_Slip__c
     ];
 
@@ -95,7 +101,9 @@ private class PWChrono_SalarySlipTriggerHandler_Test {
     PWChrono_Salary_Slip__c paidWithPeriod = [
       SELECT Id, Payroll_Period__c
       FROM PWChrono_Salary_Slip__c
-      WHERE Status__c = :PWChrono_Constants.STATUS_PAID AND Payroll_Period__c != null
+      WHERE
+        Status__c = :PWChrono_Constants.STATUS_PAID
+        AND Payroll_Period__c != NULL
       ORDER BY Payroll_Period__c DESC
       LIMIT 1
     ];
@@ -108,7 +116,9 @@ private class PWChrono_SalarySlipTriggerHandler_Test {
     PWChrono_Salary_Slip__c paidWithoutPeriod = [
       SELECT Id
       FROM PWChrono_Salary_Slip__c
-      WHERE Status__c = :PWChrono_Constants.STATUS_PAID AND Payroll_Period__c = null
+      WHERE
+        Status__c = :PWChrono_Constants.STATUS_PAID
+        AND Payroll_Period__c = NULL
       LIMIT 1
     ];
     System.assertEquals(

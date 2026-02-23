@@ -3,7 +3,6 @@
  * @author PWChrono Team
  */
 public inherited sharing class PWChrono_AttendanceController {
-
   private static Boolean hasFeature(String accessFeatures, String featureName) {
     if (String.isBlank(accessFeatures) || String.isBlank(featureName)) {
       return false;
@@ -37,8 +36,12 @@ public inherited sharing class PWChrono_AttendanceController {
     }
 
     Boolean isAdminRole =
-      portalUser.Role__c == 'HR Admin' || portalUser.Role__c == 'System Admin';
-    if (!isAdminRole && !hasFeature(portalUser.Access_Features__c, 'Admin Settings')) {
+      portalUser.Role__c == 'HR Admin' ||
+      portalUser.Role__c == 'System Admin';
+    if (
+      !isAdminRole &&
+      !hasFeature(portalUser.Access_Features__c, 'Admin Settings')
+    ) {
       throw new AuraHandledException('Access denied.');
     }
   }
@@ -70,9 +73,13 @@ public inherited sharing class PWChrono_AttendanceController {
         );
       } else {
         Id currentUserId = UserInfo.getUserId();
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
+        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          currentUserId
+        );
         if (currentEmployeeId == null) {
-          throw new AuraHandledException('No employee record found for current user.');
+          throw new AuraHandledException(
+            'No employee record found for current user.'
+          );
         }
 
         // Security Check: Only Admins can view other employees' data
@@ -149,7 +156,9 @@ public inherited sharing class PWChrono_AttendanceController {
       }
 
       if (targetEmployeeId == null) {
-        throw new AuraHandledException('No employee record found for current user.');
+        throw new AuraHandledException(
+          'No employee record found for current user.'
+        );
       }
 
       return [
@@ -254,8 +263,12 @@ public inherited sharing class PWChrono_AttendanceController {
           WHERE Id = :attendanceRequest.Id
           LIMIT 1
         ];
-        if (existing.isEmpty() || existing[0].Employees__c != verifiedPortalUserId) {
-          throw new AuraHandledException('Unauthorized access to this attendance record.');
+        if (
+          existing.isEmpty() || existing[0].Employees__c != verifiedPortalUserId
+        ) {
+          throw new AuraHandledException(
+            'Unauthorized access to this attendance record.'
+          );
         }
         // Do not allow changing Employees__c on update.
         attendanceRequest.Employees__c = verifiedPortalUserId;
@@ -320,8 +333,13 @@ public inherited sharing class PWChrono_AttendanceController {
       PWChrono_Attendance_Request__c request = requests[0];
 
       // Security Check: Only Admin or Assigned Approver can approve
-      if (request.Approvers__c != currentEmployeeId && !PWChrono_AccessController.isAdmin(currentEmployeeId)) {
-        throw new AuraHandledException('Access Denied: You are not authorized to process this request.');
+      if (
+        request.Approvers__c != currentEmployeeId &&
+        !PWChrono_AccessController.isAdmin(currentEmployeeId)
+      ) {
+        throw new AuraHandledException(
+          'Access Denied: You are not authorized to process this request.'
+        );
       }
 
       if (action == 'Approve') {
@@ -430,15 +448,17 @@ public inherited sharing class PWChrono_AttendanceController {
           : PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
       }
 
-      return getAttendanceTrackerDataCore(startDate, endDate, (String) targetEmployeeId);
+      return getAttendanceTrackerDataCore(
+        startDate,
+        endDate,
+        (String) targetEmployeeId
+      );
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
       AuraHandledException ahe = new AuraHandledException(
         'Error fetching attendance tracker data: '
       );
-      ahe.setMessage(
-        'Error fetching attendance tracker data: '
-      );
+      ahe.setMessage('Error fetching attendance tracker data: ');
       throw ahe;
     }
   }
@@ -487,13 +507,7 @@ public inherited sharing class PWChrono_AttendanceController {
 
     while (currentDate <= endDate) {
       result.add(
-        createDayWrapper(
-          currentDate,
-          shifts,
-          requestsMap,
-          leaves,
-          holidaysMap
-        )
+        createDayWrapper(currentDate, shifts, requestsMap, leaves, holidaysMap)
       );
       currentDate = currentDate.addDays(1);
     }
@@ -766,7 +780,9 @@ public inherited sharing class PWChrono_AttendanceController {
     }
   }
 
-  private static List<PWChrono_Attendance_Request__c> getAllAttendanceCore(Date dateFilter) {
+  private static List<PWChrono_Attendance_Request__c> getAllAttendanceCore(
+    Date dateFilter
+  ) {
     String query =
       'SELECT Id, Name, Employees__c, Employees__r.Name, Employees__r.Role__c, ' +
       'Attendance_Date__c, From_Time__c, To_Time__c, Status__c, Reason__c ' +

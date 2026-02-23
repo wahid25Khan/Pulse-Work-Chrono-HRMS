@@ -1,5 +1,5 @@
-import { LightningElement } from 'lwc';
+import { LightningElement } from "lwc";
 
 export default class PwchronoConfiguration extends LightningElement {
-    static renderMode = 'light';
+  static renderMode = "light";
 }

@@ -175,7 +175,9 @@ private class PWChrono_LeaveAllocationBatch_Test {
   static void testBatchMultipleEmployees() {
     // Create second employee
     User testUser2 = PWChrono_TestDataFactory.createTestUser('Employee2');
-    Portal_Users__c employee2 = PWChrono_TestDataFactory.createTestEmployee(testUser2.Id);
+    Portal_Users__c employee2 = PWChrono_TestDataFactory.createTestEmployee(
+      testUser2.Id
+    );
 
     Test.startTest();
     PWChrono_LeaveAllocationBatch batch = new PWChrono_LeaveAllocationBatch();
@@ -219,7 +221,10 @@ private class PWChrono_LeaveAllocationBatch_Test {
     PWChrono_LeaveAllocationBatch batch = new PWChrono_LeaveAllocationBatch();
     try {
       Database.executeBatch(batch, 1);
-      System.assert(true, 'Batch should execute without throwing uncaught exceptions');
+      System.assert(
+        true,
+        'Batch should execute without throwing uncaught exceptions'
+      );
     } catch (Exception e) {
       System.assert(false, 'Batch failed: ' + e.getMessage());
     }

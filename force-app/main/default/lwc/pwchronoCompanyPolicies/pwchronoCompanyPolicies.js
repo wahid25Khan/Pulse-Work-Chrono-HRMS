@@ -2,7 +2,7 @@ import { LightningElement, wire, track } from "lwc";
 import getPolicies from "@salesforce/apex/PWChrono_PolicyController.getPolicies";
 
 export default class PwchronoCompanyPolicies extends LightningElement {
-  static renderMode = 'light';
+  static renderMode = "light";
   @track policies;
   @track error;
   @track selectedCategory = "All";

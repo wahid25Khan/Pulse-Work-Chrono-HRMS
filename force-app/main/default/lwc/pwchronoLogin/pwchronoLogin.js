@@ -8,14 +8,17 @@ import { NavigationMixin } from "lightning/navigation";
 import { LightningElement, track } from "lwc";
 
 export default class PwchronoLogin extends NavigationMixin(LightningElement) {
+  uiAssetsLoadedKey = "__pwchronoUiAssetsLoaded";
   @track email = "";
   @track showOtpScreen = false;
   @track isLoading = false;
+  @track isUiReady = false;
   @track errorMessage = "";
   @track countdown = 60;
   @track canResend = false;
-  @track tlgSantaLogoError = false;
-  timerInterval;
+  countdownAnimationFrame;
+  countdownEndAtMs;
+  resendEnableAtMs;
 
   tlgSantaLogoUrl = TLG_SANTA_LOGO;
 
@@ -25,23 +28,6 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
   bg02Url = `${smarthrAssets}/assets/img/bg/bg-02.svg`;
   bg03Url = `${smarthrAssets}/assets/img/bg/bg-03.svg`;
   authBg01Url = `${smarthrAssets}/assets/img/bg/authentication-bg-01.svg`;
-
-  get tlgSantaInitials() {
-    return "TLG";
-  }
-
-  handleDecorativeImgError(event) {
-    // Decorative/background images should not show broken-image icons.
-    try {
-      event?.target?.classList?.add("d-none");
-    } catch {
-      // no-op
-    }
-  }
-
-  handleTlgSantaLogoError() {
-    this.tlgSantaLogoError = true;
-  }
 
   // Create OTP digit objects with unique keys
   @track otpDigits = [
@@ -102,7 +88,12 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
   ];
 
   connectedCallback() {
-    // Styles are expected to be loaded globally by the Experience site (Head Markup / Theme).
+    // Render only after shared CSS is loaded to avoid a flash of unstyled content.
+    this.isUiReady = Boolean(globalThis[this.uiAssetsLoadedKey]);
+  }
+
+  handleAssetsReady() {
+    this.isUiReady = true;
   }
 
   getCommunityBasePath() {
@@ -154,22 +145,18 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
       // no-op
     }
 
-    // Always force a hard redirect shortly after, so the URL definitely leaves /login
-    // and the Home page loads fresh.
-    // eslint-disable-next-line @lwc/lwc/no-async-operation
-    setTimeout(() => {
+    // Force a hard redirect so the URL definitely leaves /login and Home loads fresh.
+    try {
+      globalThis.location?.assign(targetUrl);
+    } catch {
       try {
-        globalThis.location?.assign(targetUrl);
-      } catch {
-        try {
-          if (globalThis.location) {
-            globalThis.location.href = targetUrl;
-          }
-        } catch {
-          // no-op
+        if (globalThis.location) {
+          globalThis.location.href = targetUrl;
         }
+      } catch {
+        // no-op
       }
-    }, 150);
+    }
   }
 
   // Handle email input
@@ -191,16 +178,20 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
 
   // Submit email and request OTP
   async handleEmailSubmit() {
-    if (!this.email || !this.validateEmail(this.email)) {
+    const normalizedEmail = this.normalizeEmail(this.email);
+
+    if (!normalizedEmail || !this.validateEmail(normalizedEmail)) {
       this.errorMessage = "Please enter a valid email address.";
       return;
     }
+
+    this.email = normalizedEmail;
 
     this.isLoading = true;
     this.errorMessage = "";
 
     try {
-      const result = await sendOTP({ email: this.email });
+      const result = await sendOTP({ email: normalizedEmail });
       if (result === "Success") {
         this.showOtpScreen = true;
         this.startCountdown();
@@ -212,8 +203,11 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
           "Email delivery may have failed. Check debug logs for OTP code.";
       }
     } catch (error) {
+      const serverMessage = error.body?.message;
       this.errorMessage =
-        error.body?.message || "Failed to send OTP. Please try again.";
+        serverMessage === "Invalid email or password. Please try again."
+          ? "We couldn't find an active account with that email. Please contact HR support if this continues."
+          : serverMessage || "Failed to send OTP. Please try again.";
     } finally {
       this.isLoading = false;
     }
@@ -223,6 +217,12 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
   validateEmail(email) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
+  }
+
+  normalizeEmail(email) {
+    return String(email || "")
+      .trim()
+      .toLowerCase();
   }
 
   // Handle OTP input
@@ -409,11 +409,19 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
   async handleResendOtp() {
     if (!this.canResend) return;
 
+    const normalizedEmail = this.normalizeEmail(this.email);
+    if (!normalizedEmail) {
+      this.errorMessage = "Please enter a valid email address.";
+      return;
+    }
+
+    this.email = normalizedEmail;
+
     this.isLoading = true;
     this.errorMessage = "";
 
     try {
-      const result = await sendOTP({ email: this.email });
+      const result = await sendOTP({ email: normalizedEmail });
       if (result === "Success") {
         this.otpDigits = this.otpDigits.map((d) => ({ ...d, value: "" }));
         this.startCountdown();
@@ -447,33 +455,47 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
     this.countdown = OTP_EXPIRY_SECONDS - 1;
     this.canResend = false;
 
-    const initialCountdown = this.countdown;
+    this.clearCountdownLoop();
 
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
+    const now = Date.now();
+    this.countdownEndAtMs = now + OTP_EXPIRY_SECONDS * 1000;
+    this.resendEnableAtMs = now + RESEND_ENABLE_AFTER_SECONDS * 1000;
+
+    this.runCountdownLoop();
+  }
+
+  runCountdownLoop() {
+    if (typeof globalThis.requestAnimationFrame !== "function") {
+      // Fallback: keep the displayed start value if RAF isn't available.
+      return;
     }
 
-    // Timer is cleared on restart and in disconnectedCallback.
-    // eslint-disable-next-line @lwc/lwc/no-async-operation
-    this.timerInterval = setInterval(() => {
-      this.countdown = Math.max(0, this.countdown - 1);
+    const tick = () => {
+      const now = Date.now();
+      const secondsRemaining = Math.ceil((this.countdownEndAtMs - now) / 1000);
+      this.countdown = Math.max(0, secondsRemaining);
+      this.canResend = now >= this.resendEnableAtMs;
 
-      const elapsed = initialCountdown - this.countdown;
-      if (elapsed >= RESEND_ENABLE_AFTER_SECONDS) {
-        this.canResend = true;
+      if (this.countdown > 0) {
+        this.countdownAnimationFrame = globalThis.requestAnimationFrame(tick);
+      } else {
+        this.clearCountdownLoop();
       }
+    };
 
-      if (this.countdown <= 0) {
-        clearInterval(this.timerInterval);
-      }
-    }, 1000);
+    this.countdownAnimationFrame = globalThis.requestAnimationFrame(tick);
+  }
+
+  clearCountdownLoop() {
+    if (this.countdownAnimationFrame) {
+      globalThis.cancelAnimationFrame(this.countdownAnimationFrame);
+      this.countdownAnimationFrame = null;
+    }
   }
 
   // Cleanup timer on disconnect
   disconnectedCallback() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-    }
+    this.clearCountdownLoop();
   }
 
   // Computed properties
@@ -509,7 +531,7 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
     // Show a fullscreen centered loader.
     // We use inline styles (instead of relying solely on #global-loader in SmartHR CSS)
     // so the loader is correctly centered even on the very first paint before styles load.
-    if (!this.isLoading) {
+    if (!this.isLoading && this.isUiReady) {
       return "display: none";
     }
 
@@ -531,5 +553,9 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
 
   get resendDisabled() {
     return this.isLoading || !this.canResend;
+  }
+
+  get appShellStyle() {
+    return this.isUiReady ? "" : "visibility: hidden;";
   }
 }

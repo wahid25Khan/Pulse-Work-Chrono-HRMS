@@ -35,7 +35,10 @@ private class PWChrono_ConfigurationController_Test {
   @isTest
   static void testGetAllUsersWithAccess() {
     Test.startTest();
-    List<PWChrono_ConfigurationController.UserConfiguration> userConfigs = PWChrono_ConfigurationController.getAllUsersWithAccess(null, null);
+    List<PWChrono_ConfigurationController.UserConfiguration> userConfigs = PWChrono_ConfigurationController.getAllUsersWithAccess(
+      null,
+      null
+    );
     Test.stopTest();
 
     System.assertEquals(
@@ -65,7 +68,10 @@ private class PWChrono_ConfigurationController_Test {
   @isTest
   static void testGetAvailableFeatures() {
     Test.startTest();
-    List<String> features = PWChrono_ConfigurationController.getAvailableFeatures(null, null);
+    List<String> features = PWChrono_ConfigurationController.getAvailableFeatures(
+      null,
+      null
+    );
     Test.stopTest();
 
     System.assert(
@@ -218,7 +224,10 @@ private class PWChrono_ConfigurationController_Test {
   @isTest
   static void testGetGlobalFeatureSettings() {
     Test.startTest();
-    PWChrono_Feature_Settings__c settings = PWChrono_ConfigurationController.getGlobalFeatureSettings(null, null);
+    PWChrono_Feature_Settings__c settings = PWChrono_ConfigurationController.getGlobalFeatureSettings(
+      null,
+      null
+    );
     Test.stopTest();
 
     System.assert(settings != null, 'Settings should not be null.');

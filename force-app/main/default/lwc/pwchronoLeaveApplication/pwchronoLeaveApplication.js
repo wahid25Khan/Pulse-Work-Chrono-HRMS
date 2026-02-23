@@ -62,7 +62,10 @@ export default class PwchronoLeaveApplication extends LightningElement {
     }
   }
 
-  @wire(getMyLeaveBalance, { employeeId: "$employeeId", sessionToken: "$sessionToken" })
+  @wire(getMyLeaveBalance, {
+    employeeId: "$employeeId",
+    sessionToken: "$sessionToken"
+  })
   wiredBalances({ error, data }) {
     if (data) {
       // Create a map using Leave Type ID for proper lookup
@@ -147,7 +150,7 @@ export default class PwchronoLeaveApplication extends LightningElement {
       sobjectType: "PWChrono_Leave__c"
     };
 
-    saveLeaveApplication({ 
+    saveLeaveApplication({
       leaveRecord: leaveToSave,
       portalUserId: this.employeeId,
       sessionToken: this.sessionToken

@@ -3,8 +3,10 @@ private class PWChrono_NavigationController_Test {
   @isTest
   static void testGetNavigationMenuItems_BlankMenuName() {
     Test.startTest();
-    List<ConnectApi.NavigationMenuItem> items =
-      PWChrono_NavigationController.getNavigationMenuItems('', 'Live');
+    List<ConnectApi.NavigationMenuItem> items = PWChrono_NavigationController.getNavigationMenuItems(
+      '',
+      'Live'
+    );
     Test.stopTest();
 
     System.assertNotEquals(null, items, 'Method should always return a list.');
@@ -13,13 +15,16 @@ private class PWChrono_NavigationController_Test {
   @isTest
   static void testGetNavigationMenuItems_CustomMenuName() {
     Test.startTest();
-    List<ConnectApi.NavigationMenuItem> items =
-      PWChrono_NavigationController.getNavigationMenuItems(
-        'Default Navigation',
-        'Live'
-      );
+    List<ConnectApi.NavigationMenuItem> items = PWChrono_NavigationController.getNavigationMenuItems(
+      'Default Navigation',
+      'Live'
+    );
     Test.stopTest();
 
-    System.assertNotEquals(null, items, 'Method should return an empty list when no network context exists.');
+    System.assertNotEquals(
+      null,
+      items,
+      'Method should return an empty list when no network context exists.'
+    );
   }
 }

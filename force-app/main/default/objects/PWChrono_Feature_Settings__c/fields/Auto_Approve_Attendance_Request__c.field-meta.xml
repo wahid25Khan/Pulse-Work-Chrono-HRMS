@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Auto_Approve_Attendance_Request__c</fullName>
     <defaultValue>false</defaultValue>
-    <description>Automatically approve attendance regularization requests within grace period without manager approval.</description>
-    <inlineHelpText>When checked, attendance requests within grace period (configured in PWChrono Settings) will be auto-approved.</inlineHelpText>
+    <description
+  >Automatically approve attendance regularization requests within grace period without manager approval.</description>
+    <inlineHelpText
+  >When checked, attendance requests within grace period (configured in PWChrono Settings) will be auto-approved.</inlineHelpText>
     <label>Auto Approve Attendance Request</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

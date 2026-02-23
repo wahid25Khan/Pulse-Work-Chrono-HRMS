@@ -15,7 +15,10 @@ export default class PwchronoOnboardingChecklist extends LightningElement {
   employeeId = getEmployeeId();
   sessionToken = getSessionToken();
 
-  @wire(getOnboardingTasks, { portalUserId: "$employeeId", sessionToken: "$sessionToken" })
+  @wire(getOnboardingTasks, {
+    portalUserId: "$employeeId",
+    sessionToken: "$sessionToken"
+  })
   wiredTasks(result) {
     this.wiredTasksResult = result;
     this.isLoading = false;

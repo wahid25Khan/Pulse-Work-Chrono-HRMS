@@ -208,7 +208,10 @@ private class PWChrono_PerformanceController_Test {
         // May throw exception or return empty list, either is valid for user without employee record
         System.assert(true, 'Should handle user without employee gracefully');
       } catch (AuraHandledException e) {
-        System.assert(true, 'Should throw exception for missing employee record');
+        System.assert(
+          true,
+          'Should throw exception for missing employee record'
+        );
       } catch (Exception e) {
         System.assert(true, 'Should handle missing employee record');
       }
@@ -290,7 +293,11 @@ private class PWChrono_PerformanceController_Test {
       );
       Test.stopTest();
 
-      System.assertEquals(1, inProgressGoals.size(), 'Should return 1 in-progress goal');
+      System.assertEquals(
+        1,
+        inProgressGoals.size(),
+        'Should return 1 in-progress goal'
+      );
       System.assertEquals(
         PWChrono_Constants.STATUS_IN_PROGRESS,
         inProgressGoals[0].Status__c,
@@ -312,7 +319,11 @@ private class PWChrono_PerformanceController_Test {
       );
       Test.stopTest();
 
-      System.assertEquals(1, draftAppraisals.size(), 'Should return 1 draft appraisal');
+      System.assertEquals(
+        1,
+        draftAppraisals.size(),
+        'Should return 1 draft appraisal'
+      );
       System.assertEquals(
         PWChrono_Constants.STATUS_DRAFT,
         draftAppraisals[0].Status__c,
@@ -337,14 +348,21 @@ private class PWChrono_PerformanceController_Test {
           null,
           null
         );
-        System.assertEquals(150, updatedGoal.Progress__c, 'Progress should be saved as provided');
+        System.assertEquals(
+          150,
+          updatedGoal.Progress__c,
+          'Progress should be saved as provided'
+        );
         System.assertEquals(
           PWChrono_Constants.STATUS_COMPLETED,
           updatedGoal.Status__c,
           'Goal should auto-complete when progress >= 100'
         );
       } catch (Exception e) {
-        System.assert(false, 'Should not throw for progress > 100: ' + e.getMessage());
+        System.assert(
+          false,
+          'Should not throw for progress > 100: ' + e.getMessage()
+        );
       }
       Test.stopTest();
     }

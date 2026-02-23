@@ -7,7 +7,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
 export default class PwchronoProfileUpdate extends LightningElement {
-  static renderMode = 'light';
+  static renderMode = "light";
   // Target employee record to view/edit (Portal_Users__c Id). If blank, defaults to the current session portal user.
   @api employeeId;
   @track profile;
@@ -16,18 +16,18 @@ export default class PwchronoProfileUpdate extends LightningElement {
 
   // Actor portal user (the verified session user). Used to enforce access on the server.
   portalUserId = getEmployeeId();
-  
+
   // Track editable fields locally
   @track formState = {
-    Name: '',
-    Phone__c: '',
-    Address__c: '',
-    Emergency_Contact_Name__c: '',
-    Emergency_Contact_Phone__c: '',
-    City: '',
-    State: '',
-    Country: '',
-    PostalCode: ''
+    Name: "",
+    Phone__c: "",
+    Address__c: "",
+    Emergency_Contact_Name__c: "",
+    Emergency_Contact_Phone__c: "",
+    City: "",
+    State: "",
+    Country: "",
+    PostalCode: ""
   };
 
   wiredProfileResult;
@@ -68,15 +68,16 @@ export default class PwchronoProfileUpdate extends LightningElement {
       this.error = undefined;
       // Initialize form state
       this.formState = {
-        Name: this.profile.Name || '',
-        Phone__c: this.profile.Phone__c || '',
-        Address__c: this.profile.Address__c || '',
-        Emergency_Contact_Name__c: this.profile.Emergency_Contact_Name__c || '',
-        Emergency_Contact_Phone__c: this.profile.Emergency_Contact_Phone__c || '',
-        City: '', 
-        State: '', 
-        Country: '', 
-        PostalCode: '' 
+        Name: this.profile.Name || "",
+        Phone__c: this.profile.Phone__c || "",
+        Address__c: this.profile.Address__c || "",
+        Emergency_Contact_Name__c: this.profile.Emergency_Contact_Name__c || "",
+        Emergency_Contact_Phone__c:
+          this.profile.Emergency_Contact_Phone__c || "",
+        City: "",
+        State: "",
+        Country: "",
+        PostalCode: ""
       };
     } else if (result.error) {
       this.error = result.error;
@@ -87,29 +88,38 @@ export default class PwchronoProfileUpdate extends LightningElement {
   handleFieldChange(event) {
     const fieldName = event.target.name;
     const value = event.target.value;
-    
+
     this.formState[fieldName] = value;
-    
+
     // Only add to updatedFields if it's a Salesforce field
-    if (['Name', 'Phone__c', 'Address__c', 'Emergency_Contact_Name__c', 'Emergency_Contact_Phone__c'].includes(fieldName)) {
-        this.updatedFields[fieldName] = value;
+    if (
+      [
+        "Name",
+        "Phone__c",
+        "Address__c",
+        "Emergency_Contact_Name__c",
+        "Emergency_Contact_Phone__c"
+      ].includes(fieldName)
+    ) {
+      this.updatedFields[fieldName] = value;
     }
   }
 
   handleCancelEdit() {
     this.updatedFields = {};
     if (this.profile) {
-        this.formState = {
-            Name: this.profile.Name || '',
-            Phone__c: this.profile.Phone__c || '',
-            Address__c: this.profile.Address__c || '',
-            Emergency_Contact_Name__c: this.profile.Emergency_Contact_Name__c || '',
-            Emergency_Contact_Phone__c: this.profile.Emergency_Contact_Phone__c || '',
-            City: '',
-            State: '',
-            Country: '',
-            PostalCode: ''
-        };
+      this.formState = {
+        Name: this.profile.Name || "",
+        Phone__c: this.profile.Phone__c || "",
+        Address__c: this.profile.Address__c || "",
+        Emergency_Contact_Name__c: this.profile.Emergency_Contact_Name__c || "",
+        Emergency_Contact_Phone__c:
+          this.profile.Emergency_Contact_Phone__c || "",
+        City: "",
+        State: "",
+        Country: "",
+        PostalCode: ""
+      };
     }
   }
 
@@ -118,15 +128,15 @@ export default class PwchronoProfileUpdate extends LightningElement {
     if (file) {
       // Validate file size (e.g., 5MB limit)
       if (file.size > 5 * 1024 * 1024) {
-          this.dispatchEvent(
-              new ShowToastEvent({
-                  title: "Error",
-                  message: "File size exceeds 5MB limit",
-                  variant: "error",
-              })
-          );
-          event.target.value = null;
-          return;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error",
+            message: "File size exceeds 5MB limit",
+            variant: "error"
+          })
+        );
+        event.target.value = null;
+        return;
       }
 
       this.isSaving = true;
@@ -146,7 +156,7 @@ export default class PwchronoProfileUpdate extends LightningElement {
             new ShowToastEvent({
               title: "Success",
               message: "Profile photo uploaded successfully",
-              variant: "success",
+              variant: "success"
             })
           );
         } catch (error) {
@@ -154,7 +164,7 @@ export default class PwchronoProfileUpdate extends LightningElement {
             new ShowToastEvent({
               title: "Error uploading photo",
               message: error.body ? error.body.message : error.message,
-              variant: "error",
+              variant: "error"
             })
           );
         } finally {
@@ -168,10 +178,10 @@ export default class PwchronoProfileUpdate extends LightningElement {
   }
 
   handleCancelUpload() {
-      const fileInput = this.template.querySelector('.image-sign');
-      if (fileInput) {
-          fileInput.value = null;
-      }
+    const fileInput = this.template.querySelector(".image-sign");
+    if (fileInput) {
+      fileInput.value = null;
+    }
   }
 
   async handleSave() {
@@ -184,23 +194,23 @@ export default class PwchronoProfileUpdate extends LightningElement {
           portalUserId: this.portalUserId,
           sessionToken: this.sessionToken
         });
-        
+
         await refreshApex(this.wiredProfileResult);
-        
+
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Success",
             message: "Profile updated successfully",
-            variant: "success",
+            variant: "success"
           })
         );
         this.updatedFields = {};
       } else {
-         this.dispatchEvent(
+        this.dispatchEvent(
           new ShowToastEvent({
             title: "Success",
             message: "Profile updated (No changes to persisted fields)",
-            variant: "success",
+            variant: "success"
           })
         );
       }
@@ -209,7 +219,7 @@ export default class PwchronoProfileUpdate extends LightningElement {
         new ShowToastEvent({
           title: "Error updating profile",
           message: error.body ? error.body.message : error.message,
-          variant: "error",
+          variant: "error"
         })
       );
     } finally {

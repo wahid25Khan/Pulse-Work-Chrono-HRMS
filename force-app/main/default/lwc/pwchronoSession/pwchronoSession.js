@@ -4,7 +4,7 @@ const TOKEN_KEY = "portalSessionToken";
 
 // Fired whenever setSession/clearSession mutates the current session.
 // Used by pre-rendered tab components to refresh wire params after login completes.
-export const SESSION_CHANGED_EVENT = 'pwchrono-session-changed';
+export const SESSION_CHANGED_EVENT = "pwchrono-session-changed";
 
 // In Experience Builder / Live Preview, Locker/Proxies and storage restrictions can cause
 // sessionStorage access or JSON (de)serialization to throw. Keep an in-memory fallback

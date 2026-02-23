@@ -120,10 +120,7 @@ public without sharing class PWChrono_LeaveBalanceService {
 
     // Initialize map
     for (PWChrono_Leave_Allocation__c alloc : allocations) {
-      usageMap.put(
-        alloc.Id,
-        new Map<String, Decimal>{ 'pending' => 0 }
-      );
+      usageMap.put(alloc.Id, new Map<String, Decimal>{ 'pending' => 0 });
     }
 
     // Group allocations by Leave Type for faster lookup
@@ -192,7 +189,11 @@ public without sharing class PWChrono_LeaveBalanceService {
       : 0;
 
     wrapper.pending = usage.get('pending');
-    wrapper.remaining = wrapper.allocated - wrapper.used - wrapper.pending - encashed;
+    wrapper.remaining =
+      wrapper.allocated -
+      wrapper.used -
+      wrapper.pending -
+      encashed;
 
     return wrapper;
   }

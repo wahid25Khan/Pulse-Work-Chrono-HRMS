@@ -3,7 +3,6 @@
  * @author PWChrono Team
  */
 public inherited sharing class PWChrono_DashboardController {
-
   // -----------------------------
   // Public API
   // -----------------------------
@@ -19,7 +18,10 @@ public inherited sharing class PWChrono_DashboardController {
     String sessionToken
   ) {
     try {
-      Id targetEmployeeId = resolveCurrentEmployeeId(portalUserId, sessionToken);
+      Id targetEmployeeId = resolveCurrentEmployeeId(
+        portalUserId,
+        sessionToken
+      );
       if (targetEmployeeId == null) {
         return buildEmptySummary();
       }
@@ -69,10 +71,16 @@ public inherited sharing class PWChrono_DashboardController {
   // Core helpers
   // -----------------------------
 
-  private static Id resolveCurrentEmployeeId(String portalUserId, String sessionToken) {
+  private static Id resolveCurrentEmployeeId(
+    String portalUserId,
+    String sessionToken
+  ) {
     if (UserInfo.getUserType() == 'Guest') {
       // Throws if invalid.
-      return PWChrono_GuestSession.requireVerifiedPortalUserId(portalUserId, sessionToken);
+      return PWChrono_GuestSession.requireVerifiedPortalUserId(
+        portalUserId,
+        sessionToken
+      );
     }
 
     Id currentUserId = UserInfo.getUserId();
@@ -91,7 +99,9 @@ public inherited sharing class PWChrono_DashboardController {
     };
   }
 
-  private static Map<String, Object> buildDashboardSummary(Id targetEmployeeId) {
+  private static Map<String, Object> buildDashboardSummary(
+    Id targetEmployeeId
+  ) {
     Map<String, Object> summary = new Map<String, Object>();
 
     // Leave Balance Summary
@@ -110,7 +120,10 @@ public inherited sharing class PWChrono_DashboardController {
     summary.put('activeGoalsCount', getActiveGoalsCount(targetEmployeeId));
 
     // Pending Appraisals Count
-    summary.put('pendingAppraisalsCount', getPendingAppraisalsCount(targetEmployeeId));
+    summary.put(
+      'pendingAppraisalsCount',
+      getPendingAppraisalsCount(targetEmployeeId)
+    );
 
     // Today's Attendance
     summary.put('todayAttendance', getTodayAttendance(targetEmployeeId));
@@ -127,7 +140,12 @@ public inherited sharing class PWChrono_DashboardController {
     List<Map<String, Object>> balances = new List<Map<String, Object>>();
 
     List<PWChrono_Leave_Allocation__c> allocations = [
-      SELECT Id, Leave_Type__r.Name, Total_Leaves_Allocated__c, Total_Leaves_Used__c, Total_Leaves_Encashed__c
+      SELECT
+        Id,
+        Leave_Type__r.Name,
+        Total_Leaves_Allocated__c,
+        Total_Leaves_Used__c,
+        Total_Leaves_Encashed__c
       FROM PWChrono_Leave_Allocation__c
       WHERE Employees__c = :employeeId AND To_Date__c >= TODAY
       ORDER BY Leave_Type__r.Name
@@ -139,17 +157,23 @@ public inherited sharing class PWChrono_DashboardController {
         allocation.Leave_Type__r.Name != null)
         ? allocation.Leave_Type__r.Name
         : 'Unknown';
-      
-      Decimal allocated = allocation.Total_Leaves_Allocated__c != null ? allocation.Total_Leaves_Allocated__c : 0;
-      Decimal used = allocation.Total_Leaves_Used__c != null ? allocation.Total_Leaves_Used__c : 0;
-      Decimal encashed = allocation.Total_Leaves_Encashed__c != null ? allocation.Total_Leaves_Encashed__c : 0;
+
+      Decimal allocated = allocation.Total_Leaves_Allocated__c != null
+        ? allocation.Total_Leaves_Allocated__c
+        : 0;
+      Decimal used = allocation.Total_Leaves_Used__c != null
+        ? allocation.Total_Leaves_Used__c
+        : 0;
+      Decimal encashed = allocation.Total_Leaves_Encashed__c != null
+        ? allocation.Total_Leaves_Encashed__c
+        : 0;
       Decimal available = allocated - used - encashed;
 
       balance.put('leaveType', leaveTypeName);
       balance.put('allocated', allocated);
       balance.put('used', used);
       balance.put('available', available);
-      
+
       balances.add(balance);
     }
 
@@ -277,26 +301,25 @@ public inherited sharing class PWChrono_DashboardController {
   }
 
   /**
-    * @description Get today's attendance details
-    */
+   * @description Get today's attendance details
+   */
   private static Map<String, Object> getTodayAttendance(Id employeeId) {
-      List<PWChrono_Attendance_Request__c> requests = [
-          SELECT Id, From_Time__c, To_Time__c, Status__c, Attendance_Date__c
-          FROM PWChrono_Attendance_Request__c
-          WHERE Employees__c = :employeeId
-          AND Attendance_Date__c = TODAY
-          LIMIT 1
-      ];
+    List<PWChrono_Attendance_Request__c> requests = [
+      SELECT Id, From_Time__c, To_Time__c, Status__c, Attendance_Date__c
+      FROM PWChrono_Attendance_Request__c
+      WHERE Employees__c = :employeeId AND Attendance_Date__c = TODAY
+      LIMIT 1
+    ];
 
-      if (!requests.isEmpty()) {
-          PWChrono_Attendance_Request__c request = requests[0];
-          return new Map<String, Object>{
-              'checkIn' => request.From_Time__c,
-              'checkOut' => request.To_Time__c,
-              'status' => request.Status__c,
-              'id' => request.Id
-          };
-      }
-      return null;
+    if (!requests.isEmpty()) {
+      PWChrono_Attendance_Request__c request = requests[0];
+      return new Map<String, Object>{
+        'checkIn' => request.From_Time__c,
+        'checkOut' => request.To_Time__c,
+        'status' => request.Status__c,
+        'id' => request.Id
+      };
+    }
+    return null;
   }
 }

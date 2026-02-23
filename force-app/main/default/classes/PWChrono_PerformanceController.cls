@@ -24,7 +24,9 @@ public inherited sharing class PWChrono_PerformanceController {
           sessionToken
         );
       } else if (String.isNotBlank(employeeId)) {
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
         if (currentEmployeeId != null && employeeId != currentEmployeeId) {
           if (PWChrono_AccessController.isAdmin(currentEmployeeId)) {
             targetEmployeeId = (Id) employeeId;
@@ -35,7 +37,9 @@ public inherited sharing class PWChrono_PerformanceController {
           targetEmployeeId = (Id) employeeId;
         }
       } else {
-        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
       }
 
       if (targetEmployeeId == null) {
@@ -154,7 +158,9 @@ public inherited sharing class PWChrono_PerformanceController {
         );
         actorEmployeeId = targetEmployeeId;
       } else {
-        actorEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        actorEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
         targetEmployeeId = actorEmployeeId;
         if (
           String.isNotBlank(portalUserId) &&
@@ -167,7 +173,9 @@ public inherited sharing class PWChrono_PerformanceController {
       }
 
       if (targetEmployeeId == null) {
-        throw new AuraHandledException('No employee record found for current user.');
+        throw new AuraHandledException(
+          'No employee record found for current user.'
+        );
       }
 
       if (appraisal.Id == null) {
@@ -181,7 +189,8 @@ public inherited sharing class PWChrono_PerformanceController {
         ];
         if (
           existing.Employees__c != targetEmployeeId &&
-          (actorEmployeeId == null || !PWChrono_AccessController.isAdmin(actorEmployeeId))
+          (actorEmployeeId == null ||
+          !PWChrono_AccessController.isAdmin(actorEmployeeId))
         ) {
           throw new AuraHandledException('Access Denied.');
         }
@@ -241,7 +250,9 @@ public inherited sharing class PWChrono_PerformanceController {
           sessionToken
         );
       } else if (String.isNotBlank(employeeId)) {
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
         if (currentEmployeeId != null && employeeId != currentEmployeeId) {
           if (PWChrono_AccessController.isAdmin(currentEmployeeId)) {
             targetEmployeeId = (Id) employeeId;
@@ -252,7 +263,9 @@ public inherited sharing class PWChrono_PerformanceController {
           targetEmployeeId = (Id) employeeId;
         }
       } else {
-        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
       }
 
       if (targetEmployeeId == null) {
@@ -311,7 +324,9 @@ public inherited sharing class PWChrono_PerformanceController {
         );
         actorEmployeeId = targetEmployeeId;
       } else {
-        actorEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        actorEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
         targetEmployeeId = actorEmployeeId;
         if (
           String.isNotBlank(portalUserId) &&
@@ -324,7 +339,9 @@ public inherited sharing class PWChrono_PerformanceController {
       }
 
       if (targetEmployeeId == null) {
-        throw new AuraHandledException('No employee record found for current user.');
+        throw new AuraHandledException(
+          'No employee record found for current user.'
+        );
       }
 
       if (goal.Id == null) {
@@ -338,7 +355,8 @@ public inherited sharing class PWChrono_PerformanceController {
         ];
         if (
           existing.Employees__c != targetEmployeeId &&
-          (actorEmployeeId == null || !PWChrono_AccessController.isAdmin(actorEmployeeId))
+          (actorEmployeeId == null ||
+          !PWChrono_AccessController.isAdmin(actorEmployeeId))
         ) {
           throw new AuraHandledException('Access Denied.');
         }
@@ -400,7 +418,9 @@ public inherited sharing class PWChrono_PerformanceController {
         );
         actorEmployeeId = targetEmployeeId;
       } else {
-        actorEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        actorEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
         targetEmployeeId = actorEmployeeId;
         if (
           String.isNotBlank(portalUserId) &&
@@ -422,7 +442,8 @@ public inherited sharing class PWChrono_PerformanceController {
       if (
         targetEmployeeId != null &&
         goal.Employees__c != targetEmployeeId &&
-        (actorEmployeeId == null || !PWChrono_AccessController.isAdmin(actorEmployeeId))
+        (actorEmployeeId == null ||
+        !PWChrono_AccessController.isAdmin(actorEmployeeId))
       ) {
         throw new AuraHandledException('Access Denied.');
       }

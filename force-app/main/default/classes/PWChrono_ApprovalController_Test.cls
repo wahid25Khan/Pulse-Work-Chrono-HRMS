@@ -100,10 +100,14 @@ private class PWChrono_ApprovalController_Test {
     Test.startTest();
     try {
       PWChrono_ApprovalController.processRequest(null, 'Approve', 'Comments');
-      System.assert(false, 'Expected controlled exception for null work item id.');
+      System.assert(
+        false,
+        'Expected controlled exception for null work item id.'
+      );
     } catch (Exception e) {
       System.assert(
-        e.getMessage().contains('Approval request not found or already processed'),
+        e.getMessage()
+          .contains('Approval request not found or already processed'),
         'Should return controlled not-found/processed message.'
       );
     }
@@ -122,10 +126,14 @@ private class PWChrono_ApprovalController_Test {
         'Reject',
         'Invalid work item test'
       );
-      System.assert(false, 'Expected controlled exception for unknown work item id.');
+      System.assert(
+        false,
+        'Expected controlled exception for unknown work item id.'
+      );
     } catch (Exception e) {
       System.assert(
-        e.getMessage().contains('Approval request not found or already processed'),
+        e.getMessage()
+          .contains('Approval request not found or already processed'),
         'Should return controlled not-found/processed message.'
       );
     }
@@ -135,10 +143,13 @@ private class PWChrono_ApprovalController_Test {
   @isTest
   static void testGetPendingApprovals_NoPendingSafeReturn() {
     Test.startTest();
-    List<PWChrono_ApprovalController.ApprovalRequestWrapper> approvals =
-      PWChrono_ApprovalController.getPendingApprovals();
+    List<PWChrono_ApprovalController.ApprovalRequestWrapper> approvals = PWChrono_ApprovalController.getPendingApprovals();
     Test.stopTest();
 
-    System.assertNotEquals(null, approvals, 'Method should always return a list.');
+    System.assertNotEquals(
+      null,
+      approvals,
+      'Method should always return a list.'
+    );
   }
 }

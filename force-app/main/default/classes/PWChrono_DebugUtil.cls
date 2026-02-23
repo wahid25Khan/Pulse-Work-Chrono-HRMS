@@ -110,7 +110,11 @@ public inherited sharing class PWChrono_DebugUtil {
       debugInfo.put('availableFeatures', features);
 
       // All portal users count
-      Integer totalPortalUsers = [SELECT COUNT() FROM Portal_Users__c];
+      Integer totalPortalUsers = [
+        SELECT COUNT()
+        FROM Portal_Users__c
+        LIMIT 50000
+      ];
       debugInfo.put('totalPortalUsers', totalPortalUsers);
     } catch (Exception e) {
       debugInfo.put('error', 'Unable to fetch debug information.');
@@ -175,8 +179,9 @@ public inherited sharing class PWChrono_DebugUtil {
       if (!results[0].isSuccess()) {
         List<String> errors = new List<String>();
         try {
-          List<Object> errorList = (List<Object>) results[0].getErrors();
-          errors.add('Email send failed with errors');
+          for (Messaging.SendEmailError err : results[0].getErrors()) {
+            errors.add(err.getMessage());
+          }
         } catch (Exception e) {
           errors.add('Error details: ' + e.getMessage());
         }
@@ -310,6 +315,9 @@ public inherited sharing class PWChrono_DebugUtil {
       }
     } catch (Exception e) {
       // Return empty list on error
+      throw new AuraHandledException(
+        'Error getting test users: ' + e.getMessage()
+      );
     }
 
     return testUsers;

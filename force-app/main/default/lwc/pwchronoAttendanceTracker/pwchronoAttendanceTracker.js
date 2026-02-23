@@ -4,7 +4,6 @@ import getAttendanceTrackerData from "@salesforce/apex/PWChrono_AttendanceContro
 import { showErrorToast, logError } from "c/pwchronoErrorHandler";
 import { getSession, getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
-
 const MONTH_NAMES = [
   "January",
   "February",
@@ -48,7 +47,7 @@ export default class PwchronoAttendanceTracker extends LightningElement {
       return JSON.stringify(value, null, 2);
     } catch {
       // If this is a Proxy/circular structure in Live Preview, avoid crashing the page.
-      return '[unserializable]';
+      return "[unserializable]";
     }
   }
 
@@ -56,11 +55,11 @@ export default class PwchronoAttendanceTracker extends LightningElement {
   @track showExportDropdown = false;
   @track showStatusDropdown = false;
   @track showDateRangeDropdown = false;
-  
-  @track viewMode = 'list'; // 'list' or 'calendar'
-  @track selectedStatus = 'All'; // All, Present, Absent, Late, Leave
-  @track selectedDateRange = 'This Week'; // 'Week', 'Month', 'Custom'
-  
+
+  @track viewMode = "list"; // 'list' or 'calendar'
+  @track selectedStatus = "All"; // All, Present, Absent, Late, Leave
+  @track selectedDateRange = "This Week"; // 'Week', 'Month', 'Custom'
+
   @track customStartDate;
   @track customEndDate;
   @track isCustomDateMode = false;
@@ -70,37 +69,38 @@ export default class PwchronoAttendanceTracker extends LightningElement {
 
   employeeId;
   sessionToken;
-  userName = 'Employee';
+  userName = "Employee";
   hasRendered = false;
   _boundWindowClick;
 
   connectedCallback() {
     const session = getSession();
-    this.employeeId = getEmployeeId() || (session.user ? session.user.Id : null);
+    this.employeeId =
+      getEmployeeId() || (session.user ? session.user.Id : null);
     this.sessionToken = getSessionToken();
-    this.userName = session.user ? session.user.Name : 'Employee';
+    this.userName = session.user ? session.user.Name : "Employee";
     this.checkAccess();
   }
 
   get isListView() {
-    return this.viewMode === 'list';
+    return this.viewMode === "list";
   }
 
   get isCalendarView() {
-    return this.viewMode === 'calendar';
+    return this.viewMode === "calendar";
   }
 
   get listViewButtonClass() {
-    return `btn btn-icon btn-sm me-1 ${this.viewMode === 'list' ? 'active bg-primary text-white' : ''}`;
+    return `btn btn-icon btn-sm me-1 ${this.viewMode === "list" ? "active bg-primary text-white" : ""}`;
   }
 
   get calendarViewButtonClass() {
-    return `btn btn-icon btn-sm me-1 ${this.viewMode === 'calendar' ? 'active bg-primary text-white' : ''}`;
+    return `btn btn-icon btn-sm me-1 ${this.viewMode === "calendar" ? "active bg-primary text-white" : ""}`;
   }
 
   get userInitials() {
-    if (!this.userName) return 'E';
-    const nameParts = this.userName.split(' ');
+    if (!this.userName) return "E";
+    const nameParts = this.userName.split(" ");
     if (nameParts.length >= 2) {
       return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
     }
@@ -113,122 +113,140 @@ export default class PwchronoAttendanceTracker extends LightningElement {
 
   renderedCallback() {
     if (!this.hasRendered) {
-        this.hasRendered = true;
-        this._boundWindowClick = this.closeDropdowns.bind(this);
-        window.addEventListener('click', this._boundWindowClick);
+      this.hasRendered = true;
+      this._boundWindowClick = this.closeDropdowns.bind(this);
+      window.addEventListener("click", this._boundWindowClick);
     }
   }
 
   disconnectedCallback() {
-      if (this._boundWindowClick) {
-        window.removeEventListener('click', this._boundWindowClick);
-        this._boundWindowClick = null;
-      }
+    if (this._boundWindowClick) {
+      window.removeEventListener("click", this._boundWindowClick);
+      this._boundWindowClick = null;
+    }
   }
 
   closeDropdowns(event) {
-     // Don't close if clicking inside a dropdown content (like Custom Date Inputs)
-     const target = event?.target;
-     if (target && target.closest('.dropdown-menu') && target.closest('.keep-open')) {
-        return; 
-     }
+    // Don't close if clicking inside a dropdown content (like Custom Date Inputs)
+    const target = event?.target;
+    if (
+      target &&
+      target.closest(".dropdown-menu") &&
+      target.closest(".keep-open")
+    ) {
+      return;
+    }
 
-      this.showExportDropdown = false;
-      this.showStatusDropdown = false;
-      this.showDateRangeDropdown = false;
+    this.showExportDropdown = false;
+    this.showStatusDropdown = false;
+    this.showDateRangeDropdown = false;
   }
 
   toggleExportDropdown(event) {
-      this.stopPropagation(event);
-      this.showExportDropdown = !this.showExportDropdown;
-      this.showStatusDropdown = false;
-      this.showDateRangeDropdown = false;
+    this.stopPropagation(event);
+    this.showExportDropdown = !this.showExportDropdown;
+    this.showStatusDropdown = false;
+    this.showDateRangeDropdown = false;
   }
 
   toggleStatusDropdown(event) {
-      this.stopPropagation(event);
-      this.showStatusDropdown = !this.showStatusDropdown;
-      this.showExportDropdown = false;
-      this.showDateRangeDropdown = false;
+    this.stopPropagation(event);
+    this.showStatusDropdown = !this.showStatusDropdown;
+    this.showExportDropdown = false;
+    this.showDateRangeDropdown = false;
   }
-  
+
   toggleDateRangeDropdown(event) {
-      this.stopPropagation(event);
-      this.showDateRangeDropdown = !this.showDateRangeDropdown;
-      this.showExportDropdown = false;
-      this.showStatusDropdown = false;
+    this.stopPropagation(event);
+    this.showDateRangeDropdown = !this.showDateRangeDropdown;
+    this.showExportDropdown = false;
+    this.showStatusDropdown = false;
   }
 
   get exportDropdownClass() {
-      return this.showExportDropdown ? 'dropdown-menu dropdown-menu-end p-3 show' : 'dropdown-menu dropdown-menu-end p-3';
+    return this.showExportDropdown
+      ? "dropdown-menu dropdown-menu-end p-3 show"
+      : "dropdown-menu dropdown-menu-end p-3";
   }
 
   get statusDropdownClass() {
-      return this.showStatusDropdown ? 'dropdown-menu dropdown-menu-end p-3 show' : 'dropdown-menu dropdown-menu-end p-3';
+    return this.showStatusDropdown
+      ? "dropdown-menu dropdown-menu-end p-3 show"
+      : "dropdown-menu dropdown-menu-end p-3";
   }
-  
+
   get dateRangeDropdownClass() {
-      return this.showDateRangeDropdown ? 'dropdown-menu dropdown-menu-end p-3 show' : 'dropdown-menu dropdown-menu-end p-3';
+    return this.showDateRangeDropdown
+      ? "dropdown-menu dropdown-menu-end p-3 show"
+      : "dropdown-menu dropdown-menu-end p-3";
   }
 
   get dateRangeLabel() {
-      if (this.selectedDateRange === 'Custom') {
-          return `${this.customStartDate || ''} - ${this.customEndDate || ''}`;
-      }
-      return this.selectedDateRange;
+    if (this.selectedDateRange === "Custom") {
+      return `${this.customStartDate || ""} - ${this.customEndDate || ""}`;
+    }
+    return this.selectedDateRange;
   }
 
   handleStatusSelect(event) {
-      this.stopPropagation(event);
-      this.selectedStatus = event.currentTarget.dataset.value;
-      this.showStatusDropdown = false;
-      this.filterData();
+    this.stopPropagation(event);
+    this.selectedStatus = event.currentTarget.dataset.value;
+    this.showStatusDropdown = false;
+    this.filterData();
   }
 
   handleDateRangeSelect(event) {
-      this.stopPropagation(event);
-      const range = event.currentTarget.dataset.value;
-      if (range === 'Custom') {
-          this.isCustomDateMode = true;
-          // Don't close dropdown yet
-      } else {
-          this.selectedDateRange = range;
-          this.isCustomDateMode = false;
-          this.showDateRangeDropdown = false;
-          this.loadData();
-      }
+    this.stopPropagation(event);
+    const range = event.currentTarget.dataset.value;
+    if (range === "Custom") {
+      this.isCustomDateMode = true;
+      // Don't close dropdown yet
+    } else {
+      this.selectedDateRange = range;
+      this.isCustomDateMode = false;
+      this.showDateRangeDropdown = false;
+      this.loadData();
+    }
   }
 
   handleCustomDateApply() {
-      if (this.customStartDate && this.customEndDate) {
-          this.selectedDateRange = 'Custom';
-          this.showDateRangeDropdown = false;
-          this.loadData();
-      }
+    if (this.customStartDate && this.customEndDate) {
+      this.selectedDateRange = "Custom";
+      this.showDateRangeDropdown = false;
+      this.loadData();
+    }
   }
-  
+
   handleCustomStartDate(event) {
-      this.customStartDate = event.target.value;
+    this.customStartDate = event.target.value;
   }
-  
+
   handleCustomEndDate(event) {
-      this.customEndDate = event.target.value;
+    this.customEndDate = event.target.value;
   }
 
   get currentDateFormatted() {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return this.currentDate.toLocaleDateString('en-US', options);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    };
+    return this.currentDate.toLocaleDateString("en-US", options);
   }
 
   get currentTimeFormatted() {
-    return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    return new Date().toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
   }
 
   get greeting() {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
+    if (hour < 12) return "Good Morning";
+    if (hour < 18) return "Good Afternoon";
+    return "Good Evening";
   }
 
   get isAccessLoading() {
@@ -239,19 +257,24 @@ export default class PwchronoAttendanceTracker extends LightningElement {
     return this.accessLoaded && !this.hasAccess;
   }
 
-
   async checkAccess() {
     try {
       const employeeId = getEmployeeId();
-      const accessData = await getUserAccessById({ employeeId: employeeId, sessionToken: this.sessionToken });
+      const accessData = await getUserAccessById({
+        employeeId: employeeId,
+        sessionToken: this.sessionToken
+      });
       this.debugInfo = this.safeStringify(accessData);
-      if (accessData.features && accessData.features.includes("Attendance Management")) {
+      if (
+        accessData.features &&
+        accessData.features.includes("Attendance Management")
+      ) {
         this.hasAccess = true;
         this.loadData();
       }
       this.accessLoaded = true;
     } catch (error) {
-      const message = error?.body?.message || error?.message || 'Unknown error';
+      const message = error?.body?.message || error?.message || "Unknown error";
       this.debugInfo = "Error: " + message;
       this.hasAccess = false;
       this.accessLoaded = true;
@@ -301,24 +324,24 @@ export default class PwchronoAttendanceTracker extends LightningElement {
     this.isLoading = true;
     let startDate, endDate;
 
-    if (this.selectedDateRange === 'This Week') {
-         const curr = new Date();
-         const first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-         startDate = new Date(curr.setDate(first));
-         endDate = new Date(curr.setDate(curr.getDate() + 6));
-    } else if (this.selectedDateRange === 'Last Month') {
-         const now = new Date();
-         startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-         endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-    } else if (this.selectedDateRange === 'Custom') {
-         startDate = new Date(this.customStartDate);
-         endDate = new Date(this.customEndDate);
+    if (this.selectedDateRange === "This Week") {
+      const curr = new Date();
+      const first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+      startDate = new Date(curr.setDate(first));
+      endDate = new Date(curr.setDate(curr.getDate() + 6));
+    } else if (this.selectedDateRange === "Last Month") {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+    } else if (this.selectedDateRange === "Custom") {
+      startDate = new Date(this.customStartDate);
+      endDate = new Date(this.customEndDate);
     } else {
-         // Default: This Month
-         const year = this.currentDate.getFullYear();
-         const month = this.currentDate.getMonth();
-         startDate = new Date(year, month, 1);
-         endDate = new Date(year, month + 1, 0);
+      // Default: This Month
+      const year = this.currentDate.getFullYear();
+      const month = this.currentDate.getMonth();
+      startDate = new Date(year, month, 1);
+      endDate = new Date(year, month + 1, 0);
     }
 
     // Adjust for timezone offset if needed or use local YYYY-MM-DD
@@ -340,7 +363,10 @@ export default class PwchronoAttendanceTracker extends LightningElement {
         this.error = null;
       })
       .catch((error) => {
-        this.error = error?.body?.message || error?.message || "Failed to load attendance data";
+        this.error =
+          error?.body?.message ||
+          error?.message ||
+          "Failed to load attendance data";
         logError("AttendanceTracker.loadData", error);
         showErrorToast(
           this.dispatchEvent.bind(this),
@@ -352,45 +378,46 @@ export default class PwchronoAttendanceTracker extends LightningElement {
         this.isLoading = false;
       });
   }
-  
-  formatDateToIso(dateObj) {
-      if (!dateObj || isNaN(dateObj.getTime())) return null;
-      const y = dateObj.getFullYear();
-      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const d = String(dateObj.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-  }
-  
-  filterData() {
-      // Filter rawAttendanceData based on selectedStatus
-      // And update attendanceData (which is mapped)
-      
-      // Since processData maps raw data to display format, we should probably:
-      // 1. Process Raw Data -> Mapped All Data
-      // 2. Filter Mapped Data
-      
-      // Let's re-run processData on the raw data, but inside processData we only output matches?
-      // Better: Process ALL, then filter.
-      
-      this.processData(this.rawAttendanceData); // Re-process all
-      
-      if (this.selectedStatus !== 'All') {
-          this.attendanceData = this.attendanceData.filter(item => {
-              if (this.selectedStatus === 'Present') return item.status === 'Present';
-              if (this.selectedStatus === 'Absent') return item.status === 'Absent';
-              if (this.selectedStatus === 'Late') return item.isLate;
-              if (this.selectedStatus === 'Leave') return item.status === 'Leave';
-              return true;
-          });
-      }
 
-      this.setDefaultReportData();
+  formatDateToIso(dateObj) {
+    if (!dateObj || isNaN(dateObj.getTime())) return null;
+    const y = dateObj.getFullYear();
+    const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const d = String(dateObj.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  filterData() {
+    // Filter rawAttendanceData based on selectedStatus
+    // And update attendanceData (which is mapped)
+
+    // Since processData maps raw data to display format, we should probably:
+    // 1. Process Raw Data -> Mapped All Data
+    // 2. Filter Mapped Data
+
+    // Let's re-run processData on the raw data, but inside processData we only output matches?
+    // Better: Process ALL, then filter.
+
+    this.processData(this.rawAttendanceData); // Re-process all
+
+    if (this.selectedStatus !== "All") {
+      this.attendanceData = this.attendanceData.filter((item) => {
+        if (this.selectedStatus === "Present") return item.status === "Present";
+        if (this.selectedStatus === "Absent") return item.status === "Absent";
+        if (this.selectedStatus === "Late") return item.isLate;
+        if (this.selectedStatus === "Leave") return item.status === "Leave";
+        return true;
+      });
+    }
+
+    this.setDefaultReportData();
   }
 
   setDefaultReportData() {
-    const day = this.attendanceData && this.attendanceData.length
-      ? this.attendanceData[0]
-      : null;
+    const day =
+      this.attendanceData && this.attendanceData.length
+        ? this.attendanceData[0]
+        : null;
     this.reportData = day ? this.buildReportData(day) : null;
   }
 
@@ -409,8 +436,8 @@ export default class PwchronoAttendanceTracker extends LightningElement {
 
   processData(data) {
     if (!data) {
-        this.attendanceData = [];
-        return;
+      this.attendanceData = [];
+      return;
     }
 
     let present = 0;
@@ -446,11 +473,11 @@ export default class PwchronoAttendanceTracker extends LightningElement {
         const cIn = this.getTimeInMs(day.checkIn);
         const cOut = this.getTimeInMs(day.checkOut);
         if (cIn !== 0 && cOut !== 0) {
-            let diffMs = cOut - cIn;
-            if (diffMs < 0) diffMs = 0;
-            // Decimal hours (e.g. 8.55 Hrs)
-            const decHrs = (diffMs / 3600000).toFixed(2);
-            productionHours = `${decHrs} Hrs`;
+          let diffMs = cOut - cIn;
+          if (diffMs < 0) diffMs = 0;
+          // Decimal hours (e.g. 8.55 Hrs)
+          const decHrs = (diffMs / 3600000).toFixed(2);
+          productionHours = `${decHrs} Hrs`;
         }
       }
 
@@ -460,24 +487,24 @@ export default class PwchronoAttendanceTracker extends LightningElement {
       // Late Status & Duration
       let lateDisplay = "-"; // Default
       if (day.isLate) {
-          lateDisplay = "Late"; // Fallback
-          // Calculate duration if slots available
-          if (day.checkIn && day.shiftStart) {
-               // Assuming shiftStart is time-of-day ms. 
-               // Need to align checkIn date with shiftStart (which is just time).
-               // Logic: checkIn includes date? No, APEX returns Time field as ms usually?
-               // Let's verify formatTime behavior.
-               // formatTime handles "string" HH:mm or "number" ms.
-               // If both are numbers (ms from midnight), simple subtraction.
-               // If one is string, convert.
-               const checkInMs = this.getTimeInMs(day.checkIn);
-               const shiftStartMs = this.getTimeInMs(day.shiftStart);
-               
-               if (checkInMs > shiftStartMs) {
-                   const diffMin = Math.floor((checkInMs - shiftStartMs) / 60000);
-                   lateDisplay = `${diffMin} Min`;
-               }
+        lateDisplay = "Late"; // Fallback
+        // Calculate duration if slots available
+        if (day.checkIn && day.shiftStart) {
+          // Assuming shiftStart is time-of-day ms.
+          // Need to align checkIn date with shiftStart (which is just time).
+          // Logic: checkIn includes date? No, APEX returns Time field as ms usually?
+          // Let's verify formatTime behavior.
+          // formatTime handles "string" HH:mm or "number" ms.
+          // If both are numbers (ms from midnight), simple subtraction.
+          // If one is string, convert.
+          const checkInMs = this.getTimeInMs(day.checkIn);
+          const shiftStartMs = this.getTimeInMs(day.shiftStart);
+
+          if (checkInMs > shiftStartMs) {
+            const diffMin = Math.floor((checkInMs - shiftStartMs) / 60000);
+            lateDisplay = `${diffMin} Min`;
           }
+        }
       }
 
       // Determine Status Display & Class
@@ -508,7 +535,10 @@ export default class PwchronoAttendanceTracker extends LightningElement {
       const isPast = new Date(day.attendanceDate) <= new Date();
       const canRegularize =
         isPast &&
-        (day.status === "Absent" || day.isLate || day.isEarlyLeave || day.status === "Present") &&
+        (day.status === "Absent" ||
+          day.isLate ||
+          day.isEarlyLeave ||
+          day.status === "Present") &&
         day.status !== "Leave" &&
         day.status !== "Holiday" &&
         day.status !== "Weekend";
@@ -536,20 +566,20 @@ export default class PwchronoAttendanceTracker extends LightningElement {
   }
 
   getTimeInMs(timeVal) {
-      if (typeof timeVal === 'number') return timeVal;
-      if (typeof timeVal === 'string') {
-          const parts = timeVal.split(':');
-          if (parts.length >= 2) {
-              const h = parseInt(parts[0], 10);
-              const m = parseInt(parts[1], 10);
-              let s = 0;
-              if (parts.length >= 3) {
-                  s = parseFloat(parts[2]); 
-              }
-              return (h * 3600000) + (m * 60000) + (s * 1000);
-          }
+    if (typeof timeVal === "number") return timeVal;
+    if (typeof timeVal === "string") {
+      const parts = timeVal.split(":");
+      if (parts.length >= 2) {
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        let s = 0;
+        if (parts.length >= 3) {
+          s = parseFloat(parts[2]);
+        }
+        return h * 3600000 + m * 60000 + s * 1000;
       }
-      return 0;
+    }
+    return 0;
   }
 
   formatTime(timeMs) {

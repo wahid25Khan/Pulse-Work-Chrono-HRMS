@@ -107,18 +107,20 @@ public inherited sharing class PWChrono_PayrollController {
     try {
       // Check if user is Salesforce Standard User
       Boolean isSalesforceUser = UserInfo.getUserType() == 'Standard';
-      
+
       String query = 'SELECT Id, Name FROM Portal_Users__c ';
-      
+
       if (!isSalesforceUser) {
         // If not Salesforce user, restrict to current user
         // In future, check for "View All Employees" permission here
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
         query += 'WHERE Id = :currentEmployeeId ';
       }
-      
+
       query += 'ORDER BY Name ASC';
-      
+
       return Database.query(query);
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
@@ -133,7 +135,10 @@ public inherited sharing class PWChrono_PayrollController {
   ) {
     try {
       if (UserInfo.getUserType() == 'Guest') {
-        Id employeeId = resolveVerifiedPortalEmployeeId(portalUserId, sessionToken);
+        Id employeeId = resolveVerifiedPortalEmployeeId(
+          portalUserId,
+          sessionToken
+        );
         return [
           SELECT Id, Name
           FROM Portal_Users__c
@@ -178,7 +183,11 @@ public inherited sharing class PWChrono_PayrollController {
   ) {
     try {
       if (UserInfo.getUserType() == 'Guest') {
-        Id targetEmployeeId = resolveTargetEmployeeId(null, portalUserId, sessionToken);
+        Id targetEmployeeId = resolveTargetEmployeeId(
+          null,
+          portalUserId,
+          sessionToken
+        );
 
         // Verify slip ownership and lock recipient to the employee's email.
         PWChrono_Salary_Slip__c slip = [
@@ -188,7 +197,9 @@ public inherited sharing class PWChrono_PayrollController {
           LIMIT 1
         ];
 
-        String employeeEmail = slip.Employees__r != null ? slip.Employees__r.Email__c : null;
+        String employeeEmail = slip.Employees__r != null
+          ? slip.Employees__r.Email__c
+          : null;
         if (String.isBlank(employeeEmail)) {
           throw new AuraHandledException('Employee email not found.');
         }
@@ -214,7 +225,7 @@ public inherited sharing class PWChrono_PayrollController {
       mail.setSubject(subject);
       mail.setHtmlBody(body);
 
-      Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+      Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ mail });
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
       throw new AuraHandledException('Error sending email: ');

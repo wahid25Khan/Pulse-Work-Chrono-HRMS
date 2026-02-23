@@ -56,8 +56,9 @@ public without sharing class PWChrono_LeaveAllocationService {
     List<AggregateResult> results = [
       SELECT Leave_Allocation__c allocationId, SUM(Total_Days__c) used
       FROM PWChrono_Leave__c
-      WHERE Leave_Allocation__c IN :allocationIds
-      AND Status__c = :PWChrono_Constants.STATUS_APPROVED
+      WHERE
+        Leave_Allocation__c IN :allocationIds
+        AND Status__c = :PWChrono_Constants.STATUS_APPROVED
       GROUP BY Leave_Allocation__c
     ];
 

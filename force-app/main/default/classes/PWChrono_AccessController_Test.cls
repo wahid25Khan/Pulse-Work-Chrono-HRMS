@@ -36,12 +36,27 @@ private class PWChrono_AccessController_Test {
       Map<String, Object> result = PWChrono_AccessController.getUserAccess();
       Test.stopTest();
 
-      System.assertEquals(true, result.get('hasAccess'), 'Salesforce users should have access');
-      System.assertEquals('Salesforce User', result.get('role'), 'Role should be Salesforce User');
-      System.assertEquals(true, result.get('isSalesforceUser'), 'Should be flagged as Salesforce user');
-      
+      System.assertEquals(
+        true,
+        result.get('hasAccess'),
+        'Salesforce users should have access'
+      );
+      System.assertEquals(
+        'Salesforce User',
+        result.get('role'),
+        'Role should be Salesforce User'
+      );
+      System.assertEquals(
+        true,
+        result.get('isSalesforceUser'),
+        'Should be flagged as Salesforce user'
+      );
+
       List<Object> features = (List<Object>) result.get('features');
-      System.assert(features.size() > 10, 'Salesforce users should have many features');
+      System.assert(
+        features.size() > 10,
+        'Salesforce users should have many features'
+      );
     }
   }
 
@@ -110,8 +125,12 @@ private class PWChrono_AccessController_Test {
     Test.startTest();
     Boolean isSfUser = PWChrono_AccessController.isSalesforceInternalUser();
     Test.stopTest();
-    
+
     // In test context, running user is Standard type
-    System.assertEquals(true, isSfUser, 'Test user should be recognized as Salesforce internal user');
+    System.assertEquals(
+      true,
+      isSfUser,
+      'Test user should be recognized as Salesforce internal user'
+    );
   }
 }

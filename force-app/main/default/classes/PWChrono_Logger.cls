@@ -21,12 +21,19 @@ public inherited sharing class PWChrono_Logger {
     return normalized;
   }
 
-  private static void write(LoggingLevel level, String category, String message) {
+  private static void write(
+    LoggingLevel level,
+    String category,
+    String message
+  ) {
     if (!isLoggingEnabled()) {
       return;
     }
 
-    System.debug(level, '[PWChrono] ' + category + ': ' + normalizeMessage(message));
+    System.debug(
+      level,
+      '[PWChrono] ' + category + ': ' + normalizeMessage(message)
+    );
   }
 
   public static void error(String message) {

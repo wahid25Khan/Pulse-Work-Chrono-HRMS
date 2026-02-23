@@ -8,10 +8,26 @@ const GLOBAL_LOADED_KEY = "__pwchronoUiAssetsLoaded";
 
 export default class PwchronoUiAssets extends LightningElement {
   static renderMode = "light";
+  hasDispatchedReady = false;
+
+  notifyReady() {
+    if (this.hasDispatchedReady) {
+      return;
+    }
+
+    this.hasDispatchedReady = true;
+    this.dispatchEvent(
+      new CustomEvent("assetsready", {
+        bubbles: true,
+        composed: true
+      })
+    );
+  }
 
   renderedCallback() {
     // If styles are already loaded, nothing to do.
     if (globalThis[GLOBAL_LOADED_KEY]) {
+      this.notifyReady();
       return;
     }
 
@@ -32,12 +48,14 @@ export default class PwchronoUiAssets extends LightningElement {
         )
         .then(() => {
           globalThis[GLOBAL_LOADED_KEY] = true;
+          this.notifyReady();
         })
         .catch((e) => {
           // Keep UI functional even if a stylesheet fails to load.
           // Mark as loaded to avoid retry loops on every render.
           globalThis[GLOBAL_LOADED_KEY] = true;
           logError("pwchronoUiAssets: Failed to load UI assets", e);
+          this.notifyReady();
         });
     }
   }

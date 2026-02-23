@@ -40,9 +40,7 @@ public without sharing class PWChrono_ExpenseService {
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
       Database.rollback(sp);
-      throw new AuraHandledException(
-        'Error saving expense claim: '
-      );
+      throw new AuraHandledException('Error saving expense claim: ');
     }
   }
 

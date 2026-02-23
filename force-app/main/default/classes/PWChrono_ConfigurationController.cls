@@ -133,9 +133,7 @@ public inherited sharing class PWChrono_ConfigurationController {
 
       return userConfigMap.values();
     } catch (Exception e) {
-      PWChrono_Logger.error(
-        'Error retrieving user configurations: '
-      );
+      PWChrono_Logger.error('Error retrieving user configurations: ');
       return new List<UserConfiguration>();
     }
   }
@@ -166,13 +164,13 @@ public inherited sharing class PWChrono_ConfigurationController {
         Map<String, Schema.SObjectField> fieldMap = describeResult.getSObjectType()
           .getDescribe()
           .fields.getMap(); // NOPMD
-        
+
         if (fieldMap == null || !fieldMap.containsKey('Feature_Name__c')) {
           throw new AuraHandledException(
             'Feature_Name__c field not found on PWChrono_User_Feature_Access__c object'
           );
         }
-        
+
         Schema.DisplayType dt = fieldMap.get('Feature_Name__c')
           .getDescribe()
           .getType();
@@ -193,7 +191,7 @@ public inherited sharing class PWChrono_ConfigurationController {
         String errorMsg = 'Error accessing Feature_Name__c field: ';
         PWChrono_Logger.error(errorMsg);
         throw new AuraHandledException(errorMsg);
-    }
+      }
 
       if (picklistValues.isEmpty()) {
         PWChrono_Logger.warn('Feature_Name__c picklist is empty');
@@ -269,9 +267,7 @@ public inherited sharing class PWChrono_ConfigurationController {
       return result;
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new IllegalArgumentException(
-        'Error checking feature access: '
-      ); // NOPMD
+      throw new IllegalArgumentException('Error checking feature access: '); // NOPMD
     }
   }
 
@@ -287,47 +283,52 @@ public inherited sharing class PWChrono_ConfigurationController {
     List<String> featureNames,
     String portalUserId,
     String sessionToken
-    ) {
-      requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
-      return createPortalUserCore(userRecord, featureNames);
-    }
+  ) {
+    requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
+    return createPortalUserCore(userRecord, featureNames);
+  }
 
-    private static Id createPortalUserCore(
+  private static Id createPortalUserCore(
     Portal_Users__c userRecord,
     List<String> featureNames
-    ) {
-      try {
-          // Basic validation
-          if (userRecord == null || String.isBlank(userRecord.Name) || String.isBlank(userRecord.Email__c)) {
-              throw new AuraHandledException('User Name and Email are required.');
-          }
+  ) {
+    try {
+      // Basic validation
+      if (
+        userRecord == null ||
+        String.isBlank(userRecord.Name) ||
+        String.isBlank(userRecord.Email__c)
+      ) {
+        throw new AuraHandledException('User Name and Email are required.');
+      }
 
-          // Insert the portal user record
-          insert userRecord; // NOPMD - Intentional insert
+      // Insert the portal user record
+      insert userRecord; // NOPMD - Intentional insert
 
-          // Create feature access records if any are specified
-          if (featureNames != null && !featureNames.isEmpty()) {
-              List<PWChrono_User_Feature_Access__c> accessRecordsToInsert = new List<PWChrono_User_Feature_Access__c>();
-              for (String featureName : featureNames) {
-                  accessRecordsToInsert.add(new PWChrono_User_Feature_Access__c(
-                      Portal_User__c = userRecord.Id,
-                      Feature_Name__c = featureName,
-                      Is_Active__c = true,
-                      Access_Level__c = 'Read Write' // Default access level
-                  ));
-              }
-              if (!accessRecordsToInsert.isEmpty()) {
-                  insert accessRecordsToInsert; // NOPMD - Intentional insert
-              }
-          }
+      // Create feature access records if any are specified
+      if (featureNames != null && !featureNames.isEmpty()) {
+        List<PWChrono_User_Feature_Access__c> accessRecordsToInsert = new List<PWChrono_User_Feature_Access__c>();
+        for (String featureName : featureNames) {
+          accessRecordsToInsert.add(
+            new PWChrono_User_Feature_Access__c(
+              Portal_User__c = userRecord.Id,
+              Feature_Name__c = featureName,
+              Is_Active__c = true,
+              Access_Level__c = 'Read Write' // Default access level
+            )
+          );
+        }
+        if (!accessRecordsToInsert.isEmpty()) {
+          insert accessRecordsToInsert; // NOPMD - Intentional insert
+        }
+      }
 
-          return userRecord.Id;
-
-      } catch (Exception e) {
-          // Log the error
-          PWChrono_Logger.error('Error creating portal user: ');
-          // Rethrow to be caught by the LWC
-          throw new AuraHandledException('Failed to create user: ');
+      return userRecord.Id;
+    } catch (Exception e) {
+      // Log the error
+      PWChrono_Logger.error('Error creating portal user: ');
+      // Rethrow to be caught by the LWC
+      throw new AuraHandledException('Failed to create user: ');
     }
   }
 
@@ -537,9 +538,7 @@ public inherited sharing class PWChrono_ConfigurationController {
       return 'Success';
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new IllegalArgumentException(
-        'Error deleting feature access: '
-      ); // NOPMD
+      throw new IllegalArgumentException('Error deleting feature access: '); // NOPMD
     }
   }
 
@@ -557,7 +556,6 @@ public inherited sharing class PWChrono_ConfigurationController {
   }
 
   private static PWChrono_Feature_Settings__c getGlobalFeatureSettingsCore() {
-
     List<PWChrono_Feature_Settings__c> settingsList = [
       // NOPMD
       SELECT
@@ -611,9 +609,7 @@ public inherited sharing class PWChrono_ConfigurationController {
       return 'Success';
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new IllegalArgumentException(
-        'Error saving global settings: '
-      ); // NOPMD
+      throw new IllegalArgumentException('Error saving global settings: '); // NOPMD
     }
   }
 
@@ -743,9 +739,7 @@ public inherited sharing class PWChrono_ConfigurationController {
       return 'User status updated successfully';
     } catch (Exception e) {
       PWChrono_Logger.error('Error toggling user status: ');
-      throw new AuraHandledException(
-        'Error updating user status: '
-      );
+      throw new AuraHandledException('Error updating user status: ');
     }
   }
 
@@ -777,12 +771,8 @@ public inherited sharing class PWChrono_ConfigurationController {
       String action = isActive ? 'activated' : 'deactivated';
       return usersToUpdate.size() + ' user(s) ' + action + ' successfully';
     } catch (Exception e) {
-      PWChrono_Logger.error(
-        'Error bulk toggling user status: '
-      );
-      throw new AuraHandledException(
-        'Error updating user status: '
-      );
+      PWChrono_Logger.error('Error bulk toggling user status: ');
+      throw new AuraHandledException('Error updating user status: ');
     }
   }
 
@@ -820,9 +810,7 @@ public inherited sharing class PWChrono_ConfigurationController {
       return 'User profile updated successfully';
     } catch (Exception e) {
       PWChrono_Logger.error('Error updating user profile: ');
-      throw new AuraHandledException(
-        'Error updating user profile: '
-      );
+      throw new AuraHandledException('Error updating user profile: ');
     }
   }
 }

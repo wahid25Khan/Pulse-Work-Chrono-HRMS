@@ -19,9 +19,14 @@ private class PWChrono_DebugUtil_Test {
       Map<String, Object> debugInfo = PWChrono_DebugUtil.getDebugInfo();
       Test.stopTest();
 
-      System.assertNotEquals(null, debugInfo, 'Debug info map should be returned.');
+      System.assertNotEquals(
+        null,
+        debugInfo,
+        'Debug info map should be returned.'
+      );
       System.assert(
-        debugInfo.containsKey('currentUserId') || debugInfo.containsKey('error'),
+        debugInfo.containsKey('currentUserId') ||
+        debugInfo.containsKey('error'),
         'Expected debug payload should include user context or controlled error.'
       );
     }
@@ -72,9 +77,19 @@ private class PWChrono_DebugUtil_Test {
       List<Map<String, String>> users = PWChrono_DebugUtil.getTestUsers();
       Test.stopTest();
 
-      System.assertNotEquals(null, users, 'Expected users list should be returned.');
-      System.assert(users.size() > 0, 'Expected at least one portal user in debug list.');
-      System.assert(users[0].containsKey('Email'), 'Expected user payload should include masked Email key.');
+      System.assertNotEquals(
+        null,
+        users,
+        'Expected users list should be returned.'
+      );
+      System.assert(
+        users.size() > 0,
+        'Expected at least one portal user in debug list.'
+      );
+      System.assert(
+        users[0].containsKey('Email'),
+        'Expected user payload should include masked Email key.'
+      );
     }
   }
 }

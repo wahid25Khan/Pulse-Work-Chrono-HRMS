@@ -154,7 +154,11 @@ private class PWChrono_ExpenseController_Test {
         WHERE User__c = :testUser.Id
         LIMIT 1
       ];
-      PWChrono_ExpenseController.submitClaim(claim.Id, currentEmployee.Id, null);
+      PWChrono_ExpenseController.submitClaim(
+        claim.Id,
+        currentEmployee.Id,
+        null
+      );
       Test.stopTest();
 
       PWChrono_Expense_Claim__c updatedClaim = [
@@ -192,7 +196,11 @@ private class PWChrono_ExpenseController_Test {
         WHERE User__c = :testUser.Id
         LIMIT 1
       ];
-      PWChrono_ExpenseController.deleteClaim(claim.Id, currentEmployee.Id, null);
+      PWChrono_ExpenseController.deleteClaim(
+        claim.Id,
+        currentEmployee.Id,
+        null
+      );
       Test.stopTest();
 
       List<PWChrono_Expense_Claim__c> claims = [
@@ -229,7 +237,11 @@ private class PWChrono_ExpenseController_Test {
       Test.stopTest();
 
       System.assertNotEquals(null, claims, 'Claims list should not be null.');
-      System.assertEquals(1, claims.size(), 'Explicit employee id should return owned claims.');
+      System.assertEquals(
+        1,
+        claims.size(),
+        'Explicit employee id should return owned claims.'
+      );
     }
   }
 
@@ -251,8 +263,16 @@ private class PWChrono_ExpenseController_Test {
       );
       Test.stopTest();
 
-      System.assertNotEquals(null, items, 'Items list should not be null for unknown claim id.');
-      System.assertEquals(0, items.size(), 'Unknown claim id should return empty list.');
+      System.assertNotEquals(
+        null,
+        items,
+        'Items list should not be null for unknown claim id.'
+      );
+      System.assertEquals(
+        0,
+        items.size(),
+        'Unknown claim id should return empty list.'
+      );
     }
   }
 
@@ -277,7 +297,8 @@ private class PWChrono_ExpenseController_Test {
       FROM Portal_Users__c
       WHERE Id != :currentEmployee.Id
       LIMIT 1
-    ].Id;
+    ]
+    .Id;
 
     System.runAs(testUser) {
       PWChrono_Expense_Claim__c newClaim = new PWChrono_Expense_Claim__c(

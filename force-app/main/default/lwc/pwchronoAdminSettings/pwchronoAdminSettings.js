@@ -8,7 +8,6 @@ import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUse
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
-
 export default class PwchronoAdminSettings extends LightningElement {
   employeeId = getEmployeeId();
   sessionToken = getSessionToken();
@@ -27,7 +26,10 @@ export default class PwchronoAdminSettings extends LightningElement {
     try {
       this.employeeId = getEmployeeId();
       this.sessionToken = getSessionToken();
-      const accessData = await getUserAccessById({ employeeId: this.employeeId, sessionToken: this.sessionToken });
+      const accessData = await getUserAccessById({
+        employeeId: this.employeeId,
+        sessionToken: this.sessionToken
+      });
       if (accessData.features.includes("Admin Settings")) {
         this.hasAccess = true;
         await this.loadSettings();

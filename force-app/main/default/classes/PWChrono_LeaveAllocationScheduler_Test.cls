@@ -37,10 +37,14 @@ private class PWChrono_LeaveAllocationScheduler_Test {
         invalidCron,
         new PWChrono_LeaveAllocationScheduler()
       );
-      System.assert(false, 'Should throw exception for invalid cron expression');
+      System.assert(
+        false,
+        'Should throw exception for invalid cron expression'
+      );
     } catch (Exception e) {
       System.assert(
-        e instanceof System.AsyncException || e instanceof System.StringException,
+        e instanceof System.AsyncException ||
+        e instanceof System.StringException,
         'Should throw a scheduling-related exception for invalid cron'
       );
     }
@@ -52,19 +56,19 @@ private class PWChrono_LeaveAllocationScheduler_Test {
     Test.startTest();
     String cronExp1 = '0 0 0 1 1 ? 2099';
     String cronExp2 = '0 0 12 1 1 ? 2099';
-    
+
     String jobId1 = System.schedule(
       'Scheduler 1',
       cronExp1,
       new PWChrono_LeaveAllocationScheduler()
     );
-    
+
     String jobId2 = System.schedule(
       'Scheduler 2',
       cronExp2,
       new PWChrono_LeaveAllocationScheduler()
     );
-    
+
     Test.stopTest();
 
     List<CronTrigger> triggers = [
@@ -84,7 +88,7 @@ private class PWChrono_LeaveAllocationScheduler_Test {
       cronExp,
       new PWChrono_LeaveAllocationScheduler()
     );
-    
+
     // Abort the scheduled job
     System.abortJob(jobId);
     Test.stopTest();
@@ -113,7 +117,11 @@ private class PWChrono_LeaveAllocationScheduler_Test {
     PWChrono_LeaveAllocationScheduler scheduler = new PWChrono_LeaveAllocationScheduler();
     // Simulate scheduler execution by calling execute method
     String cronExp = '0 0 0 1 1 ? 2099';
-    String jobId = System.schedule('Test Batch Integration', cronExp, scheduler);
+    String jobId = System.schedule(
+      'Test Batch Integration',
+      cronExp,
+      scheduler
+    );
     Test.stopTest();
 
     // Verify scheduler was created

@@ -58,7 +58,7 @@ private class PWChrono_DashboardController_Test {
       Leave_Allocation__c = allocation.Id
     );
     insert leave;
-    
+
     // Create Approved Leave for Usage Calculation
     PWChrono_Leave__c approvedLeave = new PWChrono_Leave__c(
       Employees__c = employee.Id,
@@ -116,16 +116,16 @@ private class PWChrono_DashboardController_Test {
     PWChrono_Appraisal__c appraisal = new PWChrono_Appraisal__c(
       Employees__c = employee.Id,
       Reviewers__c = manager.Id,
-      Status__c = PWChrono_Constants.STATUS_COMPLETED 
+      Status__c = PWChrono_Constants.STATUS_COMPLETED
     );
     insert appraisal;
 
     // Create Attendance for Today
     PWChrono_Attendance_Request__c att = new PWChrono_Attendance_Request__c(
-        Employees__c = employee.Id,
-        Attendance_Date__c = Date.today(),
-        From_Time__c = Time.newInstance(9, 0, 0, 0),
-        Status__c = PWChrono_Constants.STATUS_APPROVED
+      Employees__c = employee.Id,
+      Attendance_Date__c = Date.today(),
+      From_Time__c = Time.newInstance(9, 0, 0, 0),
+      Status__c = PWChrono_Constants.STATUS_APPROVED
     );
     insert att;
   }
@@ -144,14 +144,14 @@ private class PWChrono_DashboardController_Test {
         summary.containsKey('leaveBalance'),
         'Should contain leave balance'
       );
-      
+
       // Verify Leave Balance Usage Calculation
       List<Object> balances = (List<Object>) summary.get('leaveBalance');
       System.assert(!balances.isEmpty(), 'Should have leave balances');
       Map<String, Object> balance = (Map<String, Object>) balances[0];
       Decimal used = (Decimal) balance.get('used');
       System.assertEquals(2.0, used, 'Should have 2 used leaves');
-      
+
       System.assert(
         summary.containsKey('upcomingShifts'),
         'Should contain upcoming shifts'
@@ -164,10 +164,15 @@ private class PWChrono_DashboardController_Test {
         summary.containsKey('activeGoalsCount'),
         'Should contain active goals count'
       );
-      
+
       // Verify Today Attendance
-      System.assert(summary.containsKey('todayAttendance'), 'Should contain todayAttendance');
-      Map<String, Object> att = (Map<String, Object>) summary.get('todayAttendance');
+      System.assert(
+        summary.containsKey('todayAttendance'),
+        'Should contain todayAttendance'
+      );
+      Map<String, Object> att = (Map<String, Object>) summary.get(
+        'todayAttendance'
+      );
       System.assertNotEquals(null, att, 'Today attendance should not be null');
 
       List<Object> shifts = (List<Object>) summary.get('upcomingShifts');
@@ -220,20 +225,50 @@ private class PWChrono_DashboardController_Test {
       System.assertNotEquals(null, summary, 'Should return a summary map');
 
       List<Object> leaveBalance = (List<Object>) summary.get('leaveBalance');
-      System.assertEquals(0, leaveBalance.size(), 'Leave balance should be empty');
+      System.assertEquals(
+        0,
+        leaveBalance.size(),
+        'Leave balance should be empty'
+      );
 
-      Map<String, Object> pendingApprovals = (Map<String, Object>) summary.get('pendingApprovals');
+      Map<String, Object> pendingApprovals = (Map<String, Object>) summary.get(
+        'pendingApprovals'
+      );
       // Fix potential test failure: 'total' might not exist if defaults are different, but we laid out {total:0}
-      System.assertEquals(0, (Integer) pendingApprovals.get('total'), 'Pending approvals total should be 0');
+      System.assertEquals(
+        0,
+        (Integer) pendingApprovals.get('total'),
+        'Pending approvals total should be 0'
+      );
 
-      List<Object> upcomingShifts = (List<Object>) summary.get('upcomingShifts');
-      System.assertEquals(0, upcomingShifts.size(), 'Upcoming shifts should be empty');
+      List<Object> upcomingShifts = (List<Object>) summary.get(
+        'upcomingShifts'
+      );
+      System.assertEquals(
+        0,
+        upcomingShifts.size(),
+        'Upcoming shifts should be empty'
+      );
 
-      List<Object> recentSalarySlips = (List<Object>) summary.get('recentSalarySlips');
-      System.assertEquals(0, recentSalarySlips.size(), 'Recent salary slips should be empty');
+      List<Object> recentSalarySlips = (List<Object>) summary.get(
+        'recentSalarySlips'
+      );
+      System.assertEquals(
+        0,
+        recentSalarySlips.size(),
+        'Recent salary slips should be empty'
+      );
 
-      System.assertEquals(0, (Integer) summary.get('activeGoalsCount'), 'Active goals count should be 0');
-      System.assertEquals(0, (Integer) summary.get('pendingAppraisalsCount'), 'Pending appraisals count should be 0');
+      System.assertEquals(
+        0,
+        (Integer) summary.get('activeGoalsCount'),
+        'Active goals count should be 0'
+      );
+      System.assertEquals(
+        0,
+        (Integer) summary.get('pendingAppraisalsCount'),
+        'Pending appraisals count should be 0'
+      );
     }
   }
 

@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Requires_Approval__c</fullName>
     <defaultValue>false</defaultValue>
-    <description>If checked, leave applications of this type require manager approval.</description>
+    <description
+  >If checked, leave applications of this type require manager approval.</description>
     <label>Requires Approval</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

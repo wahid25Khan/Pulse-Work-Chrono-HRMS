@@ -3,7 +3,8 @@ public inherited sharing class PWChrono_EmployeeDirectoryController {
    * Lightweight, user-facing exception for this controller.
    * (Used instead of AuraHandledException to avoid IDE type resolution issues.)
    */
-  public class EmployeeDirectoryException extends Exception {}
+  public class EmployeeDirectoryException extends Exception {
+  }
 
   @AuraEnabled(cacheable=true)
   public static List<SObject> searchEmployees(String searchTerm) {

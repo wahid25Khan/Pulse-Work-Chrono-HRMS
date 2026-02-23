@@ -8,7 +8,6 @@ import saveUserFeatureAccess from "@salesforce/apex/PWChrono_ConfigurationContro
 import getGlobalFeatureSettings from "@salesforce/apex/PWChrono_ConfigurationController.getGlobalFeatureSettings";
 import saveGlobalFeatureSettings from "@salesforce/apex/PWChrono_ConfigurationController.saveGlobalFeatureSettings";
 
-
 export default class PwchronoConfigurationCenter extends NavigationMixin(
   LightningElement
 ) {
@@ -32,10 +31,10 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
   @track pageSize = 10;
 
   pageSizeOptions = [
-    { label: '5', value: '5' },
-    { label: '10', value: '10' },
-    { label: '25', value: '25' },
-    { label: '50', value: '50' }
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "25", value: "25" },
+    { label: "50", value: "50" }
   ];
 
   // Feature icon mapping
@@ -97,7 +96,11 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
       }));
       this.filterUsers();
     } else if (error) {
-      this.showToast("Error", error.body?.message || 'Failed to load users', "error");
+      this.showToast(
+        "Error",
+        error.body?.message || "Failed to load users",
+        "error"
+      );
     }
     this.isLoading = false;
   }
@@ -115,12 +118,9 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
         );
       }
     } else if (error) {
-      const errorMsg = error?.body?.message || error?.message || "Failed to load features";
-      this.showToast(
-        "Error",
-        "Failed to load features: " + errorMsg,
-        "error"
-      );
+      const errorMsg =
+        error?.body?.message || error?.message || "Failed to load features";
+      this.showToast("Error", "Failed to load features: " + errorMsg, "error");
     }
   }
 
@@ -189,7 +189,7 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
   }
 
   get paginationInfo() {
-    if (this.totalRecords === 0) return '0 users';
+    if (this.totalRecords === 0) return "0 users";
     const start = (this.currentPage - 1) * this.pageSize + 1;
     const end = Math.min(this.currentPage * this.pageSize, this.totalRecords);
     return `${start}-${end} of ${this.totalRecords}`;
@@ -418,10 +418,12 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
 
   // Get CSS class for nav tab button
   getNavTabClass(tab) {
-    const baseClass = "px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap";
-    const activeClass = tab === this.activeTab 
-      ? "border-orange-500 text-orange-600" 
-      : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300";
+    const baseClass =
+      "px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap";
+    const activeClass =
+      tab === this.activeTab
+        ? "border-orange-500 text-orange-600"
+        : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300";
     return `${baseClass} ${activeClass}`;
   }
 

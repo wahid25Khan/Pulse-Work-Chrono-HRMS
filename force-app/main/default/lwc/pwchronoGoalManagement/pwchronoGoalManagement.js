@@ -7,7 +7,7 @@ import updateGoalProgress from "@salesforce/apex/PWChrono_PerformanceController.
 import { getSession, getSessionToken } from "c/pwchronoSession";
 
 export default class PwchronoGoalManagement extends LightningElement {
-  static renderMode = 'light';
+  static renderMode = "light";
   @track goals = [];
   @track filteredGoals = [];
   @track isLoading = true;
@@ -79,11 +79,15 @@ export default class PwchronoGoalManagement extends LightningElement {
   }
 
   get inProgressCount() {
-    return this.goals ? this.goals.filter(g => g.Status__c === "In Progress").length : 0;
+    return this.goals
+      ? this.goals.filter((g) => g.Status__c === "In Progress").length
+      : 0;
   }
 
   get completedCount() {
-    return this.goals ? this.goals.filter(g => g.Status__c === "Completed").length : 0;
+    return this.goals
+      ? this.goals.filter((g) => g.Status__c === "Completed").length
+      : 0;
   }
 
   get averageProgress() {
@@ -101,15 +105,21 @@ export default class PwchronoGoalManagement extends LightningElement {
   }
 
   get notStartedFilterClass() {
-    return this.selectedStatus === "Not Started" ? "filter-tab active" : "filter-tab";
+    return this.selectedStatus === "Not Started"
+      ? "filter-tab active"
+      : "filter-tab";
   }
 
   get inProgressFilterClass() {
-    return this.selectedStatus === "In Progress" ? "filter-tab active" : "filter-tab";
+    return this.selectedStatus === "In Progress"
+      ? "filter-tab active"
+      : "filter-tab";
   }
 
   get completedFilterClass() {
-    return this.selectedStatus === "Completed" ? "filter-tab active" : "filter-tab";
+    return this.selectedStatus === "Completed"
+      ? "filter-tab active"
+      : "filter-tab";
   }
 
   stopPropagation(event) {
@@ -160,14 +170,19 @@ export default class PwchronoGoalManagement extends LightningElement {
       goalToSave.Employees__c = this.employeeId;
     }
 
-    saveGoal({ goal: goalToSave, portalUserId: this.employeeId, sessionToken: this.sessionToken })
+    saveGoal({
+      goal: goalToSave,
+      portalUserId: this.employeeId,
+      sessionToken: this.sessionToken
+    })
       .then(() => {
         this.showToast("Success", "Goal saved successfully", "success");
         this.isModalOpen = false;
         return refreshApex(this.wiredGoalsResult);
       })
       .catch((error) => {
-        const errorMsg = error?.body?.message || error?.message || "Failed to save goal";
+        const errorMsg =
+          error?.body?.message || error?.message || "Failed to save goal";
         this.showToast("Error saving goal", errorMsg, "error");
       })
       .finally(() => {
@@ -204,7 +219,8 @@ export default class PwchronoGoalManagement extends LightningElement {
       .catch((error) => {
         // Revert on error
         goal.Progress__c = originalProgress;
-        const errorMsg = error?.body?.message || error?.message || "Failed to update progress";
+        const errorMsg =
+          error?.body?.message || error?.message || "Failed to update progress";
         this.showToast("Error updating progress", errorMsg, "error");
       });
   }

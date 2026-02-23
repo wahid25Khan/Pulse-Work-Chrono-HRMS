@@ -4,7 +4,6 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class PWChrono_ProfileController {
-
   /**
    * @description Resolve the target employee record Id for a profile operation.
    *              - Guest: portalUserId+sessionToken identify the actor; targetEmployeeId can be another employee only if actor is admin.
@@ -17,7 +16,10 @@ public inherited sharing class PWChrono_ProfileController {
   ) {
     // Guest runtime: validate actor identity via session token.
     if (UserInfo.getUserType() == 'Guest') {
-      Id actorId = PWChrono_GuestSession.requireVerifiedPortalUserId(portalUserId, sessionToken);
+      Id actorId = PWChrono_GuestSession.requireVerifiedPortalUserId(
+        portalUserId,
+        sessionToken
+      );
       Boolean actorIsAdmin = PWChrono_AccessController.isAdmin(actorId);
 
       if (String.isBlank(targetEmployeeId)) {
@@ -29,14 +31,18 @@ public inherited sharing class PWChrono_ProfileController {
       }
 
       if (!actorIsAdmin) {
-        throw new AuraHandledException('Not authorized to access this profile.');
+        throw new AuraHandledException(
+          'Not authorized to access this profile.'
+        );
       }
 
       return (Id) targetEmployeeId;
     }
 
     // Non-Guest: map current Salesforce user to employee record.
-    Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+    Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+      UserInfo.getUserId()
+    );
     Boolean actorIsAdmin = PWChrono_AccessController.isAdmin(currentEmployeeId);
 
     if (String.isBlank(targetEmployeeId)) {
@@ -46,7 +52,10 @@ public inherited sharing class PWChrono_ProfileController {
       return currentEmployeeId;
     }
 
-    if (currentEmployeeId != null && targetEmployeeId == String.valueOf(currentEmployeeId)) {
+    if (
+      currentEmployeeId != null &&
+      targetEmployeeId == String.valueOf(currentEmployeeId)
+    ) {
       return currentEmployeeId;
     }
 
@@ -68,7 +77,11 @@ public inherited sharing class PWChrono_ProfileController {
     String sessionToken
   ) {
     try {
-      Id resolvedId = resolveTargetEmployeeId(targetEmployeeId, portalUserId, sessionToken);
+      Id resolvedId = resolveTargetEmployeeId(
+        targetEmployeeId,
+        portalUserId,
+        sessionToken
+      );
       if (resolvedId == null) {
         return null;
       }
@@ -94,7 +107,9 @@ public inherited sharing class PWChrono_ProfileController {
       return employees.isEmpty() ? null : employees[0];
     } catch (Exception e) {
       PWChrono_Logger.error('Error fetching profile (with access)', e);
-      AuraHandledException ahe = new AuraHandledException('Error fetching profile.');
+      AuraHandledException ahe = new AuraHandledException(
+        'Error fetching profile.'
+      );
       ahe.setMessage('Error fetching profile.');
       throw ahe;
     }
@@ -105,7 +120,10 @@ public inherited sharing class PWChrono_ProfileController {
    * @return Employee record
    */
   @AuraEnabled(cacheable=true)
-  public static Portal_Users__c getProfile(String employeeId, String sessionToken) {
+  public static Portal_Users__c getProfile(
+    String employeeId,
+    String sessionToken
+  ) {
     try {
       Id portalUserId;
 
@@ -116,7 +134,9 @@ public inherited sharing class PWChrono_ProfileController {
           sessionToken
         );
       } else if (String.isNotBlank(employeeId)) {
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+          UserInfo.getUserId()
+        );
         if (currentEmployeeId != null && employeeId != currentEmployeeId) {
           // Only admins can view other employees.
           if (PWChrono_AccessController.isAdmin(currentEmployeeId)) {
@@ -184,7 +204,11 @@ public inherited sharing class PWChrono_ProfileController {
     String sessionToken
   ) {
     try {
-      Id resolvedId = resolveTargetEmployeeId(targetEmployeeId, portalUserId, sessionToken);
+      Id resolvedId = resolveTargetEmployeeId(
+        targetEmployeeId,
+        portalUserId,
+        sessionToken
+      );
       if (resolvedId == null) {
         throw new AuraHandledException('Employee record not found.');
       }
@@ -202,17 +226,23 @@ public inherited sharing class PWChrono_ProfileController {
           emp.Address__c = (String) profileData.get('Address__c');
         }
         if (profileData.containsKey('Emergency_Contact_Name__c')) {
-          emp.Emergency_Contact_Name__c = (String) profileData.get('Emergency_Contact_Name__c');
+          emp.Emergency_Contact_Name__c = (String) profileData.get(
+            'Emergency_Contact_Name__c'
+          );
         }
         if (profileData.containsKey('Emergency_Contact_Phone__c')) {
-          emp.Emergency_Contact_Phone__c = (String) profileData.get('Emergency_Contact_Phone__c');
+          emp.Emergency_Contact_Phone__c = (String) profileData.get(
+            'Emergency_Contact_Phone__c'
+          );
         }
       }
 
       update emp;
     } catch (Exception e) {
       PWChrono_Logger.error('Error updating profile (with access)', e);
-      AuraHandledException ahe = new AuraHandledException('Error updating profile.');
+      AuraHandledException ahe = new AuraHandledException(
+        'Error updating profile.'
+      );
       ahe.setMessage('Error updating profile.');
       throw ahe;
     }
@@ -231,7 +261,11 @@ public inherited sharing class PWChrono_ProfileController {
     try {
       // Legacy method: treat portalUserId as the target employee record id.
       // Guest: only self is allowed. Non-Guest: only self unless admin.
-      Id resolvedId = resolveTargetEmployeeId(portalUserId, portalUserId, sessionToken);
+      Id resolvedId = resolveTargetEmployeeId(
+        portalUserId,
+        portalUserId,
+        sessionToken
+      );
       Portal_Users__c emp = new Portal_Users__c(Id = resolvedId);
 
       if (profileData.containsKey('Name')) {
@@ -277,7 +311,11 @@ public inherited sharing class PWChrono_ProfileController {
     String sessionToken
   ) {
     try {
-      Id resolvedId = resolveTargetEmployeeId(targetEmployeeId, portalUserId, sessionToken);
+      Id resolvedId = resolveTargetEmployeeId(
+        targetEmployeeId,
+        portalUserId,
+        sessionToken
+      );
       if (resolvedId == null) {
         throw new AuraHandledException('Employee record not found');
       }
@@ -312,7 +350,9 @@ public inherited sharing class PWChrono_ProfileController {
       update emp;
     } catch (Exception e) {
       PWChrono_Logger.error('Error uploading profile image (with access)', e);
-      AuraHandledException ahe = new AuraHandledException('Error uploading profile image.');
+      AuraHandledException ahe = new AuraHandledException(
+        'Error uploading profile image.'
+      );
       ahe.setMessage('Error uploading profile image.');
       throw ahe;
     }
@@ -335,8 +375,14 @@ public inherited sharing class PWChrono_ProfileController {
     try {
       // Legacy method: employeeId is the target employee record id.
       // Guest: only self is allowed. Non-Guest: only self unless admin.
-      String idCandidate = String.isNotBlank(employeeId) ? employeeId : portalUserId;
-      Id targetEmployeeId = resolveTargetEmployeeId(idCandidate, portalUserId, sessionToken);
+      String idCandidate = String.isNotBlank(employeeId)
+        ? employeeId
+        : portalUserId;
+      Id targetEmployeeId = resolveTargetEmployeeId(
+        idCandidate,
+        portalUserId,
+        sessionToken
+      );
 
       if (targetEmployeeId == null) {
         throw new AuraHandledException('Employee record not found');

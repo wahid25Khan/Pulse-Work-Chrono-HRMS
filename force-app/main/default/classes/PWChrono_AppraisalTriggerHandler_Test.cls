@@ -68,7 +68,11 @@ private class PWChrono_AppraisalTriggerHandler_Test {
       ORDER BY CreatedDate ASC
     ];
 
-    System.assertEquals(2, assignments.size(), 'Expected old and new salary assignments.');
+    System.assertEquals(
+      2,
+      assignments.size(),
+      'Expected old and new salary assignments.'
+    );
 
     Integer activeCount = 0;
     Decimal activeSalary = 0;
@@ -79,8 +83,16 @@ private class PWChrono_AppraisalTriggerHandler_Test {
       }
     }
 
-    System.assertEquals(1, activeCount, 'Exactly one active salary assignment should remain.');
-    System.assertEquals(5750, activeSalary, 'Active salary should reflect increment amount.');
+    System.assertEquals(
+      1,
+      activeCount,
+      'Exactly one active salary assignment should remain.'
+    );
+    System.assertEquals(
+      5750,
+      activeSalary,
+      'Active salary should reflect increment amount.'
+    );
   }
 
   @isTest
@@ -124,9 +136,21 @@ private class PWChrono_AppraisalTriggerHandler_Test {
       WHERE Appraisal__c = :oldAppraisal.Id
     ];
 
-    System.assertEquals(1, bonuses.size(), 'Expected one bonus record to be created.');
-    System.assertEquals(1200, bonuses[0].Amount__c, 'Bonus amount should match proposed amount.');
-    System.assertEquals(employee.Id, bonuses[0].Employees__c, 'Bonus should be linked to employee.');
+    System.assertEquals(
+      1,
+      bonuses.size(),
+      'Expected one bonus record to be created.'
+    );
+    System.assertEquals(
+      1200,
+      bonuses[0].Amount__c,
+      'Bonus amount should match proposed amount.'
+    );
+    System.assertEquals(
+      employee.Id,
+      bonuses[0].Employees__c,
+      'Bonus should be linked to employee.'
+    );
   }
 
   @isTest

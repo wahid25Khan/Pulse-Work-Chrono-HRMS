@@ -110,7 +110,12 @@ export default class PwchronoDashboardTasksStatistics extends LightningElement {
 
   get totalCount() {
     const c = this.counts;
-    return (c?.ongoing ?? 0) + (c?.onHold ?? 0) + (c?.overdue ?? 0) + (c?.completed ?? 0);
+    return (
+      (c?.ongoing ?? 0) +
+      (c?.onHold ?? 0) +
+      (c?.overdue ?? 0) +
+      (c?.completed ?? 0)
+    );
   }
 
   pct(part) {

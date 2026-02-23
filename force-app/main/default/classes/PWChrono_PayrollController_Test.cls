@@ -169,7 +169,13 @@ private class PWChrono_PayrollController_Test {
     System.runAs(adminUser) {
       Test.startTest();
       try {
-        PWChrono_PayrollController.getMySalarySlips(null, null, null, null, null);
+        PWChrono_PayrollController.getMySalarySlips(
+          null,
+          null,
+          null,
+          null,
+          null
+        );
         System.assert(false, 'Should throw exception');
       } catch (AuraHandledException e) {
         System.assert(true);

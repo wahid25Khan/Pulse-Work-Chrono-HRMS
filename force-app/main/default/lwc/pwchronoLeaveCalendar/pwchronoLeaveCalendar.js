@@ -56,7 +56,10 @@ export default class PwchronoLeaveCalendar extends LightningElement {
   }
 
   get hasLeaveOrHolidays() {
-    return (this.leaves && this.leaves.length > 0) || (this.holidays && this.holidays.length > 0);
+    return (
+      (this.leaves && this.leaves.length > 0) ||
+      (this.holidays && this.holidays.length > 0)
+    );
   }
 
   @wire(getLeaveCalendarData, { startDate: "$startDate", endDate: "$endDate" })

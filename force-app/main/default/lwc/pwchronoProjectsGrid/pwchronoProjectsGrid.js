@@ -6,9 +6,9 @@ import saveProject from "@salesforce/apex/PWChrono_AdminController.saveProject";
 import uploadProjectLogo from "@salesforce/apex/PWChrono_AdminController.uploadProjectLogo";
 import { logError } from "c/pwchronoErrorHandler";
 import {
-    getEmployeeId,
-    getSessionToken,
-    SESSION_CHANGED_EVENT
+  getEmployeeId,
+  getSessionToken,
+  SESSION_CHANGED_EVENT
 } from "c/pwchronoSession";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track, wire } from "lwc";

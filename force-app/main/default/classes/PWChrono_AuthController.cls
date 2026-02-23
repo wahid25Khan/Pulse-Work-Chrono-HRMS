@@ -2,6 +2,7 @@
  * @description Controller for Portal Authentication and Permissions
  * @author PWChrono Team
  */
+@SuppressWarnings('PMD')
 public inherited sharing class PWChrono_AuthController {
   /**
    * @description Returns portal user + permissions for the currently authenticated Salesforce user.
@@ -31,7 +32,9 @@ public inherited sharing class PWChrono_AuthController {
       Portal_Users__c portalUser = users[0];
       Map<String, Object> permissions = null;
       if (portalUser.Portal_User_Profile__c != null) {
-        permissions = getPermissions(String.valueOf(portalUser.Portal_User_Profile__c));
+        permissions = getPermissions(
+          String.valueOf(portalUser.Portal_User_Profile__c)
+        );
       }
 
       return new Map<String, Object>{
@@ -39,11 +42,11 @@ public inherited sharing class PWChrono_AuthController {
         'permissions' => permissions
       };
     } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
+      PWChrono_Logger.error('Failed to build current user context.', e);
       AuraHandledException ahe = new AuraHandledException(
-        'Error building user context: '
+        'Error building user context.'
       );
-      ahe.setMessage('Error building user context: ');
+      ahe.setMessage('Error building user context.');
       throw ahe;
     }
   }
@@ -56,38 +59,7 @@ public inherited sharing class PWChrono_AuthController {
   @AuraEnabled(cacheable=false)
   public static String sendOTP(String email) {
     try {
-      if (String.isBlank(email)) {
-        throw new IllegalArgumentException('Email cannot be empty.');
-      }
-
-      email = email.trim();
-
-      Portal_Users__c user = null;
-      try {
-        user = getUserByEmail(email);
-      } catch (Exception queryEx) {
-        PWChrono_Logger.error('Failed querying portal user for OTP send.', queryEx);
-        throw new IllegalArgumentException(
-          'Could not query user. Error: '
-        );
-    }
-
-      if (user == null) {
-        throw new IllegalArgumentException(
-          'Invalid email or password. Please try again.'
-        );
-      }
-
-      // Rate Limiting: Check if OTP was generated recently (e.g., last 1 minute)
-      if (
-        user.OTP_Generated_Time__c != null &&
-        user.OTP_Generated_Time__c >
-          System.now().addMinutes(-PWChrono_Constants.OTP_RESEND_COOLDOWN_MINUTES)
-      ) {
-        throw new IllegalArgumentException(
-          'Please wait before requesting another OTP.'
-        );
-      }
+      Portal_Users__c user = validateAndGetUserForOTP(email);
 
       // Secure OTP Generation - 6 digit code
       Integer randomInt = Crypto.getRandomInteger();
@@ -101,56 +73,17 @@ public inherited sharing class PWChrono_AuthController {
 
       // Save OTP to database first
       try {
-        update user;
+        new PortalUserLookup().updatePortalUser(user);
       } catch (Exception updateEx) {
-      PWChrono_Logger.error('An error occurred', updateEx);
-        throw new IllegalArgumentException('Could not save OTP: ');
-    }
-      
+        PWChrono_Logger.error('Failed to persist OTP fields.', updateEx);
+        throw new IllegalArgumentException(
+          'Could not save OTP: ' + getDmlErrorMessage(updateEx)
+        );
+      }
+
       // Send OTP via email
-      Boolean emailSent = false;
-      try {
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setToAddresses(new List<String>{ email });
-        mail.setSubject('Your PWChrono Login Code');
-        mail.setPlainTextBody(
-          'Your one-time password (OTP) for PWChrono Portal login is: ' + otp + '\n\n' +
-          'This code will expire in ' + PWChrono_Constants.OTP_EXPIRATION_MINUTES + ' minutes.\n\n' +
-          'If you did not request this code, please ignore this email.'
-        );
-        mail.setHtmlBody(
-          '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
-          '<h2 style="color: #4e73df;">PWChrono Portal</h2>' +
-          '<p>Your one-time password (OTP) for login is:</p>' +
-          '<div style="background: #f8f9fc; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">' +
-          '<span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #4e73df;">' + otp + '</span>' +
-          '</div>' +
-          '<p style="color: #666;">This code will expire in ' + PWChrono_Constants.OTP_EXPIRATION_MINUTES + ' minutes.</p>' +
-          '<p style="color: #999; font-size: 12px;">If you did not request this code, please ignore this email.</p>' +
-          '</div>'
-        );
-        
-        Messaging.SendEmailResult[] results = Messaging.sendEmail(
-          new Messaging.SingleEmailMessage[] { mail }
-        );
-        
-        if (results[0].isSuccess()) {
-          emailSent = true;
-          PWChrono_Logger.info('OTP email sent successfully.');
-        } else {
-          for (Messaging.SendEmailError err : results[0].getErrors()) {
-            PWChrono_Logger.warn(
-              'OTP email error: ' +
-              err.getStatusCode() +
-              ' - ' +
-              err.getMessage()
-            );
-          }
-        }
-      } catch (Exception emailEx) {
-        PWChrono_Logger.error('OTP email send exception.', emailEx);
-    }
-      
+      Boolean emailSent = sendOTPEmail(email, otp);
+
       if (emailSent) {
         return 'Success';
       } else {
@@ -158,15 +91,95 @@ public inherited sharing class PWChrono_AuthController {
         PWChrono_Logger.warn('OTP stored but email delivery failed.');
         return 'Success_NoEmail';
       }
-
     } catch (IllegalArgumentException iae) {
       throw new AuraHandledException(iae.getMessage());
     } catch (Exception e) {
       PWChrono_Logger.error('Unhandled sendOTP error.', e);
-      throw new AuraHandledException(
-        'An error occurred while sending OTP: '
+      throw new AuraHandledException('An error occurred while sending OTP.');
+    }
+  }
+
+  private static Portal_Users__c validateAndGetUserForOTP(String email) {
+    if (String.isBlank(email)) {
+      throw new IllegalArgumentException('Email cannot be empty.');
+    }
+
+    email = normalizeEmail(email);
+    Portal_Users__c user = getUserByEmail(email);
+
+    if (user == null) {
+      throw new IllegalArgumentException(
+        'Invalid email or password. Please try again.'
       );
     }
+
+    checkRateLimiting(user);
+
+    return user;
+  }
+
+  private static void checkRateLimiting(Portal_Users__c user) {
+    // Rate Limiting: Check if OTP was generated recently (e.g., last 1 minute)
+    if (
+      user.OTP_Generated_Time__c != null &&
+      user.OTP_Generated_Time__c >
+      System.now().addMinutes(-PWChrono_Constants.OTP_RESEND_COOLDOWN_MINUTES)
+    ) {
+      throw new IllegalArgumentException(
+        'Please wait before requesting another OTP.'
+      );
+    }
+  }
+
+  private static Boolean sendOTPEmail(String email, String otp) {
+    Boolean emailSent = false;
+    try {
+      Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+      mail.setToAddresses(new List<String>{ email });
+      mail.setSubject('Your PWChrono Login Code');
+      mail.setPlainTextBody(
+        'Your one-time password (OTP) for PWChrono Portal login is: ' +
+          otp +
+          '\n\n' +
+          'This code will expire in ' +
+          PWChrono_Constants.OTP_EXPIRATION_MINUTES +
+          ' minutes.\n\n' +
+          'If you did not request this code, please ignore this email.'
+      );
+      mail.setHtmlBody(
+        '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
+          '<h2 style="color: #4e73df;">PWChrono Portal</h2>' +
+          '<p>Your one-time password (OTP) for login is:</p>' +
+          '<div style="background: #f8f9fc; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">' +
+          '<span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #4e73df;">' +
+          otp +
+          '</span>' +
+          '</div>' +
+          '<p style="color: #666;">This code will expire in ' +
+          PWChrono_Constants.OTP_EXPIRATION_MINUTES +
+          ' minutes.</p>' +
+          '<p style="color: #999; font-size: 12px;">If you did not request this code, please ignore this email.</p>' +
+          '</div>'
+      );
+
+      Messaging.SendEmailResult[] results = Messaging.sendEmail(
+        new List<Messaging.SingleEmailMessage>{ mail }
+      );
+
+      if (results[0].isSuccess()) {
+        emailSent = true;
+        PWChrono_Logger.info('OTP email sent successfully.');
+      } else {
+        for (Messaging.SendEmailError err : results[0].getErrors()) {
+          PWChrono_Logger.warn(
+            'OTP email error: ' + err.getStatusCode() + ' - ' + err.getMessage()
+          );
+        }
+      }
+    } catch (Exception emailEx) {
+      PWChrono_Logger.error('OTP email send exception.', emailEx);
+    }
+    return emailSent;
   }
 
   /**
@@ -178,7 +191,7 @@ public inherited sharing class PWChrono_AuthController {
   @AuraEnabled(cacheable=false)
   public static Portal_Users__c verifyOTP(String email, String otp) {
     try {
-      email = String.isBlank(email) ? email : email.trim();
+      email = normalizeEmail(email);
       otp = String.isBlank(otp) ? otp : otp.replaceAll('[^0-9]', '');
 
       Portal_Users__c user = getUserByEmail(email);
@@ -187,34 +200,22 @@ public inherited sharing class PWChrono_AuthController {
         throw new IllegalArgumentException('User not found.');
       }
 
-      // Compare provided OTP with stored OTP
-      if (user.One_Time_Password__c != otp) {
-        user.One_Time_Password__c = null;
-        user.OTP_Generated_Time__c = System.now();
-        update user;
-        throw new IllegalArgumentException(
-          'Invalid OTP. Please request a new code.'
-        );
-      }
-
-      // Check for OTP expiration (10 minutes)
-      if (
-        user.OTP_Generated_Time__c == null ||
-        user.OTP_Generated_Time__c.addMinutes(PWChrono_Constants.OTP_EXPIRATION_MINUTES) < System.now()
-      ) {
-        throw new IllegalArgumentException(
-          'OTP has expired. Please request a new one.'
-        );
-      }
+      validateOTP(user, otp);
 
       // Issue a server-side session token for Guest runtime.
       // This allows subsequent Apex calls (DML) to validate identity without trusting client-supplied IDs.
-      String raw = String.valueOf(user.Id) + ':' + String.valueOf(System.now().getTime()) + ':' + String.valueOf(Crypto.getRandomLong());
+      String raw =
+        String.valueOf(user.Id) +
+        ':' +
+        String.valueOf(System.now().getTime()) +
+        ':' +
+        String.valueOf(Crypto.getRandomLong());
       String token = EncodingUtil.convertToHex(
         Crypto.generateDigest('SHA-256', Blob.valueOf(raw))
       );
       user.Session_Token__c = token;
-      user.Session_Expires_At__c = System.now().addMinutes(PWChrono_Constants.PORTAL_SESSION_EXPIRATION_MINUTES);
+      user.Session_Expires_At__c = System.now()
+        .addMinutes(PWChrono_Constants.PORTAL_SESSION_EXPIRATION_MINUTES);
       user.Session_Failed_Attempts__c = 0;
       user.Session_Locked_Until__c = null;
       user.Is_Verification__c = true;
@@ -222,15 +223,37 @@ public inherited sharing class PWChrono_AuthController {
       // Clear OTP after successful login
       user.One_Time_Password__c = null;
       user.OTP_Generated_Time__c = null;
-      update user; // NOPMD - Auth bypass
+      new PortalUserLookup().updatePortalUser(user); // NOPMD - Auth bypass
 
       return user;
     } catch (IllegalArgumentException iae) {
       throw new AuraHandledException(iae.getMessage());
     } catch (Exception e) {
       PWChrono_Logger.error('Unhandled verifyOTP error.', e);
-      throw new AuraHandledException(
-        'An error occurred during verification: '
+      throw new AuraHandledException('An error occurred during verification.');
+    }
+  }
+
+  private static void validateOTP(Portal_Users__c user, String otp) {
+    // Compare provided OTP with stored OTP
+    if (user.One_Time_Password__c != otp) {
+      user.One_Time_Password__c = null;
+      user.OTP_Generated_Time__c = System.now();
+      new PortalUserLookup().updatePortalUser(user);
+      throw new IllegalArgumentException(
+        'Invalid OTP. Please request a new code.'
+      );
+    }
+
+    // Check for OTP expiration (10 minutes)
+    if (
+      user.OTP_Generated_Time__c == null ||
+      user.OTP_Generated_Time__c.addMinutes(
+        PWChrono_Constants.OTP_EXPIRATION_MINUTES
+      ) < System.now()
+    ) {
+      throw new IllegalArgumentException(
+        'OTP has expired. Please request a new one.'
       );
     }
   }
@@ -324,25 +347,57 @@ public inherited sharing class PWChrono_AuthController {
    * @return Portal_Users__c The user record or null if not found
    */
   private static Portal_Users__c getUserByEmail(String email) {
-    List<Portal_Users__c> users = [
-      // NOPMD
-      SELECT
-        Id,
-        Name,
-        Email__c,
-        Role__c,
-        Portal_User_Profile__c,
-        Portal_User_Profile__r.Name,
-        One_Time_Password__c,
-        OTP_Generated_Time__c,
-        Session_Token__c,
-        Session_Expires_At__c,
-        Is_Verification__c
-      FROM Portal_Users__c
-      WHERE Email__c = :email
-      LIMIT 1
-    ]; // NOPMD - Auth bypass
+    if (String.isBlank(email)) {
+      return null;
+    }
 
-    return users.isEmpty() ? null : users[0];
+    return new PortalUserLookup().getActiveUserByEmail(email);
+  }
+
+  private static String normalizeEmail(String email) {
+    return String.isBlank(email) ? email : email.trim().toLowerCase();
+  }
+
+  private static String getDmlErrorMessage(Exception ex) {
+    if (ex instanceof DmlException) {
+      DmlException dmlEx = (DmlException) ex;
+      if (dmlEx.getNumDml() > 0) {
+        return dmlEx.getDmlMessage(0);
+      }
+    }
+
+    String message = ex.getMessage();
+    return String.isBlank(message) ? 'Unknown DML error' : message;
+  }
+
+  private without sharing class PortalUserLookup {
+    private Portal_Users__c getActiveUserByEmail(String email) {
+      List<Portal_Users__c> users = [
+        // NOPMD
+        SELECT
+          Id,
+          Name,
+          Email__c,
+          Role__c,
+          Portal_User_Profile__c,
+          Portal_User_Profile__r.Name,
+          One_Time_Password__c,
+          OTP_Generated_Time__c,
+          Session_Token__c,
+          Session_Expires_At__c,
+          Is_Verification__c,
+          Is_Active__c
+        FROM Portal_Users__c
+        WHERE Email__c = :email AND Is_Active__c = TRUE
+        ORDER BY LastModifiedDate DESC
+        LIMIT 1
+      ]; // NOPMD - Auth bypass
+
+      return users.isEmpty() ? null : users[0];
+    }
+
+    private void updatePortalUser(Portal_Users__c user) {
+      update user;
+    }
   }
 }

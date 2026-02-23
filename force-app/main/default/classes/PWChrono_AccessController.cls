@@ -53,7 +53,10 @@ public inherited sharing class PWChrono_AccessController {
    * @return Map containing role and accessible features
    */
   @AuraEnabled(cacheable=true)
-  public static Map<String, Object> getUserAccessById(Id employeeId, String sessionToken) {
+  public static Map<String, Object> getUserAccessById(
+    Id employeeId,
+    String sessionToken
+  ) {
     if (UserInfo.getUserType() == 'Guest') {
       if (employeeId != null) {
         Id verifiedPortalUserId = PWChrono_GuestSession.requireVerifiedPortalUserId(
@@ -78,22 +81,22 @@ public inherited sharing class PWChrono_AccessController {
     if (isSalesforceInternalUser()) {
       return true;
     }
-    
+
     if (employeeId == null) {
       return false;
     }
 
     List<Portal_Users__c> users = [
-      SELECT Role__c 
-      FROM Portal_Users__c 
-      WHERE Id = :employeeId 
+      SELECT Role__c
+      FROM Portal_Users__c
+      WHERE Id = :employeeId
       LIMIT 1
     ];
-    
+
     if (users.isEmpty()) {
       return false;
     }
-    
+
     return users[0].Role__c == 'HR Admin' || users[0].Role__c == 'System Admin';
   }
 
@@ -129,13 +132,13 @@ public inherited sharing class PWChrono_AccessController {
           List<Portal_Users__c> users = [
             SELECT Id, Role__c, Portal_User_Profile__c
             FROM Portal_Users__c
-            WHERE Id = :employeeId AND Is_Active__c = true
+            WHERE Id = :employeeId AND Is_Active__c = TRUE
             LIMIT 1
           ];
           if (!users.isEmpty()) {
             Portal_Users__c portalUser = users[0];
             List<String> features = new List<String>();
-            
+
             // Get features from User Feature Access or Role mapping
             List<PWChrono_User_Feature_Access__c> accessRecords = [
               SELECT Feature_Name__c
@@ -145,7 +148,7 @@ public inherited sharing class PWChrono_AccessController {
                 AND Is_Active__c = TRUE
                 AND Access_Level__c != 'No Access'
             ];
-            
+
             if (!accessRecords.isEmpty()) {
               for (PWChrono_User_Feature_Access__c access : accessRecords) {
                 features.add(access.Feature_Name__c);
@@ -153,12 +156,17 @@ public inherited sharing class PWChrono_AccessController {
             } else if (portalUser.Role__c != null) {
               features = getFeaturesForRole(portalUser.Role__c);
             }
-            
+
             // If no specific features configured, give basic access
             if (features.isEmpty()) {
-              features = new List<String>{ 'Dashboard', 'My Profile', 'Leave Management', 'Attendance Management' };
+              features = new List<String>{
+                'Dashboard',
+                'My Profile',
+                'Leave Management',
+                'Attendance Management'
+              };
             }
-            
+
             return new Map<String, Object>{
               'hasAccess' => true,
               'role' => portalUser.Role__c,
@@ -167,7 +175,7 @@ public inherited sharing class PWChrono_AccessController {
             };
           }
         }
-        
+
         // No valid employeeId provided - allow basic access for login flow
         // The login component and auth flow need to work for unauthenticated guests
         return new Map<String, Object>{

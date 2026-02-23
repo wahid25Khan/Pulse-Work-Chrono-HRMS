@@ -56,10 +56,13 @@ public inherited sharing class PWChrono_AdminController {
   }
 
   public class ChartPoint {
-    @AuraEnabled public String label;
-    @AuraEnabled public Integer value;
+    @AuraEnabled
+    public String label;
+    @AuraEnabled
+    public Integer value;
 
-    public ChartPoint() {}
+    public ChartPoint() {
+    }
     public ChartPoint(String label, Integer value) {
       this.label = label;
       this.value = value;
@@ -67,61 +70,102 @@ public inherited sharing class PWChrono_AdminController {
   }
 
   public class EmployeeStatusOverview {
-    @AuraEnabled public Integer total;
-    @AuraEnabled public Integer fulltime;
-    @AuraEnabled public Integer contract;
-    @AuraEnabled public Integer probation;
-    @AuraEnabled public Integer wfh;
+    @AuraEnabled
+    public Integer total;
+    @AuraEnabled
+    public Integer fulltime;
+    @AuraEnabled
+    public Integer contract;
+    @AuraEnabled
+    public Integer probation;
+    @AuraEnabled
+    public Integer wfh;
   }
 
   public class AttendanceOverview {
-    @AuraEnabled public Date day;
-    @AuraEnabled public Integer present;
-    @AuraEnabled public Integer late;
-    @AuraEnabled public Integer permission;
-    @AuraEnabled public Integer absent;
-    @AuraEnabled public Integer total;
+    @AuraEnabled
+    public Date day;
+    @AuraEnabled
+    public Integer present;
+    @AuraEnabled
+    public Integer late;
+    @AuraEnabled
+    public Integer permission;
+    @AuraEnabled
+    public Integer absent;
+    @AuraEnabled
+    public Integer total;
   }
 
   public class TimelineItem implements Comparable {
-    @AuraEnabled public String id;
-    @AuraEnabled public String category;
-    @AuraEnabled public String title;
-    @AuraEnabled public String detail;
-    @AuraEnabled public String status;
-    @AuraEnabled public Datetime timestamp;
+    @AuraEnabled
+    public String id;
+    @AuraEnabled
+    public String category;
+    @AuraEnabled
+    public String title;
+    @AuraEnabled
+    public String detail;
+    @AuraEnabled
+    public String status;
+    @AuraEnabled
+    public Datetime timestamp;
 
     public Integer compareTo(Object other) {
       TimelineItem o = (TimelineItem) other;
-      if (timestamp == null && o.timestamp == null) return 0;
-      if (timestamp == null) return 1;
-      if (o.timestamp == null) return -1;
-      if (timestamp.getTime() == o.timestamp.getTime()) return 0;
+      if (timestamp == null && o.timestamp == null)
+        return 0;
+      if (timestamp == null)
+        return 1;
+      if (o.timestamp == null)
+        return -1;
+      if (timestamp.getTime() == o.timestamp.getTime())
+        return 0;
       return timestamp.getTime() > o.timestamp.getTime() ? -1 : 1;
     }
   }
 
   public class AdminDashboardDTO {
-    @AuraEnabled public String userName;
-    @AuraEnabled public Integer totalEmployees;
-    @AuraEnabled public String employeeTrend;
-    @AuraEnabled public Integer onLeaveToday;
-    @AuraEnabled public String leaveTrend;
-    @AuraEnabled public Integer pendingRequests;
-    @AuraEnabled public String requestTrend;
-    @AuraEnabled public Integer totalProjects;
-    @AuraEnabled public String projectTrend;
-    @AuraEnabled public Integer pendingApprovals;
-    @AuraEnabled public Integer overdueApprovals;
-    @AuraEnabled public Integer approvedThisWeek;
-    @AuraEnabled public Integer totalInvoices;
-    @AuraEnabled public String invoiceTrend;
-    @AuraEnabled public Integer completedTasks;
-    @AuraEnabled public String taskTrend;
-    @AuraEnabled public Integer attendanceRate;
-    @AuraEnabled public String attendanceTrend;
-    @AuraEnabled public Integer activeEmployees;
-    @AuraEnabled public String activeTrend;
+    @AuraEnabled
+    public String userName;
+    @AuraEnabled
+    public Integer totalEmployees;
+    @AuraEnabled
+    public String employeeTrend;
+    @AuraEnabled
+    public Integer onLeaveToday;
+    @AuraEnabled
+    public String leaveTrend;
+    @AuraEnabled
+    public Integer pendingRequests;
+    @AuraEnabled
+    public String requestTrend;
+    @AuraEnabled
+    public Integer totalProjects;
+    @AuraEnabled
+    public String projectTrend;
+    @AuraEnabled
+    public Integer pendingApprovals;
+    @AuraEnabled
+    public Integer overdueApprovals;
+    @AuraEnabled
+    public Integer approvedThisWeek;
+    @AuraEnabled
+    public Integer totalInvoices;
+    @AuraEnabled
+    public String invoiceTrend;
+    @AuraEnabled
+    public Integer completedTasks;
+    @AuraEnabled
+    public String taskTrend;
+    @AuraEnabled
+    public Integer attendanceRate;
+    @AuraEnabled
+    public String attendanceTrend;
+    @AuraEnabled
+    public Integer activeEmployees;
+    @AuraEnabled
+    public String activeTrend;
   }
 
   /**
@@ -143,83 +187,225 @@ public inherited sharing class PWChrono_AdminController {
     try {
       // Welcome Banner Data
       data.userName = UserInfo.getName();
-      Integer pendingLeaves = [SELECT COUNT() FROM PWChrono_Leave__c WHERE Status__c = 'Submitted'];
-      Integer pendingAttendance = [SELECT COUNT() FROM PWChrono_Attendance_Request__c WHERE Status__c = 'Submitted'];
+      Integer pendingLeaves = [
+        SELECT COUNT()
+        FROM PWChrono_Leave__c
+        WHERE Status__c = 'Submitted'
+      ];
+      Integer pendingAttendance = [
+        SELECT COUNT()
+        FROM PWChrono_Attendance_Request__c
+        WHERE Status__c = 'Submitted'
+      ];
       data.pendingApprovals = pendingLeaves + pendingAttendance;
-      
+
       Date threeDaysAgo = Date.today().addDays(-3);
-      data.overdueApprovals = [SELECT COUNT() FROM PWChrono_Leave__c WHERE Status__c = 'Submitted' AND CreatedDate < :threeDaysAgo];
-      
+      data.overdueApprovals = [
+        SELECT COUNT()
+        FROM PWChrono_Leave__c
+        WHERE Status__c = 'Submitted' AND CreatedDate < :threeDaysAgo
+      ];
+
       Date startOfWeek = Date.today().toStartOfWeek();
-      data.approvedThisWeek = [SELECT COUNT() FROM PWChrono_Leave__c WHERE Status__c = 'Approved' AND LastModifiedDate >= :startOfWeek];
+      data.approvedThisWeek = [
+        SELECT COUNT()
+        FROM PWChrono_Leave__c
+        WHERE Status__c = 'Approved' AND LastModifiedDate >= :startOfWeek
+      ];
 
       // Stat Card Data
-      data.totalEmployees = [SELECT COUNT() FROM Portal_Users__c WHERE Is_Active__c = true];
-      
-      // Calculate Employee Trend (Growth over last 30 days)
-      Integer newEmployeesLast30Days = [SELECT COUNT() FROM Portal_Users__c WHERE Is_Active__c = true AND CreatedDate = LAST_N_DAYS:30];
-      Integer previousEmployees = data.totalEmployees - newEmployeesLast30Days;
-      data.employeeTrend = calculateTrendPercentage(data.totalEmployees, previousEmployees);
+      data.totalEmployees = [
+        SELECT COUNT()
+        FROM Portal_Users__c
+        WHERE Is_Active__c = TRUE
+      ];
 
-      data.onLeaveToday = [SELECT COUNT() FROM PWChrono_Leave__c WHERE From_Date__c <= TODAY AND To_Date__c >= TODAY AND Status__c = 'Approved'];
-      
+      // Calculate Employee Trend (Growth over last 30 days)
+      Integer newEmployeesLast30Days = [
+        SELECT COUNT()
+        FROM Portal_Users__c
+        WHERE Is_Active__c = TRUE AND CreatedDate = LAST_N_DAYS:30
+      ];
+      Integer previousEmployees = data.totalEmployees - newEmployeesLast30Days;
+      data.employeeTrend = calculateTrendPercentage(
+        data.totalEmployees,
+        previousEmployees
+      );
+
+      data.onLeaveToday = [
+        SELECT COUNT()
+        FROM PWChrono_Leave__c
+        WHERE
+          From_Date__c <= TODAY
+          AND To_Date__c >= TODAY
+          AND Status__c = 'Approved'
+      ];
+
       // Calculate Leave Trend (On Leave Today vs Yesterday)
-      Integer onLeaveYesterday = [SELECT COUNT() FROM PWChrono_Leave__c WHERE From_Date__c <= YESTERDAY AND To_Date__c >= YESTERDAY AND Status__c = 'Approved'];
-      data.leaveTrend = calculateTrendPercentage(data.onLeaveToday, onLeaveYesterday);
+      Integer onLeaveYesterday = [
+        SELECT COUNT()
+        FROM PWChrono_Leave__c
+        WHERE
+          From_Date__c <= YESTERDAY
+          AND To_Date__c >= YESTERDAY
+          AND Status__c = 'Approved'
+      ];
+      data.leaveTrend = calculateTrendPercentage(
+        data.onLeaveToday,
+        onLeaveYesterday
+      );
 
       data.pendingRequests = data.pendingApprovals; // Reuse pending count
-      
-      // Calculate Request Trend (Volume of new requests this week vs last week)
-      Integer requestsLast7Days = [SELECT COUNT() FROM PWChrono_Leave__c WHERE CreatedDate = LAST_N_DAYS:7] + [SELECT COUNT() FROM PWChrono_Attendance_Request__c WHERE CreatedDate = LAST_N_DAYS:7];
-      Integer requestsPrevious7Days = [SELECT COUNT() FROM PWChrono_Leave__c WHERE CreatedDate < LAST_N_DAYS:7 AND CreatedDate >= LAST_N_DAYS:14] + [SELECT COUNT() FROM PWChrono_Attendance_Request__c WHERE CreatedDate < LAST_N_DAYS:7 AND CreatedDate >= LAST_N_DAYS:14];
-      data.requestTrend = calculateTrendPercentage(requestsLast7Days, requestsPrevious7Days);
 
-      data.totalProjects = [SELECT COUNT() FROM PWChrono_Project__c WHERE Status__c = 'Active'];
-      
+      // Calculate Request Trend (Volume of new requests this week vs last week)
+      Integer requestsLast7Days =
+        [
+          SELECT COUNT()
+          FROM PWChrono_Leave__c
+          WHERE CreatedDate = LAST_N_DAYS:7
+        ] +
+        [
+          SELECT COUNT()
+          FROM PWChrono_Attendance_Request__c
+          WHERE CreatedDate = LAST_N_DAYS:7
+        ];
+      Integer requestsPrevious7Days =
+        [
+          SELECT COUNT()
+          FROM PWChrono_Leave__c
+          WHERE CreatedDate < LAST_N_DAYS:7 AND CreatedDate >= LAST_N_DAYS:14
+        ] +
+        [
+          SELECT COUNT()
+          FROM PWChrono_Attendance_Request__c
+          WHERE CreatedDate < LAST_N_DAYS:7 AND CreatedDate >= LAST_N_DAYS:14
+        ];
+      data.requestTrend = calculateTrendPercentage(
+        requestsLast7Days,
+        requestsPrevious7Days
+      );
+
+      data.totalProjects = [
+        SELECT COUNT()
+        FROM PWChrono_Project__c
+        WHERE Status__c = 'Active'
+      ];
+
       // Calculate Project Trend (Active Projects Growth last 30 days)
-      Integer newProjectsLast30Days = [SELECT COUNT() FROM PWChrono_Project__c WHERE Status__c = 'Active' AND CreatedDate = LAST_N_DAYS:30];
+      Integer newProjectsLast30Days = [
+        SELECT COUNT()
+        FROM PWChrono_Project__c
+        WHERE Status__c = 'Active' AND CreatedDate = LAST_N_DAYS:30
+      ];
       Integer previousProjects = data.totalProjects - newProjectsLast30Days;
-      data.projectTrend = calculateTrendPercentage(data.totalProjects, previousProjects);
+      data.projectTrend = calculateTrendPercentage(
+        data.totalProjects,
+        previousProjects
+      );
 
       // Total Invoices
       data.totalInvoices = [SELECT COUNT() FROM PWChrono_Invoice__c];
-      Integer newInvoicesLast30Days = [SELECT COUNT() FROM PWChrono_Invoice__c WHERE CreatedDate = LAST_N_DAYS:30];
+      Integer newInvoicesLast30Days = [
+        SELECT COUNT()
+        FROM PWChrono_Invoice__c
+        WHERE CreatedDate = LAST_N_DAYS:30
+      ];
       Integer previousInvoices = data.totalInvoices - newInvoicesLast30Days;
-      data.invoiceTrend = calculateTrendPercentage(data.totalInvoices, previousInvoices);
+      data.invoiceTrend = calculateTrendPercentage(
+        data.totalInvoices,
+        previousInvoices
+      );
 
       // Completed Tasks
-      data.completedTasks = [SELECT COUNT() FROM PWChrono_Onboarding_Task__c WHERE Status__c = 'Completed'];
-      Integer completedTasksLast7Days = [SELECT COUNT() FROM PWChrono_Onboarding_Task__c WHERE Status__c = 'Completed' AND LastModifiedDate = LAST_N_DAYS:7];
-      Integer completedTasksPrevious7Days = [SELECT COUNT() FROM PWChrono_Onboarding_Task__c WHERE Status__c = 'Completed' AND LastModifiedDate < LAST_N_DAYS:7 AND LastModifiedDate >= LAST_N_DAYS:14];
-      data.taskTrend = calculateTrendPercentage(completedTasksLast7Days, completedTasksPrevious7Days);
+      data.completedTasks = [
+        SELECT COUNT()
+        FROM PWChrono_Onboarding_Task__c
+        WHERE Status__c = 'Completed'
+      ];
+      Integer completedTasksLast7Days = [
+        SELECT COUNT()
+        FROM PWChrono_Onboarding_Task__c
+        WHERE Status__c = 'Completed' AND LastModifiedDate = LAST_N_DAYS:7
+      ];
+      Integer completedTasksPrevious7Days = [
+        SELECT COUNT()
+        FROM PWChrono_Onboarding_Task__c
+        WHERE
+          Status__c = 'Completed'
+          AND LastModifiedDate < LAST_N_DAYS:7
+          AND LastModifiedDate >= LAST_N_DAYS:14
+      ];
+      data.taskTrend = calculateTrendPercentage(
+        completedTasksLast7Days,
+        completedTasksPrevious7Days
+      );
 
       // Attendance Rate (percentage of employees who are active)
-      Integer totalActive = [SELECT COUNT() FROM Portal_Users__c WHERE Is_Active__c = true];
-      Integer approvedLeaves = [SELECT COUNT() FROM PWChrono_Leave__c WHERE Status__c = 'Approved' AND From_Date__c <= TODAY AND To_Date__c >= TODAY];
+      Integer totalActive = [
+        SELECT COUNT()
+        FROM Portal_Users__c
+        WHERE Is_Active__c = TRUE
+      ];
+      Integer approvedLeaves = [
+        SELECT COUNT()
+        FROM PWChrono_Leave__c
+        WHERE
+          Status__c = 'Approved'
+          AND From_Date__c <= TODAY
+          AND To_Date__c >= TODAY
+      ];
       Integer attendingToday = totalActive - approvedLeaves;
-      data.attendanceRate = totalActive > 0 ? (attendingToday * 100 / totalActive) : 0;
-      Integer attendanceYesterday = totalActive > 0 ? ((totalActive - [SELECT COUNT() FROM PWChrono_Leave__c WHERE Status__c = 'Approved' AND From_Date__c <= YESTERDAY AND To_Date__c >= YESTERDAY]) * 100 / totalActive) : 0;
-      data.attendanceTrend = calculateTrendPercentage(data.attendanceRate, attendanceYesterday);
+      data.attendanceRate = totalActive > 0
+        ? (attendingToday * 100 / totalActive)
+        : 0;
+      Integer attendanceYesterday = totalActive > 0
+        ? ((totalActive -
+          [
+            SELECT COUNT()
+            FROM PWChrono_Leave__c
+            WHERE
+              Status__c = 'Approved'
+              AND From_Date__c <= YESTERDAY
+              AND To_Date__c >= YESTERDAY
+          ]) *
+          100 /
+          totalActive)
+        : 0;
+      data.attendanceTrend = calculateTrendPercentage(
+        data.attendanceRate,
+        attendanceYesterday
+      );
 
       // Active Employees (Employees currently not on leave)
       data.activeEmployees = attendingToday;
-      data.activeTrend = calculateTrendPercentage(attendingToday, (totalActive - [SELECT COUNT() FROM PWChrono_Leave__c WHERE Status__c = 'Approved' AND From_Date__c <= YESTERDAY AND To_Date__c >= YESTERDAY]));
-
+      data.activeTrend = calculateTrendPercentage(
+        attendingToday,
+        (totalActive -
+        [
+          SELECT COUNT()
+          FROM PWChrono_Leave__c
+          WHERE
+            Status__c = 'Approved'
+            AND From_Date__c <= YESTERDAY
+            AND To_Date__c >= YESTERDAY
+        ])
+      );
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException(
-        'Error fetching admin stats.'
-      );
+      throw new AuraHandledException('Error fetching admin stats.');
     }
 
     return data;
   }
 
-  private static String calculateTrendPercentage(Integer current, Integer previous) {
+  private static String calculateTrendPercentage(
+    Integer current,
+    Integer previous
+  ) {
     if (previous == 0) {
-        return (current > 0) ? '+100%' : '0%';
+      return (current > 0) ? '+100%' : '0%';
     }
-    Decimal change = ((Decimal)(current - previous) / previous) * 100;
+    Decimal change = ((Decimal) (current - previous) / previous) * 100;
     return (change >= 0 ? '+' : '') + change.setScale(1) + '%';
   }
 
@@ -247,25 +433,34 @@ public inherited sharing class PWChrono_AdminController {
       Integer totalActive = [
         SELECT COUNT()
         FROM Portal_Users__c
-        WHERE Is_Active__c = true];
+        WHERE Is_Active__c = TRUE
+      ];
 
       Integer probation = [
         SELECT COUNT()
         FROM Portal_Users__c
-        WHERE Is_Active__c = true AND Is_New__c = true];
+        WHERE Is_Active__c = TRUE AND Is_New__c = TRUE
+      ];
 
       Integer fulltime = [
         SELECT COUNT()
         FROM Portal_Users__c
-        WHERE Is_Active__c = true AND Role__c = :PWChrono_Constants.ROLE_EMPLOYEE AND (Is_New__c = false OR Is_New__c = null)];
+        WHERE
+          Is_Active__c = TRUE
+          AND Role__c = :PWChrono_Constants.ROLE_EMPLOYEE
+          AND (Is_New__c = FALSE
+          OR Is_New__c = NULL)
+      ];
 
       Integer contract = [
         SELECT COUNT()
         FROM Portal_Users__c
-        WHERE Is_Active__c = true AND Role__c = :PWChrono_Constants.ROLE_MANAGER];
+        WHERE Is_Active__c = TRUE AND Role__c = :PWChrono_Constants.ROLE_MANAGER
+      ];
 
       Integer wfh = totalActive - fulltime - probation - contract;
-      if (wfh < 0) wfh = 0;
+      if (wfh < 0)
+        wfh = 0;
 
       EmployeeStatusOverview res = new EmployeeStatusOverview();
       res.total = totalActive;
@@ -314,11 +509,17 @@ public inherited sharing class PWChrono_AdminController {
         SELECT Status__c st, COUNT(Id) cnt
         FROM PWChrono_Attendance_Request__c
         WHERE Attendance_Date__c = :target
-        GROUP BY Status__c]) {
+        GROUP BY Status__c
+      ]) {
         String st = (String) ar.get('st');
         Integer cnt = (Integer) ar.get('cnt');
-        if (st == null) continue;
-        counts.put(st, (counts.containsKey(st) ? counts.get(st) : 0) + (cnt == null ? 0 : cnt));
+        if (st == null)
+          continue;
+        counts.put(
+          st,
+          (counts.containsKey(st) ? counts.get(st) : 0) +
+          (cnt == null ? 0 : cnt)
+        );
       }
 
       AttendanceOverview res = new AttendanceOverview();
@@ -335,22 +536,29 @@ public inherited sharing class PWChrono_AdminController {
           SELECT Attendance_Date__c latestDate
           FROM PWChrono_Attendance_Request__c
           WHERE Attendance_Date__c < :target
-          GROUP BY Attendance_Date__c ORDER BY Attendance_Date__c DESC
+          GROUP BY Attendance_Date__c
+          ORDER BY Attendance_Date__c DESC
           LIMIT 1
         ];
 
         if (!mostRecent.isEmpty()) {
           Date fallbackDate = (Date) mostRecent[0].get('latestDate');
-          
+
           for (AggregateResult ar : [
             SELECT Status__c st, COUNT(Id) cnt
             FROM PWChrono_Attendance_Request__c
             WHERE Attendance_Date__c = :fallbackDate
-            GROUP BY Status__c]) {
+            GROUP BY Status__c
+          ]) {
             String st = (String) ar.get('st');
             Integer cnt = (Integer) ar.get('cnt');
-            if (st == null) continue;
-            counts.put(st, (counts.containsKey(st) ? counts.get(st) : 0) + (cnt == null ? 0 : cnt));
+            if (st == null)
+              continue;
+            counts.put(
+              st,
+              (counts.containsKey(st) ? counts.get(st) : 0) +
+              (cnt == null ? 0 : cnt)
+            );
           }
 
           res.day = fallbackDate;
@@ -365,9 +573,7 @@ public inherited sharing class PWChrono_AdminController {
       return res;
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException(
-        'Error fetching attendance overview.'
-      );
+      throw new AuraHandledException('Error fetching attendance overview.');
     }
   }
 
@@ -392,7 +598,8 @@ public inherited sharing class PWChrono_AdminController {
           Employee__r.Department__c,
           Employee__r.Photo_Url__c,
           CreatedDate
-        FROM PWChrono_Attendance_Request__c ORDER BY CreatedDate DESC
+        FROM PWChrono_Attendance_Request__c
+        ORDER BY CreatedDate DESC
         LIMIT :size
       ];
     } catch (Exception e) {
@@ -421,7 +628,8 @@ public inherited sharing class PWChrono_AdminController {
           To_Time__c,
           Employee__r.Name,
           CreatedDate
-        FROM PWChrono_Attendance_Request__c ORDER BY CreatedDate DESC
+        FROM PWChrono_Attendance_Request__c
+        ORDER BY CreatedDate DESC
         LIMIT :size
       ];
 
@@ -432,7 +640,9 @@ public inherited sharing class PWChrono_AdminController {
         item.status = a.Status__c;
         item.timestamp = a.CreatedDate;
 
-        String empName = (a.Employee__r == null) ? 'Employee' : a.Employee__r.Name;
+        String empName = (a.Employee__r == null)
+          ? 'Employee'
+          : a.Employee__r.Name;
         item.title = empName + ' attendance request';
 
         String datePart = (a.Attendance_Date__c == null)
@@ -452,7 +662,8 @@ public inherited sharing class PWChrono_AdminController {
           Employees__r.Name,
           Leave_Type__r.Name,
           CreatedDate
-        FROM PWChrono_Leave__c ORDER BY CreatedDate DESC
+        FROM PWChrono_Leave__c
+        ORDER BY CreatedDate DESC
         LIMIT :size
       ];
 
@@ -463,8 +674,12 @@ public inherited sharing class PWChrono_AdminController {
         item.status = l.Status__c;
         item.timestamp = l.CreatedDate;
 
-        String empName = (l.Employees__r == null) ? 'Employee' : l.Employees__r.Name;
-        String leaveType = (l.Leave_Type__r == null) ? 'Leave' : l.Leave_Type__r.Name;
+        String empName = (l.Employees__r == null)
+          ? 'Employee'
+          : l.Employees__r.Name;
+        String leaveType = (l.Leave_Type__r == null)
+          ? 'Leave'
+          : l.Leave_Type__r.Name;
         item.title = empName + ' ' + leaveType;
 
         String rangePart = '';
@@ -472,7 +687,8 @@ public inherited sharing class PWChrono_AdminController {
           rangePart += String.valueOf(l.From_Date__c);
         }
         if (l.To_Date__c != null) {
-          rangePart += (rangePart == '' ? '' : ' → ') + String.valueOf(l.To_Date__c);
+          rangePart +=
+            (rangePart == '' ? '' : ' → ') + String.valueOf(l.To_Date__c);
         }
         item.detail = rangePart;
         items.add(item);
@@ -489,9 +705,7 @@ public inherited sharing class PWChrono_AdminController {
       return items;
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException(
-        'Error fetching admin timeline.'
-      );
+      throw new AuraHandledException('Error fetching admin timeline.');
     }
   }
 
@@ -658,7 +872,9 @@ public inherited sharing class PWChrono_AdminController {
     return searchPortalUsersCore(searchTerm);
   }
 
-  private static List<Portal_Users__c> searchPortalUsersCore(String searchTerm) {
+  private static List<Portal_Users__c> searchPortalUsersCore(
+    String searchTerm
+  ) {
     String key = '%' + String.escapeSingleQuotes(searchTerm) + '%';
     // Note: Leading wildcard in LIKE causes non-selective query
     // This is acceptable for admin search with LIMIT 20
@@ -734,7 +950,8 @@ public inherited sharing class PWChrono_AdminController {
           Experience_Years__c,
           Status__c,
           Job_Opening__r.Designation__r.Name
-        FROM PWChrono_Job_Applicant__c ORDER BY CreatedDate DESC
+        FROM PWChrono_Job_Applicant__c
+        ORDER BY CreatedDate DESC
         LIMIT 5
       ];
     } catch (Exception e) {
@@ -764,22 +981,24 @@ public inherited sharing class PWChrono_AdminController {
   ) {
     requireSalesforceInternalUser();
     Integer safeLimit = (limitSize == null || limitSize <= 0) ? 5 : limitSize;
-    if (safeLimit > 200) safeLimit = 200;
-    Integer safeOffset = (offsetSize == null || offsetSize < 0) ? 0 : offsetSize;
+    if (safeLimit > 200)
+      safeLimit = 200;
+    Integer safeOffset = (offsetSize == null ||
+      offsetSize < 0)
+      ? 0
+      : offsetSize;
     return getEmployeesCore(safeLimit, safeOffset);
   }
 
-  private static List<Portal_Users__c> getEmployeesCore(Integer limitSize, Integer offsetSize) {
+  private static List<Portal_Users__c> getEmployeesCore(
+    Integer limitSize,
+    Integer offsetSize
+  ) {
     try {
       return [
-        SELECT
-          Id,
-          Name,
-          Designation__c,
-          Department__c,
-          Photo_Url__c
+        SELECT Id, Name, Designation__c, Department__c, Photo_Url__c
         FROM Portal_Users__c
-        WHERE Is_Active__c = true
+        WHERE Is_Active__c = TRUE
         ORDER BY Name ASC
         LIMIT :limitSize
         OFFSET :offsetSize
@@ -815,8 +1034,12 @@ public inherited sharing class PWChrono_AdminController {
   ) {
     requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
     Integer safeLimit = (limitSize == null || limitSize <= 0) ? 6 : limitSize;
-    if (safeLimit > 200) safeLimit = 200;
-    Integer safeOffset = (offsetSize == null || offsetSize < 0) ? 0 : offsetSize;
+    if (safeLimit > 200)
+      safeLimit = 200;
+    Integer safeOffset = (offsetSize == null ||
+      offsetSize < 0)
+      ? 0
+      : offsetSize;
     return getTodoTasksCore(safeLimit, safeOffset);
   }
 
@@ -826,11 +1049,7 @@ public inherited sharing class PWChrono_AdminController {
   ) {
     try {
       return [
-        SELECT
-          Id,
-          Name,
-          Status__c,
-          Description__c
+        SELECT Id, Name, Status__c, Description__c
         FROM PWChrono_Onboarding_Task__c
         ORDER BY CreatedDate DESC
         LIMIT :limitSize
@@ -867,21 +1086,22 @@ public inherited sharing class PWChrono_AdminController {
   ) {
     requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
     Integer safeLimit = (limitSize == null || limitSize <= 0) ? 10 : limitSize;
-    if (safeLimit > 200) safeLimit = 200;
-    Integer safeOffset = (offsetSize == null || offsetSize < 0) ? 0 : offsetSize;
+    if (safeLimit > 200)
+      safeLimit = 200;
+    Integer safeOffset = (offsetSize == null ||
+      offsetSize < 0)
+      ? 0
+      : offsetSize;
     return getSchedulesCore(safeLimit, safeOffset);
   }
 
-  private static List<Event> getSchedulesCore(Integer limitSize, Integer offsetSize) {
+  private static List<Event> getSchedulesCore(
+    Integer limitSize,
+    Integer offsetSize
+  ) {
     try {
       return [
-        SELECT
-          Id,
-          Subject,
-          StartDateTime,
-          EndDateTime,
-          Description,
-          Location
+        SELECT Id, Subject, StartDateTime, EndDateTime, Description, Location
         FROM Event
         WHERE StartDateTime >= TODAY
         ORDER BY StartDateTime ASC
@@ -909,12 +1129,13 @@ public inherited sharing class PWChrono_AdminController {
 
   private static List<TimelineItem> getRecentActivitiesCore() {
     List<TimelineItem> activities = new List<TimelineItem>();
-    
+
     try {
       // Get recent attendance requests
-      for(PWChrono_Attendance_Request__c att : [
+      for (PWChrono_Attendance_Request__c att : [
         SELECT Id, Name, Status__c, CreatedDate, CreatedBy.Name
-        FROM PWChrono_Attendance_Request__c ORDER BY CreatedDate DESC
+        FROM PWChrono_Attendance_Request__c
+        ORDER BY CreatedDate DESC
         LIMIT 3
       ]) {
         TimelineItem item = new TimelineItem();
@@ -928,9 +1149,10 @@ public inherited sharing class PWChrono_AdminController {
       }
 
       // Get recent leave requests
-      for(PWChrono_Leave__c leave : [
+      for (PWChrono_Leave__c leave : [
         SELECT Id, Name, Status__c, CreatedDate, CreatedBy.Name
-        FROM PWChrono_Leave__c ORDER BY CreatedDate DESC
+        FROM PWChrono_Leave__c
+        ORDER BY CreatedDate DESC
         LIMIT 3
       ]) {
         TimelineItem item = new TimelineItem();
@@ -945,13 +1167,13 @@ public inherited sharing class PWChrono_AdminController {
 
       // Sort all activities by timestamp descending
       activities.sort();
-      
+
       // Return top 8 activities
       List<TimelineItem> topActivities = new List<TimelineItem>();
-      for(Integer i = 0; i < Math.min(8, activities.size()); i++) {
+      for (Integer i = 0; i < Math.min(8, activities.size()); i++) {
         topActivities.add(activities[i]);
       }
-      
+
       return topActivities;
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
@@ -969,16 +1191,18 @@ public inherited sharing class PWChrono_AdminController {
       Date today = Date.today();
       Integer currentMonth = today.month();
       Integer currentDay = today.day();
-      
+
       return [
-        SELECT
-          Id,
-          Name,
-          Birthdate,
-          Title
+        SELECT Id, Name, Birthdate, Title
         FROM Contact
-        WHERE Id IN (SELECT Contact__c FROM Portal_Users__c WHERE Contact__c != null)
-        AND Birthdate != null ORDER BY Birthdate ASC
+        WHERE
+          Id IN (
+            SELECT Contact__c
+            FROM Portal_Users__c
+            WHERE Contact__c != NULL
+          )
+          AND Birthdate != NULL
+        ORDER BY Birthdate ASC
         LIMIT 10
       ];
     } catch (Exception e) {
@@ -1023,7 +1247,8 @@ public inherited sharing class PWChrono_AdminController {
           Project_Manager_Name__c,
           Project_Tags__c,
           CreatedBy.Name
-        FROM PWChrono_Project__c ORDER BY CreatedDate DESC
+        FROM PWChrono_Project__c
+        ORDER BY CreatedDate DESC
         LIMIT 20
       ];
     } catch (Exception e) {
@@ -1046,12 +1271,14 @@ public inherited sharing class PWChrono_AdminController {
       return [
         SELECT Id, Name
         FROM Account
-        WHERE Name != null
+        WHERE Name != NULL
         ORDER BY Name
         LIMIT 200
       ];
     } catch (Exception e) {
-      throw new AuraHandledException('Error fetching clients: ' + e.getMessage());
+      throw new AuraHandledException(
+        'Error fetching clients: ' + e.getMessage()
+      );
     }
   }
 
@@ -1071,7 +1298,8 @@ public inherited sharing class PWChrono_AdminController {
           Amount__c,
           Status__c,
           Invoice_Date__c
-        FROM PWChrono_Invoice__c ORDER BY Invoice_Date__c DESC
+        FROM PWChrono_Invoice__c
+        ORDER BY Invoice_Date__c DESC
         LIMIT 5
       ];
     } catch (Exception e) {
@@ -1098,7 +1326,8 @@ public inherited sharing class PWChrono_AdminController {
           Status__c,
           Total_Days__c
         FROM PWChrono_Leave__c
-        WHERE Status__c IN ('Submitted', 'Draft') ORDER BY CreatedDate DESC
+        WHERE Status__c IN ('Submitted', 'Draft')
+        ORDER BY CreatedDate DESC
         LIMIT 8
       ];
     } catch (Exception e) {
@@ -1115,15 +1344,9 @@ public inherited sharing class PWChrono_AdminController {
   public static List<Event> getHolidays() {
     try {
       return [
-        SELECT
-          Id,
-          Subject,
-          StartDateTime,
-          EndDateTime,
-          Description,
-          Type
+        SELECT Id, Subject, StartDateTime, EndDateTime, Description, Type
         FROM Event
-        WHERE StartDateTime >= TODAY 
+        WHERE StartDateTime >= TODAY
         ORDER BY StartDateTime ASC
         LIMIT 6
       ];
@@ -1141,15 +1364,10 @@ public inherited sharing class PWChrono_AdminController {
   public static List<Portal_Users__c> getRecentHires() {
     try {
       return [
-        SELECT
-          Id,
-          Name,
-          Email__c,
-          Designation__c,
-          Department__c,
-          CreatedDate
+        SELECT Id, Name, Email__c, Designation__c, Department__c, CreatedDate
         FROM Portal_Users__c
-        WHERE Is_Active__c = true ORDER BY CreatedDate DESC
+        WHERE Is_Active__c = TRUE
+        ORDER BY CreatedDate DESC
         LIMIT 5
       ];
     } catch (Exception e) {
@@ -1166,26 +1384,42 @@ public inherited sharing class PWChrono_AdminController {
   public static Map<String, Object> getPayrollSummary() {
     try {
       Date thisMonth = Date.today().toStartOfMonth();
-      
+
       AggregateResult[] results = [
-        SELECT 
+        SELECT
           COUNT(Id) totalSlips,
           SUM(Net_Pay__c) totalPayout,
           AVG(Net_Pay__c) avgSalary
         FROM PWChrono_Salary_Slip__c
-        WHERE Payroll_Period__c >= :thisMonth];
-      
+        WHERE Payroll_Period__c >= :thisMonth
+      ];
+
       Map<String, Object> summary = new Map<String, Object>();
       if (!results.isEmpty()) {
-        summary.put('totalSlips', results[0].get('totalSlips') != null ? (Integer)results[0].get('totalSlips') : 0);
-        summary.put('totalPayout', results[0].get('totalPayout') != null ? (Decimal)results[0].get('totalPayout') : 0);
-        summary.put('avgSalary', results[0].get('avgSalary') != null ? (Decimal)results[0].get('avgSalary') : 0);
+        summary.put(
+          'totalSlips',
+          results[0].get('totalSlips') != null
+            ? (Integer) results[0].get('totalSlips')
+            : 0
+        );
+        summary.put(
+          'totalPayout',
+          results[0].get('totalPayout') != null
+            ? (Decimal) results[0].get('totalPayout')
+            : 0
+        );
+        summary.put(
+          'avgSalary',
+          results[0].get('avgSalary') != null
+            ? (Decimal) results[0].get('avgSalary')
+            : 0
+        );
       } else {
         summary.put('totalSlips', 0);
         summary.put('totalPayout', 0);
         summary.put('avgSalary', 0);
       }
-      
+
       return summary;
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
@@ -1213,13 +1447,19 @@ public inherited sharing class PWChrono_AdminController {
       for (AggregateResult ar : [
         SELECT Department__c dept, COUNT(Id) cnt
         FROM Portal_Users__c
-        WHERE Is_Active__c = true
-        GROUP BY Department__c ORDER BY COUNT(Id) DESC
+        WHERE Is_Active__c = TRUE
+        GROUP BY Department__c
+        ORDER BY COUNT(Id) DESC
         LIMIT 10
       ]) {
         String dept = (String) ar.get('dept');
         Integer cnt = (Integer) ar.get('cnt');
-        out.add(new ChartPoint((dept == null ? 'Unassigned' : dept), (cnt == null ? 0 : cnt)));
+        out.add(
+          new ChartPoint(
+            (dept == null ? 'Unassigned' : dept),
+            (cnt == null ? 0 : cnt)
+          )
+        );
       }
 
       return out;
@@ -1254,26 +1494,41 @@ public inherited sharing class PWChrono_AdminController {
       for (AggregateResult ar : [
         SELECT CALENDAR_MONTH(End_Date__c) m, SUM(Amount__c) amt
         FROM PWChrono_Project__c
-        WHERE End_Date__c >= :startDate
+        WHERE
+          End_Date__c >= :startDate
           AND End_Date__c <= :endDate
-          AND Amount__c != null
+          AND Amount__c != NULL
           AND Status__c != 'Inactive'
-        GROUP BY CALENDAR_MONTH(End_Date__c)]) {
+        GROUP BY CALENDAR_MONTH(End_Date__c)
+      ]) {
         Integer m = (Integer) ar.get('m');
         Decimal amt = (Decimal) ar.get('amt');
-        if (m == null) continue;
+        if (m == null)
+          continue;
         monthToAmount.put(m, (amt == null ? 0 : amt));
       }
 
       List<String> labels = new List<String>{
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
       };
 
       List<ChartPoint> points = new List<ChartPoint>();
       for (Integer i = 1; i <= 12; i++) {
         Decimal total = monthToAmount.containsKey(i) ? monthToAmount.get(i) : 0;
-        Integer asK = (total == null) ? 0 : Integer.valueOf(Math.round(total / 1000));
+        Integer asK = (total == null)
+          ? 0
+          : Integer.valueOf(Math.round(total / 1000));
         points.add(new ChartPoint(labels[i - 1], asK));
       }
       return points;
@@ -1292,22 +1547,23 @@ public inherited sharing class PWChrono_AdminController {
     try {
       List<ChartPoint> stats = new List<ChartPoint>();
       Map<String, Integer> counts = new Map<String, Integer>();
-      
-      for(AggregateResult ar : [
-        SELECT Status__c st, COUNT(Id) cnt 
-        FROM PWChrono_Onboarding_Task__c 
-        GROUP BY Status__c]) {
-        String st = (String)ar.get('st');
-        Integer cnt = (Integer)ar.get('cnt');
-        if(st != null) {
-            counts.put(st, cnt == null ? 0 : cnt);
+
+      for (AggregateResult ar : [
+        SELECT Status__c st, COUNT(Id) cnt
+        FROM PWChrono_Onboarding_Task__c
+        GROUP BY Status__c
+      ]) {
+        String st = (String) ar.get('st');
+        Integer cnt = (Integer) ar.get('cnt');
+        if (st != null) {
+          counts.put(st, cnt == null ? 0 : cnt);
         }
       }
-      
-      for(String key : counts.keySet()) {
+
+      for (String key : counts.keySet()) {
         stats.add(new ChartPoint(key, counts.get(key)));
       }
-      
+
       return stats;
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
@@ -1333,23 +1589,23 @@ public inherited sharing class PWChrono_AdminController {
   private static Id saveProjectCore(Map<String, Object> projectData) {
     try {
       PWChrono_Project__c proj = new PWChrono_Project__c();
-      
+
       if (projectData.containsKey('Id')) {
         proj.Id = (Id) projectData.get('Id');
       }
-      
+
       if (projectData.containsKey('Name')) {
         proj.Name = (String) projectData.get('Name');
       }
 
       if (projectData.containsKey('Account__c')) {
         Object acct = projectData.get('Account__c');
-        proj.Account__c =
-          (acct == null || String.valueOf(acct).trim() == '')
-            ? null
-            : Id.valueOf(String.valueOf(acct));
+        proj.Account__c = (acct == null ||
+          String.valueOf(acct).trim() == '')
+          ? null
+          : Id.valueOf(String.valueOf(acct));
       }
-      
+
       if (projectData.containsKey('Status__c')) {
         proj.Status__c = (String) projectData.get('Status__c');
       } else if (proj.Id == null) {
@@ -1359,30 +1615,30 @@ public inherited sharing class PWChrono_AdminController {
       if (projectData.containsKey('Priority__c')) {
         proj.Priority__c = (String) projectData.get('Priority__c');
       }
-      
+
       if (projectData.containsKey('End_Date__c')) {
         String dateStr = (String) projectData.get('End_Date__c');
         if (dateStr != null) {
-             proj.End_Date__c = Date.valueOf(dateStr);
+          proj.End_Date__c = Date.valueOf(dateStr);
         }
       }
 
       if (projectData.containsKey('Start_Date__c')) {
         String dateStr = (String) projectData.get('Start_Date__c');
         if (dateStr != null) {
-             proj.Start_Date__c = Date.valueOf(dateStr);
+          proj.Start_Date__c = Date.valueOf(dateStr);
         }
       }
-      
+
       if (projectData.containsKey('Description__c')) {
         proj.Description__c = (String) projectData.get('Description__c');
       }
 
       if (projectData.containsKey('Amount__c')) {
-         Object amt = projectData.get('Amount__c');
-         if (amt != null) {
-             proj.Amount__c = Decimal.valueOf(String.valueOf(amt));
-         }
+        Object amt = projectData.get('Amount__c');
+        if (amt != null) {
+          proj.Amount__c = Decimal.valueOf(String.valueOf(amt));
+        }
       }
 
       if (projectData.containsKey('Total_Hours__c')) {
@@ -1411,35 +1667,41 @@ public inherited sharing class PWChrono_AdminController {
       // were used in earlier iterations (Team_Leader__c, etc.), but we only write to
       // the new fields to avoid compile/runtime issues in orgs where the old fields
       // were deleted.
-      String membersVal = (String)(projectData.containsKey('Project_Members__c')
+      String membersVal = (String) (projectData.containsKey(
+          'Project_Members__c'
+        )
         ? projectData.get('Project_Members__c')
         : projectData.get('Team_Members__c'));
       if (membersVal != null) {
         proj.Project_Members__c = membersVal;
       }
 
-      String leaderVal = (String)(projectData.containsKey('Project_Leader__c')
+      String leaderVal = (String) (projectData.containsKey('Project_Leader__c')
         ? projectData.get('Project_Leader__c')
         : projectData.get('Team_Leader__c'));
       if (leaderVal != null) {
         proj.Project_Leader__c = leaderVal;
       }
 
-      String pmVal = (String)(projectData.containsKey('Project_Manager_Name__c')
+      String pmVal = (String) (projectData.containsKey(
+          'Project_Manager_Name__c'
+        )
         ? projectData.get('Project_Manager_Name__c')
         : projectData.get('Project_Manager__c'));
       if (pmVal != null) {
         proj.Project_Manager_Name__c = pmVal;
       }
 
-      String tagsVal = (String)(projectData.containsKey('Project_Tags__c')
+      String tagsVal = (String) (projectData.containsKey('Project_Tags__c')
         ? projectData.get('Project_Tags__c')
         : projectData.get('Tags__c'));
       if (tagsVal != null) {
         proj.Project_Tags__c = tagsVal;
       }
 
-      String logoVal = (String)(projectData.containsKey('Project_Logo_ContentVersion_Id__c')
+      String logoVal = (String) (projectData.containsKey(
+          'Project_Logo_ContentVersion_Id__c'
+        )
         ? projectData.get('Project_Logo_ContentVersion_Id__c')
         : projectData.get('Logo_ContentVersion_Id__c'));
       if (logoVal != null) {
@@ -1489,7 +1751,12 @@ public inherited sharing class PWChrono_AdminController {
       cv.VersionData = EncodingUtil.base64Decode(base64Data);
       insert cv;
 
-      cv = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id LIMIT 1];
+      cv = [
+        SELECT Id, ContentDocumentId
+        FROM ContentVersion
+        WHERE Id = :cv.Id
+        LIMIT 1
+      ];
 
       ContentDocumentLink cdl = new ContentDocumentLink(
         ContentDocumentId = cv.ContentDocumentId,
@@ -1529,7 +1796,9 @@ public inherited sharing class PWChrono_AdminController {
     try {
       delete [SELECT Id FROM PWChrono_Project__c WHERE Id = :projectId];
     } catch (Exception e) {
-      throw new AuraHandledException('Error deleting project: ' + e.getMessage());
+      throw new AuraHandledException(
+        'Error deleting project: ' + e.getMessage()
+      );
     }
   }
 }

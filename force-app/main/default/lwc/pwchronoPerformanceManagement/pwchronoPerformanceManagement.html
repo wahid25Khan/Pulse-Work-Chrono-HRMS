@@ -106,7 +106,7 @@
   <template lwc:if={isModalOpen}>
     <dialog
       class="modal custom-modal fade show d-block"
-      style="background: rgba(0, 0, 0, 0.6); z-index: 1050; border:none;"
+      style="background: rgba(0, 0, 0, 0.6); z-index: 1050; border: none"
       aria-labelledby="performance-modal-heading"
       aria-modal="true"
       open
@@ -114,7 +114,9 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="performance-modal-heading">{addBtnLabel}</h4>
+            <h4 class="modal-title" id="performance-modal-heading">
+              {addBtnLabel}
+            </h4>
             <button
               type="button"
               class="btn-close"

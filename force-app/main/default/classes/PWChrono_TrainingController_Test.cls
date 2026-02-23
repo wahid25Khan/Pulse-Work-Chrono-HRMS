@@ -65,7 +65,10 @@ private class PWChrono_TrainingController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      List<PWChrono_Training_Attendance__c> registrations = PWChrono_TrainingController.getMyRegistrations(null, null);
+      List<PWChrono_Training_Attendance__c> registrations = PWChrono_TrainingController.getMyRegistrations(
+        null,
+        null
+      );
       Test.stopTest();
 
       System.assertEquals(

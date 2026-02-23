@@ -1,0 +1,10 @@
+# Require explicit ownership for security-sensitive authentication surfaces.
+
+# Note: Enable "Require review from Code Owners" in branch protection rules
+
+# to enforce this in GitHub.
+
+/force-app/main/default/classes/PWChrono_AuthController.cls @wahid25Khan
+/force-app/main/default/classes/PWChrono_AuthController_Test.cls @wahid25Khan
+/force-app/main/default/lwc/pwchronoLogin/_ @wahid25Khan
+/force-app/main/default/lwc/pwchronoUiAssets/_ @wahid25Khan

@@ -25,7 +25,11 @@ private class PWChrono_GuestSession_Test {
         String.valueOf(employee.Id),
         null
       );
-      System.assertEquals(employee.Id, result, 'Should return provided portal user Id for non-guest context.');
+      System.assertEquals(
+        employee.Id,
+        result,
+        'Should return provided portal user Id for non-guest context.'
+      );
     }
   }
 
@@ -36,7 +40,10 @@ private class PWChrono_GuestSession_Test {
     System.runAs(testUser) {
       try {
         PWChrono_GuestSession.requireVerifiedPortalUserId('invalid_id', null);
-        System.assert(false, 'Expected invalid portal user Id to throw an exception.');
+        System.assert(
+          false,
+          'Expected invalid portal user Id to throw an exception.'
+        );
       } catch (AuraHandledException e) {
         System.assertEquals('Session invalid.', e.getMessage());
       }
@@ -56,7 +63,11 @@ private class PWChrono_GuestSession_Test {
       LIMIT 1
     ];
 
-    for (Integer i = 0; i < PWChrono_Constants.PORTAL_SESSION_MAX_FAILED_ATTEMPTS; i++) {
+    for (
+      Integer i = 0;
+      i < PWChrono_Constants.PORTAL_SESSION_MAX_FAILED_ATTEMPTS;
+      i++
+    ) {
       PWChrono_GuestSession.registerFailedSessionAttempt(employee);
       employee = [
         SELECT

@@ -211,9 +211,10 @@ export default class PwchronoAttendanceAdmin extends LightningElement {
   }
 
   setDefaultReportData() {
-    const record = this.attendanceData && this.attendanceData.length
-      ? this.attendanceData[0]
-      : null;
+    const record =
+      this.attendanceData && this.attendanceData.length
+        ? this.attendanceData[0]
+        : null;
     this.reportData = record ? this.buildReportData(record) : null;
   }
 

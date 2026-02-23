@@ -4,7 +4,7 @@ import referCandidate from "@salesforce/apex/PWChrono_RecruitmentController.refe
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 export default class PwchronoJobOpeningsViewer extends LightningElement {
-  static renderMode = 'light';
+  static renderMode = "light";
   @track jobs;
   @track error;
   @track isLoading = true;
