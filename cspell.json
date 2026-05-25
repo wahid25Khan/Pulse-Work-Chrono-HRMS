@@ -1,0 +1,35 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "Chrono",
+    "HRMS",
+    "pwchrono",
+    "smarthr",
+    "SOQL",
+    "SLDS",
+    "Tabler",
+    "initialise",
+    "serialised",
+    "Aurahandled",
+    "sfdc",
+    "sfdx",
+    "lwc",
+    "LWC",
+    "Apex",
+    "upsert",
+    "picklist",
+    "Salesforce",
+    "aura",
+    "Kanban",
+    "kanban"
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    ".sfdx/**",
+    ".sf/**",
+    "**/*.min.js",
+    "**/*.min.css",
+    "staticresources/**"
+  ]
+}
