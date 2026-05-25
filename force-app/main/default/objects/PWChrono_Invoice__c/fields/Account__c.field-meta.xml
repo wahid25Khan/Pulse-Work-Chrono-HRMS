@@ -4,8 +4,8 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <label>Client</label>
     <referenceTo>Account</referenceTo>
-    <relationshipLabel>Invoices</relationshipLabel>
-    <relationshipName>Invoices</relationshipName>
+    <relationshipLabel>PWChrono Invoices</relationshipLabel>
+    <relationshipName>PWChrono_Invoices</relationshipName>
     <required>false</required>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>

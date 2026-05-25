@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <defaultLandingTab>PWChrono_Manager_Dashboard</defaultLandingTab>
+    <description
+  >Complete HR Management System Portal with integrated modules for employees and managers - Dashboard, Leave Management, Attendance Tracking, Payroll, Performance Reviews, and Recruitment</description>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>PWChrono Portal</label>
+    <navType>Standard</navType>
+    <tabs>PWChrono_Attendance</tabs>
+    <tabs>PWChrono_Attendance_Admin</tabs>
+    <tabs>PWChrono_Employee_Directory</tabs>
+    <tabs>PWChrono_Expenses</tabs>
+    <tabs>PWChrono_Goals</tabs>
+    <tabs>PWChrono_Payroll</tabs>
+    <tabs>PWChrono_Performance</tabs>
+    <tabs>PWChrono_Training</tabs>
+    <tabs>PWChrono_Recruitment</tabs>
+    <tabs>PWChrono_Onboarding</tabs>
+    <tabs>PWChrono_Manager_Dashboard</tabs>
+    <tabs>PWChrono_Profile</tabs>
+    <tabs>PWChrono_System_Admin</tabs>
+    <tabs>PWChrono_Admin</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

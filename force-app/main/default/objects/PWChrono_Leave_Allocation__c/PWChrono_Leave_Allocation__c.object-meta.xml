@@ -153,13 +153,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
-    <label>PWChrono Leave Allocation</label>
+    <label>Leave Allocation</label>
     <nameField>
         <displayFormat>LA-{0000}</displayFormat>
         <label>Allocation Number</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>PWChrono Leave Allocations</pluralLabel>
+    <pluralLabel>Leave Allocations</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

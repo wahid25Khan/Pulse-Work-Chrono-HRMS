@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Change_Reason__c</fullName>
+    <label>Change Reason</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Salary Slip Generated</fullName>
+                <default>true</default>
+                <label>Salary Slip Generated</label>
+            </value>
+            <value>
+                <fullName>Annual Increment</fullName>
+                <default>false</default>
+                <label>Annual Increment</label>
+            </value>
+            <value>
+                <fullName>Promotion</fullName>
+                <default>false</default>
+                <label>Promotion</label>
+            </value>
+            <value>
+                <fullName>Performance Bonus</fullName>
+                <default>false</default>
+                <label>Performance Bonus</label>
+            </value>
+            <value>
+                <fullName>Role Change</fullName>
+                <default>false</default>
+                <label>Role Change</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

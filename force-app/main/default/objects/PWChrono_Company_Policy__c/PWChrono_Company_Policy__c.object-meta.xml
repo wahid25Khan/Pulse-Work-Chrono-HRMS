@@ -153,12 +153,12 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>PWChrono Company Policy</label>
+    <label>Company Policy</label>
     <nameField>
         <label>Policy Title</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>PWChrono Company Policies</pluralLabel>
+    <pluralLabel>Company Policies</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

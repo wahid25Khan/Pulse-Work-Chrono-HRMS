@@ -153,14 +153,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>PWChrono Invoice</label>
+    <label>Invoice</label>
     <nameField>
         <displayFormat>INV-{0000}</displayFormat>
         <label>Invoice Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>PWChrono Invoices</pluralLabel>
+    <pluralLabel>Invoices</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

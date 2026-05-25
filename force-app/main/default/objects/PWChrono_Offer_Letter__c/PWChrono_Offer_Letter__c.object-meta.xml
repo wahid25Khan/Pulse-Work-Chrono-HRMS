@@ -153,14 +153,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>PWChrono Offer Letter</label>
+    <label>Offer Letter</label>
     <nameField>
         <displayFormat>OFR-{00000}</displayFormat>
         <label>Offer Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>PWChrono Offer Letters</pluralLabel>
+    <pluralLabel>Offer Letters</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

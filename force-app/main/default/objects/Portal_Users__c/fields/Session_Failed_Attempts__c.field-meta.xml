@@ -4,6 +4,7 @@
     <defaultValue>0</defaultValue>
     <description
   >Counts consecutive failed Guest session token validation attempts before temporary lockout.</description>
+    <externalId>false</externalId>
     <label>Session Failed Attempts</label>
     <precision>3</precision>
     <required>false</required>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Correction_Type__c</fullName>
+    <label>Correction Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Check-In Missing</fullName>
+                <default>false</default>
+                <label>Check-In Missing</label>
+            </value>
+            <value>
+                <fullName>Check-Out Missing</fullName>
+                <default>false</default>
+                <label>Check-Out Missing</label>
+            </value>
+            <value>
+                <fullName>Both Missing</fullName>
+                <default>false</default>
+                <label>Both Missing</label>
+            </value>
+            <value>
+                <fullName>Wrong Time</fullName>
+                <default>false</default>
+                <label>Wrong Time</label>
+            </value>
+            <value>
+                <fullName>Incorrect</fullName>
+                <default>false</default>
+                <label>Incorrect</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

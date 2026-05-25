@@ -153,14 +153,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
-    <label>PWChrono Attendance Request</label>
+    <label>Attendance Request</label>
     <nameField>
         <displayFormat>ATR-{00000}</displayFormat>
         <label>Request Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>PWChrono Attendance Requests</pluralLabel>
+    <pluralLabel>Attendance Requests</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

@@ -153,14 +153,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
-    <label>PWChrono Leave Application</label>
+    <label>Leave Application</label>
     <nameField>
         <displayFormat>LV-{00000}</displayFormat>
         <label>Leave Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>PWChrono Leave Applications</pluralLabel>
+    <pluralLabel>Leave Applications</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

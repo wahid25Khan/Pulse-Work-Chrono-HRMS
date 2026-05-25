@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Content_Document_Id__c</fullName>
+    <description
+  >Salesforce ContentDocument ID of the unsigned source file. Stored as Text(18) because Salesforce does not support custom Lookup fields targeting ContentDocument. Integrity enforced by Apex — do not write directly.</description>
+    <externalId>false</externalId>
+    <inlineHelpText
+  >ContentDocument ID of the unsigned file. Salesforce platform does not allow a custom Lookup to ContentDocument, so this is stored as text. All writes go through SwiftSign Apex.</inlineHelpText>
+    <label>Content Document Id</label>
+    <length>18</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

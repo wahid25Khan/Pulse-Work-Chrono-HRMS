@@ -153,14 +153,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
-    <label>PWChrono Salary Slip</label>
+    <label>Salary Slip</label>
     <nameField>
         <displayFormat>SLIP-{00000}</displayFormat>
         <label>Slip Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>PWChrono Salary Slips</pluralLabel>
+    <pluralLabel>Salary Slips</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

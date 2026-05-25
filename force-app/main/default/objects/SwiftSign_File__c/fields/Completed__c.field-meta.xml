@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Completed__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description
+  >Indicates whether the SwiftSign file has completed the routing workflow.</description>
+    <label>Completed</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

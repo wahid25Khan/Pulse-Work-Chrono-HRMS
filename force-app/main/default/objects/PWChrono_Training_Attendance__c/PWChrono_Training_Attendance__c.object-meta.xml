@@ -153,14 +153,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>PWChrono Training Attendance</label>
+    <label>Training Attendance</label>
     <nameField>
         <displayFormat>TRNA-{00000}</displayFormat>
         <label>Attendance Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>PWChrono Training Attendances</pluralLabel>
+    <pluralLabel>Training Attendances</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

@@ -153,12 +153,12 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>PWChrono Designation</label>
+    <label>Designation</label>
     <nameField>
         <label>Designation Title</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>PWChrono Designations</pluralLabel>
+    <pluralLabel>Designations</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

@@ -4,6 +4,6 @@
     <description
   >Feature toggles and configurable thresholds for PWChrono functionality. Can be customized at organization, profile, or user level.</description>
     <enableFeeds>false</enableFeeds>
-    <label>PWChrono Feature Settings</label>
+    <label>Feature Settings</label>
     <visibility>Public</visibility>
 </CustomObject>

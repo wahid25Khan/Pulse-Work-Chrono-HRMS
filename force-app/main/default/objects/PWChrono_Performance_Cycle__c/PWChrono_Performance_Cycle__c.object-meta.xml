@@ -155,13 +155,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>PWChrono Performance Cycle</label>
+    <label>Performance Cycle</label>
     <nameField>
         <label>Cycle Name</label>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>PWChrono Performance Cycles</pluralLabel>
+    <pluralLabel>Performance Cycles</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
