@@ -1,61 +1,55 @@
 /**
- * @description Controller for Attendance Management LWC Components
- * @author PWChrono Team
+ * @description Thin controller for Attendance Management LWC components.
+ *              All business logic is delegated to PWChrono_AttendanceService,
+ *              PWChrono_AttendanceSelector, or the shared request framework.
+ *              Every public method follows the pattern:
+ *                resolveEmployeeId → Service/Selector → catch/rethrow.
+ *
+ *              Legacy methods (saveAttendanceRequest, processAttendanceApproval,
+ *              getMyAttendanceRequests) are retained for backward compatibility
+ *              with existing LWC components and are marked accordingly.
  */
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class PWChrono_AttendanceController {
-  private static Boolean hasFeature(String accessFeatures, String featureName) {
-    if (String.isBlank(accessFeatures) || String.isBlank(featureName)) {
-      return false;
-    }
-    for (String part : accessFeatures.split(';')) {
-      if (part != null && part.trim() == featureName) {
-        return true;
-      }
-    }
-    return false;
-  }
+  // ═══════════════════════════════════════════════════════════════════════════
+  // READ  —  Employee
+  // ═══════════════════════════════════════════════════════════════════════════
 
-  private static void requireAttendanceAdminAccessForGuest(
-    String portalUserId,
+  /**
+   * @description Dashboard summary: request counts + 5 recent requests.
+   */
+  @AuraEnabled(cacheable=false)
+  public static PWChrono_AttendanceService.AttendanceDashboardDTO getAttendanceDashboardSummary(
+    Date startDate,
+    Date endDate,
+    String employeeId,
     String sessionToken
   ) {
-    Id verifiedPortalUserId = PWChrono_GuestSession.requireVerifiedPortalUserId(
-      portalUserId,
-      sessionToken
-    );
-
-    Portal_Users__c portalUser = [
-      SELECT Id, Is_Active__c, Role__c, Access_Features__c
-      FROM Portal_Users__c
-      WHERE Id = :verifiedPortalUserId
-      LIMIT 1
-    ];
-
-    if (portalUser == null || portalUser.Is_Active__c != true) {
-      throw new AuraHandledException('Unauthorized.');
-    }
-
-    Boolean isAdminRole =
-      portalUser.Role__c == 'HR Admin' ||
-      portalUser.Role__c == 'System Admin';
-    if (
-      !isAdminRole &&
-      !hasFeature(portalUser.Access_Features__c, 'Admin Settings')
-    ) {
-      throw new AuraHandledException('Access denied.');
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceService.getDashboardSummary(
+        empId,
+        startDate,
+        endDate
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching attendance dashboard summary', e);
+      throw new AuraHandledException(
+        'Error loading attendance dashboard. Please try again.'
+      );
     }
   }
+
   /**
-   * @description Get attendance requests for current employee
-   * @param statusFilter Status filter
-   * @param startDate Start date filter
-   * @param endDate End date filter
-   * @param employeeId Optional employee ID (Portal_Users__c). If null, uses current user's employee record.
-   * @return List of attendance requests
+   * @description Paginated attendance request list for the employee.
    */
-  @AuraEnabled(cacheable=true)
-  @SuppressWarnings('PMD.ApexSOQLInjection')
-  public static List<PWChrono_Attendance_Request__c> getMyAttendanceRequests(
+  @AuraEnabled(cacheable=false)
+  public static List<PWChrono_Attendance_Request__c> getMyAttendanceRequestList(
     String statusFilter,
     Date startDate,
     Date endDate,
@@ -63,306 +57,567 @@ public inherited sharing class PWChrono_AttendanceController {
     String sessionToken
   ) {
     try {
-      Id targetEmployeeId;
-
-      if (UserInfo.getUserType() == 'Guest') {
-        // Guest: must present a valid portal session token, and can only access own data.
-        targetEmployeeId = PWChrono_GuestSession.requireVerifiedPortalUserId(
-          employeeId,
-          sessionToken
-        );
-      } else {
-        Id currentUserId = UserInfo.getUserId();
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
-          currentUserId
-        );
-        if (currentEmployeeId == null) {
-          throw new AuraHandledException(
-            'No employee record found for current user.'
-          );
-        }
-
-        // Security Check: Only Admins can view other employees' data
-        if (String.isNotBlank(employeeId) && employeeId != currentEmployeeId) {
-          if (PWChrono_AccessController.isAdmin(currentEmployeeId)) {
-            targetEmployeeId = (Id) employeeId;
-          } else {
-            // If not admin, force view own data
-            targetEmployeeId = currentEmployeeId;
-          }
-        } else {
-          targetEmployeeId = currentEmployeeId;
-        }
-      }
-
-      String query =
-        'SELECT Id, Name, Employees__c, Attendance_Date__c, ' +
-        'From_Time__c, To_Time__c, Reason__c, Status__c, ' +
-        'Approvers__c, Approvers__r.Name, CreatedDate ' +
-        'FROM PWChrono_Attendance_Request__c ' +
-        'WHERE Employees__c = :targetEmployeeId ';
-
-      if (statusFilter != null && statusFilter != 'All') {
-        query += 'AND Status__c = :statusFilter ';
-      }
-
-      if (startDate != null) {
-        query += 'AND Attendance_Date__c >= :startDate ';
-      }
-
-      if (endDate != null) {
-        query += 'AND Attendance_Date__c <= :endDate ';
-      }
-
-      Integer queryLimit = PWChrono_Constants.DEFAULT_QUERY_LIMIT;
-      query += ' ORDER BY Attendance_Date__c DESC LIMIT :queryLimit';
-
-      return Database.query(query);
-    } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      AuraHandledException ahe = new AuraHandledException(
-        'Error fetching attendance requests: '
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
       );
-      ahe.setMessage('Error fetching attendance requests: ');
+      return PWChrono_AttendanceSelector.getRequestsByEmployee(
+        empId,
+        statusFilter,
+        startDate,
+        endDate
+      );
+    } catch (AuraHandledException ahe) {
       throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching attendance request list', e);
+      throw new AuraHandledException(
+        'Error loading attendance requests. Please try again.'
+      );
     }
   }
 
   /**
-   * @description Get current employee's shift assignments
-   * @param startDate Start date
-   * @param endDate End date
-   * @return List of shift assignments
+   * @description Full detail of a single attendance request (employee or manager).
    */
   @AuraEnabled(cacheable=false)
-  public static List<PWChrono_Shift_Assignment__c> getMyShiftAssignments(
+  public static PWChrono_Attendance_Request__c getAttendanceRequestDetail(
+    Id requestId,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      PWChrono_Attendance_Request__c req = PWChrono_AttendanceSelector.getRequestById(
+        requestId
+      );
+      if (req == null) {
+        throw new AuraHandledException('Attendance request not found.');
+      }
+      requireAccessibleRequest(req, empId);
+      return req;
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching attendance request detail', e);
+      throw new AuraHandledException(
+        'Error loading request details. Please try again.'
+      );
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WRITE  —  Employee
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * @description Submit a new or re-submit a rejected correction request.
+   */
+  @AuraEnabled
+  public static PWChrono_Attendance_Request__c submitAttendanceRequest(
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceService.submitRequest(dto, empId);
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error submitting attendance request', e);
+      throw new AuraHandledException(
+        'Error submitting attendance request. Please try again.'
+      );
+    }
+  }
+
+  /**
+   * @description Cancel a Draft or Submitted correction request.
+   */
+  @AuraEnabled
+  public static PWChrono_Attendance_Request__c cancelAttendanceRequest(
+    Id requestId,
+    String cancelReason,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceService.cancelRequest(
+        requestId,
+        cancelReason,
+        empId
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error cancelling attendance request', e);
+      throw new AuraHandledException(
+        'Error cancelling request. Please try again.'
+      );
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // READ/WRITE  —  Manager / Approver
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * @description Team correction requests pending approval for the current manager.
+   */
+  @AuraEnabled(cacheable=false)
+  public static List<PWChrono_Attendance_Request__c> getTeamAttendanceRequestsForApproval(
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceSelector.getTeamRequestsForApproval(empId);
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching team attendance requests', e);
+      throw new AuraHandledException(
+        'Error loading team requests. Please try again.'
+      );
+    }
+  }
+
+  /**
+   * @description All team requests (all statuses) — for manager history view.
+   */
+  @AuraEnabled(cacheable=false)
+  public static List<PWChrono_Attendance_Request__c> getTeamAttendanceRequests(
+    String statusFilter,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceSelector.getTeamRequests(empId, statusFilter);
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching team attendance requests', e);
+      throw new AuraHandledException(
+        'Error loading team requests. Please try again.'
+      );
+    }
+  }
+
+  /**
+   * @description Approve or reject an attendance correction request.
+   */
+  @AuraEnabled
+  public static PWChrono_Attendance_Request__c processAttendanceCorrectionApproval(
+    Id requestId,
+    String action,
+    String comments,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceService.processApproval(
+        requestId,
+        action,
+        comments,
+        empId
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error processing attendance approval', e);
+      throw new AuraHandledException(
+        'Error processing approval. Please try again.'
+      );
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMENTS & FILES  —  Shared framework
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * @description Returns the full comments/history thread for a request.
+   */
+  @AuraEnabled(cacheable=false)
+  public static List<PWChrono_RequestCommentService.RequestCommentDTO> getAttendanceComments(
+    Id requestId,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      PWChrono_Attendance_Request__c req = PWChrono_AttendanceSelector.getRequestById(
+        requestId
+      );
+      if (req == null) {
+        throw new AuraHandledException('Request not found.');
+      }
+      requireAccessibleRequest(req, empId);
+      return PWChrono_RequestCommentService.getComments(
+        requestId,
+        'PWChrono_Attendance_Request__c'
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching attendance comments', e);
+      throw new AuraHandledException(
+        'Error loading comments. Please try again.'
+      );
+    }
+  }
+
+  /**
+   * @description Adds a user comment to the request's comment thread.
+   */
+  @AuraEnabled
+  public static PWChrono_RequestCommentService.RequestCommentDTO addAttendanceComment(
+    Id requestId,
+    String commentText,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      PWChrono_Attendance_Request__c req = PWChrono_AttendanceSelector.getRequestById(
+        requestId
+      );
+      if (req == null) {
+        throw new AuraHandledException('Request not found.');
+      }
+      requireAccessibleRequest(req, empId);
+      if (String.isBlank(commentText)) {
+        throw new AuraHandledException('Comment cannot be empty.');
+      }
+      return PWChrono_RequestCommentService.addComment(
+        requestId,
+        'PWChrono_Attendance_Request__c',
+        commentText,
+        empId
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error adding attendance comment', e);
+      throw new AuraHandledException('Error adding comment. Please try again.');
+    }
+  }
+
+  /**
+   * @description Returns file descriptors attached to the request.
+   */
+  @AuraEnabled(cacheable=false)
+  public static List<PWChrono_RequestAttachmentService.FileDescriptorDTO> getAttendanceFiles(
+    Id requestId,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      PWChrono_Attendance_Request__c req = PWChrono_AttendanceSelector.getRequestById(
+        requestId
+      );
+      if (req == null) {
+        throw new AuraHandledException('Request not found.');
+      }
+      requireAccessibleRequest(req, empId);
+      return PWChrono_RequestAttachmentService.getFilesForRecord(requestId);
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching attendance files', e);
+      throw new AuraHandledException('Error loading files. Please try again.');
+    }
+  }
+
+  /**
+   * @description Uploads a supporting file for the request.
+   */
+  @AuraEnabled
+  @SuppressWarnings('PMD.ExcessiveParameterList')
+  public static PWChrono_RequestAttachmentService.FileDescriptorDTO uploadAttendanceFile(
+    Id requestId,
+    String fileName,
+    String base64Data,
+    String contentType,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      PWChrono_Attendance_Request__c req = PWChrono_AttendanceSelector.getRequestById(
+        requestId
+      );
+      if (req == null) {
+        throw new AuraHandledException('Request not found.');
+      }
+      requireAccessibleRequest(req, empId);
+      return PWChrono_RequestAttachmentService.uploadFile(
+        requestId,
+        fileName,
+        base64Data
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error uploading attendance file', e);
+      throw new AuraHandledException('Error uploading file. Please try again.');
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TRACKER  —  Day-by-day attendance view (retained from original)
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * @description Wrapper for daily attendance status — used by tracker and calendar.
+   */
+  public class AttendanceDayWrapper {
+    @AuraEnabled
+    public Date attendanceDate;
+    @AuraEnabled
+    public String dayName;
+    @AuraEnabled
+    public String status; // Present|Absent|Late|Leave|Holiday|Weekend|Future
+    @AuraEnabled
+    public String shiftName;
+    @AuraEnabled
+    public Time shiftStart;
+    @AuraEnabled
+    public Time shiftEnd;
+    @AuraEnabled
+    public Time checkIn;
+    @AuraEnabled
+    public Time checkOut;
+    @AuraEnabled
+    public Id attendanceRequestId;
+    @AuraEnabled
+    public String correctionType;
+    @AuraEnabled
+    public String leaveType;
+    @AuraEnabled
+    public String holidayName;
+    @AuraEnabled
+    public Boolean isLate;
+    @AuraEnabled
+    public Boolean isEarlyLeave;
+  }
+
+  /**
+   * @description Returns day-by-day attendance status for a date range.
+   *              Layers: shifts → holidays → leaves → correction requests → weekends.
+   */
+  @AuraEnabled(cacheable=false)
+  public static List<AttendanceDayWrapper> getAttendanceTrackerData(
     Date startDate,
     Date endDate,
     String employeeId,
     String sessionToken
   ) {
     try {
-      Id targetEmployeeId;
-      if (UserInfo.getUserType() == 'Guest') {
-        targetEmployeeId = PWChrono_GuestSession.requireVerifiedPortalUserId(
-          employeeId,
-          sessionToken
-        );
-      } else if (String.isNotBlank(employeeId)) {
-        targetEmployeeId = (Id) employeeId;
-      } else {
-        Id currentUserId = UserInfo.getUserId();
-        targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
-      }
-
-      if (targetEmployeeId == null) {
-        throw new AuraHandledException(
-          'No employee record found for current user.'
-        );
-      }
-
-      return [
-        SELECT
-          Id,
-          Name,
-          Employees__c,
-          Shift_Type__c,
-          Shift_Type__r.Name,
-          Shift_Type__r.Start_Time__c,
-          Shift_Type__r.End_Time__c,
-          Shift_Type__r.Working_Hours__c,
-          From_Date__c,
-          To_Date__c,
-          Status__c
-        FROM PWChrono_Shift_Assignment__c
-        WHERE
-          Employees__c = :targetEmployeeId
-          AND From_Date__c <= :endDate
-          AND To_Date__c >= :startDate
-        ORDER BY From_Date__c
-      ];
-    } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      AuraHandledException ahe = new AuraHandledException(
-        'Error fetching shift assignments: '
-      );
-      ahe.setMessage('Error fetching shift assignments: ');
-      throw ahe;
-    }
-  }
-
-  /**
-   * @description Get team attendance requests for approval
-   * @return List of pending attendance requests
-   */
-  @AuraEnabled(cacheable=false)
-  public static List<PWChrono_Attendance_Request__c> getTeamAttendanceForApproval() {
-    try {
-      Id currentUserId = UserInfo.getUserId();
-      Id employeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
-
-      if (employeeId == null) {
-        throw new AuraHandledException(
-          'No employee record found for current user.'
-        );
-      }
-
-      return [
-        SELECT
-          Id,
-          Name,
-          Employees__c,
-          Employees__r.Name,
-          Attendance_Date__c,
-          From_Time__c,
-          To_Time__c,
-          Reason__c,
-          Status__c,
-          CreatedDate
-        FROM PWChrono_Attendance_Request__c
-        WHERE
-          Approvers__c = :employeeId
-          AND Status__c = :PWChrono_Constants.STATUS_SUBMITTED
-        ORDER BY CreatedDate DESC
-        LIMIT :PWChrono_Constants.DASHBOARD_QUERY_LIMIT
-      ];
-    } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      AuraHandledException ahe = new AuraHandledException(
-        'Error fetching team attendance: '
-      );
-      ahe.setMessage('Error fetching team attendance: ');
-      throw ahe;
-    }
-  }
-
-  /**
-   * @description Save attendance request
-   * @param attendanceRequest Attendance request record
-   * @return Saved attendance request
-   */
-  @AuraEnabled
-  public static PWChrono_Attendance_Request__c saveAttendanceRequest(
-    PWChrono_Attendance_Request__c attendanceRequest,
-    String portalUserId,
-    String sessionToken
-  ) {
-    try {
-      Id verifiedPortalUserId = PWChrono_GuestSession.requireVerifiedPortalUserId(
-        portalUserId,
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
         sessionToken
       );
-
-      // Always enforce ownership.
-      if (attendanceRequest.Id == null) {
-        attendanceRequest.Employees__c = verifiedPortalUserId;
-      } else {
-        List<PWChrono_Attendance_Request__c> existing = [
-          SELECT Employees__c
-          FROM PWChrono_Attendance_Request__c
-          WHERE Id = :attendanceRequest.Id
-          LIMIT 1
-        ];
-        if (
-          existing.isEmpty() || existing[0].Employees__c != verifiedPortalUserId
-        ) {
-          throw new AuraHandledException(
-            'Unauthorized access to this attendance record.'
-          );
-        }
-        // Do not allow changing Employees__c on update.
-        attendanceRequest.Employees__c = verifiedPortalUserId;
-      }
-
-      if (attendanceRequest.Id == null) {
-        insert attendanceRequest;
-      } else {
-        update attendanceRequest;
-      }
-
-      return [
-        SELECT
-          Id,
-          Name,
-          Employees__c,
-          Attendance_Date__c,
-          From_Time__c,
-          To_Time__c,
-          Reason__c,
-          Status__c
-        FROM PWChrono_Attendance_Request__c
-        WHERE Id = :attendanceRequest.Id
-      ];
-    } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      AuraHandledException ahe = new AuraHandledException(
-        'Error saving attendance request: '
-      );
-      ahe.setMessage('Error saving attendance request: ');
+      return buildTrackerData(empId, startDate, endDate);
+    } catch (AuraHandledException ahe) {
       throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching attendance tracker data', e);
+      throw new AuraHandledException(
+        'Error loading attendance data. Please try again.'
+      );
     }
   }
 
   /**
-   * @description Process attendance approval
-   * @param requestId Attendance request ID
-   * @param action Approve or Reject
-   * @param comments Optional rejection reason
-   * @return Updated attendance request
+   * @description Internal tracker builder — also callable from tests.
    */
-  @AuraEnabled
-  public static PWChrono_Attendance_Request__c processAttendanceApproval(
-    Id requestId,
-    String action,
-    String comments
+  @TestVisible
+  static List<AttendanceDayWrapper> buildTrackerData(
+    Id employeeId,
+    Date startDate,
+    Date endDate
   ) {
-    try {
-      Id currentUserId = UserInfo.getUserId();
-      Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
+    List<PWChrono_Shift_Assignment__c> shifts = [
+      SELECT
+        Id,
+        Shift_Type__r.Name,
+        Shift_Type__r.Start_Time__c,
+        Shift_Type__r.End_Time__c,
+        From_Date__c,
+        To_Date__c
+      FROM PWChrono_Shift_Assignment__c
+      WHERE
+        Employees__c = :employeeId
+        AND From_Date__c <= :endDate
+        AND To_Date__c >= :startDate
+    ];
 
-      List<PWChrono_Attendance_Request__c> requests = [
-        SELECT Id, Status__c, Approvers__c
-        FROM PWChrono_Attendance_Request__c
-        WHERE Id = :requestId
-        LIMIT 1
-      ];
-
-      if (requests.isEmpty()) {
-        throw new AuraHandledException('Attendance request not found.');
-      }
-      PWChrono_Attendance_Request__c request = requests[0];
-
-      // Security Check: Only Admin or Assigned Approver can approve
-      if (
-        request.Approvers__c != currentEmployeeId &&
-        !PWChrono_AccessController.isAdmin(currentEmployeeId)
-      ) {
-        throw new AuraHandledException(
-          'Access Denied: You are not authorized to process this request.'
-        );
-      }
-
-      if (action == 'Approve') {
-        request.Status__c = PWChrono_Constants.STATUS_APPROVED;
-      } else if (action == 'Reject') {
-        request.Status__c = PWChrono_Constants.STATUS_REJECTED;
-      }
-      update request;
-
-      return request;
-    } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      AuraHandledException ahe = new AuraHandledException(
-        'Error processing attendance approval: '
-      );
-      ahe.setMessage('Error processing attendance approval: ');
-      throw ahe;
+    Map<Date, PWChrono_Attendance_Request__c> requestsMap = new Map<Date, PWChrono_Attendance_Request__c>();
+    for (PWChrono_Attendance_Request__c req : [
+      SELECT
+        Id,
+        Attendance_Date__c,
+        From_Time__c,
+        To_Time__c,
+        Correction_Type__c,
+        Status__c
+      FROM PWChrono_Attendance_Request__c
+      WHERE
+        Employees__c = :employeeId
+        AND Attendance_Date__c >= :startDate
+        AND Attendance_Date__c <= :endDate
+        AND Status__c IN (
+          :PWChrono_Constants.STATUS_APPROVED,
+          :PWChrono_Constants.STATUS_SUBMITTED
+        )
+    ]) {
+      requestsMap.put(req.Attendance_Date__c, req);
     }
+
+    List<PWChrono_Leave__c> leaves = [
+      SELECT From_Date__c, To_Date__c, Leave_Type__r.Name
+      FROM PWChrono_Leave__c
+      WHERE
+        Employees__c = :employeeId
+        AND Status__c = :PWChrono_Constants.STATUS_APPROVED
+        AND From_Date__c <= :endDate
+        AND To_Date__c >= :startDate
+    ];
+
+    Map<Date, String> holidaysMap = new Map<Date, String>();
+    for (PWChrono_Holiday__c hol : [
+      SELECT Holiday_Date__c, Name
+      FROM PWChrono_Holiday__c
+      WHERE Holiday_Date__c >= :startDate AND Holiday_Date__c <= :endDate
+    ]) {
+      holidaysMap.put(hol.Holiday_Date__c, hol.Name);
+    }
+
+    List<AttendanceDayWrapper> result = new List<AttendanceDayWrapper>();
+    Date d = startDate;
+    while (d <= endDate) {
+      result.add(buildDayWrapper(d, shifts, requestsMap, leaves, holidaysMap));
+      d = d.addDays(1);
+    }
+    return result;
   }
 
+  private static AttendanceDayWrapper buildDayWrapper(
+    Date d,
+    List<PWChrono_Shift_Assignment__c> shifts,
+    Map<Date, PWChrono_Attendance_Request__c> reqMap,
+    List<PWChrono_Leave__c> leaves,
+    Map<Date, String> holidays
+  ) {
+    AttendanceDayWrapper day = new AttendanceDayWrapper();
+    day.attendanceDate = d;
+    day.dayName = DateTime.newInstance(d.year(), d.month(), d.day())
+      .format('EEEE');
+    day.status = (d > Date.today()) ? 'Future' : 'Absent';
+
+    // Apply shift context
+    for (PWChrono_Shift_Assignment__c s : shifts) {
+      if (d >= s.From_Date__c && d <= s.To_Date__c) {
+        day.shiftName = s.Shift_Type__r.Name;
+        day.shiftStart = s.Shift_Type__r.Start_Time__c;
+        day.shiftEnd = s.Shift_Type__r.End_Time__c;
+        break;
+      }
+    }
+
+    // Holiday overrides absent/future
+    if (holidays.containsKey(d)) {
+      day.status = 'Holiday';
+      day.holidayName = holidays.get(d);
+    }
+
+    // Approved leave overrides
+    for (PWChrono_Leave__c lv : leaves) {
+      if (d >= lv.From_Date__c && d <= lv.To_Date__c) {
+        day.status = 'Leave';
+        day.leaveType = lv.Leave_Type__r.Name;
+        break;
+      }
+    }
+
+    // Correction request (Approved or Submitted) = Present
+    if (reqMap.containsKey(d)) {
+      PWChrono_Attendance_Request__c req = reqMap.get(d);
+      day.attendanceRequestId = req.Id;
+      day.checkIn = req.From_Time__c;
+      day.checkOut = req.To_Time__c;
+      day.correctionType = req.Correction_Type__c;
+      day.status = 'Present';
+      if (
+        day.shiftStart != null &&
+        req.From_Time__c != null &&
+        req.From_Time__c > day.shiftStart
+      ) {
+        day.isLate = true;
+        day.status = 'Late';
+      }
+      if (
+        day.shiftEnd != null &&
+        req.To_Time__c != null &&
+        req.To_Time__c < day.shiftEnd
+      ) {
+        day.isEarlyLeave = true;
+      }
+    }
+
+    // Weekend (only if not already Holiday/Leave)
+    if (
+      (day.dayName == 'Saturday' || day.dayName == 'Sunday') &&
+      day.status == 'Absent'
+    ) {
+      day.status = 'Weekend';
+    }
+
+    return day;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SHIFT  — support
+  // ═══════════════════════════════════════════════════════════════════════════
+
   /**
-   * @description Get active shift types
-   * @return List of shift types
+   * @description Returns active shift types for the correction form.
    */
   @AuraEnabled(cacheable=false)
   public static List<PWChrono_Shift_Type__c> getActiveShiftTypes() {
@@ -379,355 +634,87 @@ public inherited sharing class PWChrono_AttendanceController {
         WHERE Is_Active__c = TRUE
         ORDER BY Name
       ];
-    } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      AuraHandledException ahe = new AuraHandledException(
-        'Error fetching shift types: '
-      );
-      ahe.setMessage('Error fetching shift types: ');
+    } catch (AuraHandledException ahe) {
       throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching shift types', e);
+      throw new AuraHandledException(
+        'Error loading shift types. Please try again.'
+      );
     }
   }
 
   /**
-   * @description Wrapper class for daily attendance summary
-   */
-  public class AttendanceDayWrapper {
-    @AuraEnabled
-    public Date attendanceDate;
-    @AuraEnabled
-    public String dayName;
-    @AuraEnabled
-    public String status; // Present, Absent, Leave, Holiday, Weekend, Future
-    @AuraEnabled
-    public String shiftName;
-    @AuraEnabled
-    public Time shiftStart;
-    @AuraEnabled
-    public Time shiftEnd;
-    @AuraEnabled
-    public Time checkIn;
-    @AuraEnabled
-    public Time checkOut;
-    @AuraEnabled
-    public Id attendanceRequestId;
-    @AuraEnabled
-    public String leaveType;
-    @AuraEnabled
-    public String holidayName;
-    @AuraEnabled
-    public Boolean isLate;
-    @AuraEnabled
-    public Boolean isEarlyLeave;
-  }
-
-  /**
-   * @description Get comprehensive attendance data for a date range
-   * @param startDate Start date
-   * @param endDate End date
-   * @param employeeId Optional employee ID (Portal_Users__c). If null, uses current user's employee record.
-   * @return List of daily attendance wrappers
+   * @description Current employee's shift assignments in a date range.
    */
   @AuraEnabled(cacheable=false)
-  public static List<AttendanceDayWrapper> getAttendanceTrackerData(
+  public static List<PWChrono_Shift_Assignment__c> getMyShiftAssignments(
     Date startDate,
     Date endDate,
     String employeeId,
     String sessionToken
   ) {
     try {
-      Id targetEmployeeId;
-      if (UserInfo.getUserType() == 'Guest') {
-        targetEmployeeId = PWChrono_GuestSession.requireVerifiedPortalUserId(
-          employeeId,
-          sessionToken
-        );
-      } else {
-        targetEmployeeId = (String.isNotBlank(employeeId))
-          ? (Id) employeeId
-          : PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
-      }
-
-      return getAttendanceTrackerDataCore(
-        startDate,
-        endDate,
-        (String) targetEmployeeId
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
       );
-    } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      AuraHandledException ahe = new AuraHandledException(
-        'Error fetching attendance tracker data: '
-      );
-      ahe.setMessage('Error fetching attendance tracker data: ');
+      return [
+        SELECT
+          Id,
+          Name,
+          Shift_Type__c,
+          Shift_Type__r.Name,
+          Shift_Type__r.Start_Time__c,
+          Shift_Type__r.End_Time__c,
+          Shift_Type__r.Working_Hours__c,
+          From_Date__c,
+          To_Date__c,
+          Status__c
+        FROM PWChrono_Shift_Assignment__c
+        WHERE
+          Employees__c = :empId
+          AND From_Date__c <= :endDate
+          AND To_Date__c >= :startDate
+        ORDER BY From_Date__c
+      ];
+    } catch (AuraHandledException ahe) {
       throw ahe;
-    }
-  }
-
-  private static List<AttendanceDayWrapper> getAttendanceTrackerDataCore(
-    Date startDate,
-    Date endDate,
-    String employeeId
-  ) {
-    Id targetEmployeeId;
-    if (String.isNotBlank(employeeId)) {
-      targetEmployeeId = (Id) employeeId;
-    } else {
-      targetEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
-        UserInfo.getUserId()
-      );
-    }
-
-    if (targetEmployeeId == null) {
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching shift assignments', e);
       throw new AuraHandledException(
-        'No employee record found for current user.'
+        'Error loading shift assignments. Please try again.'
       );
-    }
-
-    checkTrackerPermissions();
-
-    List<PWChrono_Shift_Assignment__c> shifts = fetchShifts(
-      targetEmployeeId,
-      startDate,
-      endDate
-    );
-    Map<Date, PWChrono_Attendance_Request__c> requestsMap = fetchAttendanceRequestsMap(
-      targetEmployeeId,
-      startDate,
-      endDate
-    );
-    List<PWChrono_Leave__c> leaves = fetchLeaves(
-      targetEmployeeId,
-      startDate,
-      endDate
-    );
-    Map<Date, String> holidaysMap = fetchHolidaysMap(startDate, endDate);
-
-    List<AttendanceDayWrapper> result = new List<AttendanceDayWrapper>();
-    Date currentDate = startDate;
-
-    while (currentDate <= endDate) {
-      result.add(
-        createDayWrapper(currentDate, shifts, requestsMap, leaves, holidaysMap)
-      );
-      currentDate = currentDate.addDays(1);
-    }
-
-    return result;
-  }
-
-  private static void checkTrackerPermissions() {
-    return;
-  }
-
-  private static List<PWChrono_Shift_Assignment__c> fetchShifts(
-    Id employeeId,
-    Date startDate,
-    Date endDate
-  ) {
-    return [
-      SELECT
-        Id,
-        Shift_Type__r.Name,
-        Shift_Type__r.Start_Time__c,
-        Shift_Type__r.End_Time__c,
-        From_Date__c,
-        To_Date__c
-      FROM PWChrono_Shift_Assignment__c
-      WHERE
-        Employees__c = :employeeId
-        AND From_Date__c <= :endDate
-        AND To_Date__c >= :startDate
-    ];
-  }
-
-  private static Map<Date, PWChrono_Attendance_Request__c> fetchAttendanceRequestsMap(
-    Id employeeId,
-    Date startDate,
-    Date endDate
-  ) {
-    Map<Date, PWChrono_Attendance_Request__c> requestsMap = new Map<Date, PWChrono_Attendance_Request__c>();
-    for (PWChrono_Attendance_Request__c req : [
-      SELECT Attendance_Date__c, From_Time__c, To_Time__c, Status__c
-      FROM PWChrono_Attendance_Request__c
-      WHERE
-        Employees__c = :employeeId
-        AND Attendance_Date__c >= :startDate
-        AND Attendance_Date__c <= :endDate
-        AND Status__c IN (
-          :PWChrono_Constants.STATUS_APPROVED,
-          :PWChrono_Constants.STATUS_SUBMITTED
-        )
-    ]) {
-      requestsMap.put(req.Attendance_Date__c, req);
-    }
-    return requestsMap;
-  }
-
-  private static List<PWChrono_Leave__c> fetchLeaves(
-    Id employeeId,
-    Date startDate,
-    Date endDate
-  ) {
-    return [
-      SELECT From_Date__c, To_Date__c, Leave_Type__r.Name
-      FROM PWChrono_Leave__c
-      WHERE
-        Employees__c = :employeeId
-        AND Status__c = :PWChrono_Constants.STATUS_APPROVED
-        AND From_Date__c <= :endDate
-        AND To_Date__c >= :startDate
-    ];
-  }
-
-  private static Map<Date, String> fetchHolidaysMap(
-    Date startDate,
-    Date endDate
-  ) {
-    Map<Date, String> holidaysMap = new Map<Date, String>();
-    for (PWChrono_Holiday__c holiday : [
-      SELECT Holiday_Date__c, Name
-      FROM PWChrono_Holiday__c
-      WHERE Holiday_Date__c >= :startDate AND Holiday_Date__c <= :endDate
-    ]) {
-      holidaysMap.put(holiday.Holiday_Date__c, holiday.Name);
-    }
-    return holidaysMap;
-  }
-
-  private static AttendanceDayWrapper createDayWrapper(
-    Date currentDate,
-    List<PWChrono_Shift_Assignment__c> shifts,
-    Map<Date, PWChrono_Attendance_Request__c> requestsMap,
-    List<PWChrono_Leave__c> leaves,
-    Map<Date, String> holidaysMap
-  ) {
-    AttendanceDayWrapper day = new AttendanceDayWrapper();
-    day.attendanceDate = currentDate;
-    DateTime dt = DateTime.newInstance(
-      currentDate.year(),
-      currentDate.month(),
-      currentDate.day()
-    );
-    day.dayName = dt.format('EEEE');
-    day.status = (currentDate > Date.today()) ? 'Future' : 'Absent';
-
-    applyShift(day, currentDate, shifts);
-    applyHoliday(day, currentDate, holidaysMap);
-    applyLeave(day, currentDate, leaves);
-    applyAttendanceRequest(day, currentDate, requestsMap);
-    applyWeekend(day);
-
-    return day;
-  }
-
-  private static void applyShift(
-    AttendanceDayWrapper day,
-    Date currentDate,
-    List<PWChrono_Shift_Assignment__c> shifts
-  ) {
-    for (PWChrono_Shift_Assignment__c shift : shifts) {
-      if (
-        currentDate >= shift.From_Date__c &&
-        currentDate <= shift.To_Date__c
-      ) {
-        day.shiftName = shift.Shift_Type__r.Name;
-        day.shiftStart = shift.Shift_Type__r.Start_Time__c;
-        day.shiftEnd = shift.Shift_Type__r.End_Time__c;
-        break;
-      }
-    }
-  }
-
-  private static void applyHoliday(
-    AttendanceDayWrapper day,
-    Date currentDate,
-    Map<Date, String> holidaysMap
-  ) {
-    if (holidaysMap.containsKey(currentDate)) {
-      day.status = 'Holiday';
-      day.holidayName = holidaysMap.get(currentDate);
-    }
-  }
-
-  private static void applyLeave(
-    AttendanceDayWrapper day,
-    Date currentDate,
-    List<PWChrono_Leave__c> leaves
-  ) {
-    for (PWChrono_Leave__c leave : leaves) {
-      if (
-        currentDate >= leave.From_Date__c &&
-        currentDate <= leave.To_Date__c
-      ) {
-        day.status = 'Leave';
-        day.leaveType = leave.Leave_Type__r.Name;
-        break;
-      }
-    }
-  }
-
-  private static void applyAttendanceRequest(
-    AttendanceDayWrapper day,
-    Date currentDate,
-    Map<Date, PWChrono_Attendance_Request__c> requestsMap
-  ) {
-    if (requestsMap.containsKey(currentDate)) {
-      PWChrono_Attendance_Request__c req = requestsMap.get(currentDate);
-      day.attendanceRequestId = req.Id;
-      day.checkIn = req.From_Time__c;
-      day.checkOut = req.To_Time__c;
-      day.status = 'Present';
-
-      if (day.shiftStart != null && req.From_Time__c > day.shiftStart) {
-        day.isLate = true;
-      }
-      if (day.shiftEnd != null && req.To_Time__c < day.shiftEnd) {
-        day.isEarlyLeave = true;
-      }
-    }
-  }
-
-  private static void applyWeekend(AttendanceDayWrapper day) {
-    if (day.dayName == 'Saturday' || day.dayName == 'Sunday') {
-      if (day.status == 'Absent') {
-        day.status = 'Weekend';
-      }
     }
   }
 
   /**
-   * @description Get team shift assignments
-   * @param startDate Start date
-   * @param endDate End date
-   * @return List of shift assignments for team
+   * @description Team shift assignments for the manager's roster view.
    */
   @AuraEnabled(cacheable=false)
   public static List<PWChrono_Shift_Assignment__c> getTeamShiftAssignments(
     Date startDate,
-    Date endDate
+    Date endDate,
+    String employeeId,
+    String sessionToken
   ) {
     try {
-      Id currentUserId = UserInfo.getUserId();
-      Id employeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
-
-      if (employeeId == null) {
-        throw new AuraHandledException(
-          'No employee record found for current user.'
-        );
-      }
-
-      // Find employees reporting to current user
-      List<Portal_Users__c> teamMembers = [
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      List<Portal_Users__c> team = [
         SELECT Id
         FROM Portal_Users__c
-        WHERE Reports_To__c = :employeeId
+        WHERE Reports_To__c = :empId
       ];
-
       Set<Id> teamIds = new Set<Id>();
-      for (Portal_Users__c emp : teamMembers) {
-        teamIds.add(emp.Id);
+      for (Portal_Users__c p : team) {
+        teamIds.add(p.Id);
       }
-
+      if (teamIds.isEmpty()) {
+        return new List<PWChrono_Shift_Assignment__c>();
+      }
       return [
         SELECT
           Id,
@@ -748,22 +735,25 @@ public inherited sharing class PWChrono_AttendanceController {
           AND To_Date__c >= :startDate
         ORDER BY Employees__r.Name, From_Date__c
       ];
-    } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      AuraHandledException ahe = new AuraHandledException(
-        'Error fetching team shifts: '
-      );
-      ahe.setMessage('Error fetching team shifts: ');
+    } catch (AuraHandledException ahe) {
       throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching team shift assignments', e);
+      throw new AuraHandledException(
+        'Error loading team shifts. Please try again.'
+      );
     }
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ADMIN
+  // ═══════════════════════════════════════════════════════════════════════════
+
   /**
-   * @description Get all attendance records for admin view
-   * @param dateFilter Optional date filter
-   * @return List of attendance records
+   * @description All attendance records for a given date (admin view).
    */
-  @AuraEnabled(cacheable=true)
+  @AuraEnabled(cacheable=false)
+  @SuppressWarnings('PMD.ApexSOQLInjection')
   public static List<PWChrono_Attendance_Request__c> getAllAttendance(
     Date dateFilter,
     String portalUserId,
@@ -771,38 +761,29 @@ public inherited sharing class PWChrono_AttendanceController {
   ) {
     try {
       if (UserInfo.getUserType() == 'Guest') {
-        requireAttendanceAdminAccessForGuest(portalUserId, sessionToken);
+        requireAttendanceAdminAccess(portalUserId, sessionToken);
       }
-      return getAllAttendanceCore(dateFilter);
+      Date targetDate = dateFilter != null ? dateFilter : Date.today();
+      return Database.query(
+        'SELECT Id, Name, Employees__c, Employees__r.Name, Employees__r.Role__c, ' +
+          'Attendance_Date__c, From_Time__c, To_Time__c, Status__c, ' +
+          'Correction_Type__c, Reason__c ' +
+          'FROM PWChrono_Attendance_Request__c ' +
+          'WHERE Attendance_Date__c = :targetDate ' +
+          'ORDER BY Employees__r.Name ASC'
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
     } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException('Error fetching all attendance: ');
+      PWChrono_Logger.error('Error fetching all attendance', e);
+      throw new AuraHandledException(
+        'Error loading attendance records. Please try again.'
+      );
     }
-  }
-
-  private static List<PWChrono_Attendance_Request__c> getAllAttendanceCore(
-    Date dateFilter
-  ) {
-    String query =
-      'SELECT Id, Name, Employees__c, Employees__r.Name, Employees__r.Role__c, ' +
-      'Attendance_Date__c, From_Time__c, To_Time__c, Status__c, Reason__c ' +
-      'FROM PWChrono_Attendance_Request__c ';
-
-    if (dateFilter != null) {
-      query += 'WHERE Attendance_Date__c = :dateFilter ';
-    } else {
-      Date today = Date.today();
-      query += 'WHERE Attendance_Date__c = :today ';
-    }
-
-    query += 'ORDER BY Employees__r.Name ASC';
-    return Database.query(query);
   }
 
   /**
-   * @description Create a new shift type
-   * @param shiftType Shift type record
-   * @return Created shift type
+   * @description Create a shift type (admin/HR only).
    */
   @AuraEnabled
   public static PWChrono_Shift_Type__c createShiftType(
@@ -812,20 +793,22 @@ public inherited sharing class PWChrono_AttendanceController {
   ) {
     try {
       if (UserInfo.getUserType() == 'Guest') {
-        requireAttendanceAdminAccessForGuest(portalUserId, sessionToken);
+        requireAttendanceAdminAccess(portalUserId, sessionToken);
       }
       insert shiftType;
       return shiftType;
+    } catch (AuraHandledException ahe) {
+      throw ahe;
     } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException('Error creating shift type: ');
+      PWChrono_Logger.error('Error creating shift type', e);
+      throw new AuraHandledException(
+        'Error creating shift type. Please try again.'
+      );
     }
   }
 
   /**
-   * @description Update an existing shift type
-   * @param shiftType Shift type record
-   * @return Updated shift type
+   * @description Update a shift type (admin/HR only).
    */
   @AuraEnabled
   public static PWChrono_Shift_Type__c updateShiftType(
@@ -835,15 +818,186 @@ public inherited sharing class PWChrono_AttendanceController {
   ) {
     try {
       if (UserInfo.getUserType() == 'Guest') {
-        requireAttendanceAdminAccessForGuest(portalUserId, sessionToken);
+        requireAttendanceAdminAccess(portalUserId, sessionToken);
       }
       update shiftType;
       return shiftType;
+    } catch (AuraHandledException ahe) {
+      throw ahe;
     } catch (Exception e) {
-      PWChrono_Logger.error('An error occurred', e);
-      throw new AuraHandledException('Error updating shift type: ');
+      PWChrono_Logger.error('Error updating shift type', e);
+      throw new AuraHandledException(
+        'Error updating shift type. Please try again.'
+      );
     }
   }
 
-  // Helper Methods
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LEGACY  —  Backward compatibility for existing LWC components
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * @description Legacy list method for pwchronoAttendanceRequest component.
+   *              New code should use getMyAttendanceRequestList.
+   */
+  @AuraEnabled(cacheable=true)
+  @SuppressWarnings('PMD.ApexSOQLInjection')
+  public static List<PWChrono_Attendance_Request__c> getMyAttendanceRequests(
+    String statusFilter,
+    Date startDate,
+    Date endDate,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceSelector.getRequestsByEmployee(
+        empId,
+        statusFilter,
+        startDate,
+        endDate
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching attendance requests (legacy)', e);
+      throw new AuraHandledException('Error loading attendance requests.');
+    }
+  }
+
+  /**
+   * @description Legacy save method for pwchronoAttendanceRequest.
+   *              New code should use submitAttendanceRequest.
+   */
+  @AuraEnabled
+  public static PWChrono_Attendance_Request__c saveAttendanceRequest(
+    PWChrono_Attendance_Request__c attendanceRequest,
+    String portalUserId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        portalUserId,
+        sessionToken
+      );
+      attendanceRequest.Employees__c = empId;
+      upsert attendanceRequest;
+      return PWChrono_AttendanceSelector.getRequestById(attendanceRequest.Id);
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error saving attendance request (legacy)', e);
+      throw new AuraHandledException('Error saving attendance request.');
+    }
+  }
+
+  /**
+   * @description Legacy approval method for pwchronoAttendanceAdmin.
+   *              New code should use processAttendanceCorrectionApproval.
+   */
+  @AuraEnabled
+  public static PWChrono_Attendance_Request__c processAttendanceApproval(
+    Id requestId,
+    String action,
+    String comments,
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceService.processApproval(
+        requestId,
+        action,
+        comments,
+        empId
+      );
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error processing attendance approval (legacy)', e);
+      throw new AuraHandledException('Error processing approval.');
+    }
+  }
+
+  /**
+   * @description Legacy team queue method for pwchronoAttendanceAdmin.
+   */
+  @AuraEnabled(cacheable=false)
+  public static List<PWChrono_Attendance_Request__c> getTeamAttendanceForApproval(
+    String employeeId,
+    String sessionToken
+  ) {
+    try {
+      Id empId = PWChrono_RequestValidator.resolveEmployeeId(
+        employeeId,
+        sessionToken
+      );
+      return PWChrono_AttendanceSelector.getTeamRequestsForApproval(empId);
+    } catch (AuraHandledException ahe) {
+      throw ahe;
+    } catch (Exception e) {
+      PWChrono_Logger.error('Error fetching team attendance (legacy)', e);
+      throw new AuraHandledException('Error loading team requests.');
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PRIVATE HELPERS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * @description Enforces that the requesting employee may access the record.
+   *              Employee may view their own; approver may view their team's; admin may view all.
+   */
+  private static void requireAccessibleRequest(
+    PWChrono_Attendance_Request__c req,
+    Id employeeId
+  ) {
+    Boolean isOwner = req.Employees__c == employeeId;
+    Boolean isApprover = req.Approvers__c == employeeId;
+    Boolean isAdmin = PWChrono_RequestValidator.isCurrentUserAdmin(employeeId);
+    if (!isOwner && !isApprover && !isAdmin) {
+      throw new AuraHandledException(
+        'Access denied: You are not authorized to view this request.'
+      );
+    }
+  }
+
+  /**
+   * @description Verifies the guest session holder has HR Admin or System Admin role,
+   *              or the "Admin Settings" feature access bit.
+   */
+  private static void requireAttendanceAdminAccess(
+    String portalUserId,
+    String sessionToken
+  ) {
+    Id verifiedId = PWChrono_GuestSession.requireVerifiedPortalUserId(
+      portalUserId,
+      sessionToken
+    );
+    Portal_Users__c pu = [
+      SELECT Id, Is_Active__c, Role__c, Access_Features__c
+      FROM Portal_Users__c
+      WHERE Id = :verifiedId
+      LIMIT 1
+    ];
+    if (pu == null || pu.Is_Active__c != true) {
+      throw new AuraHandledException('Unauthorized.');
+    }
+    Boolean isAdmin = pu.Role__c == 'HR Admin' || pu.Role__c == 'System Admin';
+    Boolean hasFeature =
+      String.isNotBlank(pu.Access_Features__c) &&
+      pu.Access_Features__c.contains('Admin Settings');
+    if (!isAdmin && !hasFeature) {
+      throw new AuraHandledException(
+        'Access denied: Admin privileges required.'
+      );
+    }
+  }
 }

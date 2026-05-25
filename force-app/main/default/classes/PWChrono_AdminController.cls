@@ -2,7 +2,9 @@
  * @description Controller for Admin Settings Panel LWC
  * @author PWChrono Team
  */
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings(
+  'PMD.ApexCRUDViolation,PMD.ExcessiveClassLength,PMD.CognitiveComplexity,PMD.ExcessivePublicCount'
+)
 public inherited sharing class PWChrono_AdminController {
   // --- Guest portal authorization helpers (Admin Settings) ---
   // The portal runs in Guest runtime with a server-issued session token.
@@ -61,7 +63,9 @@ public inherited sharing class PWChrono_AdminController {
     @AuraEnabled
     public Integer value;
 
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     public ChartPoint() {
+      // Default constructor
     }
     public ChartPoint(String label, Integer value) {
       this.label = label;
@@ -113,14 +117,18 @@ public inherited sharing class PWChrono_AdminController {
 
     public Integer compareTo(Object other) {
       TimelineItem o = (TimelineItem) other;
-      if (timestamp == null && o.timestamp == null)
+      if (timestamp == null && o.timestamp == null) {
         return 0;
-      if (timestamp == null)
+      }
+      if (timestamp == null) {
         return 1;
-      if (o.timestamp == null)
+      }
+      if (o.timestamp == null) {
         return -1;
-      if (timestamp.getTime() == o.timestamp.getTime())
+      }
+      if (timestamp.getTime() == o.timestamp.getTime()) {
         return 0;
+      }
       return timestamp.getTime() > o.timestamp.getTime() ? -1 : 1;
     }
   }
@@ -459,8 +467,9 @@ public inherited sharing class PWChrono_AdminController {
       ];
 
       Integer wfh = totalActive - fulltime - probation - contract;
-      if (wfh < 0)
+      if (wfh < 0) {
         wfh = 0;
+      }
 
       EmployeeStatusOverview res = new EmployeeStatusOverview();
       res.total = totalActive;
@@ -513,8 +522,9 @@ public inherited sharing class PWChrono_AdminController {
       ]) {
         String st = (String) ar.get('st');
         Integer cnt = (Integer) ar.get('cnt');
-        if (st == null)
+        if (st == null) {
           continue;
+        }
         counts.put(
           st,
           (counts.containsKey(st) ? counts.get(st) : 0) +
@@ -552,8 +562,9 @@ public inherited sharing class PWChrono_AdminController {
           ]) {
             String st = (String) ar.get('st');
             Integer cnt = (Integer) ar.get('cnt');
-            if (st == null)
+            if (st == null) {
               continue;
+            }
             counts.put(
               st,
               (counts.containsKey(st) ? counts.get(st) : 0) +
@@ -579,6 +590,15 @@ public inherited sharing class PWChrono_AdminController {
 
   @AuraEnabled(cacheable=true)
   public static List<PWChrono_Attendance_Request__c> getRecentAttendanceRequests(
+    String portalUserId,
+    String sessionToken,
+    Integer limitSize
+  ) {
+    requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
+    return getRecentAttendanceRequestsCore(limitSize);
+  }
+
+  private static List<PWChrono_Attendance_Request__c> getRecentAttendanceRequestsCore(
     Integer limitSize
   ) {
     Integer size = (limitSize == null || limitSize < 1) ? 5 : limitSize;
@@ -810,6 +830,7 @@ public inherited sharing class PWChrono_AdminController {
    * @param fieldData Map of field API names to values
    */
   @AuraEnabled
+  @SuppressWarnings('PMD.ExcessiveParameterList')
   public static void updateGlobalSettings(
     String metadataName,
     String label,
@@ -893,6 +914,7 @@ public inherited sharing class PWChrono_AdminController {
    * @param features List of features to enable
    */
   @AuraEnabled
+  @SuppressWarnings('PMD.ExcessiveParameterList')
   public static void updatePortalUserAccess(
     Id portalUserId,
     String role,
@@ -981,8 +1003,9 @@ public inherited sharing class PWChrono_AdminController {
   ) {
     requireSalesforceInternalUser();
     Integer safeLimit = (limitSize == null || limitSize <= 0) ? 5 : limitSize;
-    if (safeLimit > 200)
+    if (safeLimit > 200) {
       safeLimit = 200;
+    }
     Integer safeOffset = (offsetSize == null ||
       offsetSize < 0)
       ? 0
@@ -1026,6 +1049,7 @@ public inherited sharing class PWChrono_AdminController {
    * @description Parameterized todo tasks getter for widgets.
    */
   @AuraEnabled(cacheable=true)
+  @SuppressWarnings('PMD.ExcessiveParameterList')
   public static List<PWChrono_Onboarding_Task__c> getTodoTasksPaged(
     String portalUserId,
     String sessionToken,
@@ -1034,8 +1058,9 @@ public inherited sharing class PWChrono_AdminController {
   ) {
     requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
     Integer safeLimit = (limitSize == null || limitSize <= 0) ? 6 : limitSize;
-    if (safeLimit > 200)
+    if (safeLimit > 200) {
       safeLimit = 200;
+    }
     Integer safeOffset = (offsetSize == null ||
       offsetSize < 0)
       ? 0
@@ -1078,6 +1103,7 @@ public inherited sharing class PWChrono_AdminController {
    * @description Parameterized schedules getter for widgets.
    */
   @AuraEnabled(cacheable=true)
+  @SuppressWarnings('PMD.ExcessiveParameterList')
   public static List<Event> getSchedulesPaged(
     String portalUserId,
     String sessionToken,
@@ -1086,8 +1112,9 @@ public inherited sharing class PWChrono_AdminController {
   ) {
     requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
     Integer safeLimit = (limitSize == null || limitSize <= 0) ? 10 : limitSize;
-    if (safeLimit > 200)
+    if (safeLimit > 200) {
       safeLimit = 200;
+    }
     Integer safeOffset = (offsetSize == null ||
       offsetSize < 0)
       ? 0
@@ -1361,14 +1388,33 @@ public inherited sharing class PWChrono_AdminController {
    * @return List of recently created Portal Users
    */
   @AuraEnabled(cacheable=true)
-  public static List<Portal_Users__c> getRecentHires() {
+  public static List<Portal_Users__c> getRecentHires(
+    String portalUserId,
+    String sessionToken,
+    Integer limitSize
+  ) {
+    requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
+    return getRecentHiresCore(limitSize);
+  }
+
+  private static List<Portal_Users__c> getRecentHiresCore(Integer limitSize) {
+    Integer size = (limitSize == null || limitSize < 1) ? 5 : limitSize;
+    size = Math.min(size, 50);
+
     try {
       return [
-        SELECT Id, Name, Email__c, Designation__c, Department__c, CreatedDate
+        SELECT
+          Id,
+          Name,
+          Email__c,
+          Designation__c,
+          Department__c,
+          Photo_Url__c,
+          CreatedDate
         FROM Portal_Users__c
         WHERE Is_Active__c = TRUE
         ORDER BY CreatedDate DESC
-        LIMIT 5
+        LIMIT :size
       ];
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
@@ -1503,8 +1549,9 @@ public inherited sharing class PWChrono_AdminController {
       ]) {
         Integer m = (Integer) ar.get('m');
         Decimal amt = (Decimal) ar.get('amt');
-        if (m == null)
+        if (m == null) {
           continue;
+        }
         monthToAmount.put(m, (amt == null ? 0 : amt));
       }
 
@@ -1586,6 +1633,7 @@ public inherited sharing class PWChrono_AdminController {
     return saveProjectCore(projectData);
   }
 
+  @SuppressWarnings('PMD.NcssMethodCount')
   private static Id saveProjectCore(Map<String, Object> projectData) {
     try {
       PWChrono_Project__c proj = new PWChrono_Project__c();
@@ -1720,6 +1768,7 @@ public inherited sharing class PWChrono_AdminController {
    * @return The created ContentVersion Id
    */
   @AuraEnabled
+  @SuppressWarnings('PMD.ExcessiveParameterList')
   public static Id uploadProjectLogo(
     Id projectId,
     String fileName,

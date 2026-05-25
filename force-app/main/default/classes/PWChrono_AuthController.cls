@@ -1,13 +1,13 @@
 /**
- * @description Controller for Portal Authentication and Permissions
+ * @description Controller for Portal Authentication and session bootstrap
  * @author PWChrono Team
  */
 @SuppressWarnings('PMD')
 public inherited sharing class PWChrono_AuthController {
   /**
-   * @description Returns portal user + permissions for the currently authenticated Salesforce user.
+   * @description Returns portal user context for the currently authenticated Salesforce user.
    *              This supports running PWChrono as a Lightning App/Tab without requiring OTP.
-   * @return Map with keys: user (Portal_Users__c), permissions (Map<String,Object>)
+   * @return Map with keys: user (Portal_Users__c), permissions (empty compatibility map)
    */
   @AuraEnabled(cacheable=false)
   public static Map<String, Object> getCurrentUserContext() {
@@ -30,16 +30,9 @@ public inherited sharing class PWChrono_AuthController {
       }
 
       Portal_Users__c portalUser = users[0];
-      Map<String, Object> permissions = null;
-      if (portalUser.Portal_User_Profile__c != null) {
-        permissions = getPermissions(
-          String.valueOf(portalUser.Portal_User_Profile__c)
-        );
-      }
-
       return new Map<String, Object>{
         'user' => portalUser,
-        'permissions' => permissions
+        'permissions' => new Map<String, Object>()
       };
     } catch (Exception e) {
       PWChrono_Logger.error('Failed to build current user context.', e);

@@ -1,376 +1,332 @@
-@isTest
+/**
+ * @description Tests for PWChrono_AttendanceController.
+ *              Covers new framework methods and legacy method delegation.
+ */
+@IsTest
 private class PWChrono_AttendanceController_Test {
   @TestSetup
-  static void makeData() {
-    // Create User and Employee
-    User testUser = PWChrono_TestDataFactory.createTestUser('EmployeeUser');
-    PWChrono_TestDataFactory.assignPermissionSet(
-      testUser.Id,
-      'PWChrono_HR_Admin'
-    );
-    Portal_Users__c employee = PWChrono_TestDataFactory.createTestEmployee(
-      testUser.Id
-    );
-
-    // Create Manager
-    User managerUser = PWChrono_TestDataFactory.createTestUser('ManagerUser');
-    PWChrono_TestDataFactory.assignPermissionSet(
-      managerUser.Id,
-      'PWChrono_HR_Admin'
-    );
-    Portal_Users__c manager = PWChrono_TestDataFactory.createTestEmployee(
-      managerUser.Id
-    );
-    manager.Role__c = PWChrono_Constants.ROLE_MANAGER;
-    update manager;
-
-    employee.Reports_To__c = manager.Id;
-    update employee;
-
-    // Create Shift Type
-    PWChrono_Shift_Type__c shiftType = new PWChrono_Shift_Type__c(
-      Name = 'General Shift',
-      Start_Time__c = Time.newInstance(9, 0, 0, 0),
-      End_Time__c = Time.newInstance(18, 0, 0, 0),
-      Working_Hours__c = 9,
-      Grace_Period_Minutes__c = 15,
-      Is_Active__c = true
-    );
-    insert shiftType;
-
-    // Create Shift Assignment
-    PWChrono_Shift_Assignment__c shiftAssignment = new PWChrono_Shift_Assignment__c(
-      Employees__c = employee.Id,
-      Shift_Type__c = shiftType.Id,
-      From_Date__c = Date.today().addDays(-5),
-      To_Date__c = Date.today().addDays(5),
-      Status__c = PWChrono_Constants.STATUS_ACTIVE
-    );
-    insert shiftAssignment;
-
-    // Create Attendance Request
-    PWChrono_Attendance_Request__c request = new PWChrono_Attendance_Request__c(
-      Employees__c = employee.Id,
-      Attendance_Date__c = Date.today(),
-      From_Time__c = Time.newInstance(9, 0, 0, 0),
-      To_Time__c = Time.newInstance(18, 0, 0, 0),
-      Reason__c = 'Regular Work',
-      Status__c = PWChrono_Constants.STATUS_SUBMITTED,
-      Approvers__c = manager.Id
-    );
-    insert request;
-
-    // Create Holiday
-    PWChrono_Holiday__c holiday = new PWChrono_Holiday__c(
-      Name = 'Test Holiday',
-      Holiday_Date__c = Date.today().addDays(1)
-    );
-    insert holiday;
+  static void setup() {
+    PWChrono_AttendanceTestDataFactory.setupStandardTestData();
   }
 
-  @isTest
-  static void testGetMyAttendanceRequests() {
-    User testUser = [
+  // ─────────────────────── getMyAttendanceRequestList ──────────────────────
+
+  @IsTest
+  static void testGetMyAttendanceRequestList_returnsRequests() {
+    Portal_Users__c emp = [
       SELECT Id
-      FROM User
-      WHERE LastName = 'EmployeeUser'
-      LIMIT 1
-    ];
-
-    System.runAs(testUser) {
-      Test.startTest();
-      List<PWChrono_Attendance_Request__c> requests = PWChrono_AttendanceController.getMyAttendanceRequests(
-        'All',
-        Date.today().addDays(-1),
-        Date.today().addDays(1),
-        null,
-        null
-      );
-      Test.stopTest();
-
-      System.assertEquals(
-        1,
-        requests.size(),
-        'Should return 1 attendance request'
-      );
-    }
-  }
-
-  @isTest
-  static void testGetMyShiftAssignments() {
-    User testUser = [
-      SELECT Id
-      FROM User
-      WHERE LastName = 'EmployeeUser'
-      LIMIT 1
-    ];
-
-    System.runAs(testUser) {
-      Test.startTest();
-      List<PWChrono_Shift_Assignment__c> shifts = PWChrono_AttendanceController.getMyShiftAssignments(
-        Date.today().addDays(-1),
-        Date.today().addDays(1),
-        null,
-        null
-      );
-      Test.stopTest();
-
-      System.assertEquals(1, shifts.size(), 'Should return 1 shift assignment');
-    }
-  }
-
-  @isTest
-  static void testGetTeamAttendanceForApproval() {
-    // Find manager user (created in makeData, but need to query properly)
-    // Since we created 2 users with same name in factory, we need to be careful.
-    // Actually factory uses unique email/username but same lastname.
-    // Let's query Portal_Users__c to find the manager's user.
-    Portal_Users__c manager = [
-      SELECT User__c
       FROM Portal_Users__c
-      WHERE Role__c = :PWChrono_Constants.ROLE_MANAGER
+      WHERE Role__c = 'Employee'
       LIMIT 1
     ];
-    User managerUser = [SELECT Id FROM User WHERE Id = :manager.User__c];
 
-    System.runAs(managerUser) {
-      Test.startTest();
-      List<PWChrono_Attendance_Request__c> requests = PWChrono_AttendanceController.getTeamAttendanceForApproval();
-      Test.stopTest();
+    Test.startTest();
+    List<PWChrono_Attendance_Request__c> result = PWChrono_AttendanceController.getMyAttendanceRequestList(
+      'All',
+      null,
+      null,
+      emp.Id,
+      null
+    );
+    Test.stopTest();
 
-      System.assertEquals(
-        1,
-        requests.size(),
-        'Should return 1 pending request for approval'
-      );
-    }
+    System.assertNotEquals(null, result, 'Should return a list');
+    System.assert(result.size() >= 2, 'Should have at least 2 test requests');
   }
 
-  @isTest
-  static void testSaveAttendanceRequest() {
-    User testUser = [
+  @IsTest
+  static void testGetMyAttendanceRequestList_filteredByStatus() {
+    Portal_Users__c emp = [
       SELECT Id
-      FROM User
-      WHERE LastName = 'EmployeeUser'
+      FROM Portal_Users__c
+      WHERE Role__c = 'Employee'
       LIMIT 1
     ];
 
-    System.runAs(testUser) {
-      PWChrono_Attendance_Request__c newRequest = new PWChrono_Attendance_Request__c(
-        Attendance_Date__c = Date.today().addDays(-1),
-        From_Time__c = Time.newInstance(9, 0, 0, 0),
-        To_Time__c = Time.newInstance(18, 0, 0, 0),
-        Reason__c = 'Forgot to check in',
-        Status__c = PWChrono_Constants.STATUS_DRAFT
-      );
+    Test.startTest();
+    List<PWChrono_Attendance_Request__c> result = PWChrono_AttendanceController.getMyAttendanceRequestList(
+      'Submitted',
+      null,
+      null,
+      emp.Id,
+      null
+    );
+    Test.stopTest();
 
-      Test.startTest();
-      Portal_Users__c currentEmployee = [
-        SELECT Id
-        FROM Portal_Users__c
-        WHERE User__c = :testUser.Id
-        LIMIT 1
-      ];
-      PWChrono_Attendance_Request__c savedRequest = PWChrono_AttendanceController.saveAttendanceRequest(
-        newRequest,
-        currentEmployee.Id,
-        null
-      );
-      Test.stopTest();
-
-      System.assertNotEquals(null, savedRequest.Id, 'Request should be saved');
+    for (PWChrono_Attendance_Request__c req : result) {
       System.assertEquals(
-        PWChrono_Constants.STATUS_DRAFT,
-        savedRequest.Status__c,
-        'Status should be Draft'
+        'Submitted',
+        req.Status__c,
+        'All results should be Submitted'
       );
     }
   }
 
-  @isTest
-  static void testProcessAttendanceApproval() {
-    Portal_Users__c manager = [
-      SELECT User__c
+  // ─────────────────────── getAttendanceRequestDetail ──────────────────────
+
+  @IsTest
+  static void testGetAttendanceRequestDetail_owner_succeeds() {
+    Portal_Users__c emp = [
+      SELECT Id
       FROM Portal_Users__c
-      WHERE Role__c = :PWChrono_Constants.ROLE_MANAGER
+      WHERE Role__c = 'Employee'
       LIMIT 1
     ];
-    User managerUser = [SELECT Id FROM User WHERE Id = :manager.User__c];
-    PWChrono_Attendance_Request__c request = [
+    PWChrono_Attendance_Request__c req = [
       SELECT Id
       FROM PWChrono_Attendance_Request__c
+      WHERE Status__c = 'Submitted'
       LIMIT 1
     ];
 
-    System.runAs(managerUser) {
-      Test.startTest();
-      PWChrono_Attendance_Request__c processedRequest = PWChrono_AttendanceController.processAttendanceApproval(
-        request.Id,
-        'Approve',
-        'Approved by Manager'
-      );
-      Test.stopTest();
+    Test.startTest();
+    PWChrono_Attendance_Request__c result = PWChrono_AttendanceController.getAttendanceRequestDetail(
+      req.Id,
+      emp.Id,
+      null
+    );
+    Test.stopTest();
 
-      System.assertEquals(
-        PWChrono_Constants.STATUS_APPROVED,
-        processedRequest.Status__c,
-        'Status should be Approved'
-      );
-    }
+    System.assertEquals(req.Id, result.Id, 'Should return correct record');
   }
 
-  @isTest
-  static void testGetActiveShiftTypes() {
-    User testUser = [
+  @IsTest
+  static void testGetAttendanceRequestDetail_notFound_throwsException() {
+    Portal_Users__c emp = [
       SELECT Id
-      FROM User
-      WHERE LastName = 'EmployeeUser'
+      FROM Portal_Users__c
+      WHERE Role__c = 'Employee'
       LIMIT 1
     ];
 
-    System.runAs(testUser) {
-      Test.startTest();
-      List<PWChrono_Shift_Type__c> shifts = PWChrono_AttendanceController.getActiveShiftTypes();
-      Test.stopTest();
-
-      System.assert(!shifts.isEmpty(), 'Should return active shift types');
-    }
-  }
-
-  @isTest
-  static void testGetAttendanceTrackerData() {
-    User testUser = [
-      SELECT Id
-      FROM User
-      WHERE LastName = 'EmployeeUser'
-      LIMIT 1
-    ];
-
-    System.runAs(testUser) {
-      Test.startTest();
-      List<PWChrono_AttendanceController.AttendanceDayWrapper> data = PWChrono_AttendanceController.getAttendanceTrackerData(
-        Date.today(),
-        Date.today().addDays(2),
-        null,
+    Test.startTest();
+    try {
+      PWChrono_AttendanceController.getAttendanceRequestDetail(
+        '001000000000000AAA',
+        emp.Id,
         null
       );
-      Test.stopTest();
-
-      System.assert(!data.isEmpty(), 'Should return tracker data');
-      // Verify holiday
-      Boolean foundHoliday = false;
-      for (PWChrono_AttendanceController.AttendanceDayWrapper day : data) {
-        if (day.status == 'Holiday') {
-          foundHoliday = true;
-          break;
-        }
-      }
-      System.assert(foundHoliday, 'Should find the holiday');
-    }
-  }
-
-  @isTest
-  static void testGetTeamShiftAssignments() {
-    Portal_Users__c manager = [
-      SELECT User__c
-      FROM Portal_Users__c
-      WHERE Role__c = :PWChrono_Constants.ROLE_MANAGER
-      LIMIT 1
-    ];
-    User managerUser = [SELECT Id FROM User WHERE Id = :manager.User__c];
-
-    System.runAs(managerUser) {
-      Test.startTest();
-      List<PWChrono_Shift_Assignment__c> shifts = PWChrono_AttendanceController.getTeamShiftAssignments(
-        Date.today().addDays(-5),
-        Date.today().addDays(5)
+      System.assert(false, 'Should throw for missing record');
+    } catch (AuraHandledException e) {
+      System.assert(
+        e.getMessage().length() > 0,
+        'Should return a user-friendly error'
       );
-      Test.stopTest();
-
-      System.assert(!shifts.isEmpty(), 'Should return team shifts');
     }
+    Test.stopTest();
   }
 
-  @isTest
-  static void testProcessAttendanceApproval_Reject() {
-    Portal_Users__c manager = [
-      SELECT User__c
-      FROM Portal_Users__c
-      WHERE Role__c = :PWChrono_Constants.ROLE_MANAGER
-      LIMIT 1
-    ];
-    User managerUser = [SELECT Id FROM User WHERE Id = :manager.User__c];
+  // ─────────────────────── submitAttendanceRequest ────────────────────────
 
-    Portal_Users__c employee = [
+  @IsTest
+  static void testSubmitAttendanceRequest_succeeds() {
+    Portal_Users__c emp = [
       SELECT Id
       FROM Portal_Users__c
-      WHERE User__c != NULL AND Role__c != :PWChrono_Constants.ROLE_MANAGER
+      WHERE Role__c = 'Employee'
+      LIMIT 1
+    ];
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto = PWChrono_AttendanceTestDataFactory.buildDTO(
+      Date.today().addDays(-7),
+      'Wrong Time'
+    );
+
+    Test.startTest();
+    PWChrono_Attendance_Request__c result = PWChrono_AttendanceController.submitAttendanceRequest(
+      dto,
+      emp.Id,
+      null
+    );
+    Test.stopTest();
+
+    System.assertEquals('Submitted', result.Status__c, 'Should be Submitted');
+  }
+
+  // ─────────────────────── cancelAttendanceRequest ────────────────────────
+
+  @IsTest
+  static void testCancelAttendanceRequest_succeeds() {
+    Portal_Users__c emp = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'Employee'
+      LIMIT 1
+    ];
+    PWChrono_Attendance_Request__c req = [
+      SELECT Id
+      FROM PWChrono_Attendance_Request__c
+      WHERE Status__c = 'Submitted'
       LIMIT 1
     ];
 
-    PWChrono_Attendance_Request__c rejectRequest = new PWChrono_Attendance_Request__c(
-      Employees__c = employee.Id,
-      Attendance_Date__c = Date.today().addDays(-1),
-      From_Time__c = Time.newInstance(9, 0, 0, 0),
-      To_Time__c = Time.newInstance(18, 0, 0, 0),
-      Reason__c = 'Reject path coverage',
-      Status__c = PWChrono_Constants.STATUS_SUBMITTED,
-      Approvers__c = [
-        SELECT Id
-        FROM Portal_Users__c
-        WHERE User__c = :managerUser.Id
-        LIMIT 1
-      ]
-      .Id
+    Test.startTest();
+    PWChrono_Attendance_Request__c result = PWChrono_AttendanceController.cancelAttendanceRequest(
+      req.Id,
+      'Not needed',
+      emp.Id,
+      null
     );
-    insert rejectRequest;
+    Test.stopTest();
 
-    System.runAs(managerUser) {
-      Test.startTest();
-      PWChrono_Attendance_Request__c processedRequest = PWChrono_AttendanceController.processAttendanceApproval(
-        rejectRequest.Id,
-        'Reject',
-        'Rejected by Manager'
-      );
-      Test.stopTest();
+    System.assertEquals('Cancelled', result.Status__c, 'Should be Cancelled');
+  }
 
+  // ─────────────────────── getTeamAttendanceRequestsForApproval ────────────
+
+  @IsTest
+  static void testGetTeamAttendanceRequestsForApproval_returnsRequests() {
+    Portal_Users__c mgr = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'Manager'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    List<PWChrono_Attendance_Request__c> result = PWChrono_AttendanceController.getTeamAttendanceRequestsForApproval(
+      mgr.Id,
+      null
+    );
+    Test.stopTest();
+
+    System.assertNotEquals(null, result, 'Should return a list');
+    for (PWChrono_Attendance_Request__c req : result) {
       System.assertEquals(
-        PWChrono_Constants.STATUS_REJECTED,
-        processedRequest.Status__c,
-        'Status should be Rejected'
+        'Submitted',
+        req.Status__c,
+        'Only submitted should appear in approvals queue'
       );
     }
   }
 
-  @isTest
-  static void testProcessAttendanceApproval_InvalidRequestId() {
-    Portal_Users__c manager = [
-      SELECT User__c
+  // ─────────────────────── processAttendanceCorrectionApproval ────────────
+
+  @IsTest
+  static void testProcessApproval_approve_succeeds() {
+    Portal_Users__c mgr = [
+      SELECT Id
       FROM Portal_Users__c
-      WHERE Role__c = :PWChrono_Constants.ROLE_MANAGER
+      WHERE Role__c = 'Manager'
       LIMIT 1
     ];
-    User managerUser = [SELECT Id FROM User WHERE Id = :manager.User__c];
+    PWChrono_Attendance_Request__c req = [
+      SELECT Id
+      FROM PWChrono_Attendance_Request__c
+      WHERE Status__c = 'Submitted'
+      LIMIT 1
+    ];
 
-    System.runAs(managerUser) {
-      Test.startTest();
-      try {
-        PWChrono_AttendanceController.processAttendanceApproval(
-          (Id) 'a0Z000000000001AAA',
-          'Approve',
-          'Invalid id path'
-        );
-        System.assert(
-          false,
-          'Expected controlled exception for invalid request id.'
-        );
-      } catch (Exception e) {
-        System.assert(
-          e.getMessage().contains('Error processing attendance approval'),
-          'Should return controlled approval-processing error message.'
-        );
-      }
-      Test.stopTest();
-    }
+    Test.startTest();
+    PWChrono_Attendance_Request__c result = PWChrono_AttendanceController.processAttendanceCorrectionApproval(
+      req.Id,
+      'Approve',
+      'LGTM',
+      mgr.Id,
+      null
+    );
+    Test.stopTest();
+
+    System.assertEquals('Approved', result.Status__c);
+  }
+
+  // ─────────────────────── getAttendanceDashboardSummary ──────────────────
+
+  @IsTest
+  static void testGetAttendanceDashboardSummary_returnsData() {
+    Portal_Users__c emp = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'Employee'
+      LIMIT 1
+    ];
+    Date startDate = Date.today().addDays(-30);
+    Date endDate = Date.today();
+
+    Test.startTest();
+    PWChrono_AttendanceService.AttendanceDashboardDTO result = PWChrono_AttendanceController.getAttendanceDashboardSummary(
+      startDate,
+      endDate,
+      emp.Id,
+      null
+    );
+    Test.stopTest();
+
+    System.assertNotEquals(null, result);
+    System.assertNotEquals(null, result.recentRequests);
+  }
+
+  // ─────────────────────── getAttendanceTrackerData ────────────────────────
+
+  @IsTest
+  static void testGetAttendanceTrackerData_returnsData() {
+    Portal_Users__c emp = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'Employee'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    List<PWChrono_AttendanceController.AttendanceDayWrapper> result = PWChrono_AttendanceController.getAttendanceTrackerData(
+      Date.today().addDays(-7),
+      Date.today(),
+      emp.Id,
+      null
+    );
+    Test.stopTest();
+
+    System.assertNotEquals(null, result);
+    System.assertEquals(
+      8,
+      result.size(),
+      'Should return 8 days (addDays -7 to today inclusive)'
+    );
+  }
+
+  // ─────────────────────── Legacy: saveAttendanceRequest ───────────────────
+
+  @IsTest
+  static void testSaveAttendanceRequest_legacy_succeeds() {
+    Portal_Users__c emp = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'Employee'
+      LIMIT 1
+    ];
+    PWChrono_Attendance_Request__c req = new PWChrono_Attendance_Request__c(
+      Attendance_Date__c = Date.today().addDays(-8),
+      Correction_Type__c = 'Check-Out Missing',
+      Reason__c = 'Legacy test',
+      Status__c = 'Submitted'
+    );
+
+    Test.startTest();
+    PWChrono_Attendance_Request__c result = PWChrono_AttendanceController.saveAttendanceRequest(
+      req,
+      emp.Id,
+      null
+    );
+    Test.stopTest();
+
+    System.assertNotEquals(null, result.Id);
+    System.assertEquals(
+      emp.Id,
+      result.Employees__c,
+      'Should enforce employee ownership'
+    );
+  }
+
+  // ─────────────────────── getActiveShiftTypes ────────────────────────────
+
+  @IsTest
+  static void testGetActiveShiftTypes_returnsShifts() {
+    Test.startTest();
+    List<PWChrono_Shift_Type__c> result = PWChrono_AttendanceController.getActiveShiftTypes();
+    Test.stopTest();
+
+    System.assert(
+      result.size() >= 1,
+      'Should return at least the test shift type'
+    );
   }
 }

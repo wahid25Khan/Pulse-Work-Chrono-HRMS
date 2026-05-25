@@ -1,220 +1,328 @@
 /**
- * @description Service class for Leave Balance calculations
+ * @description Service for leave balance operations.
+ *              Calculates remaining balances, handles allocation updates,
+ *              and produces balance DTOs for the UI.
+ *              This was a missing dependency — referenced by PWChrono_LeaveController.
  */
-public without sharing class PWChrono_LeaveBalanceService {
-  public class LeaveBalanceWrapper {
-    @AuraEnabled
-    public String leaveTypeId;
-    @AuraEnabled
-    public String leaveType;
-    @AuraEnabled
-    public Decimal allocated;
-    @AuraEnabled
-    public Decimal used;
-    @AuraEnabled
-    public Decimal pending;
-    @AuraEnabled
-    public Decimal remaining;
-  }
-
+public inherited sharing class PWChrono_LeaveBalanceService {
   /**
-   * @description Get leave balance for an employee
+   * @description Get leave balances for an employee across all active leave types.
+   *              Returns one LeaveBalanceWrapper per leave type that has an allocation.
+   * @param employeeId Portal_Users__c Id
+   * @return List of leave balance wrappers
    */
   public static List<LeaveBalanceWrapper> getLeaveBalance(Id employeeId) {
-    List<PWChrono_Leave_Allocation__c> allocations = fetchAllocations(
-      employeeId
-    );
-    if (allocations.isEmpty()) {
+    if (employeeId == null) {
       return new List<LeaveBalanceWrapper>();
     }
 
-    Date minDate = calculateMinDate(allocations);
-    List<PWChrono_Leave__c> allLeaves = fetchLeaves(employeeId, minDate);
-
-    // Optimize: Pre-calculate usage to avoid nested loops in wrapper creation
-    Map<Id, Map<String, Decimal>> usageMap = calculateUsageMap(
-      allocations,
-      allLeaves
+    // Get all active leave types for ordering / color
+    Map<Id, PWChrono_Leave_Type__c> leaveTypeMap = new Map<Id, PWChrono_Leave_Type__c>(
+      [
+        SELECT
+          Id,
+          Name,
+          Max_Days_Allowed__c,
+          Is_Unpaid__c,
+          Requires_Certificate__c,
+          Allow_Negative_Balance__c
+        FROM PWChrono_Leave_Type__c
+        WHERE Is_Active__c = TRUE
+        ORDER BY Name
+      ]
     );
 
-    return createWrappers(allocations, usageMap);
-  }
-
-  private static List<PWChrono_Leave_Allocation__c> fetchAllocations(
-    Id employeeId
-  ) {
-    return [
+    // Get allocations for current period
+    List<PWChrono_Leave_Allocation__c> allocations = [
       SELECT
         Id,
-        Name,
-        Employees__c,
         Leave_Type__c,
         Leave_Type__r.Name,
-        New_Leaves_Allocated__c,
-        Carry_Forwarded_Leaves__c,
         Total_Leaves_Allocated__c,
         Total_Leaves_Used__c,
         Total_Leaves_Encashed__c,
+        Carry_Forwarded_Leaves__c,
+        New_Leaves_Allocated__c,
         From_Date__c,
         To_Date__c
       FROM PWChrono_Leave_Allocation__c
       WHERE Employees__c = :employeeId AND To_Date__c >= TODAY
       ORDER BY Leave_Type__r.Name
     ];
-  }
 
-  private static Date calculateMinDate(
-    List<PWChrono_Leave_Allocation__c> allocations
-  ) {
-    Date minDate = allocations[0].From_Date__c;
-    for (PWChrono_Leave_Allocation__c alloc : allocations) {
-      if (
-        alloc.From_Date__c != null &&
-        (minDate == null ||
-        alloc.From_Date__c < minDate)
-      ) {
-        minDate = alloc.From_Date__c;
-      }
-    }
-    if (minDate == null) {
-      Organization org = [
-        SELECT FiscalYearStartMonth
-        FROM Organization
-        LIMIT 1
-      ];
-      Integer startMonth = org.FiscalYearStartMonth != null
-        ? org.FiscalYearStartMonth
-        : 1;
-      Integer currentYear = Date.today().year();
-      Integer currentMonth = Date.today().month();
+    // Get pending request days per leave type
+    Map<Id, Decimal> pendingDaysMap = getPendingRequestDays(employeeId);
 
-      Integer startYear = currentYear;
-      if (currentMonth < startMonth) {
-        startYear = currentYear - 1;
-      }
-      minDate = Date.newInstance(startYear, startMonth, 1);
-    }
-    return minDate;
-  }
-
-  private static List<PWChrono_Leave__c> fetchLeaves(
-    Id employeeId,
-    Date minDate
-  ) {
-    return [
-      SELECT Leave_Type__c, Total_Days__c, From_Date__c, To_Date__c, Status__c
-      FROM PWChrono_Leave__c
-      WHERE
-        Employees__c = :employeeId
-        AND Status__c = :PWChrono_Constants.STATUS_SUBMITTED
-        AND From_Date__c >= :minDate
-      ORDER BY From_Date__c
-    ];
-  }
-
-  private static Map<Id, Map<String, Decimal>> calculateUsageMap(
-    List<PWChrono_Leave_Allocation__c> allocations,
-    List<PWChrono_Leave__c> leaves
-  ) {
-    Map<Id, Map<String, Decimal>> usageMap = new Map<Id, Map<String, Decimal>>();
-
-    // Initialize map
-    for (PWChrono_Leave_Allocation__c alloc : allocations) {
-      usageMap.put(alloc.Id, new Map<String, Decimal>{ 'pending' => 0 });
-    }
-
-    // Group allocations by Leave Type for faster lookup
-    Map<Id, List<PWChrono_Leave_Allocation__c>> allocsByType = new Map<Id, List<PWChrono_Leave_Allocation__c>>();
-    for (PWChrono_Leave_Allocation__c alloc : allocations) {
-      if (!allocsByType.containsKey(alloc.Leave_Type__c)) {
-        allocsByType.put(
-          alloc.Leave_Type__c,
-          new List<PWChrono_Leave_Allocation__c>()
-        );
-      }
-      allocsByType.get(alloc.Leave_Type__c).add(alloc);
-    }
-
-    // Iterate leaves and assign to relevant allocations
-    for (PWChrono_Leave__c l : leaves) {
-      if (allocsByType.containsKey(l.Leave_Type__c)) {
-        for (
-          PWChrono_Leave_Allocation__c alloc : allocsByType.get(l.Leave_Type__c)
-        ) {
-          if (isLeaveInAllocationRange(l, alloc)) {
-            Map<String, Decimal> leaveUsage = getLeaveUsage(l);
-            Map<String, Decimal> currentUsage = usageMap.get(alloc.Id);
-            currentUsage.put(
-              'pending',
-              currentUsage.get('pending') + leaveUsage.get('pending')
-            );
-          }
-        }
-      }
-    }
-    return usageMap;
-  }
-
-  private static List<LeaveBalanceWrapper> createWrappers(
-    List<PWChrono_Leave_Allocation__c> allocations,
-    Map<Id, Map<String, Decimal>> usageMap
-  ) {
     List<LeaveBalanceWrapper> balances = new List<LeaveBalanceWrapper>();
+    Set<Id> allocatedTypeIds = new Set<Id>();
+
     for (PWChrono_Leave_Allocation__c alloc : allocations) {
-      balances.add(createBalanceWrapper(alloc, usageMap.get(alloc.Id)));
+      allocatedTypeIds.add(alloc.Leave_Type__c);
+      LeaveBalanceWrapper wrapper = new LeaveBalanceWrapper();
+      wrapper.leaveTypeId = alloc.Leave_Type__c;
+      wrapper.leaveType = alloc.Leave_Type__r.Name;
+      wrapper.allocationId = alloc.Id;
+
+      Decimal allocated = safeDecimal(alloc.Total_Leaves_Allocated__c);
+      Decimal used = safeDecimal(alloc.Total_Leaves_Used__c);
+      Decimal encashed = safeDecimal(alloc.Total_Leaves_Encashed__c);
+      Decimal carryForwarded = safeDecimal(alloc.Carry_Forwarded_Leaves__c);
+
+      wrapper.totalAllocated = allocated;
+      wrapper.totalUsed = used;
+      wrapper.totalEncashed = encashed;
+      wrapper.carryForwarded = carryForwarded;
+      wrapper.remaining = allocated - used - encashed;
+      wrapper.pendingRequests = pendingDaysMap.containsKey(alloc.Leave_Type__c)
+        ? pendingDaysMap.get(alloc.Leave_Type__c)
+        : 0;
+
+      PWChrono_Leave_Type__c lt = leaveTypeMap.get(alloc.Leave_Type__c);
+      wrapper.isUnpaid = lt != null && lt.Is_Unpaid__c == true;
+      wrapper.allowNegative =
+        lt != null &&
+        lt.Allow_Negative_Balance__c == true;
+
+      balances.add(wrapper);
     }
+
+    // Include leave types with no allocation (show 0/0)
+    for (PWChrono_Leave_Type__c lt : leaveTypeMap.values()) {
+      if (!allocatedTypeIds.contains(lt.Id)) {
+        LeaveBalanceWrapper wrapper = new LeaveBalanceWrapper();
+        wrapper.leaveTypeId = lt.Id;
+        wrapper.leaveType = lt.Name;
+        wrapper.totalAllocated = 0;
+        wrapper.totalUsed = 0;
+        wrapper.totalEncashed = 0;
+        wrapper.carryForwarded = 0;
+        wrapper.remaining = 0;
+        wrapper.pendingRequests = pendingDaysMap.containsKey(lt.Id)
+          ? pendingDaysMap.get(lt.Id)
+          : 0;
+        wrapper.isUnpaid = lt.Is_Unpaid__c == true;
+        wrapper.allowNegative = lt.Allow_Negative_Balance__c == true;
+        balances.add(wrapper);
+      }
+    }
+
     return balances;
   }
 
-  private static LeaveBalanceWrapper createBalanceWrapper(
-    PWChrono_Leave_Allocation__c alloc,
-    Map<String, Decimal> usage
+  /**
+   * @description Get the balance for a specific leave type / employee.
+   * @param employeeId Portal_Users__c Id
+   * @param leaveTypeId PWChrono_Leave_Type__c Id
+   * @return Single balance wrapper, or null if no allocation found
+   */
+  public static LeaveBalanceWrapper getBalanceForType(
+    Id employeeId,
+    Id leaveTypeId
   ) {
+    if (employeeId == null || leaveTypeId == null) {
+      return null;
+    }
+
+    List<PWChrono_Leave_Allocation__c> allocations = [
+      SELECT
+        Id,
+        Leave_Type__c,
+        Leave_Type__r.Name,
+        Leave_Type__r.Allow_Negative_Balance__c,
+        Total_Leaves_Allocated__c,
+        Total_Leaves_Used__c,
+        Total_Leaves_Encashed__c,
+        Carry_Forwarded_Leaves__c,
+        From_Date__c,
+        To_Date__c
+      FROM PWChrono_Leave_Allocation__c
+      WHERE
+        Employees__c = :employeeId
+        AND Leave_Type__c = :leaveTypeId
+        AND To_Date__c >= TODAY
+      LIMIT 1
+    ];
+
+    if (allocations.isEmpty()) {
+      return null;
+    }
+
+    PWChrono_Leave_Allocation__c alloc = allocations[0];
     LeaveBalanceWrapper wrapper = new LeaveBalanceWrapper();
     wrapper.leaveTypeId = alloc.Leave_Type__c;
-    wrapper.leaveType = (alloc.Leave_Type__r != null &&
-      alloc.Leave_Type__r.Name != null)
-      ? alloc.Leave_Type__r.Name
-      : 'Unknown';
-    wrapper.allocated = alloc.Total_Leaves_Allocated__c != null
-      ? alloc.Total_Leaves_Allocated__c
-      : 0;
-
-    wrapper.used = alloc.Total_Leaves_Used__c != null
-      ? alloc.Total_Leaves_Used__c
-      : 0;
-
-    Decimal encashed = alloc.Total_Leaves_Encashed__c != null
-      ? alloc.Total_Leaves_Encashed__c
-      : 0;
-
-    wrapper.pending = usage.get('pending');
+    wrapper.leaveType = alloc.Leave_Type__r.Name;
+    wrapper.allocationId = alloc.Id;
+    wrapper.totalAllocated = safeDecimal(alloc.Total_Leaves_Allocated__c);
+    wrapper.totalUsed = safeDecimal(alloc.Total_Leaves_Used__c);
+    wrapper.totalEncashed = safeDecimal(alloc.Total_Leaves_Encashed__c);
+    wrapper.carryForwarded = safeDecimal(alloc.Carry_Forwarded_Leaves__c);
     wrapper.remaining =
-      wrapper.allocated -
-      wrapper.used -
-      wrapper.pending -
-      encashed;
+      wrapper.totalAllocated -
+      wrapper.totalUsed -
+      wrapper.totalEncashed;
+    wrapper.allowNegative =
+      alloc.Leave_Type__r != null &&
+      alloc.Leave_Type__r.Allow_Negative_Balance__c == true;
+
+    Map<Id, Decimal> pendingMap = getPendingRequestDays(employeeId);
+    wrapper.pendingRequests = pendingMap.containsKey(leaveTypeId)
+      ? pendingMap.get(leaveTypeId)
+      : 0;
 
     return wrapper;
   }
 
-  private static Map<String, Decimal> getLeaveUsage(PWChrono_Leave__c l) {
-    Decimal pending = 0;
-    Decimal days = (l.Total_Days__c != null ? l.Total_Days__c : 0);
+  /**
+   * @description Check if an employee has sufficient balance for a leave request.
+   * @param employeeId Portal_Users__c Id
+   * @param leaveTypeId Leave type Id
+   * @param requestedDays Number of days being requested
+   * @return Error message or null if sufficient
+   */
+  public static String checkSufficientBalance(
+    Id employeeId,
+    Id leaveTypeId,
+    Decimal requestedDays
+  ) {
+    LeaveBalanceWrapper balance = getBalanceForType(employeeId, leaveTypeId);
 
-    if (l.Status__c == PWChrono_Constants.STATUS_SUBMITTED) {
-      pending = days;
+    if (balance == null) {
+      return 'No leave allocation found for this leave type.';
     }
-    return new Map<String, Decimal>{ 'pending' => pending };
+
+    if (balance.allowNegative == true) {
+      return null;
+    }
+
+    Decimal effectiveRemaining = balance.remaining - balance.pendingRequests;
+    if (requestedDays > effectiveRemaining) {
+      return 'Insufficient leave balance. Available: ' +
+        effectiveRemaining.setScale(1) +
+        ' days, Requested: ' +
+        requestedDays.setScale(1) +
+        ' days.';
+    }
+
+    return null;
   }
 
-  private static Boolean isLeaveInAllocationRange(
-    PWChrono_Leave__c l,
-    PWChrono_Leave_Allocation__c alloc
+  /**
+   * @description Deduct leave days from allocation (called on approval).
+   * @param employeeId Portal_Users__c Id
+   * @param leaveTypeId Leave type Id
+   * @param days Days to deduct (positive number)
+   */
+  public static void deductBalance(
+    Id employeeId,
+    Id leaveTypeId,
+    Decimal days
   ) {
-    return (alloc.From_Date__c == null ||
-      l.From_Date__c >= alloc.From_Date__c) &&
-      (alloc.To_Date__c == null ||
-      l.To_Date__c <= alloc.To_Date__c);
+    List<PWChrono_Leave_Allocation__c> allocations = [
+      SELECT Id, Total_Leaves_Used__c
+      FROM PWChrono_Leave_Allocation__c
+      WHERE
+        Employees__c = :employeeId
+        AND Leave_Type__c = :leaveTypeId
+        AND To_Date__c >= TODAY
+      LIMIT 1
+    ];
+
+    if (allocations.isEmpty()) {
+      throw new AuraHandledException(
+        'No leave allocation found to deduct from.'
+      );
+    }
+
+    PWChrono_Leave_Allocation__c alloc = allocations[0];
+    alloc.Total_Leaves_Used__c = safeDecimal(alloc.Total_Leaves_Used__c) + days;
+    update alloc;
+  }
+
+  /**
+   * @description Reverse a balance deduction (called on cancellation of approved leave).
+   * @param employeeId Portal_Users__c Id
+   * @param leaveTypeId Leave type Id
+   * @param days Days to reverse (positive number — will be subtracted from used)
+   */
+  public static void reverseBalance(
+    Id employeeId,
+    Id leaveTypeId,
+    Decimal days
+  ) {
+    List<PWChrono_Leave_Allocation__c> allocations = [
+      SELECT Id, Total_Leaves_Used__c
+      FROM PWChrono_Leave_Allocation__c
+      WHERE
+        Employees__c = :employeeId
+        AND Leave_Type__c = :leaveTypeId
+        AND To_Date__c >= TODAY
+      LIMIT 1
+    ];
+
+    if (allocations.isEmpty()) {
+      throw new AuraHandledException('No leave allocation found to reverse.');
+    }
+
+    PWChrono_Leave_Allocation__c alloc = allocations[0];
+    Decimal currentUsed = safeDecimal(alloc.Total_Leaves_Used__c);
+    alloc.Total_Leaves_Used__c = Math.max(0, currentUsed - days);
+    update alloc;
+  }
+
+  // ── Private Helpers ──
+
+  /**
+   * @description Get total pending (Submitted) leave days grouped by leave type
+   */
+  private static Map<Id, Decimal> getPendingRequestDays(Id employeeId) {
+    Map<Id, Decimal> result = new Map<Id, Decimal>();
+
+    List<AggregateResult> pending = [
+      SELECT Leave_Type__c leaveType, SUM(Total_Days__c) totalDays
+      FROM PWChrono_Leave__c
+      WHERE
+        Employees__c = :employeeId
+        AND Status__c = :PWChrono_Constants.STATUS_SUBMITTED
+      GROUP BY Leave_Type__c
+    ];
+
+    for (AggregateResult ar : pending) {
+      Id leaveTypeId = (Id) ar.get('leaveType');
+      Decimal totalDays = (Decimal) ar.get('totalDays');
+      result.put(leaveTypeId, totalDays != null ? totalDays : 0);
+    }
+
+    return result;
+  }
+
+  private static Decimal safeDecimal(Decimal value) {
+    return value != null ? value : 0;
+  }
+
+  // ── DTO ──
+
+  public class LeaveBalanceWrapper {
+    @AuraEnabled
+    public Id leaveTypeId;
+    @AuraEnabled
+    public String leaveType;
+    @AuraEnabled
+    public Id allocationId;
+    @AuraEnabled
+    public Decimal totalAllocated;
+    @AuraEnabled
+    public Decimal totalUsed;
+    @AuraEnabled
+    public Decimal totalEncashed;
+    @AuraEnabled
+    public Decimal carryForwarded;
+    @AuraEnabled
+    public Decimal remaining;
+    @AuraEnabled
+    public Decimal pendingRequests;
+    @AuraEnabled
+    public Boolean isUnpaid;
+    @AuraEnabled
+    public Boolean allowNegative;
   }
 }

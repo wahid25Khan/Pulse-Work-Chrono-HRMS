@@ -201,6 +201,8 @@ private class PWChrono_AdminController_Test {
     System.runAs(adminUser) {
       Test.startTest();
       List<PWChrono_Attendance_Request__c> requests = PWChrono_AdminController.getRecentAttendanceRequests(
+        null,
+        null,
         5
       );
       Test.stopTest();
