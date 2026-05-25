@@ -9,8 +9,8 @@ import { LightningElement, track, wire } from "lwc";
 
 export default class PwchronoRecruitmentPipeline extends LightningElement {
   static renderMode = "light";
-  portalUserId = getEmployeeId();
-  sessionToken = getSessionToken();
+  @track portalUserId = getEmployeeId();
+  @track sessionToken = getSessionToken();
 
   @track hasAccess = false;
   @track accessLoaded = false;

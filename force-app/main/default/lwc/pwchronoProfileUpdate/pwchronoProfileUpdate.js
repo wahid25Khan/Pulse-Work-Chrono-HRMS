@@ -23,11 +23,7 @@ export default class PwchronoProfileUpdate extends LightningElement {
     Phone__c: "",
     Address__c: "",
     Emergency_Contact_Name__c: "",
-    Emergency_Contact_Phone__c: "",
-    City: "",
-    State: "",
-    Country: "",
-    PostalCode: ""
+    Emergency_Contact_Phone__c: ""
   };
 
   wiredProfileResult;
@@ -56,6 +52,16 @@ export default class PwchronoProfileUpdate extends LightningElement {
     return this.profile.Name.substring(0, 2).toUpperCase();
   }
 
+  resetFormState() {
+    this.formState = {
+      Name: this.profile?.Name || "",
+      Phone__c: this.profile?.Phone__c || "",
+      Address__c: this.profile?.Address__c || "",
+      Emergency_Contact_Name__c: this.profile?.Emergency_Contact_Name__c || "",
+      Emergency_Contact_Phone__c: this.profile?.Emergency_Contact_Phone__c || ""
+    };
+  }
+
   @wire(getProfileWithAccess, {
     targetEmployeeId: "$targetEmployeeId",
     portalUserId: "$portalUserId",
@@ -66,19 +72,7 @@ export default class PwchronoProfileUpdate extends LightningElement {
     if (result.data) {
       this.profile = { ...result.data };
       this.error = undefined;
-      // Initialize form state
-      this.formState = {
-        Name: this.profile.Name || "",
-        Phone__c: this.profile.Phone__c || "",
-        Address__c: this.profile.Address__c || "",
-        Emergency_Contact_Name__c: this.profile.Emergency_Contact_Name__c || "",
-        Emergency_Contact_Phone__c:
-          this.profile.Emergency_Contact_Phone__c || "",
-        City: "",
-        State: "",
-        Country: "",
-        PostalCode: ""
-      };
+      this.resetFormState();
     } else if (result.error) {
       this.error = result.error;
       this.profile = undefined;
@@ -108,18 +102,7 @@ export default class PwchronoProfileUpdate extends LightningElement {
   handleCancelEdit() {
     this.updatedFields = {};
     if (this.profile) {
-      this.formState = {
-        Name: this.profile.Name || "",
-        Phone__c: this.profile.Phone__c || "",
-        Address__c: this.profile.Address__c || "",
-        Emergency_Contact_Name__c: this.profile.Emergency_Contact_Name__c || "",
-        Emergency_Contact_Phone__c:
-          this.profile.Emergency_Contact_Phone__c || "",
-        City: "",
-        State: "",
-        Country: "",
-        PostalCode: ""
-      };
+      this.resetFormState();
     }
   }
 

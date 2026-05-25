@@ -1,40 +1,31 @@
 <template>
-  <div
-    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-  >
-    <!-- Header -->
-    <div
-      class="bg-gradient-to-r from-cyan-500 to-cyan-600 px-6 py-5 text-white"
-    >
-      <h1 class="text-xl font-bold">Leave Calendar</h1>
-      <p class="text-sm text-white/80 mt-1">
+  <div class="card overflow-hidden">
+    <div class="card-header bg-primary text-white">
+      <h5 class="card-title mb-0">Leave Calendar</h5>
+      <p class="mb-0 small opacity-75 mt-1">
         View scheduled leaves and holidays
       </p>
     </div>
 
-    <div class="p-4 md:p-6">
-      <!-- Loading State -->
+    <div class="card-body">
       <template if:true={isLoading}>
-        <div class="flex items-center justify-center py-12">
-          <div
-            class="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600"
-          ></div>
-          <span class="ml-3 text-gray-600">Loading calendar...</span>
+        <div class="d-flex align-items-center justify-content-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span class="ms-2 text-muted">Loading calendar...</span>
         </div>
       </template>
 
       <template if:false={isLoading}>
-        <!-- Header: Month Navigation -->
-        <div class="flex items-center justify-between mb-6">
+        <div class="d-flex align-items-center justify-content-between mb-4">
           <lightning-button-icon
             icon-name="utility:chevronleft"
             onclick={handlePrevMonth}
             alternative-text="Previous Month"
             variant="border-filled"
           ></lightning-button-icon>
-          <h2 class="text-xl font-bold text-gray-800">
-            {currentMonthName} {currentYear}
-          </h2>
+          <h6 class="mb-0 fw-bold">{currentMonthName} {currentYear}</h6>
           <lightning-button-icon
             icon-name="utility:chevronright"
             onclick={handleNextMonth}
@@ -43,10 +34,8 @@
           ></lightning-button-icon>
         </div>
 
-        <!-- Calendar Grid -->
         <template if:true={hasLeaveOrHolidays}>
           <div class="calendar-grid">
-            <!-- Weekday Headers -->
             <div class="calendar-header">Sun</div>
             <div class="calendar-header">Mon</div>
             <div class="calendar-header">Tue</div>
@@ -55,7 +44,6 @@
             <div class="calendar-header">Fri</div>
             <div class="calendar-header">Sat</div>
 
-            <!-- Days -->
             <template for:each={calendarDays} for:item="day">
               <div key={day.id} class={day.cssClass}>
                 <div class="day-number">{day.number}</div>
@@ -75,21 +63,10 @@
           </div>
         </template>
 
-        <!-- Empty State -->
         <template if:false={hasLeaveOrHolidays}>
-          <div
-            class="flex flex-col items-center justify-center py-12 text-center"
-          >
-            <div
-              class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"
-            >
-              <lightning-icon
-                icon-name="utility:event"
-                size="medium"
-                class="text-gray-400"
-              ></lightning-icon>
-            </div>
-            <p class="text-gray-500">No leave scheduled for this period.</p>
+          <div class="text-center py-5">
+            <i class="ti ti-calendar-off fs-1 text-muted d-block mb-2"></i>
+            <p class="text-muted mb-0">No leave scheduled for this period.</p>
           </div>
         </template>
       </template>

@@ -1,14 +1,7 @@
-<!--
-  @description       : 
-  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
-  @group             : 
-  @last modified on  : 01-17-2026
-  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
--->
 <template>
-  <div class="bg-white rounded-lg shadow p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-bold text-gray-800">Attendance Settings</h2>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="card-title mb-0">Attendance Settings</h5>
       <lightning-button
         label="Add Shift Type"
         icon-name="utility:add"
@@ -16,76 +9,49 @@
       ></lightning-button>
     </div>
 
-    <!-- Shift Types Section -->
-    <div class="mb-8">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">
-        Shift Configuration
-      </h3>
+    <div class="card-body">
+      <h6 class="fw-semibold mb-3">Shift Configuration</h6>
+
       <template if:true={isLoading}>
-        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        <div class="d-flex justify-content-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
       </template>
 
       <template if:false={isLoading}>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+        <div class="table-responsive mb-4">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
               <tr>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Shift Name
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Start Time
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  End Time
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Grace Period (Min)
-                </th>
-                <th
-                  class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Actions
-                </th>
+                <th>Shift Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Grace Period (Min)</th>
+                <th class="text-end">Actions</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody>
               <template for:each={shiftTypes} for:item="shift">
                 <tr key={shift.Id}>
-                  <td
-                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    {shift.Name}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td class="fw-medium">{shift.Name}</td>
+                  <td class="text-muted">
                     <lightning-formatted-time
                       value={shift.Start_Time__c}
                     ></lightning-formatted-time>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td class="text-muted">
                     <lightning-formatted-time
                       value={shift.End_Time__c}
                     ></lightning-formatted-time>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {shift.Grace_Period_Minutes__c}
-                  </td>
-                  <td
-                    class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
-                  >
+                  <td class="text-muted">{shift.Grace_Period_Minutes__c}</td>
+                  <td class="text-end">
                     <lightning-button-icon
                       icon-name="utility:edit"
                       variant="bare"
                       alternative-text="Edit"
-                      class="mr-2"
                       data-id={shift.Id}
                       onclick={handleEdit}
                     ></lightning-button-icon>
@@ -96,118 +62,118 @@
           </table>
         </div>
       </template>
-    </div>
 
-    <!-- General Attendance Rules -->
-    <div>
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">Attendance Rules</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <lightning-input
-          type="checkbox"
-          label="Enable Geolocation Tracking"
-          checked={settings.geoTracking}
-          onchange={handleSettingChange}
-          data-setting="geoTracking"
-        ></lightning-input>
-        <lightning-input
-          type="checkbox"
-          label="Allow Remote Check-in"
-          checked={settings.remoteCheckin}
-          onchange={handleSettingChange}
-          data-setting="remoteCheckin"
-        ></lightning-input>
-        <lightning-input
-          type="checkbox"
-          label="Auto Check-out at Midnight"
-          checked={settings.autoCheckout}
-          onchange={handleSettingChange}
-          data-setting="autoCheckout"
-        ></lightning-input>
-        <lightning-input
-          type="checkbox"
-          label="IP Restriction Enabled"
-          checked={settings.ipRestriction}
-          onchange={handleSettingChange}
-          data-setting="ipRestriction"
-        ></lightning-input>
+      <h6 class="fw-semibold mb-3">Attendance Rules</h6>
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <lightning-input
+            type="checkbox"
+            label="Enable Geolocation Tracking"
+            checked={settings.geoTracking}
+            onchange={handleSettingChange}
+            data-setting="geoTracking"
+          ></lightning-input>
+        </div>
+        <div class="col-12 col-md-6">
+          <lightning-input
+            type="checkbox"
+            label="Allow Remote Check-in"
+            checked={settings.remoteCheckin}
+            onchange={handleSettingChange}
+            data-setting="remoteCheckin"
+          ></lightning-input>
+        </div>
+        <div class="col-12 col-md-6">
+          <lightning-input
+            type="checkbox"
+            label="Auto Check-out at Midnight"
+            checked={settings.autoCheckout}
+            onchange={handleSettingChange}
+            data-setting="autoCheckout"
+          ></lightning-input>
+        </div>
+        <div class="col-12 col-md-6">
+          <lightning-input
+            type="checkbox"
+            label="IP Restriction Enabled"
+            checked={settings.ipRestriction}
+            onchange={handleSettingChange}
+            data-setting="ipRestriction"
+          ></lightning-input>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Shift Type Modal -->
   <template if:true={showModal}>
-    <dialog
-      class="slds-modal slds-fade-in-open slds-modal_medium"
-      aria-labelledby="modal-heading-01"
-      aria-modal="true"
-      open
-    >
-      <div class="slds-modal__container">
-        <button
-          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-          title="Close"
-          onclick={closeModal}
-        >
-          <lightning-icon
-            icon-name="utility:close"
-            alternative-text="close"
-            variant="inverse"
-            size="small"
-          ></lightning-icon>
-          <span class="slds-assistive-text">Close</span>
-        </button>
-        <div class="slds-modal__header">
-          <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
-            {modalTitle}
-          </h1>
-        </div>
-        <div class="slds-modal__content slds-p-around_medium">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <lightning-input
-              label="Shift Name"
-              value={currentShift.Name}
-              onchange={handleShiftChange}
-              data-field="Name"
-              required
-            ></lightning-input>
-            <lightning-input
-              type="number"
-              label="Grace Period (Minutes)"
-              value={currentShift.Grace_Period_Minutes__c}
-              onchange={handleShiftChange}
-              data-field="Grace_Period_Minutes__c"
-            ></lightning-input>
-            <lightning-input
-              type="time"
-              label="Start Time"
-              value={currentShift.Start_Time__c}
-              onchange={handleShiftChange}
-              data-field="Start_Time__c"
-              required
-            ></lightning-input>
-            <lightning-input
-              type="time"
-              label="End Time"
-              value={currentShift.End_Time__c}
-              onchange={handleShiftChange}
-              data-field="End_Time__c"
-              required
-            ></lightning-input>
+    <div class="modal fade show d-block" role="dialog" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{modalTitle}</h5>
+            <button
+              type="button"
+              class="btn-close"
+              onclick={closeModal}
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <lightning-input
+                  label="Shift Name"
+                  value={currentShift.Name}
+                  onchange={handleShiftChange}
+                  data-field="Name"
+                  required
+                ></lightning-input>
+              </div>
+              <div class="col-12 col-md-6">
+                <lightning-input
+                  type="number"
+                  label="Grace Period (Minutes)"
+                  value={currentShift.Grace_Period_Minutes__c}
+                  onchange={handleShiftChange}
+                  data-field="Grace_Period_Minutes__c"
+                ></lightning-input>
+              </div>
+              <div class="col-12 col-md-6">
+                <lightning-input
+                  type="time"
+                  label="Start Time"
+                  value={currentShift.Start_Time__c}
+                  onchange={handleShiftChange}
+                  data-field="Start_Time__c"
+                  required
+                ></lightning-input>
+              </div>
+              <div class="col-12 col-md-6">
+                <lightning-input
+                  type="time"
+                  label="End Time"
+                  value={currentShift.End_Time__c}
+                  onchange={handleShiftChange}
+                  data-field="End_Time__c"
+                  required
+                ></lightning-input>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <lightning-button
+              label="Cancel"
+              variant="neutral"
+              onclick={closeModal}
+            ></lightning-button>
+            <lightning-button
+              label="Save"
+              variant="brand"
+              onclick={handleSaveShift}
+            ></lightning-button>
           </div>
         </div>
-        <div class="slds-modal__footer">
-          <button class="slds-button slds-button_neutral" onclick={closeModal}>
-            Cancel
-          </button>
-          <button
-            class="slds-button slds-button_brand"
-            onclick={handleSaveShift}
-          >
-            Save
-          </button>
-        </div>
       </div>
-    </dialog>
-    <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
   </template>
 </template>

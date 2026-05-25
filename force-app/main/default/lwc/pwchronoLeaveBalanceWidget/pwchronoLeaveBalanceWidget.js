@@ -7,8 +7,8 @@ export default class PwchronoLeaveBalanceWidget extends LightningElement {
   @track isLoading = true;
   @track loadError = null;
 
-  employeeId;
-  sessionToken;
+  @track employeeId;
+  @track sessionToken;
 
   connectedCallback() {
     this.employeeId = getEmployeeId();

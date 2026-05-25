@@ -1,34 +1,46 @@
 <template>
   <div class="page-wrapper">
-    <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
-      <!-- PwChrono Standard Header -->
+    <div class="content container-fluid">
+      <!-- Page Header -->
       <div
         class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
       >
         <div class="my-auto mb-2">
-          <h2 class="mb-1 text-2xl font-bold text-gray-900">Apply for Leave</h2>
-          <p class="text-muted text-sm text-gray-500">
-            Submit a new leave request
-          </p>
+          <h2 class="mb-1">Apply for Leave</h2>
+          <nav>
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);"
+                  ><i class="ti ti-smart-home"></i
+                ></a>
+              </li>
+              <li class="breadcrumb-item">Leave Management</li>
+              <li class="breadcrumb-item active">Apply for Leave</li>
+            </ol>
+          </nav>
         </div>
-        <div class="d-flex my-xl-auto right-content"></div>
       </div>
 
-      <div
-        class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-      >
-        <div class="p-4 md:p-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="ti ti-calendar-plus me-2 text-primary"></i>New Leave
+            Request
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Loading -->
           <template if:true={isLoading}>
-            <div class="flex justify-center items-center p-8">
-              <div
-                class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"
-              ></div>
+            <div class="d-flex align-items-center justify-content-center p-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
           </template>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Leave Type Selection -->
-            <div>
+          <div class="row g-3">
+            <!-- Leave Type -->
+            <div class="col-12 col-md-6">
               <lightning-combobox
                 name="leaveType"
                 label="Leave Type"
@@ -41,21 +53,18 @@
             </div>
 
             <!-- Balance Display -->
-            <div class="flex items-end">
+            <div class="col-12 col-md-6 d-flex align-items-end">
               <template if:true={selectedLeaveBalance}>
-                <div
-                  class="w-full p-4 bg-green-50 rounded-xl border border-green-200"
-                >
-                  <p class="text-sm text-green-800">
-                    <span class="font-semibold">Available Balance:</span>
-                    {selectedLeaveBalance} days
-                  </p>
+                <div class="alert alert-success w-100 mb-0 py-2 px-3">
+                  <i class="ti ti-info-circle me-1"></i>
+                  <strong>Available Balance:</strong> {selectedLeaveBalance}
+                  days
                 </div>
               </template>
             </div>
 
-            <!-- Date Range -->
-            <div>
+            <!-- From Date -->
+            <div class="col-12 col-md-6">
               <lightning-input
                 type="date"
                 name="fromDate"
@@ -66,7 +75,8 @@
               ></lightning-input>
             </div>
 
-            <div>
+            <!-- To Date -->
+            <div class="col-12 col-md-6">
               <lightning-input
                 type="date"
                 name="toDate"
@@ -77,8 +87,8 @@
               ></lightning-input>
             </div>
 
-            <!-- Half Day Option -->
-            <div class="md:col-span-2">
+            <!-- Half Day -->
+            <div class="col-12">
               <lightning-input
                 type="checkbox"
                 label="Half Day"
@@ -87,16 +97,17 @@
               ></lightning-input>
             </div>
 
-            <!-- Total Days Info -->
-            <div class="md:col-span-2">
-              <p class="text-sm text-gray-500 italic">
+            <!-- Notice -->
+            <div class="col-12">
+              <p class="text-muted small mb-0">
+                <i class="ti ti-info-circle me-1"></i>
                 Total days will be calculated upon submission based on working
                 days and holidays.
               </p>
             </div>
 
             <!-- Reason -->
-            <div class="md:col-span-2">
+            <div class="col-12">
               <lightning-textarea
                 name="reason"
                 label="Reason"
@@ -108,17 +119,17 @@
           </div>
 
           <!-- Actions -->
-          <div class="flex justify-end gap-3 mt-6">
-            <lightning-button
-              label="Cancel"
-              onclick={handleCancel}
-            ></lightning-button>
-            <lightning-button
-              variant="brand"
-              label="Submit Application"
+          <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+            <button class="btn btn-light" onclick={handleCancel}>
+              <i class="ti ti-x me-1"></i>Cancel
+            </button>
+            <button
+              class="btn btn-primary"
               onclick={handleSubmit}
               disabled={isSubmitDisabled}
-            ></lightning-button>
+            >
+              <i class="ti ti-send me-1"></i>Submit Application
+            </button>
           </div>
         </div>
       </div>

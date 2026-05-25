@@ -1,219 +1,240 @@
 <template>
   <div class="page-wrapper">
-    <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
-      <!-- PwChrono Standard Header -->
+    <div class="content container-fluid">
+      <!-- Page Header -->
       <div
         class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
       >
         <div class="my-auto mb-2">
-          <h2 class="mb-1 text-2xl font-bold text-gray-900">
-            Employee Directory
-          </h2>
-          <p class="text-muted text-sm text-gray-500">
-            Find and connect with colleagues
-          </p>
+          <h2 class="mb-1">Employee Directory</h2>
+          <nav>
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);"
+                  ><i class="ti ti-smart-home"></i
+                ></a>
+              </li>
+              <li class="breadcrumb-item active">Employee Directory</li>
+            </ol>
+          </nav>
         </div>
-        <div class="d-flex my-xl-auto right-content">
-          <div class="w-full md:w-64">
+        <div class="d-flex my-xl-auto right-content align-items-center gap-2">
+          <div class="input-group input-group-sm" style="width: 260px">
+            <span class="input-group-text bg-white">
+              <i class="ti ti-search text-muted"></i>
+            </span>
             <lightning-input
               type="search"
               placeholder="Search employees..."
               onchange={handleSearch}
               variant="label-hidden"
-            >
-            </lightning-input>
+              class="flex-fill"
+            ></lightning-input>
           </div>
         </div>
       </div>
 
-      <div class="p-0">
-        <template if:true={isLoading}>
-          <div class="flex justify-center items-center p-12">
-            <div
-              class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"
-            ></div>
+      <!-- Loading -->
+      <template if:true={isLoading}>
+        <div class="d-flex align-items-center justify-content-center p-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
-        </template>
+        </div>
+      </template>
 
-        <template if:true={loadError}>
-          <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-            <div class="flex gap-3">
-              <lightning-icon
-                icon-name="utility:error"
-                alternative-text="Error"
-                variant="error"
-                class="flex-shrink-0"
-              ></lightning-icon>
-              <div>
-                <p class="font-semibold text-red-900">
-                  Error loading employees
-                </p>
-                <p class="text-sm text-red-700 mt-1">{loadError}</p>
-              </div>
-            </div>
+      <!-- Error -->
+      <template if:true={loadError}>
+        <div
+          class="alert alert-danger d-flex align-items-center gap-3"
+          role="alert"
+        >
+          <i class="ti ti-alert-circle fs-4 flex-shrink-0"></i>
+          <div>
+            <strong>Error loading employees</strong>
+            <p class="mb-0 small">{loadError}</p>
           </div>
-        </template>
+        </div>
+      </template>
 
-        <template if:true={employees}>
-          <template if:true={employees.length}>
-            <!-- Results count and pagination controls -->
-            <div
-              class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-3"
-            >
-              <span class="text-sm text-gray-600 font-medium"
-                >{totalCount} employees found</span
-              >
-              <div class="flex items-center gap-3">
-                <lightning-combobox
-                  value={pageSize}
-                  options={pageSizeOptions}
-                  onchange={handlePageSizeChange}
-                  variant="label-hidden"
-                  class="w-36"
-                ></lightning-combobox>
-              </div>
-            </div>
+      <template if:true={employees}>
+        <template if:true={employees.length}>
+          <!-- Results info + page size -->
+          <div
+            class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2"
+          >
+            <p class="mb-0 text-muted small">
+              Showing <strong>{pageInfo}</strong> of
+              <strong>{totalCount}</strong> employees
+            </p>
+            <lightning-combobox
+              value={pageSize}
+              options={pageSizeOptions}
+              onchange={handlePageSizeChange}
+              variant="label-hidden"
+            ></lightning-combobox>
+          </div>
 
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-            >
-              <template for:each={employees} for:item="emp">
-                <div
-                  key={emp.Id}
-                  class="relative bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
-                >
+          <!-- Employee Grid -->
+          <div
+            class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4"
+          >
+            <template for:each={employees} for:item="emp">
+              <div key={emp.Id} class="col">
+                <div class="card h-100 employee-card">
                   <button
-                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-0 p-0 m-0 z-10"
+                    type="button"
+                    class="emp-card-overlay"
                     onclick={handleNavigate}
                     data-id={emp.Id}
-                    type="button"
                   >
-                    <span class="sr-only">View Details</span>
+                    <span class="visually-hidden">View {emp.Name}</span>
                   </button>
-                  <!-- Card Header with Avatar -->
+
+                  <!-- Card header / avatar section -->
                   <div
-                    class="bg-gradient-to-r from-orange-50 to-orange-100 p-6 text-center border-b border-gray-200"
+                    class="card-header text-center pb-3 pt-4 bg-light border-bottom"
                   >
-                    <div
-                      class="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-xl font-bold mx-auto mb-3"
+                    <span
+                      class="avatar avatar-xl avatar-rounded bg-primary mx-auto mb-2"
                     >
-                      {emp.initials}
-                    </div>
-                    <div
-                      class="font-semibold text-gray-900 truncate"
-                      title={emp.Name}
-                    >
+                      <span class="fw-bold fs-4">{emp.initials}</span>
+                    </span>
+                    <h6 class="mb-0 text-truncate" title={emp.Name}>
                       {emp.Name}
-                    </div>
-                    <div
-                      class="text-sm text-gray-600 truncate"
-                      title={emp.Designation__c}
+                    </h6>
+                    <span class="badge bg-soft-primary text-primary mt-1"
+                      >{emp.Designation__c}</span
                     >
-                      {emp.Designation__c}
-                    </div>
                   </div>
 
-                  <!-- Card Content -->
-                  <div class="p-4 space-y-3">
-                    <div class="border-b border-gray-100 pb-3">
-                      <div
-                        class="text-xs font-medium text-gray-500 uppercase mb-1"
-                      >
-                        Department
-                      </div>
-                      <div
-                        class="text-sm text-gray-900 truncate"
-                        title={emp.Department__c}
-                      >
-                        {emp.Department__c}
-                      </div>
-                    </div>
-
-                    <div class="border-b border-gray-100 pb-3">
-                      <div
-                        class="text-xs font-medium text-gray-500 uppercase mb-1"
-                      >
-                        Email
-                      </div>
-                      <div class="text-sm text-gray-900 truncate">
-                        <lightning-formatted-email
-                          value={emp.Email__c}
-                        ></lightning-formatted-email>
-                      </div>
-                    </div>
-
-                    <div class="border-b border-gray-100 pb-3">
-                      <div
-                        class="text-xs font-medium text-gray-500 uppercase mb-1"
-                      >
-                        Phone
-                      </div>
-                      <div class="text-sm text-gray-900 truncate">
-                        <lightning-formatted-phone
-                          value={emp.Phone__c}
-                        ></lightning-formatted-phone>
-                      </div>
-                    </div>
-
-                    <template if:true={emp.managerName}>
-                      <div>
-                        <div
-                          class="text-xs font-medium text-gray-500 uppercase mb-1"
-                        >
-                          Manager
+                  <!-- Card body / details -->
+                  <div class="card-body p-3">
+                    <ul class="list-unstyled mb-0 small">
+                      <li class="d-flex align-items-start gap-2 mb-2">
+                        <i
+                          class="ti ti-building text-muted mt-1 flex-shrink-0"
+                        ></i>
+                        <div>
+                          <span
+                            class="text-muted d-block"
+                            style="
+                              font-size: 10px;
+                              text-transform: uppercase;
+                              letter-spacing: 0.5px;
+                            "
+                            >Department</span
+                          >
+                          <span
+                            class="text-truncate d-block"
+                            title={emp.Department__c}
+                            >{emp.Department__c}</span
+                          >
                         </div>
-                        <div
-                          class="text-sm text-gray-900 truncate"
-                          title={emp.managerName}
-                        >
-                          {emp.managerName}
+                      </li>
+                      <li class="d-flex align-items-start gap-2 mb-2">
+                        <i class="ti ti-mail text-muted mt-1 flex-shrink-0"></i>
+                        <div class="min-w-0">
+                          <span
+                            class="text-muted d-block"
+                            style="
+                              font-size: 10px;
+                              text-transform: uppercase;
+                              letter-spacing: 0.5px;
+                            "
+                            >Email</span
+                          >
+                          <lightning-formatted-email
+                            value={emp.Email__c}
+                          ></lightning-formatted-email>
                         </div>
-                      </div>
-                    </template>
+                      </li>
+                      <li class="d-flex align-items-start gap-2 mb-2">
+                        <i
+                          class="ti ti-phone text-muted mt-1 flex-shrink-0"
+                        ></i>
+                        <div>
+                          <span
+                            class="text-muted d-block"
+                            style="
+                              font-size: 10px;
+                              text-transform: uppercase;
+                              letter-spacing: 0.5px;
+                            "
+                            >Phone</span
+                          >
+                          <lightning-formatted-phone
+                            value={emp.Phone__c}
+                          ></lightning-formatted-phone>
+                        </div>
+                      </li>
+                      <template if:true={emp.managerName}>
+                        <li class="d-flex align-items-start gap-2">
+                          <i
+                            class="ti ti-user text-muted mt-1 flex-shrink-0"
+                          ></i>
+                          <div>
+                            <span
+                              class="text-muted d-block"
+                              style="
+                                font-size: 10px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                              "
+                              >Manager</span
+                            >
+                            <span
+                              class="text-truncate d-block"
+                              title={emp.managerName}
+                              >{emp.managerName}</span
+                            >
+                          </div>
+                        </li>
+                      </template>
+                    </ul>
                   </div>
                 </div>
-              </template>
-            </div>
-
-            <!-- Pagination Controls -->
-            <div
-              class="flex flex-col sm:flex-row items-center justify-between mt-6 gap-3 bg-gray-50 rounded-xl px-4 py-4"
-            >
-              <span class="text-sm text-gray-600">{pageInfo}</span>
-              <div class="flex gap-1">
-                <button
-                  class="px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  onclick={handlePrevPage}
-                  disabled={isPrevDisabled}
-                >
-                  ← Prev
-                </button>
-                <button
-                  class="px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  onclick={handleNextPage}
-                  disabled={isNextDisabled}
-                >
-                  Next →
-                </button>
               </div>
-            </div>
-          </template>
+            </template>
+          </div>
 
-          <template if:false={employees.length}>
-            <div class="text-center py-12">
-              <lightning-icon
-                icon-name="utility:search"
-                size="large"
-                class="text-gray-400 mb-4"
-              ></lightning-icon>
-              <p class="text-gray-500 font-medium">No employees found</p>
-              <p class="text-sm text-gray-400 mt-1">
+          <!-- Pagination -->
+          <div
+            class="d-flex align-items-center justify-content-between mt-4 py-3 border-top flex-wrap gap-2"
+          >
+            <span class="text-muted small">{pageInfo} of {totalCount}</span>
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                onclick={handlePrevPage}
+                disabled={isPrevDisabled}
+              >
+                <i class="ti ti-chevron-left me-1"></i>Previous
+              </button>
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                onclick={handleNextPage}
+                disabled={isNextDisabled}
+              >
+                Next<i class="ti ti-chevron-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+        </template>
+
+        <!-- Empty state -->
+        <template if:false={employees.length}>
+          <div class="card">
+            <div class="card-body text-center py-5">
+              <i class="ti ti-users-off fs-1 text-muted d-block mb-2"></i>
+              <h6 class="text-muted mb-1">No employees found</h6>
+              <p class="text-muted small mb-0">
                 Try adjusting your search criteria
               </p>
             </div>
-          </template>
+          </div>
         </template>
-      </div>
+      </template>
     </div>
   </div>
 </template>

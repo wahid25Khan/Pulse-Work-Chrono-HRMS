@@ -5,6 +5,8 @@ import { showErrorToast, logError } from "c/pwchronoErrorHandler";
 import { NavigationMixin } from "lightning/navigation";
 import { getEmployeeId } from "c/pwchronoSession";
 
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 export default class PwchronoDashboard extends NavigationMixin(
   LightningElement
 ) {
@@ -50,13 +52,20 @@ export default class PwchronoDashboard extends NavigationMixin(
         this.dashboardData = {
           leaveBalance: data.leaveBalance || [],
           pendingApprovals: data.pendingApprovals || { total: 0 },
-          upcomingShifts: (data.upcomingShifts || []).map((shift) => ({
-            ...shift,
-            shiftName: shift.Shift_Type__r?.Name || "Unnamed",
-            timeRange: shift.Shift_Type__r
-              ? `${this.formatTime(shift.Shift_Type__r.Start_Time__c)} - ${this.formatTime(shift.Shift_Type__r.End_Time__c)}`
-              : "N/A"
-          })),
+          upcomingShifts: (data.upcomingShifts || []).map((shift) => {
+            const shiftDate = shift.From_Date__c
+              ? new Date(shift.From_Date__c)
+              : null;
+            return {
+              ...shift,
+              shiftName: shift.Shift_Type__r?.Name || "Unnamed",
+              timeRange: shift.Shift_Type__r
+                ? `${this.formatTime(shift.Shift_Type__r.Start_Time__c)} - ${this.formatTime(shift.Shift_Type__r.End_Time__c)}`
+                : "N/A",
+              dateFormatted: shiftDate ? String(shiftDate.getUTCDate()) : "--",
+              dayOfWeek: shiftDate ? DAY_NAMES[shiftDate.getUTCDay()] : "--"
+            };
+          }),
           recentSalarySlips: (data.recentSalarySlips || []).map((slip) => ({
             ...slip,
             payPeriodLabel: this.formatPayPeriod(slip.Payroll_Period__c)

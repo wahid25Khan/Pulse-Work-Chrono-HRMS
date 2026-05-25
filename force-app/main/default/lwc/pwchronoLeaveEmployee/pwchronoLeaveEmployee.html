@@ -346,4 +346,109 @@
       <!-- /Leaves list -->
     </div>
   </div>
+
+  <!-- New Leave Request Modal -->
+  <template lwc:if={isNewLeaveModalOpen}>
+    <div
+      class="modal custom-modal fade show d-block"
+      role="dialog"
+      style="background: rgba(0, 0, 0, 0.6); z-index: 1050"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">
+              <i class="ti ti-calendar-plus me-2"></i>New Leave Request
+            </h4>
+            <button
+              type="button"
+              class="btn-close"
+              onclick={handleCloseLeaveModal}
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label fw-medium"
+                  >Leave Type <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-select"
+                  name="leaveTypeId"
+                  onchange={handleNewLeaveFormChange}
+                >
+                  <option value="">Select Leave Type</option>
+                  <template for:each={leaveTypes} for:item="lt">
+                    <option key={lt.value} value={lt.value}>{lt.label}</option>
+                  </template>
+                </select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-medium"
+                  >From Date <span class="text-danger">*</span></label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  name="fromDate"
+                  value={newLeaveForm.fromDate}
+                  onchange={handleNewLeaveFormChange}
+                />
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-medium"
+                  >To Date <span class="text-danger">*</span></label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  name="toDate"
+                  value={newLeaveForm.toDate}
+                  onchange={handleNewLeaveFormChange}
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-medium">Reason</label>
+                <textarea
+                  class="form-control"
+                  name="reason"
+                  rows="3"
+                  placeholder="Reason for leave..."
+                  onchange={handleNewLeaveFormChange}
+                ></textarea>
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="halfDayCheck"
+                    name="halfDay"
+                    onchange={handleNewLeaveFormChange}
+                  />
+                  <label class="form-check-label" for="halfDayCheck"
+                    >Half Day</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light" onclick={handleCloseLeaveModal}>
+              <i class="ti ti-x me-1"></i>Cancel
+            </button>
+            <button
+              class="btn btn-primary"
+              onclick={handleSubmitLeave}
+              disabled={isSavingLeave}
+            >
+              <i class="ti ti-send me-1"></i>
+              <template if:true={isSavingLeave}>Submitting...</template>
+              <template if:false={isSavingLeave}>Submit Request</template>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
 </template>

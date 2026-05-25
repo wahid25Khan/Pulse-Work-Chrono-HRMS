@@ -10,9 +10,7 @@
           <nav>
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
-                <a href="javascript:void(0);"
-                  ><i class="fa-solid fa-house"></i
-                ></a>
+                <a href="javascript:void(0);"><i class="ti ti-home"></i></a>
               </li>
               <li class="breadcrumb-item">Attendance</li>
               <li class="breadcrumb-item active" aria-current="page">
@@ -29,12 +27,12 @@
               class="d-flex align-items-center border bg-white rounded p-1 me-2 icon-list"
             >
               <a href="javascript:void(0);" class="btn btn-icon btn-sm me-1"
-                ><i class="fa-solid fa-list-ol"></i
+                ><i class="ti ti-list-numbers"></i
               ></a>
               <a
                 href="javascript:void(0);"
                 class="btn btn-icon btn-sm active bg-primary text-white"
-                ><i class="fa-solid fa-calendar-day"></i
+                ><i class="ti ti-calendar-stats"></i
               ></a>
             </div>
           </div>
@@ -45,17 +43,17 @@
                 class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                 onclick={toggleExportDropdown}
               >
-                <i class="fa-solid fa-file-export me-1"></i>Export
+                <i class="ti ti-file-export me-1"></i>Export
               </a>
               <ul class={exportDropdownClass}>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    ><i class="fa-solid fa-file-pdf me-1"></i>PDF</a
+                    ><i class="ti ti-file-type-pdf me-1"></i>PDF</a
                   >
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    ><i class="fa-solid fa-file-excel me-1"></i>Excel</a
+                    ><i class="ti ti-file-type-xls me-1"></i>Excel</a
                   >
                 </li>
               </ul>
@@ -80,7 +78,7 @@
               data-bs-original-title="Collapse"
               id="collapse-header"
             >
-              <i class="fa-solid fa-chevron-up"></i>
+              <i class="ti ti-chevron-up"></i>
             </a>
           </div>
         </div>
@@ -101,13 +99,13 @@
                 <h6>Total Employees</h6>
                 <div class="avatar-list-stacked avatar-group-sm ms-4">
                   <span class="avatar avatar-rounded">
-                    <i class="fa-solid fa-user"></i>
+                    <i class="ti ti-user"></i>
                   </span>
                   <span class="avatar avatar-rounded">
-                    <i class="fa-solid fa-user"></i>
+                    <i class="ti ti-user"></i>
                   </span>
                   <span class="avatar avatar-rounded">
-                    <i class="fa-solid fa-user"></i>
+                    <i class="ti ti-user"></i>
                   </span>
                   <a
                     class="avatar bg-primary avatar-rounded text-fixed-white fs-12"
@@ -131,7 +129,7 @@
                     <span
                       class="badge badge-success d-inline-flex align-items-center"
                     >
-                      <i class="fa-solid fa-arrow-trend-down me-1"></i>
+                      <i class="ti ti-trending-down me-1"></i>
                       +2.5%
                     </span>
                   </div>
@@ -147,7 +145,7 @@
                     <span
                       class="badge badge-danger d-inline-flex align-items-center"
                     >
-                      <i class="fa-solid fa-arrow-trend-down me-1"></i>
+                      <i class="ti ti-trending-down me-1"></i>
                       +0.5%
                     </span>
                   </div>
@@ -163,7 +161,7 @@
                     <span
                       class="badge badge-danger d-inline-flex align-items-center"
                     >
-                      <i class="fa-solid fa-arrow-trend-down me-1"></i>
+                      <i class="ti ti-trending-down me-1"></i>
                       +1.2%
                     </span>
                   </div>
@@ -179,7 +177,7 @@
                     <span
                       class="badge badge-success d-inline-flex align-items-center"
                     >
-                      <i class="fa-solid fa-arrow-trend-down me-1"></i>
+                      <i class="ti ti-trending-down me-1"></i>
                       -0.5%
                     </span>
                   </div>
@@ -195,7 +193,7 @@
                     <span
                       class="badge badge-danger d-inline-flex align-items-center"
                     >
-                      <i class="fa-solid fa-arrow-trend-down me-1"></i>
+                      <i class="ti ti-trending-down me-1"></i>
                       0%
                     </span>
                   </div>
@@ -222,7 +220,7 @@
                   onchange={handleDateFilter}
                 />
                 <span class="input-icon-addon">
-                  <i class="fa-solid fa-chevron-down"></i>
+                  <i class="ti ti-chevron-down"></i>
                 </span>
               </div>
             </div>
@@ -294,7 +292,7 @@
                 href="javascript:void(0);"
                 class="btn btn-primary d-flex align-items-center"
                 onclick={handleNewAttendance}
-                ><i class="fa-solid fa-plus me-2"></i>Add Attendance</a
+                ><i class="ti ti-plus me-2"></i>Add Attendance</a
               >
             </div>
           </div>
@@ -337,7 +335,7 @@
                           href="javascript:void(0);"
                           class="avatar avatar-md border avatar-rounded"
                         >
-                          <i class="fa-solid fa-user"></i>
+                          <i class="ti ti-user"></i>
                         </a>
                         <div class="ms-2">
                           <h6 class="fw-medium">
@@ -351,7 +349,7 @@
                     </td>
                     <td>
                       <span class={record.statusClass}>
-                        <i class="fa-solid fa-circle me-1"></i
+                        <i class="ti ti-circle-filled me-1"></i
                         >{record.Status__c}
                       </span>
                     </td>
@@ -363,7 +361,7 @@
                       <span
                         class="badge badge-success d-inline-flex align-items-center"
                       >
-                        <i class="fa-solid fa-clock me-1"></i>{record.overtime}
+                        <i class="ti ti-clock me-1"></i>{record.overtime}
                       </span>
                     </td>
                     <td>
@@ -373,7 +371,7 @@
                           class="me-2"
                           data-id={record.Id}
                           onclick={handleEdit}
-                          ><i class="fa-solid fa-pen-to-square"></i
+                          ><i class="ti ti-edit"></i
                         ></a>
                       </div>
                     </td>

@@ -1,14 +1,11 @@
 <template>
-  <div
-    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-  >
-    <!-- Header -->
+  <div class="card overflow-hidden">
     <div
-      class="bg-gradient-to-r from-teal-500 to-teal-600 px-6 py-5 text-white flex items-center justify-between"
+      class="card-header bg-primary text-white d-flex align-items-center justify-content-between"
     >
       <div>
-        <h1 class="text-xl font-bold">Attendance Calendar</h1>
-        <p class="text-sm text-white/80 mt-1">Track your monthly attendance</p>
+        <h5 class="card-title mb-0">Attendance Calendar</h5>
+        <p class="mb-0 small opacity-75 mt-1">Track your monthly attendance</p>
       </div>
       <lightning-button-group>
         <lightning-button-icon
@@ -25,12 +22,12 @@
       </lightning-button-group>
     </div>
 
-    <div class="p-4 md:p-6">
+    <div class="card-body">
       <template if:true={isLoading}>
-        <div class="flex justify-center items-center p-8">
-          <div
-            class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"
-          ></div>
+        <div class="d-flex justify-content-center align-items-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
       </template>
 
@@ -47,7 +44,7 @@
       <div class="calendar-grid">
         <template for:each={calendarDays} for:item="day">
           <div key={day.attendanceDate} class={day.cssClass}>
-            <div class="flex items-center justify-between">
+            <div class="d-flex align-items-center justify-content-between">
               <span class="day-number">{day.dayNumber}</span>
             </div>
 
@@ -56,7 +53,7 @@
 
               <template if:true={day.holidayName}>
                 <div
-                  class="text-xs truncate text-blue-600 mt-1"
+                  class="small text-primary text-truncate mt-1 d-block"
                   title={day.holidayName}
                 >
                   {day.holidayName}
@@ -65,7 +62,7 @@
 
               <template if:true={day.leaveType}>
                 <div
-                  class="text-xs truncate text-orange-600 mt-1"
+                  class="small text-warning text-truncate mt-1 d-block"
                   title={day.leaveType}
                 >
                   {day.leaveType}

@@ -115,7 +115,7 @@ export default class PwchronoLeaveAdmin extends LightningElement {
     }
 
     if (this.startDate) {
-      filtered = filtered.filter((l) => l.Start_Date__c >= this.startDate);
+      filtered = filtered.filter((l) => l.From_Date__c >= this.startDate);
     }
 
     this.teamLeaves = filtered;

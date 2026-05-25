@@ -1,21 +1,16 @@
 <template>
-  <div class="space-y-6">
-    <!-- Regularization Request Form -->
-    <div
-      class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-    >
-      <div
-        class="bg-gradient-to-r from-teal-500 to-teal-600 px-6 py-5 text-white"
-      >
-        <h1 class="text-xl font-bold">Attendance Regularization</h1>
-        <p class="text-sm text-white/80 mt-1">
+  <div class="mb-4">
+    <div class="card overflow-hidden mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="card-title mb-0">Attendance Regularization</h5>
+        <p class="mb-0 small opacity-75 mt-1">
           Submit a request to regularize your attendance
         </p>
       </div>
 
-      <div class="p-4 md:p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
             <lightning-input
               type="date"
               label="Attendance Date"
@@ -25,11 +20,9 @@
               disabled={isDateDisabled}
             ></lightning-input>
           </div>
-          <div class="hidden md:block">
-            <!-- Spacer or Shift Info -->
-          </div>
+          <div class="col-12 col-md-6 d-none d-md-block"></div>
 
-          <div>
+          <div class="col-12 col-md-6">
             <lightning-input
               type="time"
               label="Check-In Time"
@@ -38,7 +31,7 @@
               disabled={isCheckInDisabled}
             ></lightning-input>
           </div>
-          <div>
+          <div class="col-12 col-md-6">
             <lightning-input
               type="time"
               label="Check-Out Time"
@@ -48,7 +41,7 @@
             ></lightning-input>
           </div>
 
-          <div class="md:col-span-2">
+          <div class="col-12">
             <lightning-textarea
               label="Reason"
               value={reason}
@@ -60,7 +53,7 @@
           </div>
         </div>
 
-        <div class="flex justify-end mt-6">
+        <div class="d-flex justify-content-end mt-4">
           <lightning-button
             variant="brand"
             label="Submit Request"
@@ -71,33 +64,27 @@
       </div>
     </div>
 
-    <!-- Request History -->
-    <div
-      class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-    >
+    <div class="card">
       <div
-        class="px-6 py-4 border-b border-gray-200 flex justify-between items-center"
+        class="card-header d-flex justify-content-between align-items-center"
       >
-        <h2 class="text-lg font-semibold text-gray-800">My Requests</h2>
-        <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
-          >{allRequests.length} total</span
-        >
+        <h6 class="mb-0 fw-semibold">My Requests</h6>
+        <span class="badge bg-secondary">{allRequests.length} total</span>
       </div>
 
-      <div class="p-4 md:p-6">
-        <!-- Loading State -->
+      <div class="card-body">
         <template if:true={isLoading}>
-          <div class="flex items-center justify-center py-12">
-            <div
-              class="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"
-            ></div>
-            <span class="ml-3 text-gray-600">Loading requests...</span>
+          <div class="d-flex align-items-center justify-content-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <span class="ms-3 text-muted">Loading requests...</span>
           </div>
         </template>
 
         <template if:false={isLoading}>
           <template if:true={hasRequests}>
-            <div class="overflow-x-auto rounded-xl border border-gray-200">
+            <div class="table-responsive">
               <lightning-datatable
                 key-field="Id"
                 data={requests}
@@ -105,63 +92,57 @@
                 hide-checkbox-column
               ></lightning-datatable>
             </div>
-            <!-- Pagination Controls -->
             <div
-              class="flex flex-col sm:flex-row items-center justify-between px-4 py-4 bg-gray-50 border-t border-gray-200 gap-3 mt-4 rounded-xl"
+              class="d-flex flex-column flex-sm-row align-items-center justify-content-between p-3 bg-light border-top mt-3 rounded gap-3"
             >
-              <div class="flex items-center gap-2">
+              <div class="d-flex align-items-center gap-2">
                 <lightning-combobox
                   value={pageSize}
                   options={pageSizeOptions}
                   onchange={handlePageSizeChange}
                   variant="label-hidden"
-                  class="w-36"
                 ></lightning-combobox>
               </div>
-              <div class="flex items-center gap-3">
-                <span class="text-sm text-gray-600">{pageInfo}</span>
-                <div class="flex gap-1">
+              <div class="d-flex align-items-center gap-3">
+                <span class="text-muted small">{pageInfo}</span>
+                <div class="d-flex gap-1">
                   <button
-                    class="px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    class="btn btn-sm btn-outline-secondary"
                     onclick={handlePrevPage}
                     disabled={isPrevDisabled}
                   >
-                    ← Prev
+                    &larr; Prev
                   </button>
                   <button
-                    class="px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    class="btn btn-sm btn-outline-secondary"
                     onclick={handleNextPage}
                     disabled={isNextDisabled}
                   >
-                    Next →
+                    Next &rarr;
                   </button>
                 </div>
               </div>
             </div>
           </template>
           <template if:false={hasRequests}>
-            <div
-              class="flex flex-col items-center justify-center py-12 text-center"
-            >
-              <div
-                class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+            <div class="text-center py-5">
+              <span
+                class="avatar avatar-xl bg-soft-secondary mx-auto mb-3 d-flex align-items-center justify-content-center"
               >
-                <lightning-icon
-                  icon-name="utility:clock"
-                  size="medium"
-                  class="text-gray-400"
-                ></lightning-icon>
-              </div>
-              <p class="text-gray-500">No attendance requests found.</p>
+                <i class="ti ti-clock fs-2 text-muted"></i>
+              </span>
+              <p class="text-muted mb-0">No attendance requests found.</p>
             </div>
           </template>
         </template>
 
         <template if:true={error}>
           <div
-            class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600"
+            class="alert alert-danger d-flex align-items-center gap-2"
+            role="alert"
           >
-            {error}
+            <i class="ti ti-alert-circle flex-shrink-0"></i>
+            <span>{error}</span>
           </div>
         </template>
       </div>

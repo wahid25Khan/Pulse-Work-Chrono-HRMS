@@ -418,13 +418,7 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
 
   // Get CSS class for nav tab button
   getNavTabClass(tab) {
-    const baseClass =
-      "px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap";
-    const activeClass =
-      tab === this.activeTab
-        ? "border-orange-500 text-orange-600"
-        : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300";
-    return `${baseClass} ${activeClass}`;
+    return tab === this.activeTab ? "nav-link active" : "nav-link";
   }
 
   showToast(title, message, variant) {

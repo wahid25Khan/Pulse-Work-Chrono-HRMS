@@ -1,5 +1,6 @@
 import { LightningElement, track } from "lwc";
 import getAttendanceTrackerData from "@salesforce/apex/PWChrono_AttendanceController.getAttendanceTrackerData";
+import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
 export default class PwchronoAttendanceCalendar extends LightningElement {
   @track currentMonth;
@@ -8,6 +9,8 @@ export default class PwchronoAttendanceCalendar extends LightningElement {
   @track isLoading = true;
 
   currentDate = new Date();
+  employeeId;
+  sessionToken;
   monthNames = [
     "January",
     "February",
@@ -24,6 +27,8 @@ export default class PwchronoAttendanceCalendar extends LightningElement {
   ];
 
   connectedCallback() {
+    this.employeeId = getEmployeeId();
+    this.sessionToken = getSessionToken();
     this.currentMonth = this.currentDate.getMonth();
     this.currentYear = this.currentDate.getFullYear();
     this.loadCalendarData();
@@ -69,7 +74,9 @@ export default class PwchronoAttendanceCalendar extends LightningElement {
 
     getAttendanceTrackerData({
       startDate: startDate.toISOString().split("T")[0],
-      endDate: endDate.toISOString().split("T")[0]
+      endDate: endDate.toISOString().split("T")[0],
+      employeeId: this.employeeId,
+      sessionToken: this.sessionToken
     })
       .then((data) => {
         this.processCalendarData(data);
