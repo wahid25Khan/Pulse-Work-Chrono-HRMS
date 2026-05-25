@@ -1,0 +1,3 @@
+Name,Description__c,End_Time__c,Grace_Period_Minutes__c,Is_Active__c,Start_Time__c,Working_Hours__c
+General Shift,,18:00:00.000Z,0,true,09:00:00.000Z,
+GSF Morning Shift,,17:30:00.000Z,0,true,09:00:00.000Z,

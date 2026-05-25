@@ -1,0 +1,7 @@
+Name,Is_Unpaid__c,Max_Days_Allowed__c,Is_Active__c
+Annual Leave,false,20,true
+Sick Leave,false,10,true
+Unpaid Leave,true,365,true
+Annual Leave,false,20,true
+Annual Leave,false,20,true
+GSF Annual Leave,false,20,true
