@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Modern Document Editor Test Page</description>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>modernDocumentEditor</componentName>
+                <identifier>c_modernDocumentEditor</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>main</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Modern Document Editor Test</masterLabel>
+    <template>
+        <name>flexipage:defaultAppHomeTemplate</name>
+    </template>
+    <type>AppPage</type>
+</FlexiPage>

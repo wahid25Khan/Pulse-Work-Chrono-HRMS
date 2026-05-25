@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>fileId</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>recipientId</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>routingId</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>transactionId</name>
+                </componentInstanceProperties>
+                <componentName>swiftSignSigner</componentName>
+                <identifier>c__swiftSignSigner1</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>main</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>SwiftSign Premium Demo</masterLabel>
+    <template>
+        <name>flexipage:defaultAppHomeTemplate</name>
+    </template>
+    <type>AppPage</type>
+</FlexiPage>

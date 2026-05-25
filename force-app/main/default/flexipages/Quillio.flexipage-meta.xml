@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>autoCreateWhenNoContext</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>crdtServerUrl</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>experienceSiteUrl</name>
+                    <value
+          >https://thelodestonegroup6-dev-ed.develop.my.site.com/quillio/</value>
+                </componentInstanceProperties>
+                <componentName>quillioShell</componentName>
+                <identifier>c_quillioShell</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>main</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Quillio Workspace</masterLabel>
+    <template>
+        <name>flexipage:defaultAppHomeTemplate</name>
+    </template>
+    <type>AppPage</type>
+</FlexiPage>

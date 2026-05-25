@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Simple Lead record page with basic collaboration features</description>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>force:highlightsPanel</componentName>
+                <identifier>force_highlightsPanel</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>header</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>force:detailPanel</componentName>
+                <identifier>force_detailPanel</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>main</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>collaborativeTextEditor</componentName>
+                <identifier>c_collaborativeTextEditor_simple</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>sidebar</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Lead with Collaboration Simple</masterLabel>
+    <sobjectType>Lead</sobjectType>
+    <template>
+        <name>flexipage:recordHomeTemplateDesktop</name>
+    </template>
+    <type>RecordPage</type>
+</FlexiPage>

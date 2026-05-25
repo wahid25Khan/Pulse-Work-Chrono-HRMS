@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomMetadata
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <label>Default Organization Settings</label>
+    <protected>false</protected>
+    <values>
+        <field>Currency_Code__c</field>
+        <value xsi:type="xsd:string">USD</value>
+    </values>
+    <values>
+        <field>Default_Grace_Period_Minutes__c</field>
+        <value xsi:type="xsd:double">15.0</value>
+    </values>
+    <values>
+        <field>Leave_Year_Start_Month__c</field>
+        <value xsi:type="xsd:string">January</value>
+    </values>
+    <values>
+        <field>Max_Consecutive_Leave_Days__c</field>
+        <value xsi:type="xsd:double">30.0</value>
+    </values>
+    <values>
+        <field>Probation_Period_Days__c</field>
+        <value xsi:type="xsd:double">90.0</value>
+    </values>
+    <values>
+        <field>Standard_Working_Hours__c</field>
+        <value xsi:type="xsd:double">8.0</value>
+    </values>
+    <values>
+        <field>Time_Zone__c</field>
+        <value xsi:type="xsd:string">America/New_York</value>
+    </values>
+    <values>
+        <field>Weekend_Day_1__c</field>
+        <value xsi:type="xsd:string">Sunday</value>
+    </values>
+    <values>
+        <field>Weekend_Day_2__c</field>
+        <value xsi:type="xsd:string">Saturday</value>
+    </values>
+    <values>
+        <field>Working_Days_Per_Week__c</field>
+        <value xsi:type="xsd:double">5.0</value>
+    </values>
+</CustomMetadata>
