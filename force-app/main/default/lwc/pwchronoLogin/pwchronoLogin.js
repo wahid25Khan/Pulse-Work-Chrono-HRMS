@@ -8,6 +8,8 @@ import { NavigationMixin } from "lightning/navigation";
 import { LightningElement, track } from "lwc";
 
 export default class PwchronoLogin extends NavigationMixin(LightningElement) {
+  static renderMode = "light";
+
   uiAssetsLoadedKey = "__pwchronoUiAssetsLoaded";
   @track email = "";
   @track showOtpScreen = false;
@@ -250,9 +252,7 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
 
     // Auto-focus next input
     if (value && index < 5) {
-      const nextInput = this.template.querySelector(
-        `[data-index="${index + 1}"]`
-      );
+      const nextInput = this.querySelector(`[data-index="${index + 1}"]`);
       if (nextInput) {
         nextInput.focus();
       }
@@ -284,9 +284,7 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
 
     // Focus the next empty input or the last input
     const nextEmptyIndex = digitArray.length < 6 ? digitArray.length : 5;
-    const targetInput = this.template.querySelector(
-      `[data-index="${nextEmptyIndex}"]`
-    );
+    const targetInput = this.querySelector(`[data-index="${nextEmptyIndex}"]`);
     if (targetInput) {
       targetInput.focus();
     }
@@ -301,9 +299,7 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
     if (event.key === "Backspace") {
       if (!this.otpDigits[index].value && index > 0) {
         // Move to previous input if current is empty
-        const prevInput = this.template.querySelector(
-          `[data-index="${index - 1}"]`
-        );
+        const prevInput = this.querySelector(`[data-index="${index - 1}"]`);
         if (prevInput) {
           prevInput.focus();
           prevInput.select();
@@ -335,9 +331,7 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
     // This avoids edge cases where the last keystroke isn't reflected in tracked state yet.
     let otp = "";
     try {
-      const inputs = Array.from(
-        this.template.querySelectorAll("input[data-index]")
-      );
+      const inputs = Array.from(this.querySelectorAll("input[data-index]"));
       inputs.sort((a, b) => {
         const ai = Number.parseInt(a.dataset.index, 10);
         const bi = Number.parseInt(b.dataset.index, 10);
@@ -396,7 +390,7 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
         error.body?.message || "Invalid OTP. Please try again.";
       // Clear OTP inputs on error
       this.otpDigits = this.otpDigits.map((d) => ({ ...d, value: "" }));
-      const firstInput = this.template.querySelector("[data-index='0']");
+      const firstInput = this.querySelector("[data-index='0']");
       if (firstInput) {
         firstInput.focus();
       }
@@ -426,7 +420,7 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
         this.otpDigits = this.otpDigits.map((d) => ({ ...d, value: "" }));
         this.startCountdown();
 
-        const firstInput = this.template.querySelector("[data-index='0']");
+        const firstInput = this.querySelector("[data-index='0']");
         if (firstInput) {
           firstInput.focus();
         }

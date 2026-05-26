@@ -25,13 +25,13 @@ export default class PwchronoUiAssets extends LightningElement {
   }
 
   renderedCallback() {
-    // If styles are already loaded, nothing to do.
+    // If styles are already loaded, notify immediately.
     if (globalThis[GLOBAL_LOADED_KEY]) {
       this.notifyReady();
       return;
     }
 
-    // If a load is already in progress (or has completed), do not restart.
+    // Start the CSS load chain only if no other instance has started it yet.
     if (!globalThis[GLOBAL_PROMISE_KEY]) {
       const cssUrls = [
         `${smarthrAssets}/assets/plugins/fontawesome/css/all.min.css`,
@@ -48,15 +48,21 @@ export default class PwchronoUiAssets extends LightningElement {
         )
         .then(() => {
           globalThis[GLOBAL_LOADED_KEY] = true;
-          this.notifyReady();
         })
         .catch((e) => {
           // Keep UI functional even if a stylesheet fails to load.
           // Mark as loaded to avoid retry loops on every render.
           globalThis[GLOBAL_LOADED_KEY] = true;
           logError("pwchronoUiAssets: Failed to load UI assets", e);
-          this.notifyReady();
         });
     }
+
+    // Always chain onto the in-flight promise so THIS instance fires assetsready
+    // once loading completes — even if another instance started the load.
+    globalThis[GLOBAL_PROMISE_KEY].then(() => {
+      this.notifyReady();
+    }).catch(() => {
+      this.notifyReady();
+    });
   }
 }
