@@ -1,6 +1,11 @@
 import { LightningElement } from "lwc";
 import { loadScript, loadStyle } from "lightning/platformResourceLoader";
 import getDashboardSummary from "@salesforce/apex/PWChrono_HRDashboardController.getDashboardSummary";
+import {
+  getEmployeeId,
+  getSessionToken,
+  SESSION_CHANGED_EVENT
+} from "c/pwchronoSession";
 
 // Your ZIP static resource name
 import SMARTHR_ASSETS from "@salesforce/resourceUrl/smarthr_assets";
@@ -15,7 +20,24 @@ export default class PwchronoHRDashboard extends LightningElement {
   summary;
   _loading = false;
 
+  employeeId = getEmployeeId();
+  sessionToken = getSessionToken();
+  _sessionChangedHandler;
+
   connectedCallback() {
+    this._sessionChangedHandler = () => {
+      this.employeeId = getEmployeeId();
+      this.sessionToken = getSessionToken();
+      this.loadSummary();
+    };
+    try {
+      window.addEventListener(
+        SESSION_CHANGED_EVENT,
+        this._sessionChangedHandler
+      );
+    } catch {
+      // ignore
+    }
     this.loadSummary();
   }
 
@@ -23,7 +45,10 @@ export default class PwchronoHRDashboard extends LightningElement {
     if (this._loading) return;
     this._loading = true;
     try {
-      this.summary = await getDashboardSummary();
+      this.summary = await getDashboardSummary({
+        portalUserId: this.employeeId,
+        sessionToken: this.sessionToken
+      });
       if (this._chartsInitialized) {
         this.initCharts();
       }
@@ -603,6 +628,15 @@ export default class PwchronoHRDashboard extends LightningElement {
   }
 
   disconnectedCallback() {
+    try {
+      window.removeEventListener(
+        SESSION_CHANGED_EVENT,
+        this._sessionChangedHandler
+      );
+    } catch {
+      // ignore
+    }
+    this._sessionChangedHandler = null;
     this.destroyCharts();
     this._chartsInitialized = false;
   }

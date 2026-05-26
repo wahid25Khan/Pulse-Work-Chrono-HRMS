@@ -8,6 +8,11 @@ import {
   initBootstrapCompat,
   teardownBootstrapCompat
 } from "c/pwchronoBootstrapCompat";
+import {
+  getEmployeeId,
+  getSessionToken,
+  SESSION_CHANGED_EVENT
+} from "c/pwchronoSession";
 
 export default class PwchronoPayrollDashboard extends LightningElement {
   assetsBase = smarthrAssets;
@@ -18,11 +23,28 @@ export default class PwchronoPayrollDashboard extends LightningElement {
   _summaryLoaded = false;
   _loading = false;
 
+  employeeId = getEmployeeId();
+  sessionToken = getSessionToken();
+  _sessionChangedHandler;
+
   get bg04() {
     return `${this.assetsBase}/assets/img/bg/bg-04.png`;
   }
 
   connectedCallback() {
+    this._sessionChangedHandler = () => {
+      this.employeeId = getEmployeeId();
+      this.sessionToken = getSessionToken();
+      this.loadSummary();
+    };
+    try {
+      window.addEventListener(
+        SESSION_CHANGED_EVENT,
+        this._sessionChangedHandler
+      );
+    } catch {
+      // ignore
+    }
     this.loadSummary();
   }
 
@@ -30,7 +52,10 @@ export default class PwchronoPayrollDashboard extends LightningElement {
     if (this._loading) return;
     this._loading = true;
     try {
-      this.summary = await getDashboardSummary();
+      this.summary = await getDashboardSummary({
+        portalUserId: this.employeeId,
+        sessionToken: this.sessionToken
+      });
       this._summaryLoaded = true;
       if (this._isInitialized) {
         this.initCharts();
@@ -88,6 +113,15 @@ export default class PwchronoPayrollDashboard extends LightningElement {
   }
 
   disconnectedCallback() {
+    try {
+      window.removeEventListener(
+        SESSION_CHANGED_EVENT,
+        this._sessionChangedHandler
+      );
+    } catch {
+      // ignore
+    }
+    this._sessionChangedHandler = null;
     this.destroyCharts();
     teardownBootstrapCompat(this);
   }
