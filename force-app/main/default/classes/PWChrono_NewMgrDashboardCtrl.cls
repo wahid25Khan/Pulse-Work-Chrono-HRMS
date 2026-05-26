@@ -1,4 +1,16 @@
+/**
+ * @description Dashboard controller for the Manager role portal page.
+ *              All SOQL runs in system context intentionally — guest user
+ *              access is gated by session token validation before data is returned.
+ */
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class PWChrono_NewMgrDashboardCtrl {
+  /**
+   * @description Returns manager dashboard data for the authenticated portal user.
+   * @param portalUserId Id of the Portal_Users__c record for the requesting user
+   * @param sessionToken Active session token for the requesting user
+   * @return JSON string with welcome message and dashboard data
+   */
   @AuraEnabled
   public static String getDashboardData(
     String portalUserId,

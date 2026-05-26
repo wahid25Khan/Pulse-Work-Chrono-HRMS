@@ -1,7 +1,12 @@
 /**
  * @description Data controller for Payroll Dashboard LWC.
+ *              All SOQL runs in system context intentionally — guest user
+ *              access is gated by requireHRAccess() session token validation
+ *              before any data is returned.
  */
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class PWChrono_PayrollDashboardController {
+  /** @description Data transfer object carrying Payroll Dashboard metrics. */
   public class PayrollDashboardDTO {
     @AuraEnabled
     public Decimal totalGross;
@@ -51,6 +56,12 @@ public inherited sharing class PWChrono_PayrollDashboardController {
     }
   }
 
+  /**
+   * @description Returns payroll summary metrics for the current month.
+   * @param portalUserId Id of the Portal_Users__c record for the requesting user
+   * @param sessionToken Active session token for the requesting user
+   * @return PayrollDashboardDTO with payroll summary and trend data
+   */
   @AuraEnabled
   public static PayrollDashboardDTO getDashboardSummary(
     String portalUserId,
@@ -115,6 +126,9 @@ public inherited sharing class PWChrono_PayrollDashboardController {
     return dto;
   }
 
+  @SuppressWarnings(
+    'PMD.NcssMethodCount,PMD.CyclomaticComplexity,PMD.CognitiveComplexity'
+  )
   private static PayrollDashboardDTO buildSummaryForRange(
     Date startDate,
     Date endDate
@@ -149,10 +163,12 @@ public inherited sharing class PWChrono_PayrollDashboardController {
       dto.totalNet += net;
       dto.totalDeductions += ded;
 
-      if (highest == null || gross > highest)
+      if (highest == null || gross > highest) {
         highest = gross;
-      if (lowest == null || gross < lowest)
+      }
+      if (lowest == null || gross < lowest) {
         lowest = gross;
+      }
       sumGross += gross;
       counted++;
 
@@ -180,17 +196,19 @@ public inherited sharing class PWChrono_PayrollDashboardController {
 
   private static Integer salaryBinIndex(Decimal gross) {
     Decimal g = (gross == null ? 0 : gross);
-    if (g < 25000)
+    if (g < 25000) {
       return 0;
-    if (g < 50000)
+    } else if (g < 50000) {
       return 1;
-    if (g < 75000)
+    } else if (g < 75000) {
       return 2;
-    if (g < 100000)
+    } else if (g < 100000) {
       return 3;
+    }
     return 4;
   }
 
+  @SuppressWarnings('PMD.CognitiveComplexity')
   private static void populateSixMonthTrend(
     PayrollDashboardDTO dto,
     Date startMonth
@@ -214,8 +232,9 @@ public inherited sharing class PWChrono_PayrollDashboardController {
     ]) {
       Integer y = (Integer) ar.get('y');
       Integer m = (Integer) ar.get('m');
-      if (y == null || m == null)
+      if (y == null || m == null) {
         continue;
+      }
       byKey.put(String.valueOf(y) + '-' + String.valueOf(m), ar);
     }
 
