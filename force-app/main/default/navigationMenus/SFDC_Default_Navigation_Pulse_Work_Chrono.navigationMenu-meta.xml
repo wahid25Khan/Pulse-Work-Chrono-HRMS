@@ -9,10 +9,10 @@
         <publiclyAvailable>true</publiclyAvailable>
         <subMenu>
             <navigationMenuItem>
-                <label>Admin Dashboard</label>
+                <label>Employee Dashboard</label>
                 <position>0</position>
                 <publiclyAvailable>true</publiclyAvailable>
-                <target>/admin-dashboard</target>
+                <target>/employee-dashboard</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
@@ -23,25 +23,25 @@
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
-                <label>Employee Dashboard</label>
+                <label>Admin Dashboard</label>
                 <position>2</position>
                 <publiclyAvailable>true</publiclyAvailable>
-                <target>/employee-dashboard</target>
+                <target>/admin-dashboard</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Reports Dashboard</label>
+                <position>3</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/reports-dashboard</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
         </subMenu>
         <type>MenuLabel</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>My Profile</label>
-        <position>2</position>
-        <publiclyAvailable>true</publiclyAvailable>
-        <target>/profile</target>
-        <type>InternalLink</type>
-    </navigationMenuItem>
-    <navigationMenuItem>
         <label>Attendance Management</label>
-        <position>3</position>
+        <position>2</position>
         <publiclyAvailable>true</publiclyAvailable>
         <subMenu>
             <navigationMenuItem>
@@ -59,29 +59,50 @@
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
-                <label>Overtime</label>
+                <label>Attendance Workspace</label>
                 <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/attendance-management</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Attendance Requests</label>
+                <position>3</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/attendance-requests</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Overtime</label>
+                <position>4</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/overtime</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
                 <label>WFH Management</label>
-                <position>3</position>
+                <position>5</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/wfh-management</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
                 <label>Timesheets</label>
-                <position>4</position>
+                <position>6</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/timesheets</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
+                <label>Shift Roster</label>
+                <position>7</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/shift-roster</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
                 <label>Attendance Settings</label>
-                <position>5</position>
+                <position>8</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/attendance-settings</target>
                 <type>InternalLink</type>
@@ -91,26 +112,40 @@
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Leave Management</label>
-        <position>4</position>
+        <position>3</position>
         <publiclyAvailable>true</publiclyAvailable>
         <subMenu>
             <navigationMenuItem>
-                <label>Leaves (Employee)</label>
+                <label>Apply Leave</label>
                 <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/apply-leave</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>My Leaves</label>
+                <position>1</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/leaves</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
-                <label>Leaves Admin</label>
-                <position>1</position>
+                <label>Leave Admin</label>
+                <position>2</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/leaves-admin</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
+                <label>Leave Calendar</label>
+                <position>3</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/leave-calendar</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
                 <label>Leave Settings</label>
-                <position>2</position>
+                <position>4</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/leave-settings</target>
                 <type>InternalLink</type>
@@ -120,56 +155,331 @@
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Holidays</label>
-        <position>5</position>
+        <position>4</position>
         <publiclyAvailable>true</publiclyAvailable>
-        <target>/holidays</target>
-        <type>InternalLink</type>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Holiday List</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/holidays</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Holiday Calendar</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/holiday-calendar</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Employee Directory</label>
-        <position>6</position>
+        <position>5</position>
         <publiclyAvailable>true</publiclyAvailable>
-        <target>/directory</target>
-        <type>InternalLink</type>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Directory</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/directory</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Recruitment</label>
-        <position>7</position>
+        <position>6</position>
         <publiclyAvailable>true</publiclyAvailable>
-        <target>/recruitment</target>
-        <type>InternalLink</type>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Recruitment Home</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/recruitment</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Candidate Pipeline</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/recruitment-pipeline</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Job Openings</label>
+                <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/job-openings</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Interview Scheduler</label>
+                <position>3</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/interview-scheduler</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Offer Letter Generator</label>
+                <position>4</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/offer-letter-generator</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Onboarding</label>
+        <position>7</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Onboarding Home</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/onboarding</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Onboarding Checklist</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/onboarding-checklist</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Company Policies</label>
+                <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/company-policies</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Performance Management</label>
         <position>8</position>
         <publiclyAvailable>true</publiclyAvailable>
-        <target>/onboarding</target>
-        <type>InternalLink</type>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Appraisal</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/appraisal</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Performance Management</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/performance</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Performance Reviews</label>
+                <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/performance-reviews</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Goals</label>
+                <position>3</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/goals</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>Performance</label>
+        <label>Training Management</label>
         <position>9</position>
         <publiclyAvailable>true</publiclyAvailable>
-        <target>/performance</target>
-        <type>InternalLink</type>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Training Catalog</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/training-catalog</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Training Registration</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/training</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Training Management</label>
+                <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/training-management</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>Training</label>
+        <label>Expense Management</label>
         <position>10</position>
         <publiclyAvailable>true</publiclyAvailable>
-        <target>/training</target>
-        <type>InternalLink</type>
+        <subMenu>
+            <navigationMenuItem>
+                <label>My Expense Claims</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/expenses</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>New Expense Claim</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/new-expense-claim</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Expense Management</label>
+                <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/expense-management</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Expense Dashboard</label>
+                <position>3</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/expense-dashboard</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Expense Admin</label>
+                <position>4</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/expense-admin</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>Projects List</label>
+        <label>Payroll</label>
         <position>11</position>
         <publiclyAvailable>true</publiclyAvailable>
         <subMenu>
             <navigationMenuItem>
-                <label>Projects</label>
+                <label>Salary Slips</label>
                 <position>0</position>
                 <publiclyAvailable>true</publiclyAvailable>
-                <target>/project-list</target>
+                <target>/payroll</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Payroll Workspace</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/payroll-workspace</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Payroll Dashboard</label>
+                <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/payroll-dashboard</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Tax Declaration</label>
+                <position>3</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/tax-declaration</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>My Profile</label>
+        <position>12</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Profile Overview</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/profile-overview</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Update Profile</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/profile</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Configuration</label>
+        <position>13</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Admin Dashboard</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/admin-dashboard</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Admin Settings</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/admin-settings</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Configuration Center</label>
+                <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/configuration-center</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Configuration</label>
+                <position>3</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/configuration</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Role Feature Mapping</label>
+                <position>4</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/role-feature-mapping</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Reports Dashboard</label>
+                <position>5</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/reports-dashboard</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>New User Form</label>
+                <position>6</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/new-user</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
         </subMenu>

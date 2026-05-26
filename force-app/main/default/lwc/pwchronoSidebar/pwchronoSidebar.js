@@ -258,9 +258,7 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
       };
 
       // Map the top-level items
-      this.rawMenuItems = data
-        .map((item, idx) => mapItem(item, idx))
-        .filter((item) => item.label !== "My Profile");
+      this.rawMenuItems = data.map((item, idx) => mapItem(item, idx));
       this._allItemsByKey = flatMap;
 
       // Expand the root menu that contains the currently active page (if any).

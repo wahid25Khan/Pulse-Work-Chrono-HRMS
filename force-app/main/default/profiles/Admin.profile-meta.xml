@@ -4248,7 +4248,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Admin_Dashboard_Design</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Attendance</tab>
@@ -4264,7 +4264,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Dashboard</tab>
-        <visibility>Hidden</visibility>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Employee_Directory</tab>
@@ -4276,15 +4276,19 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Goals</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Holidays</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Leaves</tab>
-        <visibility>Hidden</visibility>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Manager_Dashboard</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Onboarding</tab>
@@ -4308,7 +4312,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_System_Admin</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Training</tab>
