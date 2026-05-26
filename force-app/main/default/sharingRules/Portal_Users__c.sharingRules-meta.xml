@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Share_Active_Employees_With_Portal_Users</fullName>
+        <accessLevel>Read</accessLevel>
+        <description
+    >Allows all authenticated portal users to see active employee records for the Employee Directory feature. Portal_Users__c external OWD is Private; this rule grants Read access to active employee profiles.</description>
+        <label>Share Active Employees With Portal Users</label>
+        <sharedTo>
+            <allCustomerPortalUsers />
+        </sharedTo>
+        <criteriaItems>
+            <field>Is_Active__c</field>
+            <operation>equals</operation>
+            <value>true</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

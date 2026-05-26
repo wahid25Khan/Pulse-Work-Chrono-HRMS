@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <!-- OWD changes: Private for sensitive user-owned data -->
+    <types>
+        <members>PWChrono_Leave__c</members>
+        <members>PWChrono_Attendance_Request__c</members>
+        <members>PWChrono_Salary_Slip__c</members>
+        <members>PWChrono_Appraisal__c</members>
+        <members>PWChrono_Leave_Allocation__c</members>
+        <members>PWChrono_Salary_Assignment__c</members>
+        <!-- OWD changes: PublicReadOnly for shared reference data -->
+        <members>PWChrono_Department__c</members>
+        <members>PWChrono_Designation__c</members>
+        <members>PWChrono_Job_Opening__c</members>
+        <members>PWChrono_Training_Program__c</members>
+        <members>PWChrono_Training_Event__c</members>
+        <members>PWChrono_Leave_Type__c</members>
+        <members>PWChrono_Leave_Period__c</members>
+        <members>PWChrono_Leave_Policy__c</members>
+        <members>PWChrono_Company_Policy__c</members>
+        <members>PWChrono_Shift_Type__c</members>
+        <members>PWChrono_Performance_Cycle__c</members>
+        <members>PWChrono_Salary_Component__c</members>
+        <members>PWChrono_Salary_Structure__c</members>
+        <members>PWChrono_Project__c</members>
+        <name>CustomObject</name>
+    </types>
+    <!-- Criteria-based sharing rule: Employee Directory visibility -->
+    <types>
+        <members>Portal_Users__c</members>
+        <name>SharingRules</name>
+    </types>
+    <version>65.0</version>
+</Package>
