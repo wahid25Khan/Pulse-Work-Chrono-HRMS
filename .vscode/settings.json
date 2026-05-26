@@ -5,6 +5,7 @@
     "**/.sf": true,
     "**/.sfdx": true
   },
+  "xml.validation.enabled": false,
   "xml.preferences.showSchemaDocumentationType": "none",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
