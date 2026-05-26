@@ -1,4 +1,4 @@
-# PWChrono HRMS — Guest User Profile Permissions
+# Pulse Work Chrono — Guest User Profile Permissions
 
 This document covers every permission required for the Experience Cloud **Guest User profile** to run the PWChrono portal. Apply these when configuring a new site.
 

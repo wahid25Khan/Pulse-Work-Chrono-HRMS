@@ -144,9 +144,35 @@ public inherited sharing class PWChrono_HRDashboardController {
    * Returns summarized dashboard data.
    * @return HRDashboardDTO summarized metrics payload
    */
+  private static void requireHRAccess(
+    String portalUserId,
+    String sessionToken
+  ) {
+    if (UserInfo.getUserType() != 'Guest') {
+      return;
+    }
+    Id verifiedId = PWChrono_GuestSession.requireVerifiedPortalUserId(
+      portalUserId,
+      sessionToken
+    );
+    Portal_Users__c caller = [
+      SELECT Role__c
+      FROM Portal_Users__c
+      WHERE Id = :verifiedId
+      LIMIT 1
+    ];
+    if (caller.Role__c != PWChrono_Constants.ROLE_HR_ADMIN) {
+      throw new AuraHandledException('Unauthorized.');
+    }
+  }
+
   @SuppressWarnings('PMD.NcssMethodCount,PMD.CyclomaticComplexity')
-  @AuraEnabled(cacheable=true) // NOPMD
-  public static HRDashboardDTO getDashboardSummary() {
+  @AuraEnabled
+  public static HRDashboardDTO getDashboardSummary(
+    String portalUserId,
+    String sessionToken
+  ) {
+    requireHRAccess(portalUserId, sessionToken);
     HRDashboardDTO dto = initDashboardDto();
     populateDashboardDto(dto);
     return dto;

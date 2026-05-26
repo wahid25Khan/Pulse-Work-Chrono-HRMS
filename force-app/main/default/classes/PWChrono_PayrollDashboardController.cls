@@ -29,8 +29,34 @@ public inherited sharing class PWChrono_PayrollDashboardController {
     public List<Decimal> deductionTrend;
   }
 
-  @AuraEnabled(cacheable=true)
-  public static PayrollDashboardDTO getDashboardSummary() {
+  private static void requireHRAccess(
+    String portalUserId,
+    String sessionToken
+  ) {
+    if (UserInfo.getUserType() != 'Guest') {
+      return;
+    }
+    Id verifiedId = PWChrono_GuestSession.requireVerifiedPortalUserId(
+      portalUserId,
+      sessionToken
+    );
+    Portal_Users__c caller = [
+      SELECT Role__c
+      FROM Portal_Users__c
+      WHERE Id = :verifiedId
+      LIMIT 1
+    ];
+    if (caller.Role__c != PWChrono_Constants.ROLE_HR_ADMIN) {
+      throw new AuraHandledException('Unauthorized.');
+    }
+  }
+
+  @AuraEnabled
+  public static PayrollDashboardDTO getDashboardSummary(
+    String portalUserId,
+    String sessionToken
+  ) {
+    requireHRAccess(portalUserId, sessionToken);
     Date today = Date.today();
     Date startMonth = Date.newInstance(today.year(), today.month(), 1);
     Date endMonth = startMonth.addMonths(1).addDays(-1);
