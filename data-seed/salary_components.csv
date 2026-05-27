@@ -1,4 +1,0 @@
-Name,Component_Type__c,Description__c,Formula__c,Is_Active__c,Is_Taxable__c
-Basic,Earning,,,true,true
-HRA,Earning,,,true,true
-Tax,Deduction,,,true,true
