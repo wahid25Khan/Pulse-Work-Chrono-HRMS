@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >Notifies the batch job creator that the Leave Allocation Batch has completed. Recipient = User who triggered the batch.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>PWChrono Leave Allocation Batch Completion</name>
+    <style>none</style>
+    <subject>PWChrono Leave Allocation Batch — Completed</subject>
+    <type>custom</type>
+</EmailTemplate>

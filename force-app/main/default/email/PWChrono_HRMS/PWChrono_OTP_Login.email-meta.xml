@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >Sends a one-time password (OTP) to portal users for PWChrono login. Recipient = Contact linked to Portal User; Related To = Portal_Users__c.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>PWChrono OTP Login</name>
+    <style>none</style>
+    <subject>Your PWChrono Login Code</subject>
+    <type>custom</type>
+</EmailTemplate>

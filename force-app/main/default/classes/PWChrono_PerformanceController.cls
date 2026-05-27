@@ -52,7 +52,7 @@ public inherited sharing class PWChrono_PerformanceController {
 
       String query =
         'SELECT Id, Name, Employees__c, ' +
-        'Employees__r.Name, Employees__r.Designation__c, Employees__r.Department__c, ' +
+        'Employees__r.Name, Employees__r.Designation__c, Employees__r.Departments__c, ' +
         'Appraisal_Period__c, Start_Date__c, End_Date__c, Status__c, ' +
         'Overall_Rating__c, Self_Rating__c, Achievements__c, Feedback__c, ' +
         'Reviewers__c, Reviewer__r.Name, CreatedDate ' +

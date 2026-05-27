@@ -71,7 +71,7 @@ public inherited sharing class PWChrono_ConfigurationController {
           Email__c,
           Phone__c,
           Role__c,
-          Department__c,
+          Departments__c,
           Designation__c,
           Is_Active__c,
           Photo_Url__c,
@@ -97,7 +97,9 @@ public inherited sharing class PWChrono_ConfigurationController {
         config.designation = pu.Designation__c != null
           ? pu.Designation__c
           : 'N/A';
-        config.department = pu.Department__c != null ? pu.Department__c : 'N/A';
+        config.department = pu.Departments__c != null
+          ? pu.Departments__c
+          : 'N/A';
         config.isActive = pu.Is_Active__c != null ? pu.Is_Active__c : false;
         config.photoUrl = pu.Photo_Url__c;
         config.lastLoginDate = pu.Last_Login_Date__c;
@@ -795,17 +797,30 @@ public inherited sharing class PWChrono_ConfigurationController {
     try {
       // Security Check
 
-      Portal_Users__c user = new Portal_Users__c(Id = userId);
+      // Query first to get Contact__c for the department update.
+      List<Portal_Users__c> puList = [
+        SELECT Id, Contact__c
+        FROM Portal_Users__c
+        WHERE Id = :userId
+        LIMIT 1
+      ]; // NOPMD
+      if (puList.isEmpty()) {
+        throw new AuraHandledException('User not found.');
+      }
+
+      Portal_Users__c user = puList[0];
       if (String.isNotBlank(role)) {
         user.Role__c = role;
-      }
-      if (String.isNotBlank(department)) {
-        user.Department__c = department;
       }
       if (String.isNotBlank(designation)) {
         user.Designation__c = designation;
       }
       update user; // NOPMD
+
+      // Department is a formula: Contact__r.Department — update the linked Contact instead.
+      if (String.isNotBlank(department) && user.Contact__c != null) {
+        update new Contact(Id = user.Contact__c, Department = department); // NOPMD
+      }
 
       return 'User profile updated successfully';
     } catch (Exception e) {

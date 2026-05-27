@@ -9,6 +9,18 @@ private class PWChrono_AdminController_Test {
       testUser.Id
     );
 
+    // Departments__c is a formula (Contact__r.Department) — set via linked Contacts.
+    Contact mgmtContact = new Contact(
+      LastName = 'Manager Contact',
+      Department = 'Management'
+    );
+    Contact engContact = new Contact(
+      LastName = 'Eng Contact',
+      Department = 'Engineering'
+    );
+    Contact hrContact = new Contact(LastName = 'HR Contact', Department = 'HR');
+    insert new List<Contact>{ mgmtContact, engContact, hrContact };
+
     // Additional portal users to exercise employee status breakdown.
     Portal_Users__c manager = new Portal_Users__c(
       Name = 'Test Manager',
@@ -16,7 +28,7 @@ private class PWChrono_AdminController_Test {
       Role__c = PWChrono_Constants.ROLE_MANAGER,
       User__c = testUser.Id,
       Is_Active__c = true,
-      Department__c = 'Management'
+      Contact__c = mgmtContact.Id
     );
     Portal_Users__c probation = new Portal_Users__c(
       Name = 'Test Probation',
@@ -25,7 +37,7 @@ private class PWChrono_AdminController_Test {
       User__c = testUser.Id,
       Is_Active__c = true,
       Is_New__c = true,
-      Department__c = 'Engineering'
+      Contact__c = engContact.Id
     );
     Portal_Users__c other = new Portal_Users__c(
       Name = 'Test Other',
@@ -33,12 +45,17 @@ private class PWChrono_AdminController_Test {
       Role__c = 'HR Admin',
       User__c = testUser.Id,
       Is_Active__c = true,
-      Department__c = 'HR'
+      Contact__c = hrContact.Id
     );
     insert new List<Portal_Users__c>{ manager, probation, other };
 
-    // Ensure the primary test employee has a department for grouping.
-    employee.Department__c = 'Engineering';
+    // Ensure the primary test employee has a department for grouping (via Contact).
+    Contact empContact = new Contact(
+      LastName = 'Emp Contact',
+      Department = 'Engineering'
+    );
+    insert empContact;
+    employee.Contact__c = empContact.Id;
     update employee;
 
     PWChrono_Leave_Type__c lType = new PWChrono_Leave_Type__c(

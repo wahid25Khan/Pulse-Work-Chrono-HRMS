@@ -96,7 +96,7 @@ public inherited sharing class PWChrono_ProfileController {
           Emergency_Contact_Name__c,
           Emergency_Contact_Phone__c,
           Designation__c,
-          Department__c,
+          Departments__c,
           Reports_To__r.Name,
           Photo_Url__c
         FROM Portal_Users__c
@@ -174,7 +174,7 @@ public inherited sharing class PWChrono_ProfileController {
           Emergency_Contact_Name__c,
           Emergency_Contact_Phone__c,
           Designation__c,
-          Department__c,
+          Departments__c,
           Reports_To__r.Name,
           Photo_Url__c
         FROM Portal_Users__c

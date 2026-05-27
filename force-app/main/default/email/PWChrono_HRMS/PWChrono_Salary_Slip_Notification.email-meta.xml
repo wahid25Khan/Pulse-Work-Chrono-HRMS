@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >Notifies an employee that their salary slip is available. Recipient = Contact linked to employee Portal User; Related To = PWChrono_Salary_Slip__c.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>PWChrono Salary Slip Notification</name>
+    <style>none</style>
+    <subject
+  >Your Salary Slip for {!RelatedTo.Payroll_Period__c} is Available</subject>
+    <type>custom</type>
+</EmailTemplate>

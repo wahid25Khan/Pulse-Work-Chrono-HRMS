@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:20px;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+    <div style="background-color:#4e73df;padding:24px 32px;">
+      <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:600;">PWChrono Portal</h1>
+      <p style="color:#c8d8ff;margin:6px 0 0;font-size:14px;">Performance Appraisal</p>
+    </div>
+    <div style="padding:32px;">
+      <p style="color:#333333;font-size:16px;margin:0 0 16px;">Dear {!Recipient.FirstName},</p>
+      <p style="color:#555555;font-size:15px;margin:0 0 24px;">An appraisal you are following has been updated.</p>
+      <div style="background-color:#f8f9fc;padding:16px 20px;border-left:4px solid #4e73df;border-radius:0 4px 4px 0;margin:0 0 24px;">
+        <p style="color:#333;font-size:14px;margin:0 0 4px;"><strong>Appraisal:</strong> {!RelatedTo.Name}</p>
+      </div>
+      <p style="color:#555555;font-size:14px;margin:0;">Please log in to the PWChrono Portal to review the latest details and take any required action.</p>
+    </div>
+    <div style="background-color:#f8f9fc;padding:16px 32px;border-top:1px solid #e3e6f0;">
+      <p style="color:#aaaaaa;font-size:11px;margin:0;text-align:center;">This is an automated message from PWChrono HRMS. Please do not reply to this email.</p>
+    </div>
+  </div>
+</body>
+</html>

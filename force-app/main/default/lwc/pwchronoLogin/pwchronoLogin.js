@@ -133,11 +133,10 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
   }
 
   redirectToHome() {
-    const base = this.getCommunityBasePath();
-    const targetPath = base ? `${base}/` : "/";
-    const targetUrl = this.getAbsoluteUrl(targetPath);
-
-    // First try SPA navigation (in case the site prefers named routes).
+    // Use SPA navigation — NavigationMixin knows the correct URL for the Home named page.
+    // Do NOT also call location.assign() immediately: navigating to the community root
+    // can trigger an Experience Cloud redirect back to /login if that is the site's
+    // configured default landing page, creating a redirect loop.
     try {
       this[NavigationMixin.Navigate]({
         type: "comm__namedPage",
@@ -147,18 +146,22 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
       // no-op
     }
 
-    // Force a hard redirect so the URL definitely leaves /login and Home loads fresh.
-    try {
-      globalThis.location?.assign(targetUrl);
-    } catch {
+    // Fallback: if SPA navigation leaves us on the login page after a short wait,
+    // force a hard redirect to the community root as a last resort.
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    setTimeout(() => {
       try {
-        if (globalThis.location) {
-          globalThis.location.href = targetUrl;
+        const p = globalThis.location?.pathname || "";
+        if (p.endsWith("/login") || p.includes("/login/")) {
+          const base = this.getCommunityBasePath();
+          const targetPath = base ? `${base}/` : "/";
+          const targetUrl = this.getAbsoluteUrl(targetPath);
+          globalThis.location?.assign(targetUrl);
         }
       } catch {
         // no-op
       }
-    }
+    }, 300);
   }
 
   // Handle email input
@@ -198,11 +201,12 @@ export default class PwchronoLogin extends NavigationMixin(LightningElement) {
         this.showOtpScreen = true;
         this.startCountdown();
       } else if (result === "Success_NoEmail") {
-        // Email failed but OTP is stored - proceed to OTP screen
+        // OTP is stored but email delivery failed — show OTP screen so a
+        // Salesforce admin can relay the code, but surface a user-friendly message.
         this.showOtpScreen = true;
         this.startCountdown();
         this.errorMessage =
-          "Email delivery may have failed. Check debug logs for OTP code.";
+          "We're having trouble delivering the verification code to your email. Please check your inbox (including spam), wait a moment, and use Resend OTP — or contact your HR Administrator if the issue persists.";
       }
     } catch (error) {
       const serverMessage = error.body?.message;

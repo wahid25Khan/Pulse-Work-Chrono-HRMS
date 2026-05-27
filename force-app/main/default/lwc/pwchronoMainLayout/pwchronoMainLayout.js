@@ -2,6 +2,7 @@ import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUse
 import getCurrentUserContext from "@salesforce/apex/PWChrono_AuthController.getCurrentUserContext";
 import { navigateTo } from "c/pwchronoRouter";
 import {
+  SESSION_CHANGED_EVENT,
   clearSession,
   getEmployeeId,
   getSession,
@@ -45,7 +46,37 @@ export default class PwchronoMainLayout extends NavigationMixin(
 
     this.checkLoginStatus();
 
+    // React to setSession() calls that happen in the same JS context (SPA navigation)
+    // so isLoggedIn updates without requiring a full page reload.
+    this._sessionChangedHandler = () => {
+      const session = getSession();
+      if (session.isLoggedIn && !this.isLoggedIn) {
+        this.sessionToken = session.sessionToken;
+        this.setSessionState(session.user, session.permissions);
+        this.loadFeatureAccess(getEmployeeId());
+      }
+    };
+    try {
+      (globalThis.window ?? globalThis).addEventListener(
+        SESSION_CHANGED_EVENT,
+        this._sessionChangedHandler
+      );
+    } catch {
+      // no-op
+    }
+
     // Styling is expected to be loaded globally by the Experience site (Head Markup / Theme).
+  }
+
+  disconnectedCallback() {
+    try {
+      (globalThis.window ?? globalThis).removeEventListener(
+        SESSION_CHANGED_EVENT,
+        this._sessionChangedHandler
+      );
+    } catch {
+      // no-op
+    }
   }
 
   getCommunityBasePath() {

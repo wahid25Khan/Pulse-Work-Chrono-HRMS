@@ -14,7 +14,7 @@ public without sharing class PWChrono_LeaveAllocationBatch implements Database.B
   public Database.QueryLocator start(Database.BatchableContext bc) {
     return Database.getQueryLocator(
       [
-        SELECT Id, Name, Email__c, Department__c
+        SELECT Id, Name, Email__c, Departments__c
         FROM Portal_Users__c
         WHERE Is_Active__c = TRUE
       ]
@@ -266,32 +266,47 @@ public without sharing class PWChrono_LeaveAllocationBatch implements Database.B
         NumberOfErrors,
         JobItemsProcessed,
         TotalJobItems,
+        CreatedById,
         CreatedBy.Email
       FROM AsyncApexJob
       WHERE Id = :bc.getJobId()
     ];
 
-    // Send summary email
+    // Send summary email using Lightning Email Template when available,
+    // falling back to plain text for environments where the template is not deployed.
     Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
     email.setToAddresses(new List<String>{ job.CreatedBy.Email });
-    email.setSubject('PWChrono Leave Allocation Batch - Completion Status');
-    email.setPlainTextBody(
-      'Leave Allocation Batch has completed.\n\n' +
-        'Status: ' +
-        job.Status +
-        '\n' +
-        'Total Batches Processed: ' +
-        job.TotalJobItems +
-        '\n' +
-        'Records Processed: ' +
-        totalProcessed +
-        '\n' +
-        'Errors: ' +
-        totalErrors +
-        '\n\n' +
-        'Check logs for details.'
+
+    Id templateId = PWChrono_EmailHandler.getEmailTemplateId(
+      'PWChrono_Leave_Allocation_Batch'
     );
 
+    if (templateId != null) {
+      email.setTemplateId(templateId);
+      email.setTargetObjectId(job.CreatedById);
+      email.setSaveAsActivity(true);
+    } else {
+      email.setSubject('PWChrono Leave Allocation Batch - Completion Status');
+      email.setPlainTextBody(
+        'Leave Allocation Batch has completed.\n\n' +
+          'Status: ' +
+          job.Status +
+          '\n' +
+          'Total Batches Processed: ' +
+          job.TotalJobItems +
+          '\n' +
+          'Records Processed: ' +
+          totalProcessed +
+          '\n' +
+          'Errors: ' +
+          totalErrors +
+          '\n\n' +
+          'Check logs for details.'
+      );
+      email.setSaveAsActivity(false);
+    }
+
+    PWChrono_EmailHandler.applyOrgWideEmailAddress(email);
     Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ email });
   }
 }

@@ -4,11 +4,16 @@ private class PWChrono_EmpDirectoryCtrl_Test {
   static void makeData() {
     // Create User and Employee
     User testUser = PWChrono_TestDataFactory.createTestUser('Standard User');
+
+    // Department is a formula (Contact__r.Department) — set it on the Contact.
+    Contact con = new Contact(LastName = 'Test Employee', Department = 'IT');
+    insert con;
+
     Portal_Users__c employee = PWChrono_TestDataFactory.createTestEmployee(
       testUser.Id
     );
-    employee.Department__c = 'IT';
     employee.Designation__c = 'Developer';
+    employee.Contact__c = con.Id;
     update employee;
   }
 

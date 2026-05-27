@@ -19,7 +19,7 @@ public inherited sharing class PWChrono_LeaveSelector {
         Employees__c,
         Employees__r.Name,
         Employees__r.Reports_To__c,
-        Employees__r.Department__c,
+        Employees__r.Departments__c,
         Leave_Type__c,
         Leave_Type__r.Name,
         From_Date__c,
@@ -494,13 +494,13 @@ public inherited sharing class PWChrono_LeaveSelector {
     }
 
     List<Portal_Users__c> employees = [
-      SELECT Department__c
+      SELECT Departments__c
       FROM Portal_Users__c
       WHERE Id = :employeeId
       LIMIT 1
     ];
 
-    return employees.isEmpty() ? null : employees[0].Department__c;
+    return employees.isEmpty() ? null : employees[0].Departments__c;
   }
 
   /**

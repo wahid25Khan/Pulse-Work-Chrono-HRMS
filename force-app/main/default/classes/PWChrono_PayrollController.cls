@@ -182,6 +182,8 @@ public inherited sharing class PWChrono_PayrollController {
     String sessionToken
   ) {
     try {
+      Id contactId;
+
       if (UserInfo.getUserType() == 'Guest') {
         Id targetEmployeeId = resolveTargetEmployeeId(
           null,
@@ -191,7 +193,11 @@ public inherited sharing class PWChrono_PayrollController {
 
         // Verify slip ownership and lock recipient to the employee's email.
         PWChrono_Salary_Slip__c slip = [
-          SELECT Id, Employees__c, Employees__r.Email__c
+          SELECT
+            Id,
+            Employees__c,
+            Employees__r.Email__c,
+            Employees__r.Contact__c
           FROM PWChrono_Salary_Slip__c
           WHERE Id = :salarySlipId AND Employees__c = :targetEmployeeId
           LIMIT 1
@@ -211,20 +217,49 @@ public inherited sharing class PWChrono_PayrollController {
         if (toEmail != employeeEmail) {
           throw new AuraHandledException('Unauthorized.');
         }
+
+        contactId = slip.Employees__r?.Contact__c;
+      } else {
+        // Non-Guest: look up contact for template activity logging.
+        List<PWChrono_Salary_Slip__c> slips = [
+          SELECT Id, Employees__r.Contact__c
+          FROM PWChrono_Salary_Slip__c
+          WHERE Id = :salarySlipId
+          LIMIT 1
+        ];
+        if (!slips.isEmpty() && slips[0].Employees__r != null) {
+          contactId = slips[0].Employees__r.Contact__c;
+        }
       }
 
-      // Non-Guest: preserve existing behavior (send to requested address).
       Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-
       mail.setToAddresses(new List<String>{ toEmail });
 
       if (String.isNotBlank(ccEmail)) {
         mail.setCcAddresses(new List<String>{ ccEmail });
       }
 
-      mail.setSubject(subject);
-      mail.setHtmlBody(body);
+      Id templateId = PWChrono_EmailHandler.getEmailTemplateId(
+        'PWChrono_Salary_Slip_Notification'
+      );
 
+      if (templateId != null) {
+        mail.setTemplateId(templateId);
+        mail.setWhatId(salarySlipId);
+        if (contactId != null) {
+          mail.setTargetObjectId(contactId);
+          mail.setSaveAsActivity(true);
+        } else {
+          mail.setSaveAsActivity(false);
+        }
+      } else {
+        // Fallback: use subject/body provided by the LWC caller.
+        mail.setSubject(subject);
+        mail.setHtmlBody(body);
+        mail.setSaveAsActivity(false);
+      }
+
+      PWChrono_EmailHandler.applyOrgWideEmailAddress(mail);
       Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ mail });
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);

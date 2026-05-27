@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description
+  >Notifies recipients that an appraisal they follow has been updated. Recipient = Contact linked to portal user; Related To = PWChrono_Appraisal__c.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>PWChrono Appraisal Notification</name>
+    <style>none</style>
+    <subject>Appraisal Update: {!RelatedTo.Name}</subject>
+    <type>custom</type>
+</EmailTemplate>
