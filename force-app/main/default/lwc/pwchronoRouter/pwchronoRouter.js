@@ -17,7 +17,17 @@ export const PAGES = {
   PAYROLL: "payroll",
   RECRUITMENT: "recruitment",
   PERFORMANCE: "performance",
-  TRAINING: "training"
+  TRAINING: "training",
+  STAFFING_PLAN: "staffing_plan",
+  JOB_REQUISITION: "job_requisition",
+  CAREER_PORTAL: "career_portal",
+  EMPLOYEE_REFERRAL: "employee_referral",
+  RECRUITMENT_DASHBOARD: "recruitment_dashboard",
+  EMPLOYEE_PROMOTION: "employee_promotion",
+  EMPLOYEE_TRANSFER: "employee_transfer",
+  EMPLOYEE_SEPARATION: "employee_separation",
+  EXIT_INTERVIEW: "exit_interview",
+  FULL_FINAL_SETTLEMENT: "full_final_settlement"
 };
 
 export function getCurrentPage() {

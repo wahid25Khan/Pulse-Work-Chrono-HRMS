@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Exit_Type__c</fullName>
+    <label>Exit Type</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Resignation</fullName><label
+        >Resignation</label><default>true</default></value>
+            <value><fullName>Termination</fullName><label
+        >Termination</label><default>false</default></value>
+            <value><fullName>Mutual Separation</fullName><label
+        >Mutual Separation</label><default>false</default></value>
+            <value><fullName>Retirement</fullName><label
+        >Retirement</label><default>false</default></value>
+        </valueSetDefinition>
+    </valueSet>
+    <required>false</required>
+</CustomField>

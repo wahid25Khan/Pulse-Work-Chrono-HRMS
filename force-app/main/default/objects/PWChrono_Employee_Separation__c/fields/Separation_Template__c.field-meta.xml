@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Separation_Template__c</fullName>
+    <label>Separation Template</label>
+    <type>Lookup</type>
+    <referenceTo>PWChrono_Separation_Template__c</referenceTo>
+    <relationshipName>Employee_Separations</relationshipName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <required>false</required>
+</CustomField>

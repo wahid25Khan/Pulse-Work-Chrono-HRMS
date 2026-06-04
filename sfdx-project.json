@@ -8,5 +8,5 @@
   "name": "PWChrono-HRMS",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "65.0"
+  "sourceApiVersion": "60.0"
 }

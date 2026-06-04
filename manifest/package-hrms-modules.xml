@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+
+    <!-- New Apex Controllers (Modules 2-10) -->
+    <types>
+        <members>PWChrono_CareerPortalController</members>
+        <members>PWChrono_CareerPortalController_Test</members>
+        <members>PWChrono_EmployeePromotionController</members>
+        <members>PWChrono_EmpPromotion_Test</members>
+        <members>PWChrono_EmployeeReferralController</members>
+        <members>PWChrono_EmployeeReferralController_Test</members>
+        <members>PWChrono_EmployeeSeparationController</members>
+        <members>PWChrono_EmpSeparation_Test</members>
+        <members>PWChrono_EmployeeTransferController</members>
+        <members>PWChrono_EmployeeTransferController_Test</members>
+        <members>PWChrono_ExitInterviewController</members>
+        <members>PWChrono_ExitInterviewController_Test</members>
+        <members>PWChrono_FullFinalSettlementController</members>
+        <members>PWChrono_FFSettlement_Test</members>
+        <members>PWChrono_JobRequisitionController</members>
+        <members>PWChrono_JobRequisitionController_Test</members>
+        <members>PWChrono_RecruitmentDashboardController</members>
+        <members>PWChrono_RecruitDashboard_Test</members>
+        <members>PWChrono_StaffingPlanController</members>
+        <members>PWChrono_StaffingPlanController_Test</members>
+        <name>ApexClass</name>
+    </types>
+
+    <!-- New LWC Components (Modules 2-10) + modified Router/Sidebar -->
+    <types>
+        <members>pwchronoCareerPortal</members>
+        <members>pwchronoCareerPortalPage</members>
+        <members>pwchronoEmployeePromotion</members>
+        <members>pwchronoEmployeePromotionPage</members>
+        <members>pwchronoEmployeeReferral</members>
+        <members>pwchronoEmployeeReferralPage</members>
+        <members>pwchronoEmployeeSeparation</members>
+        <members>pwchronoEmployeeSeparationPage</members>
+        <members>pwchronoEmployeeTransfer</members>
+        <members>pwchronoEmployeeTransferPage</members>
+        <members>pwchronoExitInterview</members>
+        <members>pwchronoExitInterviewPage</members>
+        <members>pwchronoFullFinalSettlement</members>
+        <members>pwchronoFullFinalSettlementPage</members>
+        <members>pwchronoJobRequisition</members>
+        <members>pwchronoJobRequisitionPage</members>
+        <members>pwchronoRecruitmentDashboard</members>
+        <members>pwchronoRecruitmentDashboardPage</members>
+        <members>pwchronoStaffingPlan</members>
+        <members>pwchronoStaffingPlanPage</members>
+        <members>pwchronoRouter</members>
+        <members>pwchronoSidebar</members>
+        <name>LightningComponentBundle</name>
+    </types>
+
+    <!-- New Custom Objects -->
+    <types>
+        <members>PWChrono_Employee_Exit__c</members>
+        <members>PWChrono_Employee_Promotion__c</members>
+        <members>PWChrono_Employee_Referral__c</members>
+        <members>PWChrono_Employee_Separation__c</members>
+        <members>PWChrono_Employee_Transfer__c</members>
+        <members>PWChrono_Exit_Interview__c</members>
+        <members>PWChrono_Full_Final_Settlement__c</members>
+        <members>PWChrono_Job_Requisition__c</members>
+        <members>PWChrono_Promotion_Detail__c</members>
+        <members>PWChrono_Separation_Checklist__c</members>
+        <members>PWChrono_Separation_Template__c</members>
+        <members>PWChrono_Separation_Template_Activity__c</members>
+        <members>PWChrono_Settlement_Payable__c</members>
+        <members>PWChrono_Settlement_Receivable__c</members>
+        <members>PWChrono_Staffing_Plan__c</members>
+        <members>PWChrono_Staffing_Plan_Detail__c</members>
+        <name>CustomObject</name>
+    </types>
+
+    <!-- New fields on existing objects -->
+    <types>
+        <members>PWChrono_Job_Applicant__c.Applicant_Rating__c</members>
+        <members>PWChrono_Job_Applicant__c.Country__c</members>
+        <members>PWChrono_Job_Applicant__c.Cover_Letter__c</members>
+        <members>PWChrono_Job_Applicant__c.Designation__c</members>
+        <members>PWChrono_Job_Applicant__c.Expected_Salary__c</members>
+        <members>PWChrono_Job_Applicant__c.Interview_Summary__c</members>
+        <members>PWChrono_Job_Applicant__c.Lower_Salary_Range__c</members>
+        <members>PWChrono_Job_Applicant__c.Offer_Status__c</members>
+        <members>PWChrono_Job_Applicant__c.Source__c</members>
+        <members>PWChrono_Job_Applicant__c.Upper_Salary_Range__c</members>
+        <members>PWChrono_Job_Opening__c.Company__c</members>
+        <members>PWChrono_Job_Opening__c.Employment_Type__c</members>
+        <members>PWChrono_Job_Opening__c.Location__c</members>
+        <members>PWChrono_Promotion_Detail__c.Promotion__c</members>
+        <members>PWChrono_Promotion_Detail__c.Property__c</members>
+        <members>PWChrono_Promotion_Detail__c.Current_Value__c</members>
+        <members>PWChrono_Promotion_Detail__c.New_Value__c</members>
+        <name>CustomField</name>
+    </types>
+
+    <!-- New Custom Tabs -->
+    <types>
+        <members>PWChrono_Employee_Promotion__c</members>
+        <members>PWChrono_Employee_Referral__c</members>
+        <members>PWChrono_Employee_Separation__c</members>
+        <members>PWChrono_Employee_Transfer__c</members>
+        <members>PWChrono_Exit_Interview__c</members>
+        <members>PWChrono_Full_Final_Settlement__c</members>
+        <members>PWChrono_Job_Opening__c</members>
+        <members>PWChrono_Job_Requisition__c</members>
+        <members>PWChrono_Staffing_Plan__c</members>
+        <name>CustomTab</name>
+    </types>
+
+    <version>60.0</version>
+</Package>

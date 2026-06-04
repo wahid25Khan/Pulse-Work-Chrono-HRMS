@@ -30,6 +30,16 @@ const ICON_CLASS_MAP = {
   "Project List": "fa-solid fa-diagram-project fa-fw",
   "Training Management": "fa-solid fa-graduation-cap fa-fw",
   Recruitment: "fa-solid fa-user-tie fa-fw",
+  "Staffing Plan": "fa-solid fa-sitemap fa-fw",
+  "Job Requisition": "fa-solid fa-file-signature fa-fw",
+  "Career Portal": "fa-solid fa-globe fa-fw",
+  "Employee Referral": "fa-solid fa-user-plus fa-fw",
+  "Recruitment Dashboard": "fa-solid fa-chart-line fa-fw",
+  "Employee Promotion": "fa-solid fa-arrow-trend-up fa-fw",
+  "Employee Transfer": "fa-solid fa-right-left fa-fw",
+  "Employee Separation": "fa-solid fa-door-open fa-fw",
+  "Exit Interview": "fa-solid fa-comments fa-fw",
+  "Full & Final Settlement": "fa-solid fa-file-invoice-dollar fa-fw",
   Onboarding: "fa-solid fa-id-card-clip fa-fw",
   "Company Policies": "fa-solid fa-file-lines fa-fw"
 };
