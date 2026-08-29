@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Payroll",
+  "contentBody" : {
+    "activeViewId" : "Payroll_Salary",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-payroll-salary",
+    "urlPrefix" : "payroll"
+  },
+  "urlName" : "payroll-salary"
+}

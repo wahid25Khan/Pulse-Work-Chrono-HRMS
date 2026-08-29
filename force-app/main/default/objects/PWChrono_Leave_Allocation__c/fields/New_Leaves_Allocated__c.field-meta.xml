@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>New_Leaves_Allocated__c</fullName>
     <externalId>false</externalId>
-    <formula
-  >Total_Leaves_Allocated__c - Carry_Forwarded_Leaves__c - Total_Leaves_Encashed__c</formula>
+    <formula>Total_Leaves_Allocated__c - Carry_Forwarded_Leaves__c - Total_Leaves_Encashed__c</formula>
     <label>New Leaves Allocated</label>
     <precision>18</precision>
     <required>false</required>

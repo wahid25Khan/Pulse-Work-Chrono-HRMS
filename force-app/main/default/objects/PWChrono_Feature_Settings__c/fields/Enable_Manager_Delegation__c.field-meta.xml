@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Enable_Manager_Delegation__c</fullName>
     <defaultValue>true</defaultValue>
-    <description
-  >Allow managers to delegate their approval authority to another manager temporarily.</description>
-    <inlineHelpText
-  >When enabled, managers can assign a delegate to approve requests during their absence.</inlineHelpText>
+    <description>Allow managers to delegate their approval authority to another manager temporarily.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>When enabled, managers can assign a delegate to approve requests during their absence.</inlineHelpText>
     <label>Enable Manager Delegation</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

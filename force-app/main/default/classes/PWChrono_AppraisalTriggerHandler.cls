@@ -101,7 +101,7 @@ public inherited sharing class PWChrono_AppraisalTriggerHandler {
         From_Date__c = appraisal.Effective_Date__c != null
           ? appraisal.Effective_Date__c
           : Date.today(),
-        Change_Reason__c = 'Appraisal Increment',
+        Change_Reason__c = 'Annual Increment',
         Is_Active__c = true
       );
       newAssignments.add(newSA);

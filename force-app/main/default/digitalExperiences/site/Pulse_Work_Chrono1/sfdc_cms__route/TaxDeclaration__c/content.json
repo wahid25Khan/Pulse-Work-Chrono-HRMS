@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Tax Declaration",
+  "contentBody" : {
+    "activeViewId" : "Tax_Declaration",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-tax-declaration",
+    "urlPrefix" : "tax-declaration"
+  },
+  "urlName" : "tax-declaration"
+}

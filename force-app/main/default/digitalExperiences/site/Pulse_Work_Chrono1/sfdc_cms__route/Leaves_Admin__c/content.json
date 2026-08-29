@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Leaves Admin",
+  "contentBody" : {
+    "activeViewId" : "Leaves_Admin",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-leaves-admin",
+    "urlPrefix" : "leaves-admin"
+  },
+  "urlName" : "leaves-admin"
+}

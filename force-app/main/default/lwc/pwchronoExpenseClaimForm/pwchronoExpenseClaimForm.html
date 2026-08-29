@@ -1,35 +1,29 @@
 <template lwc:render-mode="light">
   <!-- Modal overlay -->
-  <div
-    class="modal d-block"
-    tabindex="-1"
-    style="background: rgba(0, 0, 0, 0.5)"
-  >
+  <div class="modal d-block" tabindex="-1" style="background:rgba(0,0,0,0.5)">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
+
         <!-- Header -->
         <div class="modal-header">
           <h5 class="modal-title fw-semibold">{modalTitle}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            onclick={handleCancel}
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" onclick={handleCancel} aria-label="Close"></button>
         </div>
 
         <!-- Body -->
         <div class="modal-body">
+
           <!-- Loading -->
           <template if:true={isLoading}>
             <div class="text-center py-5">
-              <div class="spinner-border text-primary" role="status">
+              <div class="spinner-border text-primary" aria-label="Loading">
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
           </template>
 
           <template if:false={isLoading}>
+
             <!-- Validation errors -->
             <template if:true={hasErrors}>
               <div class="alert alert-danger">
@@ -44,10 +38,11 @@
             <!-- Header fields -->
             <div class="row g-3 mb-4">
               <div class="col-md-3">
-                <label class="form-label fw-medium" style="font-size: 0.875rem">
+                <label class="form-label fw-medium" style="font-size:0.875rem" for="ecf-claim-date">
                   Claim Date <span class="text-danger">*</span>
                 </label>
                 <input
+                  id="ecf-claim-date"
                   type="date"
                   class="form-control form-control-sm"
                   value={claimDate}
@@ -55,10 +50,11 @@
                 />
               </div>
               <div class="col-md-9">
-                <label class="form-label fw-medium" style="font-size: 0.875rem">
+                <label class="form-label fw-medium" style="font-size:0.875rem" for="ecf-description">
                   Description <span class="text-danger">*</span>
                 </label>
                 <input
+                  id="ecf-description"
                   type="text"
                   class="form-control form-control-sm"
                   value={description}
@@ -68,16 +64,14 @@
                 />
               </div>
               <div class="col-12">
-                <label class="form-label fw-medium" style="font-size: 0.875rem"
-                  >Business Purpose</label
-                >
+                <label class="form-label fw-medium" style="font-size:0.875rem" for="ecf-business-purpose">Business Purpose</label>
                 <textarea
+                  id="ecf-business-purpose"
                   class="form-control form-control-sm"
                   rows="2"
-                  value={businessPurpose}
                   placeholder="Describe the business justification for these expenses..."
                   onchange={handleBusinessPurposeChange}
-                ></textarea>
+                >{businessPurpose}</textarea>
               </div>
             </div>
 
@@ -89,6 +83,7 @@
               value={items}
               onitemschange={handleItemsChange}
             ></c-pwchrono-expense-line-item-editor>
+
           </template>
         </div>
 
@@ -109,10 +104,7 @@
             disabled={isSaving}
           >
             <template if:true={isSaving}>
-              <span
-                class="spinner-border spinner-border-sm me-1"
-                role="status"
-              ></span>
+              <span class="spinner-border spinner-border-sm me-1" aria-label="Loading"></span>
             </template>
             <template if:false={isSaving}>
               <i class="fa-regular fa-floppy-disk me-1"></i>
@@ -126,10 +118,7 @@
             disabled={isSaving}
           >
             <template if:true={isSaving}>
-              <span
-                class="spinner-border spinner-border-sm me-1"
-                role="status"
-              ></span>
+              <span class="spinner-border spinner-border-sm me-1" aria-label="Loading"></span>
             </template>
             <template if:false={isSaving}>
               <i class="fa-solid fa-paper-plane me-1"></i>
@@ -137,6 +126,7 @@
             Save &amp; Submit
           </button>
         </div>
+
       </div>
     </div>
   </div>

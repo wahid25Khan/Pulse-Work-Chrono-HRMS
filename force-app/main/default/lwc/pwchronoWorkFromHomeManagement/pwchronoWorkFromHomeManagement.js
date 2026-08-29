@@ -123,23 +123,44 @@ export default class WfhChildManagement extends LightningElement {
   }
 
   handleExportPDF() {
-    console.log("Exporting as PDF...");
+    this.dispatchEvent(
+      new CustomEvent("exportpdf", { bubbles: true, composed: true })
+    );
   }
 
   handleExportExcel() {
-    console.log("Exporting as Excel...");
+    this.dispatchEvent(
+      new CustomEvent("exportexcel", { bubbles: true, composed: true })
+    );
   }
 
   handleEdit(event) {
-    const id = event.currentTarget.dataset.id;
-    console.log("Edit clicked for ID:", id);
+    this.dispatchEvent(
+      new CustomEvent("editrequest", {
+        detail: { id: event.currentTarget.dataset.id },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   handleFilterChange(event) {
-    console.log("Date filter changed:", event.target.value);
+    this.dispatchEvent(
+      new CustomEvent("datefilterchange", {
+        detail: { value: event.target.value },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   handlePageSizeChange(event) {
-    console.log("Page size changed to:", event.target.value);
+    this.dispatchEvent(
+      new CustomEvent("pagesizechange", {
+        detail: { value: event.target.value },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 }

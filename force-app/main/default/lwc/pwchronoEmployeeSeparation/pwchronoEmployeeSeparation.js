@@ -1,4 +1,5 @@
 import { LightningElement, track } from "lwc";
+import LightningConfirm from "lightning/confirm";
 import { getSession, getSessionToken } from "c/pwchronoSession";
 import { PAGES } from "c/pwchronoRouter";
 
@@ -310,7 +311,10 @@ export default class PwchronoEmployeeSeparation extends LightningElement {
     const value =
       field === "Is_Required__c" ? evt.target.checked : evt.target.value;
     this.checklistRows = this.checklistRows.map((r) => {
-      return r._key === key ? { ...r, [field]: value } : r;
+      if (r._key === key) {
+        return { ...r, [field]: value };
+      }
+      return r;
     });
   }
 
@@ -376,10 +380,15 @@ export default class PwchronoEmployeeSeparation extends LightningElement {
     this.validationError = "";
     this.isSaving = true;
     try {
-      // Strip _key from checklist rows before serializing
-      const cleanChecklist = this.checklistRows.map(
-        ({ _key, isPending, isInProgress, isCompleted, ...rest }) => rest
-      ); // eslint-disable-line no-unused-vars
+      const cleanChecklist = this.checklistRows.map((row) => {
+        const cleanRow = { ...row };
+        ["_key", "isPending", "isInProgress", "isCompleted"].forEach(
+          (field) => {
+            delete cleanRow[field];
+          }
+        );
+        return cleanRow;
+      });
       await saveSeparation({
         separationJson: JSON.stringify(this.editRecord),
         checklistJson: JSON.stringify(cleanChecklist),
@@ -403,9 +412,12 @@ export default class PwchronoEmployeeSeparation extends LightningElement {
   async handleDelete(evt) {
     const id = evt.currentTarget.dataset.id ?? this.editRecord.Id;
     if (!id) return;
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    if (!confirm("Delete this separation record? This cannot be undone."))
-      return;
+    const confirmed = await LightningConfirm.open({
+      message: "Delete this separation record? This cannot be undone.",
+      label: "Confirm Delete",
+      theme: "warning"
+    });
+    if (!confirmed) return;
     try {
       await deleteSeparation({
         separationId: id,

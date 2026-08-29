@@ -1,32 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <applicationVisibilities>
-        <application>Kanban_Board</application>
+        <application>MTitan</application>
         <default>false</default>
         <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>NexaLoad</application>
+        <default>false</default>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>PWChrono_Portal</application>
         <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>Pulse_Orbit</application>
-        <default>false</default>
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Quillio</application>
+        <application>Platform</application>
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>TLG_SwiftSign</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>Task_Management_App</application>
+        <application>Pulse_Work_Chrono</application>
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
@@ -51,42 +46,12 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>standard__CommerceV2</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>standard__Community</application>
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>standard__Content</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__DataGovernanceConsole</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__DataManager</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>standard__FlowsApp</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__Insights</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__InventoryConsole</application>
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
@@ -111,11 +76,6 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>standard__LightningScheduler</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>standard__LightningService</application>
         <default>false</default>
         <visible>true</visible>
@@ -131,19 +91,14 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>standard__OnlineSales</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>standard__Platform</application>
         <default>false</default>
         <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__QueueManagement</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__RevenueCloudConsole</application>
-        <default>false</default>
-        <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>standard__Sales</application>
@@ -169,16 +124,6 @@
         <application>standard__ServiceConsole</application>
         <default>false</default>
         <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__Shield</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__Sites</application>
-        <default>false</default>
-        <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
         <apexClass>PWChrono_AccessController</apexClass>
@@ -686,34 +631,34 @@
     </classAccesses>
     <custom>false</custom>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Employee_Benefit__c.Annual_Deductible__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Employee_Benefit__c.Benefit_Plan__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Employee_Benefit__c.Coverage_Level__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Employee_Benefit__c.Enrollment_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Employee_Benefit__c.Monthly_Premium__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Employee_Benefit__c.Status__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -881,14 +826,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>PWChrono_Attendance_Request__c.Employee__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>PWChrono_Attendance_Request__c.Employees__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -1156,9 +1101,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>PWChrono_Holiday__c.Holiday_List__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -1232,7 +1177,32 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Applicant_Rating__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Country__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Cover_Letter__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Designation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PWChrono_Job_Applicant__c.Email__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Expected_Salary__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1242,7 +1212,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Interview_Summary__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PWChrono_Job_Applicant__c.Job_Opening__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Lower_Salary_Range__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Offer_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1272,12 +1257,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Source__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PWChrono_Job_Applicant__c.Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PWChrono_Job_Applicant__c.Upper_Salary_Range__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PWChrono_Job_Opening__c.Closing_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PWChrono_Job_Opening__c.Company__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1292,7 +1292,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PWChrono_Job_Opening__c.Employment_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PWChrono_Job_Opening__c.Job_Description__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PWChrono_Job_Opening__c.Location__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1596,14 +1606,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>PWChrono_Leave__c.Approver__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>PWChrono_Leave__c.Approvers__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -1626,14 +1636,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>PWChrono_Leave__c.Employee__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>PWChrono_Leave__c.Employees__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2151,9 +2161,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>PWChrono_Structure_Component__c.Salary_Structure__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2311,119 +2321,119 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Performance_Review__c.Employee_Comments__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Performance_Review__c.Goals_Met__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Performance_Review__c.Manager_Comments__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Performance_Review__c.Overall_Rating__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Performance_Review__c.Review_Period__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Performance_Review__c.Review_Type__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Performance_Review__c.Status__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Performance_Review__c.Total_Goals__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Field_Permission__c.Can_Edit__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Field_Permission__c.Can_View__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Field_Permission__c.Portal_Object_Field__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Field_Permission__c.Portal_Object__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Field_Permission__c.Portal_User_Profile__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Field__c.Is_System_Field__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Field__c.Portal_Object__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Permission__c.Can_Create__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Permission__c.Can_Delete__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Permission__c.Can_Edit__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Permission__c.Can_Modify_All__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Permission__c.Can_View_All__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Permission__c.Can_View__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Permission__c.Portal_Object__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object_Permission__c.Portal_User_Profile__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2431,14 +2441,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object__c.Ordered_by_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Object__c.Production_Week_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2446,9 +2456,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Account__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2463,27 +2473,27 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Portal_Users__c.CASESAFEID_Acct_ID__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Portal_Users__c.CASESAFEID_Contact_ID__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Portal_Users__c.CASESAFEID_ID__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Portal_Users__c.CASESAFEId_Owner_ID__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Contact__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2491,19 +2501,19 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Portal_Users__c.Department__c</field>
+        <editable>false</editable>
+        <field>Portal_Users__c.Departments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Designation__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Email__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2516,64 +2526,129 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.EncryptedPassword__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_Access_Token__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Portal_Users__c.Google_Auth_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_Auth_State_Expiry_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_Auth_State__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_Chat_Consent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_Picture_Last_Synced_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_Picture_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_Refresh_Token__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_Token_Expiry_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Google_User_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Image_Urls__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Portal_Users__c.Is_Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Portal_Users__c.Is_Executive__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Is_Forgot_Password__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Is_New__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Is_One_Time_Password_Activated__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Is_Password_Expired__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Portal_Users__c.Is_Project_Manager__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Is_Verification__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Is_reset_link_expired__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Is_reset_link_sent__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Last_Login_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.MC_Sync_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2581,19 +2656,19 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.One_Time_Password_Type__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.One_Time_Password__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Password_Updated_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2606,29 +2681,29 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Picklist_Test__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Portal_User_Profile__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Reports_To__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Role__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Send_New_User_Notification_from_SFDC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2651,197 +2726,175 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Show_Executive_Dashboard__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Show_Overview_Dashboard__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Show_PM_Dashboard__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Portal_Users__c.Show_VP_Dashboard__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Portal_Users__c.TLG_Collapsed_Columns__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Type__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Portal_Users__c.Use_No_Profile_Picture__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Portal_Users__c.User_Email__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.User_Password__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.User__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.Webinar_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Portal_Users__c.pg_id__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Notification_Title__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Notified__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Send_Email_Alert__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field
-    >TLG_Task_Notifications__c.TLG_Send_No_Activity_Email_Alert__c</field>
-        <readable>true</readable>
+        <editable>false</editable>
+        <field>TLG_Task_Notifications__c.TLG_Send_No_Activity_Email_Alert__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Task_Account__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Task_Board__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Task_Category__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Task_Detail__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Task_List__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Task_Subject__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Tasks__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>TLG_Task_Notifications__c.TLG_Weekly_Reminder_Alert__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>AccountBrand-Account Brand Layout</layout>
+        <layout>AccountTeamMember-Account Team Member Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >AlternativePaymentMethod-Alternative Payment Method Layout</layout>
+        <layout>Additional_Email__c-Additional Email Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ApiAnomalyEventStore-API Anomaly Event Store Layout</layout>
+        <layout>Additional_Phone__c-Additional Phone Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>AppointmentInvitation-Appointment Invitation Layout</layout>
+        <layout>Allowed_Result_Component__mdt-Allowed Result Component Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Asset-Asset Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>AssetAction-Asset Action Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AssetActionSource-Asset Action Source Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>AssetRelationship-Asset Relationship Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>AssetStatePeriod-Asset State Period Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AssignedResource-Assigned Resource Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AssociatedLocation-Associated Location Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AsyncOperationLog-Async Operation Log Layout</layout>
+        <layout>Attendee__c-Attendee Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>AuthorizationForm-Authorization Form Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >AuthorizationFormConsent-Authorization Form Consent Layout</layout>
+        <layout>AuthorizationFormConsent-Authorization Form Consent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >AuthorizationFormDataUse-Authorization Form Data Use Layout</layout>
+        <layout>AuthorizationFormDataUse-Authorization Form Data Use Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>AuthorizationFormText-Authorization Form Text Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>AuthorizeNet_Config__mdt-AuthorizeNet Config Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Benefit_Plan__c-Benefit Plan Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>BrowserPolicyViolation-Browser Policy Violation Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>BusinessBrand-Business Brand Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>BuyerAccount-Buyer Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Campaign-Campaign Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CampaignMember-Campaign Member Page Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CardPaymentMethod-Card Payment Method Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CartCheckoutSession-Cart Checkout Session Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CartDeliveryGroup-Cart Delivery Group Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >CartDeliveryGroupMethod-Cart Delivery Group Method Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CartItem-Cart Item Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CartTax-Cart Tax Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CartValidationOutput-Cart Validation Output Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Cart__c-Cart Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
@@ -2853,32 +2906,7 @@
         <layout>CaseMilestone-Case Milestone Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ChatReport__CR_Bot__c-ChatReport__CR_Bot Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >ChatReport__CR_CustomLabel__c-ChatReport__CR_CustomLabel Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >ChatReport__CR_FlowData__c-ChatReport__CR_FlowData Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >ChatReport__CR_ReportType__c-ChatReport__CR_ReportType Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >ChatReport__CR_SkillBasedRoutingRule__c-ChatReport__CR_SkillBasedRoutingRule Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>CommunityMemberLayout-Community Member Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ConsumptionRate-Consumption Rate Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ConsumptionSchedule-Consumption Schedule Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
@@ -2893,8 +2921,7 @@
         <layout>ContactPointPhone-Contact Point Phone Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >ContactPointTypeConsent-Contact Point Type Consent Layout</layout>
+        <layout>ContactPointTypeConsent-Contact Point Type Consent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ContentVersion-Content Version Layout</layout>
@@ -2906,27 +2933,10 @@
         <layout>ContractLineItem-Contract Line Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >CredentialStuffingEventStore-Credential Stuffing Event Store Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CreditMemo-Credit Memo Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >CreditMemoInvApplication-Credit Memo Invoice Application Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CreditMemoLine-Credit Memo Line Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>CspTrustedSite-Trusted URL Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Customer-Customer Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>DandBCompany-D%26B Company Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>DataUseLegalBasis-Data Use Legal Basis Layout</layout>
@@ -2935,35 +2945,34 @@
         <layout>DataUsePurpose-Data Use Purpose Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Data_Import_Error__c-Data Import Error Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Data_Import_Job__c-Data Import Job Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Data_Import_Mapping_Template__c-Data Import Mapping Template Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Data_Import_Staging_Row__c-Data Import Staging Row Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>DelegatedAccount-External Managed Account Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>DigitalWallet-Digital Wallet Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >Document_Collaboration_Session__c-Document Collaboration Session Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Document_Comment__c-Document Comment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Dropbox_Token__c-Dropbox Token Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>DuplicateRecordSet-Duplicate Record Set Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ESign_Config__mdt-ESign Config Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>EmailMessage-Email Message Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Employee_Benefit__c-Employee Benefit Layout</layout>
+        <layout>Email_Notification__c-Email Notification Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>EngagementChannelType-Engagement Channel Type Layout</layout>
+        <layout>Email_Setting__mdt-Email Setting Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Employee_Benefit__c-Employee Benefit Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Entitlement-Entitlement Layout</layout>
@@ -2972,97 +2981,91 @@
         <layout>EntityMilestone-Object Milestone Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Error_Log__c-Error Log Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Event-Event Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Event_Expense__c-Event Expense Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Event_Item__c-Event Item Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Event_MDF__c-Event MDF Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Event_Registration__c-Event Registration Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Event_Reminder__c-Event Reminder Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Event__c-Event Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Exhibitor_Engagement__c-Exhibitor Engagement Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>FeedItem-Feed Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>FinanceBalanceSnapshot-Finance Balance Snapshot Layout</layout>
+        <layout>File__c-File Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>FinanceTransaction-Finance Transaction Layout</layout>
+        <layout>Financial_Transaction__c-Financial Transaction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >FlowPersonalConfiguration__c-Flow Personal Configuration Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >FlowTableViewDefinition__c-FlowTableViewDefinition Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>FulfillmentOrder-Fulfillment Order Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >FulfillmentOrderItemAdjustment-Fulfillment Order Item Adjustment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >FulfillmentOrderItemTax-Fulfillment Order Item Tax Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >FulfillmentOrderLineItem-Fulfillment Order Product Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Gantt_Report__c-Gantt Report Layout</layout>
+        <layout>FlowRecord-Flow Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Global-Global Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Idea-Idea Layout</layout>
+        <layout>Google_Drive_File__c-Google Drive File Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Image-Image Layout</layout>
+        <layout>Google_Drive_Integration_Setting__mdt-Google Drive Integration Setting Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Idea-Idea Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Individual-Individual Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Inventory__c-Inventory Layout</layout>
+        <layout>Invoice_Line_Item__c-Invoice Line Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Invoice-Invoice Layout</layout>
+        <layout>Invoice__c-Invoice Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>InvoiceLine-Invoice Line Layout</layout>
+        <layout>ItemPromo__c-Item Promo Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>KB_Task_Dependency__c-KB Task Dependency Layout</layout>
+        <layout>Items_Google_Drive__x-Items_Google_Drive Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead_Line_Item__c-Lead Line Item Layout</layout>
+        <layout>Login_OTP__c-Login OTP Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>LegalEntity-Legal Entity Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Location-Location Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>LocationGroup-Location Group Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >LocationGroupAssignment-Location Group Assignment Layout</layout>
+        <layout>MT_Payment_Bridge_Config__mdt-MT Payment Bridge Config Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ManagedContent-Managed Content Layout</layout>
+        <layout>Membership_Renewal_Config__mdt-CYN Membership Renewal Config Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ManagedContentVariant-Managed Content Variant Layout</layout>
+        <layout>Membership_Tier__mdt-Membership Tier Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>OperatingHours-Operating Hours Layout</layout>
+        <layout>Migration_Acceptance__c-Migration Acceptance Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Opportunity Layout</layout>
@@ -3074,82 +3077,46 @@
         <layout>Order-Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>OrderAdjustmentGroup-Order Adjustment Group Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >OrderAdjustmentGroupSummary-Order Adjustment Group Summary Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>OrderDeliveryGroup-Order Delivery Group Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >OrderDeliveryGroupSummary-Order Delivery Group Summary Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>OrderDeliveryMethod-Order Delivery Method Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>OrderItem-Order Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >OrderItemAdjustmentLineItem-Order Product Adjustment Line Item Layout</layout>
+        <layout>PWChrono_Appraisal_Notification__c-Appraisal Notification Recipient Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >OrderItemAdjustmentLineSummary-Order Product Adjustment Line Item Summary Layout</layout>
+        <layout>PWChrono_Appraisal__c-PWChrono Appraisal Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>OrderItemSummary-Order Product Summary Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >OrderItemSummaryChange-Order Product Summary Change Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>OrderItemTaxLineItem-Order Product Tax Line Item Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >OrderItemTaxLineItemSummary-Order Product Tax Line Item Summary Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>OrderPaymentSummary-Order Payment Summary Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>OrderSummary-Order Summary Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PDF_Template_Field__c-PDF Template Field Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PDF_Template__c-PDF Template Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >PWChrono_Appraisal_Notification__c-Appraisal Notification Recipient Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PWChrono_Appraisal__c-Appraisal Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >PWChrono_Attendance_Request__c-Attendance Request Layout</layout>
+        <layout>PWChrono_Attendance_Request__c-PWChrono Attendance Request Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Bonus__c-PWChrono Bonus Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Company_Policy__c-PWChrono Company Policy Layout</layout>
+        <layout>PWChrono_Company_Policy__c-PWChrono Company Policy Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Department__c-Department Layout</layout>
+        <layout>PWChrono_Department__c-PWChrono Department Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Designation__c-PWChrono Designation Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Employee_Exit__c-Employee Exit Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Employee_Promotion__c-Employee Promotion Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Employee_Referral__c-Employee Referral Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Employee_Separation__c-Employee Separation Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Employee_Transfer__c-Employee Transfer Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Exit_Interview__c-Exit Interview Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Expense_Claim__c-Expense Claim Layout</layout>
@@ -3158,7 +3125,10 @@
         <layout>PWChrono_Expense_Item__c-Expense Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Goal__c-Goal Layout</layout>
+        <layout>PWChrono_Full_Final_Settlement__c-Full and Final Settlement Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Goal__c-PWChrono Goal Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Holiday_List__c-PWChrono Holiday List Layout</layout>
@@ -3173,21 +3143,22 @@
         <layout>PWChrono_Invoice__c-PWChrono Invoice Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Job_Applicant__c-Job Applicant Layout</layout>
+        <layout>PWChrono_Job_Applicant__c-PWChrono Job Applicant Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Job_Opening__c-Job Opening Layout</layout>
+        <layout>PWChrono_Job_Opening__c-PWChrono Job Opening Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Leave_Allocation__c-Leave Allocation Layout</layout>
+        <layout>PWChrono_Job_Requisition__c-Job Requisition Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Leave_Block_Date__c-PWChrono Leave Block Date Layout</layout>
+        <layout>PWChrono_Leave_Allocation__c-PWChrono Leave Allocation Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Leave_Encashment__c-PWChrono Leave Encashment Layout</layout>
+        <layout>PWChrono_Leave_Block_Date__c-PWChrono Leave Block Date Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Leave_Encashment__c-PWChrono Leave Encashment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Leave_Ledger__c-PWChrono Leave Ledger Layout</layout>
@@ -3202,101 +3173,100 @@
         <layout>PWChrono_Leave_Type__c-PWChrono Leave Type Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Leave__c-Employee Leave Layout</layout>
+        <layout>PWChrono_Leave__c-PWChrono Leave Application Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Offer_Letter__c-PWChrono Offer Letter Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Onboarding_Task__c-PWChrono Onboarding Task Layout</layout>
+        <layout>PWChrono_Onboarding_Task__c-PWChrono Onboarding Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Performance_Cycle__c-PWChrono Performance Cycle Layout</layout>
+        <layout>PWChrono_Performance_Cycle__c-PWChrono Performance Cycle Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Project__c-PWChrono Project Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Request_Comment__c-PWChrono Request Comment Layout</layout>
+        <layout>PWChrono_Promotion_Detail__c-Promotion Detail Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Role_Feature_Mapping__mdt-PWChrono Role Feature Mapping Layout</layout>
+        <layout>PWChrono_Request_Comment__c-PWChrono Request Comment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Salary_Assignment__c-PWChrono Salary Assignment Layout</layout>
+        <layout>PWChrono_Role_Feature_Mapping__mdt-PWChrono Role Feature Mapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Salary_Component__c-PWChrono Salary Component Layout</layout>
+        <layout>PWChrono_Salary_Assignment__c-PWChrono Salary Assignment Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Salary_Component__c-PWChrono Salary Component Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Salary_History__c-Salary History Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Salary_Slip__c-Salary Slip Layout</layout>
+        <layout>PWChrono_Salary_Slip__c-PWChrono Salary Slip Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Salary_Structure__c-PWChrono Salary Structure Layout</layout>
+        <layout>PWChrono_Salary_Structure__c-PWChrono Salary Structure Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Separation_Checklist__c-Separation Checklist Item Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Separation_Template_Activity__c-Separation Template Activity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Separation_Template__c-Employee Separation Template Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Settings__mdt-PWChrono Settings Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Shift_Assignment__c-PWChrono Shift Assignment Layout</layout>
+        <layout>PWChrono_Settlement_Payable__c-Settlement Payable Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Shift_Type__c-Shift Type Layout</layout>
+        <layout>PWChrono_Settlement_Receivable__c-Settlement Receivable Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Structure_Component__c-PWChrono Structure Component Layout</layout>
+        <layout>PWChrono_Shift_Assignment__c-PWChrono Shift Assignment Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Shift_Type__c-PWChrono Shift Type Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Staffing_Plan_Detail__c-Staffing Plan Detail Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Staffing_Plan__c-Staffing Plan Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PWChrono_Structure_Component__c-PWChrono Structure Component Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Tax_Declaration__c-Tax Declaration Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Training_Attendance__c-PWChrono Training Attendance Layout</layout>
+        <layout>PWChrono_Training_Attendance__c-PWChrono Training Attendance Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Training_Event__c-Training Event Layout</layout>
+        <layout>PWChrono_Training_Event__c-PWChrono Training Event Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_Training_Program__c-PWChrono Training Program Layout</layout>
+        <layout>PWChrono_Training_Program__c-PWChrono Training Program Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PWChrono_User_Feature_Access__c-User Feature Access Layout</layout>
+        <layout>PWChrono_User_Feature_Access__c-User Feature Access Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Payment-Payment Layout</layout>
+        <layout>PayPal_Config__mdt-PayPal Config Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >PaymentAuthAdjustment-Payment Authorization Adjustment Layout</layout>
+        <layout>Payment_Gateway_Configuration__mdt-Payment Gateway Configuration Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PaymentAuthorization-Payment Authorization Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PaymentGateway-Payment Gateway Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PaymentGatewayLog-Payment Gateway Log Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PaymentGroup-Payment Group Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PaymentLineInvoice-Payment Line Invoice Layout</layout>
+        <layout>Payment__c-Payment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Performance_Review__c-Performance Review Layout</layout>
@@ -3306,52 +3276,43 @@
         <recordType>PersonAccount.PersonAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Portal_Chatter__c-Portal Chatter Layout</layout>
+        <layout>Plant_Tours__c-Plant Tours Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >Portal_Field_Permission_ChangeEvent__c-Portal Field Permission ChangeEvent Layout</layout>
+        <layout>Portal_Branding__c-Portal Branding Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >Portal_Field_Permission__c-Portal Field Permission Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >Portal_Object_Field_ChangeEvent__c-Portal Object Field ChangeEvent Layout</layout>
+        <layout>Portal_Field_Permission__c-Portal Field Permission Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Portal_Object_Field__c-Portal Object Field Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >Portal_Object_Permission_ChangeEvent__c-Portal Object Permission ChangeEvent Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >Portal_Object_Permission__c-Portal Object Permission Layout</layout>
+        <layout>Portal_Object_Permission__c-Portal Object Permission Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Portal_Object__c-Portal Object Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Portal_User_Profile__c-Portal User Profile Layout</layout>
+        <layout>Portal_Payment_Transaction__c-Portal Payment Transactions Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >Portal_Users_ChangeEvent__c-Portal Users ChangeEvent Layout</layout>
+        <layout>Portal_Theme__mdt-Portal Theme Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Portal_User_Profile__c-Portal User Profile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Portal_Users__c-Portal User Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Predefined_Tag__mdt-Predefined_Tag Layout</layout>
+        <layout>Predefined_Tag__mdt-Predefined Tag Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Pricebook2-Price Book Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PricebookEntry-Price Book Entry Layout</layout>
+        <layout>PricebookEntry-Price Book Entry</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProcessException-Process Exception Layout</layout>
@@ -3360,82 +3321,19 @@
         <layout>Product2-Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >ProductConsumptionSchedule-Product Consumption Schedule Layout</layout>
+        <layout>ProfileSkill-Skill Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Project_Baseline__c-Project Baseline Layout</layout>
+        <layout>ProfileSkillEndorsement-Endorsement Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Project_Document__c-Project Document Layout</layout>
+        <layout>ProfileSkillUser-Skill User Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PulseDocMention__c-Pulse Doc Mention Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PulseDocMessage__c-Pulse Doc Message Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >PulseDocThreadComment__c-Pulse Doc Thread Comment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PulseDocThread__c-Pulse Doc Thread Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PulseDocVersion__c-Pulse Doc Version Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PulseDoc__c-Pulse Doc Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Purchase_Order_Line__c-Purchase Order Line Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Purchase_Order__c-Purchase Order Layout</layout>
+        <layout>PromoCode__c-Promo Code Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>QuickText-Quick Text Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>QuillioAIConfig__mdt-Quillio AI Config Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >QuillioDocAccessGrant__c-Quillio Doc Access Grant Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>QuillioDocMention__c-Quillio Doc Mention Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>QuillioDocMessage__c-Quillio Doc Message Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >QuillioDocRoutingRecipient__c-Quillio Doc Routing Recipient Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >QuillioDocSignatureAudit__c-Quillio Doc Signature Audit Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >QuillioDocThreadComment__c-Quillio Doc Thread Comment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>QuillioDocThread__c-Quillio Doc Thread Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>QuillioDocVersion__c-Quillio Doc Version Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>QuillioDoc__c-Quillio Doc Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>QuillioESignConfig__mdt-Quillio E-Sign Config Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>QuillioEmailConfig__mdt-Quillio Email Config Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Quote-Quote Layout</layout>
@@ -3444,39 +3342,7 @@
         <layout>QuoteLineItem-Quote Line Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Recommendation-Recommendation Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Refund-Refund Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>RefundLinePayment-Refund Line Payment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >ReportAnomalyEventStore-Report Anomaly Event Store Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ResourceAbsence-Resource Absence Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ResourcePreference-Resource Preference Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ReturnOrder-Return Order Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >ReturnOrderItemAdjustment-Return Order Item Adjustment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ReturnOrderItemTax-Return Order Item Tax Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ReturnOrderLineItem-Return Order Line Item Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SalesChannel-Sales Channel Layout</layout>
+        <layout>Room__c-Room Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Scorecard-Scorecard Layout</layout>
@@ -3491,98 +3357,34 @@
         <layout>Seller-Seller Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ServiceAppointment-Service Appointment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ServiceContract-Service Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ServiceResource-Service Resource Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ServiceResourceSkill-Service Resource Skill Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ServiceTerritory-Service Territory Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ServiceTerritoryMember-Service Territory Member Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >SessionHijackingEventStore-Session Hijacking Event Store Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shift-Shift Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >ShiftWorkTopic-%5F%5FMISSING LABEL%5F%5F PropertyFile - val ShiftWorkTopic not found in section StandardLayouts</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shipment_Line_Item__c-Shipment Line Item Layout</layout>
+        <layout>Session__c-Session Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Shipment__c-Shipment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Signed_Agreement__c-Signed Agreement Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Signing_Request__c-Signing Request Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Signing_Session__c-Signing Session Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SkillRequirement-Skill Requirement Layout</layout>
+        <layout>SiteConfig__mdt-SiteConfig Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>SocialPersona-Social Persona Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>SocialPost-Social Post Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Solution-Solution Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Stocking_Location__c-Stocking Location Layout</layout>
+        <layout>Speaker__c-Speaker Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>SwiftSign_Config__c-SwiftSign Config Layout</layout>
+        <layout>Sponsor__c-Sponsor Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>SwiftSign_File__c-SwiftSign File Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SwiftSign_Log__c-SwiftSign Log Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SwiftSign_Recipient__c-SwiftSign Recipient Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SwiftSign_Routing__c-SwiftSign Routing Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SwiftSign_Settings__mdt-SwiftSign Settings Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SwiftSign_Transaction__c-SwiftSign Transaction Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SwiftSign_View_Event__c-SwiftSign View Event Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >TLG_Community_Partner_Form__c-Community Partner Form Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>TLG_Document_Template__c-Document Template Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>TLG_Kanban_Board_Config__c-Kanban Board Config Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >TLG_Kanban_User_Preference__c-Kanban User Preference Layout</layout>
+        <layout>Stripe_Config__mdt-Stripe Config Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>TLG_TaskFeed__c-TaskFeed Layout</layout>
@@ -3597,44 +3399,19 @@
         <layout>TLG_Task__c-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>TLG_Team_Member__c-Team Member Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>TLG_Team_Status__c-Team Status Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>TLG_Team__c-Team Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>TLG_Template_Mapping__c-Template Mapping Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Tag__c-Tag Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task_Delays__c-Task Delay Layout</layout>
+        <layout>Test_Order__c-Test Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >ThreatDetectionFeedback-Threat Detection Feedback Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>TimeSlot-Time Slot Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Time_Entry__c-Time Entry Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Time_Off_Request__c-Time Off Request Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Training_Course__c-Training Course Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Training_Record__c-Training Record Layout</layout>
+        <layout>Track__c-Track Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>User-User Layout</layout>
@@ -3649,37 +3426,25 @@
         <layout>UserProvisioningLog-User Provisioning Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >UserProvisioningRequest-User Provisioning Request Layout</layout>
+        <layout>UserProvisioningRequest-User Provisioning Request Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout
-    >Waitlist-%5F%5FMISSING LABEL%5F%5F PropertyFile - val Waitlist not found in section StandardLayouts</layout>
+        <layout>User_Session__c-User Session Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Warehouses__c-Warehouse Layout</layout>
+        <layout>Venue__c-Venue Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>WebCart-Cart Layout</layout>
+        <layout>Voucher__c-Voucher Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>WebCartAdjustmentBasis-Cart Adjustment Basis Layout</layout>
+        <layout>WorkAccess-Access Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>WebCartAdjustmentGroup-Cart Adjustment Group Layout</layout>
+        <layout>WorkBadge-Badge Received Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>WebStore-Store Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WebStoreBuyerGroup-Store Buyer Group Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WebStoreConfig-Web Store Configuration Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout
-    >WebStoreInventorySource-Web Store Inventory Source Layout</layout>
+        <layout>WorkBadgeDefinition-Badge Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>WorkOrder-Work Order Layout</layout>
@@ -3703,84 +3468,66 @@
         <layout>WorkStepTemplate-Work Step Template Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>WorkType-Work Type Layout</layout>
+        <layout>WorkThanks-Thanks Layout</layout>
     </layoutAssignments>
-    <layoutAssignments>
-        <layout>WorkTypeGroup-Work Type Group Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WorkTypeGroupMember-Work Type Group Member Layout</layout>
-    </layoutAssignments>
+    <tabVisibilities>
+        <tab>Attendee__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
     <tabVisibilities>
         <tab>Benefit_Plan__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Bolt</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Bolt_Return_Hub</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Bolt_Spark</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Collison_Detection</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Configuration_Center</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>DocumentEditor</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>DocumentEditorTestTab</tab>
+        <tab>Create_Registration</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Data_Import_Job__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>EditForm</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Employee_Benefit__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Gantt_Chart</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Inventory__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Kanban_Board</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Kanban_Board1</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Kanban_Config_Manager</tab>
+        <tab>Data_Import_Mapping_Template__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>PDF_LWC</tab>
+        <tab>Error_Log__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>PDF_Template__c</tab>
+        <tab>Event_Desk</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Event_Registration__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Event__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Invoice__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Migration_Acceptance__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>PDF_js_Viewer_Test</tab>
+        <tab>NexaLoad_Command_Center</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>NexaLoad_Importer</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>NexaLoad_Workspace</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -3793,7 +3540,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Attendance</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Attendance_Admin</tab>
@@ -3804,28 +3551,88 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>PWChrono_Company_Policy__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>PWChrono_Dashboard</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Department__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Designation__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Employee_Directory</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Employee_Promotion__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Employee_Referral__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Employee_Separation__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Employee_Transfer__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Exit_Interview__c</tab>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Expenses</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Full_Final_Settlement__c</tab>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Goals</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>PWChrono_Holidays</tab>
+        <tab>PWChrono_Holiday_List__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Holiday__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Job_Opening__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Job_Requisition__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Leave_Period__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Leave_Policy__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Leave_Type__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Leaves</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Manager_Dashboard</tab>
@@ -3833,23 +3640,47 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Onboarding</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Payroll</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Performance</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Performance_Cycle__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Profile</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Project__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Recruitment</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Salary_Component__c</tab>
         <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Salary_Structure__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Shift_Type__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Staffing_Plan__c</tab>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_System_Admin</tab>
@@ -3857,182 +3688,62 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Training</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>PWChrono_Training_Program__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Performance_Review__c</tab>
+        <tab>Payment_TEST</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Portal_Field_Permission_ChangeEvent__c</tab>
+        <tab>Plant_Tours__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Portal_Branding__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Portal_Configuration</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Portal_Field_Permission__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Portal_Object_Field_ChangeEvent__c</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Portal_Object_Field__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Portal_Object_Permission_ChangeEvent__c</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Portal_Object_Permission__c</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Portal_Object__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Portal_Payment_Transaction__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Portal_User_Profile__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Portal_Users_ChangeEvent__c</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Portal_Users__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Purchase_Order_Line__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Purchase_Order__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Quillio</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Reports_Dashboard</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Rich_Bolt_Editor</tab>
+        <tab>PromoCode__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Rich_Text_Editor</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Signed_Agreement__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Stocking_Location__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_Admin</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_Config__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_File__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_Log__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_Recipient__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_Routing__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_Transaction__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_Upload_and_Sign</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_Upload_and_Sign_Component</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>SwiftSign_View_Event__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Swift_Sign</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Swift_Sign_App</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Swift_Sign_App1</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Swift_Sign_Envelope</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Swift_Sign_Flow</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_Community_Partner_Form__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_Document_Template__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_Kanban_Board_Config__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_TaskFeed__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_Task_History__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_Task_Notifications__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_Task__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_Team_Member__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>TLG_Team_Status__c</tab>
+        <tab>Shipment__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -4040,43 +3751,15 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>TLG_Template_Mapping__c</tab>
+        <tab>Test_Order__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Task_From_Case_Kanban</tab>
+        <tab>Venue__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Task_Kanban_View</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Task_MB</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Task_Management</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Time_Entry__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Time_Off_Request__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Training_Course__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Training_Record__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Warehouses__c</tab>
+        <tab>Voucher__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>
@@ -4094,14 +3777,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>AllowUniversalSearch</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>AllowViewKnowledge</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ApexRestServices</name>
     </userPermissions>
     <userPermissions>
@@ -4111,10 +3786,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>AssignTopics</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>CanAccessCE</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -4279,5 +3950,9 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewSetup</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewTrustMeasures</name>
     </userPermissions>
 </Profile>

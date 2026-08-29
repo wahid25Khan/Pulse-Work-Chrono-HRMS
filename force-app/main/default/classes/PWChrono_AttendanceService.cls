@@ -33,7 +33,7 @@ public inherited sharing class PWChrono_AttendanceService {
       employeeId
     );
     if (!errors.isEmpty()) {
-      throw new AuraHandledException(String.join(errors, '\n'));
+      throw handledException(String.join(errors, '\n'));
     }
 
     PWChrono_Attendance_Request__c req;
@@ -41,10 +41,10 @@ public inherited sharing class PWChrono_AttendanceService {
     if (dto.requestId != null) {
       req = PWChrono_AttendanceSelector.getRequestById(dto.requestId);
       if (req == null) {
-        throw new AuraHandledException('Attendance request not found.');
+        throw handledException('Attendance request not found.');
       }
       if (req.Employees__c != employeeId) {
-        throw new AuraHandledException(
+        throw handledException(
           'Unauthorized access to this attendance record.'
         );
       }
@@ -52,7 +52,7 @@ public inherited sharing class PWChrono_AttendanceService {
         req.Status__c != 'Draft' &&
         req.Status__c != PWChrono_Constants.STATUS_REJECTED
       ) {
-        throw new AuraHandledException(
+        throw handledException(
           'Only Draft or Rejected requests can be re-submitted.'
         );
       }
@@ -143,25 +143,22 @@ public inherited sharing class PWChrono_AttendanceService {
       requestId
     );
     if (req == null) {
-      throw new AuraHandledException('Attendance request not found.');
+      throw handledException('Attendance request not found.');
     }
 
-    if (
-      req.Approvers__c != approverId &&
-      !PWChrono_RequestValidator.isCurrentUserAdmin(approverId)
-    ) {
-      throw new AuraHandledException(
+    if (req.Employees__c == approverId) {
+      throw handledException('Self-approval is not allowed.');
+    }
+    if (req.Approvers__c != approverId && !isPortalAdmin(approverId)) {
+      throw handledException(
         'Access denied: Not authorized to process this request.'
       );
     }
     if (req.Status__c != PWChrono_Constants.STATUS_SUBMITTED) {
-      throw new AuraHandledException(
+      throw handledException(
         'Only submitted requests can be approved or rejected. Current status: ' +
         req.Status__c
       );
-    }
-    if (req.Employees__c == approverId) {
-      throw new AuraHandledException('Self-approval is not allowed.');
     }
 
     String approverName = PWChrono_RequestService.getEmployeeName(approverId);
@@ -194,7 +191,7 @@ public inherited sharing class PWChrono_AttendanceService {
       );
     } else if (normalizedAction == 'Reject') {
       if (String.isBlank(comments)) {
-        throw new AuraHandledException('Rejection reason is required.');
+        throw handledException('Rejection reason is required.');
       }
       req.Status__c = PWChrono_Constants.STATUS_REJECTED;
       req.Rejection_Reason__c = comments.trim();
@@ -217,9 +214,7 @@ public inherited sharing class PWChrono_AttendanceService {
         approverId
       );
     } else {
-      throw new AuraHandledException(
-        'Invalid action. Must be Approve or Reject.'
-      );
+      throw handledException('Invalid action. Must be Approve or Reject.');
     }
 
     return PWChrono_AttendanceSelector.getRequestById(req.Id);
@@ -240,14 +235,11 @@ public inherited sharing class PWChrono_AttendanceService {
       requestId
     );
     if (req == null) {
-      throw new AuraHandledException('Attendance request not found.');
+      throw handledException('Attendance request not found.');
     }
 
-    if (
-      req.Employees__c != employeeId &&
-      !PWChrono_RequestValidator.isCurrentUserAdmin(employeeId)
-    ) {
-      throw new AuraHandledException(
+    if (req.Employees__c != employeeId && !isPortalAdmin(employeeId)) {
+      throw handledException(
         'Unauthorized: You can only cancel your own requests.'
       );
     }
@@ -257,7 +249,7 @@ public inherited sharing class PWChrono_AttendanceService {
       'Cancelled'
     );
     if (transitionError != null) {
-      throw new AuraHandledException(transitionError);
+      throw handledException(transitionError);
     }
 
     req.Status__c = 'Cancelled';
@@ -373,5 +365,30 @@ public inherited sharing class PWChrono_AttendanceService {
       return 'Reject';
     }
     return action;
+  }
+
+  private static AuraHandledException handledException(String message) {
+    AuraHandledException ex = new AuraHandledException(message);
+    ex.setMessage(message);
+    return ex;
+  }
+
+  private static Boolean isPortalAdmin(Id employeeId) {
+    if (employeeId == null) {
+      return false;
+    }
+
+    List<Portal_Users__c> users = [
+      SELECT Role__c
+      FROM Portal_Users__c
+      WHERE Id = :employeeId
+      LIMIT 1
+    ];
+    if (users.isEmpty()) {
+      return false;
+    }
+
+    return users[0].Role__c == PWChrono_Constants.ROLE_HR_ADMIN ||
+      users[0].Role__c == 'System Admin';
   }
 }

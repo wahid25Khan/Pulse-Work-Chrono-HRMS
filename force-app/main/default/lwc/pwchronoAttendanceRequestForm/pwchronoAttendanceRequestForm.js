@@ -3,24 +3,16 @@ import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 import submitAttendanceRequest from "@salesforce/apex/PWChrono_AttendanceController.submitAttendanceRequest";
 
 const CORRECTION_TYPES = [
-  { label: "Check-In Missing", value: "Check-In Missing" },
+  { label: "Check-In Missing",  value: "Check-In Missing" },
   { label: "Check-Out Missing", value: "Check-Out Missing" },
-  { label: "Both Missing", value: "Both Missing" },
-  { label: "Wrong Time", value: "Wrong Time" },
-  { label: "Other", value: "Other" }
+  { label: "Both Missing",      value: "Both Missing" },
+  { label: "Wrong Time",        value: "Wrong Time" },
+  { label: "Other",             value: "Other" }
 ];
 
 // Types that require check-in / check-out
-const NEEDS_CHECKIN = new Set([
-  "Check-In Missing",
-  "Both Missing",
-  "Wrong Time"
-]);
-const NEEDS_CHECKOUT = new Set([
-  "Check-Out Missing",
-  "Both Missing",
-  "Wrong Time"
-]);
+const NEEDS_CHECKIN  = new Set(["Check-In Missing",  "Both Missing", "Wrong Time"]);
+const NEEDS_CHECKOUT = new Set(["Check-Out Missing", "Both Missing", "Wrong Time"]);
 
 export default class PwchronoAttendanceRequestForm extends LightningElement {
   static renderMode = "light";
@@ -40,15 +32,15 @@ export default class PwchronoAttendanceRequestForm extends LightningElement {
   @track formError = null;
 
   // Field-level errors
-  @track dateError = null;
-  @track typeError = null;
-  @track checkInError = null;
+  @track dateError    = null;
+  @track typeError    = null;
+  @track checkInError  = null;
   @track checkOutError = null;
-  @track reasonError = null;
+  @track reasonError  = null;
 
   correctionTypeOptions = CORRECTION_TYPES;
 
-  employeeId = getEmployeeId();
+  employeeId   = getEmployeeId();
   sessionToken = getSessionToken();
 
   connectedCallback() {
@@ -77,21 +69,11 @@ export default class PwchronoAttendanceRequestForm extends LightningElement {
   }
 
   // Input CSS classes — add is-invalid when there's an error
-  get dateClass() {
-    return this.dateError ? "form-control is-invalid" : "form-control";
-  }
-  get typeClass() {
-    return this.typeError ? "form-select is-invalid" : "form-select";
-  }
-  get checkInClass() {
-    return this.checkInError ? "form-control is-invalid" : "form-control";
-  }
-  get checkOutClass() {
-    return this.checkOutError ? "form-control is-invalid" : "form-control";
-  }
-  get reasonClass() {
-    return this.reasonError ? "form-control is-invalid" : "form-control";
-  }
+  get dateClass()     { return this.dateError     ? "form-control is-invalid" : "form-control"; }
+  get typeClass()     { return this.typeError     ? "form-select is-invalid"  : "form-select"; }
+  get checkInClass()  { return this.checkInError  ? "form-control is-invalid" : "form-control"; }
+  get checkOutClass() { return this.checkOutError ? "form-control is-invalid" : "form-control"; }
+  get reasonClass()   { return this.reasonError   ? "form-control is-invalid" : "form-control"; }
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
@@ -107,21 +89,17 @@ export default class PwchronoAttendanceRequestForm extends LightningElement {
   handleSubmit() {
     if (!this.validateForm()) return;
     this.isSubmitting = true;
-    this.formError = null;
+    this.formError    = null;
 
     submitAttendanceRequest({
       dto: {
-        attendanceDate: this.formData.attendanceDate,
-        correctionType: this.formData.correctionType,
-        requestedCheckIn: this.showCheckIn
-          ? this.formData.requestedCheckIn
-          : null,
-        requestedCheckOut: this.showCheckOut
-          ? this.formData.requestedCheckOut
-          : null,
-        reason: this.formData.reason
+        attendanceDate:     this.formData.attendanceDate,
+        correctionType:     this.formData.correctionType,
+        requestedCheckIn:   this.showCheckIn  ? this.formData.requestedCheckIn  : null,
+        requestedCheckOut:  this.showCheckOut ? this.formData.requestedCheckOut : null,
+        reason:             this.formData.reason
       },
-      employeeId: this.employeeId,
+      employeeId:   this.employeeId,
       sessionToken: this.sessionToken
     })
       .then((result) => {
@@ -134,8 +112,7 @@ export default class PwchronoAttendanceRequestForm extends LightningElement {
         );
       })
       .catch((err) => {
-        this.formError =
-          err?.body?.message || err?.message || "Error submitting request.";
+        this.formError = err?.body?.message || err?.message || "Error submitting request.";
       })
       .finally(() => {
         this.isSubmitting = false;
@@ -143,9 +120,7 @@ export default class PwchronoAttendanceRequestForm extends LightningElement {
   }
 
   handleCancel() {
-    this.dispatchEvent(
-      new CustomEvent("cancel", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new CustomEvent("cancel", { bubbles: true, composed: true }));
   }
 
   // ── Validation ────────────────────────────────────────────────────────────
@@ -182,8 +157,7 @@ export default class PwchronoAttendanceRequestForm extends LightningElement {
 
     // Check-out
     if (this.checkOutRequired && !this.formData.requestedCheckOut) {
-      this.checkOutError =
-        "Check-out time is required for this correction type.";
+      this.checkOutError = "Check-out time is required for this correction type.";
       valid = false;
     } else {
       this.checkOutError = null;
@@ -195,7 +169,7 @@ export default class PwchronoAttendanceRequestForm extends LightningElement {
       this.formData.requestedCheckOut &&
       this.formData.requestedCheckIn >= this.formData.requestedCheckOut
     ) {
-      this.checkInError = "Check-in time must be before check-out time.";
+      this.checkInError  = "Check-in time must be before check-out time.";
       this.checkOutError = " ";
       valid = false;
     }

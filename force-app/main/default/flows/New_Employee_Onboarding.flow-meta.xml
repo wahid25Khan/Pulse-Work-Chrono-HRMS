@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
     <assignments>
@@ -17,16 +17,14 @@
             <targetReference>Create_Onboarding_Tasks</targetReference>
         </connector>
     </assignments>
-    <description
-  >Auto-create onboarding tasks when new employee record is created</description>
+    <description>Auto-create onboarding tasks when new employee record is created</description>
     <environments>Default</environments>
     <formulas>
         <name>DueDateFormula</name>
         <dataType>Date</dataType>
         <expression>TODAY() + 7</expression>
     </formulas>
-    <interviewLabel
-  >New Employee Onboarding {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>New Employee Onboarding {!$Flow.CurrentDateTime}</interviewLabel>
     <label>New Employee Onboarding</label>
     <processMetadataValues>
         <name>BuilderType</name>

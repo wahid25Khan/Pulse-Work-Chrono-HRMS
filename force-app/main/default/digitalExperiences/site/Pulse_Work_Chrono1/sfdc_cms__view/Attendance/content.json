@@ -1,0 +1,71 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Attendance",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"ddb10c25-75f8-4d69-872b-279c952804d8\",\"columns\":[{\"UUID\":\"e6c76fcb-d83b-4a00-84ee-672edc3c175c\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoAttendanceTracker",
+              "id" : "60b05ad8-e1e6-4ebd-8137-13fa1eca554a",
+              "type" : "component"
+            } ],
+            "id" : "e6c76fcb-d83b-4a00-84ee-672edc3c175c",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "ddb10c25-75f8-4d69-872b-279c952804d8",
+          "type" : "component"
+        } ],
+        "id" : "f2c4c880-e230-4844-9522-7883329e2159",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Attendance",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "31ecb9ce-23aa-4fb3-92c3-b2fb9895e7ee",
+          "type" : "component"
+        } ],
+        "id" : "c907b2d5-505e-42f4-b222-aaa7a8a098dc",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "abd3c301-8b46-47ed-ae72-4c8e7f069701",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-attendance-1"
+  },
+  "urlName" : "attendance"
+}

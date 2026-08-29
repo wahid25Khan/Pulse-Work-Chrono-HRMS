@@ -3,18 +3,8 @@ import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 import getExpenseDashboardSummary from "@salesforce/apex/PWChrono_ExpenseController.getExpenseDashboardSummary";
 
 const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
 ];
 
 export default class PwchronoExpenseDashboard extends LightningElement {
@@ -23,13 +13,7 @@ export default class PwchronoExpenseDashboard extends LightningElement {
   @track isLoading = true;
   @track error = null;
   @track recentClaims = [];
-  @track counts = {
-    draft: 0,
-    submitted: 0,
-    approved: 0,
-    rejected: 0,
-    total: 0
-  };
+  @track counts = { draft: 0, submitted: 0, approved: 0, rejected: 0, total: 0 };
 
   currentDate = new Date();
   currentMonth;
@@ -40,7 +24,7 @@ export default class PwchronoExpenseDashboard extends LightningElement {
 
   connectedCallback() {
     this.currentMonth = this.currentDate.getMonth();
-    this.currentYear = this.currentDate.getFullYear();
+    this.currentYear  = this.currentDate.getFullYear();
     this.loadDashboard();
   }
 
@@ -48,30 +32,29 @@ export default class PwchronoExpenseDashboard extends LightningElement {
 
   loadDashboard() {
     this.isLoading = true;
-    this.error = null;
+    this.error     = null;
 
-    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
-    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+    const firstDay  = new Date(this.currentYear, this.currentMonth, 1);
+    const lastDay   = new Date(this.currentYear, this.currentMonth + 1, 0);
 
     getExpenseDashboardSummary({
-      startDate: this.formatDate(firstDay),
-      endDate: this.formatDate(lastDay),
-      employeeId: this.employeeId,
+      startDate:    this.formatDate(firstDay),
+      endDate:      this.formatDate(lastDay),
+      employeeId:   this.employeeId,
       sessionToken: this.sessionToken
     })
       .then((summary) => {
         this.counts = {
-          draft: summary?.draftCount || 0,
+          draft:     summary?.draftCount     || 0,
           submitted: summary?.submittedCount || 0,
-          approved: summary?.approvedCount || 0,
-          rejected: summary?.rejectedCount || 0,
-          total: summary?.totalClaims || 0
+          approved:  summary?.approvedCount  || 0,
+          rejected:  summary?.rejectedCount  || 0,
+          total:     summary?.totalClaims    || 0
         };
         this.recentClaims = summary?.recentClaims || [];
       })
       .catch((err) => {
-        this.error =
-          err?.body?.message || err?.message || "Error loading expense data.";
+        this.error = err?.body?.message || err?.message || "Error loading expense data.";
       })
       .finally(() => {
         this.isLoading = false;
@@ -117,15 +100,11 @@ export default class PwchronoExpenseDashboard extends LightningElement {
   // ── User actions ──────────────────────────────────────────────────────────
 
   handleNewClaim() {
-    this.dispatchEvent(
-      new CustomEvent("newclaim", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new CustomEvent("newclaim", { bubbles: true, composed: true }));
   }
 
   handleViewAll() {
-    this.dispatchEvent(
-      new CustomEvent("viewall", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new CustomEvent("viewall", { bubbles: true, composed: true }));
   }
 
   handleRowClick(event) {
@@ -143,8 +122,8 @@ export default class PwchronoExpenseDashboard extends LightningElement {
 
   formatDate(d) {
     const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
+    const mm   = String(d.getMonth() + 1).padStart(2, "0");
+    const dd   = String(d.getDate()).padStart(2, "0");
     return `${yyyy}-${mm}-${dd}`;
   }
 }

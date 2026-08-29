@@ -28,6 +28,7 @@
     "node_modules/**",
     ".sfdx/**",
     ".sf/**",
+    "archive/**",
     "**/*.min.js",
     "**/*.min.css",
     "staticresources/**"

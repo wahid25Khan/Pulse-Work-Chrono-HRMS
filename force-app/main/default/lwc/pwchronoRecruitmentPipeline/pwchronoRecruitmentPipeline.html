@@ -1,41 +1,19 @@
-<template>
-  <div class="page-wrapper">
-    <div class="content container-fluid">
-      <!-- Page Header -->
-      <div
-        class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
-      >
-        <div class="my-auto mb-2">
-          <h2 class="mb-1">Recruitment Pipeline</h2>
-          <nav>
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item">
-                <a href="javascript:void(0);"
-                  ><i class="ti ti-smart-home"></i
-                ></a>
-              </li>
-              <li class="breadcrumb-item">Recruitment</li>
-              <li class="breadcrumb-item active">Pipeline</li>
-            </ol>
-          </nav>
-        </div>
-        <div class="d-flex my-xl-auto right-content align-items-center">
-          <button
-            class="btn btn-outline-primary d-flex align-items-center gap-2"
-            onclick={handleRefresh}
-          >
-            <i class="ti ti-refresh"></i>Refresh
-          </button>
-        </div>
+<template lwc:render-mode="light">
+  <div class="recruitment-pipeline-container">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <div>
+        <h5 class="mb-0 fw-bold text-dark">Candidate Pipeline</h5>
+        <small class="text-muted">Drag and drop candidates across hiring stages</small>
       </div>
+      <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2" onclick={handleRefresh}>
+        <i class="fa-solid fa-rotate"></i> Refresh
+      </button>
+    </div>
 
       <!-- Access Denied -->
       <template if:false={hasAccess}>
-        <div
-          class="d-flex align-items-center justify-content-center"
-          style="min-height: 60vh"
-        >
-          <div class="card text-center" style="max-width: 420px; width: 100%">
+        <div class="d-flex align-items-center justify-content-center" style="min-height: 60vh;">
+          <div class="card text-center" style="max-width: 420px; width: 100%;">
             <div class="card-body p-5">
               <div class="avatar avatar-xl bg-soft-danger mx-auto mb-3">
                 <i class="ti ti-lock fs-1 text-danger"></i>
@@ -52,6 +30,7 @@
       <template if:true={hasAccess}>
         <div class="card">
           <div class="card-body">
+
             <!-- Loading -->
             <template if:true={isLoading}>
               <div class="d-flex align-items-center justify-content-center p-5">
@@ -63,10 +42,7 @@
 
             <!-- Error -->
             <template if:true={error}>
-              <div
-                class="alert alert-danger d-flex align-items-center gap-3"
-                role="alert"
-              >
+              <div class="alert alert-danger d-flex align-items-center gap-3" role="alert">
                 <i class="ti ti-alert-circle fs-4 flex-shrink-0"></i>
                 <div>
                   <strong>Error loading recruitment pipeline</strong>
@@ -81,13 +57,9 @@
                 <template for:each={columns} for:item="column">
                   <div key={column.value} class="kanban-column-wrap">
                     <!-- Column Header -->
-                    <div
-                      class="kanban-col-header d-flex align-items-center justify-content-between mb-2 px-1"
-                    >
+                    <div class="kanban-col-header d-flex align-items-center justify-content-between mb-2 px-1">
                       <span class="fw-semibold text-dark">{column.label}</span>
-                      <span class="badge bg-primary rounded-pill"
-                        >{column.count}</span
-                      >
+                      <span class="badge bg-primary rounded-pill">{column.count}</span>
                     </div>
                     <!-- Column Cards -->
                     <ul
@@ -95,10 +67,7 @@
                       data-status={column.value}
                       aria-label={column.label}
                     >
-                      <template
-                        for:each={column.applicants}
-                        for:item="applicant"
-                      >
+                      <template for:each={column.applicants} for:item="applicant">
                         <li key={applicant.Id} class="kanban-card-item">
                           <button
                             type="button"
@@ -113,19 +82,12 @@
                             ondrop={handleDrop}
                           >
                             <h6 class="mb-1">{applicant.Applicant_Name__c}</h6>
-                            <p class="mb-1 text-muted small">
-                              {applicant.jobTitle}
-                            </p>
+                            <p class="mb-1 text-muted small">{applicant.jobTitle}</p>
                             <p class="mb-2 text-muted small">
-                              <i class="ti ti-calendar me-1"></i
-                              >{applicant.formattedDate}
+                              <i class="ti ti-calendar me-1"></i>{applicant.formattedDate}
                             </p>
-                            <div
-                              class="d-flex align-items-center justify-content-between"
-                            >
-                              <span class="badge bg-soft-info text-info"
-                                >{applicant.Source__c}</span
-                              >
+                            <div class="d-flex align-items-center justify-content-between">
+                              <span class="badge bg-soft-info text-info">{applicant.Source__c}</span>
                             </div>
                           </button>
                         </li>
@@ -148,9 +110,9 @@
                 </template>
               </div>
             </template>
+
           </div>
         </div>
       </template>
-    </div>
   </div>
 </template>

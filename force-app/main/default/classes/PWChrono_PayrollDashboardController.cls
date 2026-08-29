@@ -126,9 +126,7 @@ public inherited sharing class PWChrono_PayrollDashboardController {
     return dto;
   }
 
-  @SuppressWarnings(
-    'PMD.NcssMethodCount,PMD.CyclomaticComplexity,PMD.CognitiveComplexity'
-  )
+  @SuppressWarnings('PMD.NcssMethodCount,PMD.CyclomaticComplexity,PMD.CognitiveComplexity')
   private static PayrollDashboardDTO buildSummaryForRange(
     Date startDate,
     Date endDate

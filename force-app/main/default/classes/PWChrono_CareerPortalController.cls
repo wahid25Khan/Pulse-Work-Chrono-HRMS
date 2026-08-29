@@ -20,6 +20,13 @@ public without sharing class PWChrono_CareerPortalController {
     String location
   ) {
     try {
+      String companyLike = String.isNotBlank(company)
+        ? '%' + company.trim() + '%'
+        : null;
+      String locationLike = String.isNotBlank(location)
+        ? '%' + location.trim() + '%'
+        : null;
+      Integer queryLimit = PWChrono_Constants.DEFAULT_QUERY_LIMIT;
       String baseQuery =
         'SELECT Id, Name, Company__c, Location__c, Employment_Type__c, ' +
         'No_of_Positions__c, Closing_Date__c, Job_Description__c, ' +
@@ -28,45 +35,51 @@ public without sharing class PWChrono_CareerPortalController {
         'FROM PWChrono_Job_Opening__c ' +
         'WHERE Status__c = \'Open\'';
 
-      if (String.isNotBlank(keyword)) {
-        String kw = '%' + String.escapeSingleQuotes(keyword.trim()) + '%';
-        baseQuery +=
-          ' AND (Name LIKE \'' +
-          kw +
-          '\' OR Job_Description__c LIKE \'' +
-          kw +
-          '\')';
-      }
       if (String.isNotBlank(departmentId)) {
-        baseQuery +=
-          ' AND Department__c = \'' +
-          String.escapeSingleQuotes(departmentId) +
-          '\'';
+        baseQuery += ' AND Department__c = :departmentId';
       }
-      if (String.isNotBlank(company)) {
-        String co = '%' + String.escapeSingleQuotes(company.trim()) + '%';
-        baseQuery += ' AND Company__c LIKE \'' + co + '\'';
+      if (companyLike != null) {
+        baseQuery += ' AND Company__c LIKE :companyLike';
       }
       if (String.isNotBlank(employmentType)) {
-        baseQuery +=
-          ' AND Employment_Type__c = \'' +
-          String.escapeSingleQuotes(employmentType) +
-          '\'';
+        baseQuery += ' AND Employment_Type__c = :employmentType';
       }
-      if (String.isNotBlank(location)) {
-        String loc = '%' + String.escapeSingleQuotes(location.trim()) + '%';
-        baseQuery += ' AND Location__c LIKE \'' + loc + '\'';
+      if (locationLike != null) {
+        baseQuery += ' AND Location__c LIKE :locationLike';
       }
 
-      baseQuery +=
-        ' ORDER BY CreatedDate DESC LIMIT ' +
-        PWChrono_Constants.DEFAULT_QUERY_LIMIT;
+      baseQuery += ' ORDER BY CreatedDate DESC LIMIT :queryLimit';
 
-      return Database.query(baseQuery); // NOPMD
+      List<PWChrono_Job_Opening__c> jobs = Database.query(baseQuery);
+      return filterJobsByKeyword(jobs, keyword);
     } catch (Exception e) {
       PWChrono_Logger.error('PWChrono_CareerPortalController.getOpenJobs', e);
-      throw new AuraHandledException(e.getMessage());
+      throw new AuraHandledException('Unable to load job openings.');
     }
+  }
+
+  private static List<PWChrono_Job_Opening__c> filterJobsByKeyword(
+    List<PWChrono_Job_Opening__c> jobs,
+    String keyword
+  ) {
+    if (String.isBlank(keyword)) {
+      return jobs;
+    }
+    String normalizedKeyword = keyword.trim().toLowerCase();
+    List<PWChrono_Job_Opening__c> filtered = new List<PWChrono_Job_Opening__c>();
+    for (PWChrono_Job_Opening__c job : jobs) {
+      String jobName = job.Name == null ? '' : job.Name.toLowerCase();
+      String description = job.Job_Description__c == null
+        ? ''
+        : job.Job_Description__c.toLowerCase();
+      if (
+        jobName.contains(normalizedKeyword) ||
+        description.contains(normalizedKeyword)
+      ) {
+        filtered.add(job);
+      }
+    }
+    return filtered;
   }
 
   /**
@@ -91,7 +104,7 @@ public without sharing class PWChrono_CareerPortalController {
           Designation__r.Name,
           Status__c
         FROM PWChrono_Job_Opening__c
-        WHERE Id = :jobOpeningId
+        WHERE Id = :jobOpeningId AND Status__c = 'Open'
         LIMIT 1
       ];
       if (jobs.isEmpty()) {
@@ -102,7 +115,7 @@ public without sharing class PWChrono_CareerPortalController {
       throw e;
     } catch (Exception e) {
       PWChrono_Logger.error('PWChrono_CareerPortalController.getJobById', e);
-      throw new AuraHandledException(e.getMessage());
+      throw new AuraHandledException('Unable to load job opening.');
     }
   }
 
@@ -143,12 +156,39 @@ public without sharing class PWChrono_CareerPortalController {
       if (String.isBlank(applicationJson)) {
         throw new AuraHandledException('Application data is required.');
       }
+      if (!PWChrono_Job_Applicant__c.SObjectType.getDescribe().isCreateable()) {
+        throw new AuraHandledException(
+          'Applications are not available right now.'
+        );
+      }
       PWChrono_Job_Applicant__c applicant = (PWChrono_Job_Applicant__c) JSON.deserialize(
         applicationJson,
         PWChrono_Job_Applicant__c.class
       );
+      validateApplication(applicant);
       applicant.Id = null; // always insert
       applicant.Status__c = 'Applied';
+      applicant.Email__c = applicant.Email__c.trim().toLowerCase();
+
+      List<PWChrono_Job_Applicant__c> duplicates = [
+        SELECT Id
+        FROM PWChrono_Job_Applicant__c
+        WHERE
+          Job_Opening__c = :applicant.Job_Opening__c
+          AND Email__c = :applicant.Email__c
+        LIMIT 1
+      ];
+      if (!duplicates.isEmpty()) {
+        throw new AuraHandledException(
+          'An application already exists for this job and email.'
+        );
+      }
+
+      SObjectAccessDecision decision = Security.stripInaccessible(
+        AccessType.CREATABLE,
+        new List<SObject>{ applicant }
+      );
+      applicant = (PWChrono_Job_Applicant__c) decision.getRecords()[0];
       insert applicant;
       return applicant.Id;
     } catch (AuraHandledException e) {
@@ -158,7 +198,37 @@ public without sharing class PWChrono_CareerPortalController {
         'PWChrono_CareerPortalController.submitApplication',
         e
       );
-      throw new AuraHandledException(e.getMessage());
+      throw new AuraHandledException('Unable to submit application.');
+    }
+  }
+
+  private static void validateApplication(PWChrono_Job_Applicant__c applicant) {
+    if (applicant == null) {
+      throw new AuraHandledException('Application data is required.');
+    }
+    if (applicant.Job_Opening__c == null) {
+      throw new AuraHandledException('Job opening is required.');
+    }
+    List<PWChrono_Job_Opening__c> openJobs = [
+      SELECT Id
+      FROM PWChrono_Job_Opening__c
+      WHERE Id = :applicant.Job_Opening__c AND Status__c = 'Open'
+      LIMIT 1
+    ];
+    if (openJobs.isEmpty()) {
+      throw new AuraHandledException(
+        'This job opening is no longer available.'
+      );
+    }
+    if (String.isBlank(applicant.Name)) {
+      throw new AuraHandledException('Applicant name is required.');
+    }
+    if (String.isBlank(applicant.Email__c)) {
+      throw new AuraHandledException('Email is required.');
+    }
+    Pattern emailPattern = Pattern.compile('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
+    if (!emailPattern.matcher(applicant.Email__c.trim()).matches()) {
+      throw new AuraHandledException('Enter a valid email address.');
     }
   }
 }

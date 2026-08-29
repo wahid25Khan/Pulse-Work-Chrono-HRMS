@@ -4,6 +4,7 @@ import saveReferral from "@salesforce/apex/PWChrono_EmployeeReferralController.s
 import deleteReferral from "@salesforce/apex/PWChrono_EmployeeReferralController.deleteReferral";
 import getActiveDesignations from "@salesforce/apex/PWChrono_EmployeeReferralController.getActiveDesignations";
 import getJobApplicants from "@salesforce/apex/PWChrono_EmployeeReferralController.getJobApplicants";
+import LightningConfirm from "lightning/confirm";
 import { LightningElement, track } from "lwc";
 import { getSession, getSessionToken } from "c/pwchronoSession";
 import { CONSTANTS } from "c/pwchronoConstants";
@@ -56,6 +57,33 @@ export default class PwchronoEmployeeReferral extends LightningElement {
     this._role = session?.user?.Role__c ?? "";
     this._loadOptions();
     this._loadReferrals();
+  }
+
+  renderedCallback() {
+    this._syncNativeControlValue("[data-status-filter]", this.statusFilter);
+
+    if (!this.isModalOpen) return;
+
+    this._syncNativeControlValue(
+      '[data-field="For_Designation__c"]',
+      this.editRecord.For_Designation__c
+    );
+    this._syncNativeControlValue(
+      '[data-field="Status__c"]',
+      this.editRecord.Status__c
+    );
+    this._syncNativeControlValue(
+      '[data-field="Job_Applicant__c"]',
+      this.editRecord.Job_Applicant__c
+    );
+    this._syncNativeControlValue(
+      '[data-field="Referral_Bonus_Payment_Status__c"]',
+      this.editRecord.Referral_Bonus_Payment_Status__c
+    );
+    this._syncNativeControlValue(
+      '[data-field="Additional_Information__c"]',
+      this.editRecord.Additional_Information__c
+    );
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -192,6 +220,14 @@ export default class PwchronoEmployeeReferral extends LightningElement {
     this.editRecord = { ...this.editRecord, [field]: event.target.checked };
   }
 
+  _syncNativeControlValue(selector, value) {
+    const element = this.querySelector(selector);
+    const nextValue = value ?? "";
+    if (element && element.value !== nextValue) {
+      element.value = nextValue;
+    }
+  }
+
   handleSave() {
     this.modalError = "";
     if (!this._validate()) return;
@@ -202,6 +238,9 @@ export default class PwchronoEmployeeReferral extends LightningElement {
     delete payload.Current_Employee__r;
     delete payload.Job_Applicant__r;
     if (!payload.Id) delete payload.Id;
+    if (!payload.For_Designation__c) payload.For_Designation__c = null;
+    if (!payload.Job_Applicant__c) payload.Job_Applicant__c = null;
+    if (!payload.Current_Employee__c) payload.Current_Employee__c = null;
 
     this.isSaving = true;
     saveReferral({
@@ -222,10 +261,14 @@ export default class PwchronoEmployeeReferral extends LightningElement {
       });
   }
 
-  handleDelete(event) {
+  async handleDelete(event) {
     const id = event.currentTarget.dataset.id;
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    if (!confirm("Delete this referral? This cannot be undone.")) return;
+    const confirmed = await LightningConfirm.open({
+      message: "Delete this referral? This cannot be undone.",
+      label: "Confirm Delete",
+      theme: "warning"
+    });
+    if (!confirmed) return;
     deleteReferral({
       referralId: id,
       portalUserId: this._employeeId,

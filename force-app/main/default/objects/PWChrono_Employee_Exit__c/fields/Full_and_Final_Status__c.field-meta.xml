@@ -1,19 +1,30 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Full_and_Final_Status__c</fullName>
+    <externalId>false</externalId>
     <label>Full and Final Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
         <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
-            <value><fullName>Pending</fullName><label>Pending</label><default
-        >true</default></value>
-            <value><fullName>In Process</fullName><label
-        >In Process</label><default>false</default></value>
-            <value><fullName>Completed</fullName><label
-        >Completed</label><default>false</default></value>
+            <value>
+                <fullName>Pending</fullName>
+                <default>true</default>
+                <label>Pending</label>
+            </value>
+            <value>
+                <fullName>In Process</fullName>
+                <default>false</default>
+                <label>In Process</label>
+            </value>
+            <value>
+                <fullName>Completed</fullName>
+                <default>false</default>
+                <label>Completed</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
-    <required>false</required>
 </CustomField>

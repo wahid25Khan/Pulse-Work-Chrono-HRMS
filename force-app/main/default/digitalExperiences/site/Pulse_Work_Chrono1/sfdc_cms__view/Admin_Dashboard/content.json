@@ -1,0 +1,85 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Admin Dashboard",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : {
+              "margin" : {
+                "bottom" : "",
+                "left" : "1%",
+                "right" : "",
+                "top" : ""
+              }
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "1rem",
+            "sectionConfig" : "{\"UUID\":\"f2797e0c-7238-4244-aa84-961608ba4691\",\"columns\":[{\"UUID\":\"e591333f-0be0-4347-afc1-d8b2fdf47244\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : {
+                  "margin" : {
+                    "bottom" : "",
+                    "left" : "4.5px",
+                    "right" : "",
+                    "top" : ""
+                  }
+                }
+              },
+              "definition" : "c:pwchronoAdminDashboard",
+              "id" : "3f0f668f-ae87-41d3-9a3c-c7a53d0a81a0",
+              "type" : "component"
+            } ],
+            "id" : "e591333f-0be0-4347-afc1-d8b2fdf47244",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "f2797e0c-7238-4244-aa84-961608ba4691",
+          "type" : "component"
+        } ],
+        "id" : "129f9a95-73e8-4618-aa00-d8f132393207",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Admin Dashboard",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "04fd1524-462f-441c-b80b-8c217c30cf3a",
+          "type" : "component"
+        } ],
+        "id" : "33cf8405-94a0-4556-b031-1dfce4ec100d",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "af662698-a6c5-4ee9-b0ea-7c2155e97963",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-admin-dashboard"
+  },
+  "urlName" : "admin-dashboard"
+}

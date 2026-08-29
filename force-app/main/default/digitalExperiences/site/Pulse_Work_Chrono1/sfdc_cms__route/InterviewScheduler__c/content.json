@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Interview Scheduler",
+  "contentBody" : {
+    "activeViewId" : "Interview_Scheduler",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-interview-scheduler",
+    "urlPrefix" : "interview-scheduler"
+  },
+  "urlName" : "interview-scheduler"
+}

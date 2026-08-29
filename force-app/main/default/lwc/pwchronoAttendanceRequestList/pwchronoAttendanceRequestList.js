@@ -7,25 +7,18 @@ const PAGE_SIZE = 10;
 export default class PwchronoAttendanceRequestList extends LightningElement {
   static renderMode = "light";
 
-  @track allRequests = [];
-  @track isLoading = true;
-  @track error = null;
-  @track currentPage = 1;
+  @track allRequests  = [];
+  @track isLoading    = true;
+  @track error        = null;
+  @track currentPage  = 1;
   @track selectedStatus = "All";
   @track selectedMonth;
 
-  employeeId = getEmployeeId();
+  employeeId   = getEmployeeId();
   sessionToken = getSessionToken();
 
   get statusOptions() {
-    const opts = [
-      "All",
-      "Draft",
-      "Submitted",
-      "Approved",
-      "Rejected",
-      "Cancelled"
-    ];
+    const opts = ["All", "Draft", "Submitted", "Approved", "Rejected", "Cancelled"];
     return opts.map((s) => ({
       label: s,
       value: s,
@@ -50,16 +43,12 @@ export default class PwchronoAttendanceRequestList extends LightningElement {
     return this.allRequests.length > PAGE_SIZE;
   }
 
-  get isFirstPage() {
-    return this.currentPage === 1;
-  }
-  get isLastPage() {
-    return this.currentPage >= this.totalPages;
-  }
+  get isFirstPage() { return this.currentPage === 1; }
+  get isLastPage()  { return this.currentPage >= this.totalPages; }
 
   get paginationLabel() {
     const start = (this.currentPage - 1) * PAGE_SIZE + 1;
-    const end = Math.min(this.currentPage * PAGE_SIZE, this.allRequests.length);
+    const end   = Math.min(this.currentPage * PAGE_SIZE, this.allRequests.length);
     return `Showing ${start}–${end} of ${this.allRequests.length}`;
   }
 
@@ -72,7 +61,7 @@ export default class PwchronoAttendanceRequestList extends LightningElement {
 
   loadRequests() {
     this.isLoading = true;
-    this.error = null;
+    this.error     = null;
 
     const { startDate, endDate } = this.monthDateRange();
 
@@ -80,7 +69,7 @@ export default class PwchronoAttendanceRequestList extends LightningElement {
       statusFilter: this.selectedStatus,
       startDate,
       endDate,
-      employeeId: this.employeeId,
+      employeeId:   this.employeeId,
       sessionToken: this.sessionToken
     })
       .then((data) => {
@@ -88,8 +77,7 @@ export default class PwchronoAttendanceRequestList extends LightningElement {
         this.currentPage = 1;
       })
       .catch((err) => {
-        this.error =
-          err?.body?.message || err?.message || "Error loading requests.";
+        this.error = err?.body?.message || err?.message || "Error loading requests.";
       })
       .finally(() => {
         this.isLoading = false;
@@ -100,10 +88,10 @@ export default class PwchronoAttendanceRequestList extends LightningElement {
     if (!this.selectedMonth) return { startDate: null, endDate: null };
     const [year, month] = this.selectedMonth.split("-").map(Number);
     const first = new Date(year, month - 1, 1);
-    const last = new Date(year, month, 0);
+    const last  = new Date(year, month, 0);
     return {
       startDate: this.fmt(first),
-      endDate: this.fmt(last)
+      endDate:   this.fmt(last)
     };
   }
 
@@ -146,9 +134,7 @@ export default class PwchronoAttendanceRequestList extends LightningElement {
   }
 
   handleNewRequest() {
-    this.dispatchEvent(
-      new CustomEvent("newrequest", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new CustomEvent("newrequest", { bubbles: true, composed: true }));
   }
 
   handlePrevPage() {

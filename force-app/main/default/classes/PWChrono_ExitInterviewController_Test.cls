@@ -436,4 +436,93 @@ private class PWChrono_ExitInterviewController_Test {
     Test.stopTest();
     Assert.isTrue(results.size() >= 1, 'Should return active separations');
   }
+
+  @isTest
+  static void testGetInterviews_GuestHrSession() {
+    Portal_Users__c hr = [
+      SELECT Id, Session_Token__c, Session_Expires_At__c
+      FROM Portal_Users__c
+      WHERE Email__c = 'hr@test.com'
+      LIMIT 1
+    ];
+    hr.Session_Token__c = 'guest_exit_token';
+    hr.Session_Expires_At__c = System.now().addHours(1);
+    update hr;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      Test.startTest();
+      List<PWChrono_Exit_Interview__c> results =
+        PWChrono_ExitInterviewController.getInterviews(
+          'All',
+          String.valueOf(hr.Id),
+          'guest_exit_token'
+        );
+      Test.stopTest();
+      Assert.isTrue(results.size() >= 1, 'Guest HR should see interview records.');
+    } finally {
+      PWChrono_GuestSession.testUserTypeOverride = null;
+      PWChrono_GuestSession.testNowOverride = null;
+    }
+  }
+
+  @isTest
+  static void testDeleteInterview_NonPendingThrows() {
+    Portal_Users__c hr = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Email__c = 'hr@test.com'
+      LIMIT 1
+    ];
+    PWChrono_Exit_Interview__c interview = [
+      SELECT Id, Status__c
+      FROM PWChrono_Exit_Interview__c
+      LIMIT 1
+    ];
+    interview.Status__c = 'Completed';
+    update interview;
+
+    Test.startTest();
+    try {
+      PWChrono_ExitInterviewController.deleteInterview(
+        String.valueOf(interview.Id),
+        String.valueOf(hr.Id),
+        null
+      );
+      System.assert(false, 'Only pending exit interviews should be deletable.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+    Test.stopTest();
+  }
+
+  @isTest
+  static void testMalformedPayloadAndDeleteNotFoundThrow() {
+    Portal_Users__c hr = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Name = 'HR Admin'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    try {
+      PWChrono_ExitInterviewController.saveInterview('{bad json', hr.Id, '');
+      System.assert(false, 'Malformed exit interview JSON should throw.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+
+    try {
+      PWChrono_ExitInterviewController.deleteInterview(
+        '001000000000000AAA',
+        hr.Id,
+        ''
+      );
+      System.assert(false, 'Deleting a missing exit interview should throw.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+    Test.stopTest();
+  }
 }

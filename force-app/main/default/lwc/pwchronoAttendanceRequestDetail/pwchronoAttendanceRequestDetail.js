@@ -29,24 +29,22 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
 
   // ── Tracked state ─────────────────────────────────────────────────────────
 
-  @track request = null;
-  @track comments = [];
+  @track request       = null;
+  @track comments      = [];
   @track uploadedFiles = [];
-  @track isLoading = true;
-  @track loadError = null;
-  @track actionError = null;
-  @track isActing = false;
+  @track isLoading     = true;
+  @track loadError     = null;
+  @track actionError   = null;
+  @track isActing      = false;
 
   maxFileSize = MAX_FILE_SIZE;
 
-  employeeId = getEmployeeId();
+  employeeId   = getEmployeeId();
   sessionToken = getSessionToken();
 
   // ── Computed getters ──────────────────────────────────────────────────────
 
-  get hasData() {
-    return !!this.request && !this.isLoading;
-  }
+  get hasData()       { return !!this.request && !this.isLoading; }
 
   get isOwner() {
     return this.request && this.request.Employees__c === this.employeeId;
@@ -58,11 +56,8 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
     return this.isOwner || this.isApprover;
   }
   get canUploadFiles() {
-    return (
-      this.isOwner &&
-      (this.request.Status__c === "Draft" ||
-        this.request.Status__c === "Submitted")
-    );
+    return this.isOwner &&
+      (this.request.Status__c === "Draft" || this.request.Status__c === "Submitted");
   }
 
   get correctionTypeLabel() {
@@ -71,51 +66,29 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
   get approverName() {
     return this.request?.Approvers__r?.Name || "Not assigned";
   }
-  get hasCheckIn() {
-    return !!this.request?.From_Time__c;
-  }
-  get hasCheckOut() {
-    return !!this.request?.To_Time__c;
-  }
-  get formattedCheckIn() {
-    return this.formatTime(this.request?.From_Time__c);
-  }
-  get formattedCheckOut() {
-    return this.formatTime(this.request?.To_Time__c);
-  }
-  get hasApproverComments() {
-    return !!this.request?.Approver_Comments__c;
-  }
-  get hasRejectionReason() {
-    return !!this.request?.Rejection_Reason__c;
-  }
+  get hasCheckIn()  { return !!this.request?.From_Time__c; }
+  get hasCheckOut() { return !!this.request?.To_Time__c; }
+  get formattedCheckIn()  { return this.formatTime(this.request?.From_Time__c); }
+  get formattedCheckOut() { return this.formatTime(this.request?.To_Time__c); }
+  get hasApproverComments() { return !!this.request?.Approver_Comments__c; }
+  get hasRejectionReason()  { return !!this.request?.Rejection_Reason__c; }
 
   get hasShiftContext() {
     return !!this.request?.Shift_Assignment__r?.Shift_Type__r?.Name;
   }
-  get shiftName() {
-    return this.request?.Shift_Assignment__r?.Shift_Type__r?.Name || "—";
-  }
-  get shiftStart() {
-    return this.formatTime(
-      this.request?.Shift_Assignment__r?.Shift_Type__r?.Start_Time__c
-    );
-  }
-  get shiftEnd() {
-    return this.formatTime(
-      this.request?.Shift_Assignment__r?.Shift_Type__r?.End_Time__c
-    );
-  }
+  get shiftName()  { return this.request?.Shift_Assignment__r?.Shift_Type__r?.Name  || "—"; }
+  get shiftStart() { return this.formatTime(this.request?.Shift_Assignment__r?.Shift_Type__r?.Start_Time__c); }
+  get shiftEnd()   { return this.formatTime(this.request?.Shift_Assignment__r?.Shift_Type__r?.End_Time__c); }
 
   /** Merge user + system comments into unified timeline entries. */
   get commentEntries() {
     return (this.comments || []).map((c) => ({
-      id: c.id,
-      text: c.text,
-      author: c.authorName,
+      id:        c.id,
+      text:      c.text,
+      author:    c.authorName,
       timestamp: this.formatDateTime(c.createdDate),
-      type: c.commentType,
-      icon: c.commentType === "System" ? "info" : "comment"
+      type:      c.commentType,
+      icon:      c.commentType === "System" ? "info" : "comment"
     }));
   }
 
@@ -123,37 +96,34 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
 
   loadDetail() {
     if (!this._requestId) return;
-    this.isLoading = true;
-    this.loadError = null;
+    this.isLoading  = true;
+    this.loadError  = null;
     this.actionError = null;
 
     Promise.all([
       getAttendanceRequestDetail({
-        requestId: this._requestId,
-        employeeId: this.employeeId,
+        requestId:    this._requestId,
+        employeeId:   this.employeeId,
         sessionToken: this.sessionToken
       }),
       getAttendanceComments({
-        requestId: this._requestId,
-        employeeId: this.employeeId,
+        requestId:    this._requestId,
+        employeeId:   this.employeeId,
         sessionToken: this.sessionToken
       }),
       getAttendanceFiles({
-        requestId: this._requestId,
-        employeeId: this.employeeId,
+        requestId:    this._requestId,
+        employeeId:   this.employeeId,
         sessionToken: this.sessionToken
       })
     ])
       .then(([req, commentData, fileData]) => {
-        this.request = req;
-        this.comments = commentData || [];
-        this.uploadedFiles = fileData || [];
+        this.request       = req;
+        this.comments      = commentData  || [];
+        this.uploadedFiles = fileData     || [];
       })
       .catch((err) => {
-        this.loadError =
-          err?.body?.message ||
-          err?.message ||
-          "Error loading request details.";
+        this.loadError = err?.body?.message || err?.message || "Error loading request details.";
       })
       .finally(() => {
         this.isLoading = false;
@@ -176,20 +146,16 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
   handleApprovalAction(action, comments) {
     this.isActing = true;
     processAttendanceCorrectionApproval({
-      requestId: this._requestId,
+      requestId:    this._requestId,
       action,
-      comments: comments || "",
-      employeeId: this.employeeId,
+      comments:     comments || "",
+      employeeId:   this.employeeId,
       sessionToken: this.sessionToken
     })
       .then((updated) => {
         this.request = updated;
         this.loadDetail(); // Reload to sync comments
-        this.showToast(
-          "Success",
-          `Request ${action.toLowerCase()}d successfully.`,
-          "success"
-        );
+        this.showToast("Success", `Request ${action.toLowerCase()}d successfully.`, "success");
         this.dispatchEvent(
           new CustomEvent("requestactioned", {
             detail: { requestId: this._requestId, action },
@@ -199,8 +165,7 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
         );
       })
       .catch((err) => {
-        this.actionError =
-          err?.body?.message || err?.message || "Error processing approval.";
+        this.actionError = err?.body?.message || err?.message || "Error processing approval.";
       })
       .finally(() => {
         this.isActing = false;
@@ -210,9 +175,9 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
   handleCancel(reason) {
     this.isActing = true;
     cancelAttendanceRequest({
-      requestId: this._requestId,
+      requestId:    this._requestId,
       cancelReason: reason || "",
-      employeeId: this.employeeId,
+      employeeId:   this.employeeId,
       sessionToken: this.sessionToken
     })
       .then((updated) => {
@@ -228,8 +193,7 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
         );
       })
       .catch((err) => {
-        this.actionError =
-          err?.body?.message || err?.message || "Error cancelling request.";
+        this.actionError = err?.body?.message || err?.message || "Error cancelling request.";
       })
       .finally(() => {
         this.isActing = false;
@@ -241,15 +205,15 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
     if (!text?.trim()) return;
 
     addAttendanceComment({
-      requestId: this._requestId,
-      commentText: text.trim(),
-      employeeId: this.employeeId,
+      requestId:    this._requestId,
+      commentText:  text.trim(),
+      employeeId:   this.employeeId,
       sessionToken: this.sessionToken
     })
       .then(() => {
         return getAttendanceComments({
-          requestId: this._requestId,
-          employeeId: this.employeeId,
+          requestId:    this._requestId,
+          employeeId:   this.employeeId,
           sessionToken: this.sessionToken
         });
       })
@@ -257,11 +221,7 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
         this.comments = refreshed || [];
       })
       .catch((err) => {
-        this.showToast(
-          "Error",
-          err?.body?.message || "Error adding comment.",
-          "error"
-        );
+        this.showToast("Error", err?.body?.message || "Error adding comment.", "error");
       });
   }
 
@@ -272,11 +232,11 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
     const uploadPromises = files.map((f) =>
       this.readFileAsBase64(f).then((base64) =>
         uploadAttendanceFile({
-          requestId: this._requestId,
-          fileName: f.name,
-          base64Data: base64,
-          contentType: f.type || "application/octet-stream",
-          employeeId: this.employeeId,
+          requestId:    this._requestId,
+          fileName:     f.name,
+          base64Data:   base64,
+          contentType:  f.type || "application/octet-stream",
+          employeeId:   this.employeeId,
           sessionToken: this.sessionToken
         })
       )
@@ -285,18 +245,10 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
     Promise.all(uploadPromises)
       .then((newFiles) => {
         this.uploadedFiles = [...this.uploadedFiles, ...newFiles];
-        this.showToast(
-          "Success",
-          `${newFiles.length} file(s) uploaded.`,
-          "success"
-        );
+        this.showToast("Success", `${newFiles.length} file(s) uploaded.`, "success");
       })
       .catch((err) => {
-        this.showToast(
-          "Error",
-          err?.body?.message || "Error uploading file(s).",
-          "error"
-        );
+        this.showToast("Error", err?.body?.message || "Error uploading file(s).", "error");
       });
   }
 
@@ -305,9 +257,7 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
   }
 
   handleBack() {
-    this.dispatchEvent(
-      new CustomEvent("back", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new CustomEvent("back", { bubbles: true, composed: true }));
   }
 
   // ── Utilities ─────────────────────────────────────────────────────────────
@@ -341,11 +291,8 @@ export default class PwchronoAttendanceRequestDetail extends LightningElement {
     try {
       const d = new Date(isoString);
       return d.toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
+        day: "2-digit", month: "short", year: "numeric",
+        hour: "2-digit", minute: "2-digit"
       });
     } catch {
       return isoString;

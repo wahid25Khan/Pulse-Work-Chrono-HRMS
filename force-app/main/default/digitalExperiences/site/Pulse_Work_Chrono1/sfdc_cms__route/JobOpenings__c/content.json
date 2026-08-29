@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Job Openings",
+  "contentBody" : {
+    "activeViewId" : "Job_Openings",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-job-openings",
+    "urlPrefix" : "job-openings"
+  },
+  "urlName" : "job-openings"
+}

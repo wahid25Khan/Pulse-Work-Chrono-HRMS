@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Admin Dashboard",
+  "contentBody" : {
+    "activeViewId" : "Admin_Dashboard",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-admin-dashboard",
+    "urlPrefix" : "admin-dashboard"
+  },
+  "urlName" : "admin-dashboard"
+}

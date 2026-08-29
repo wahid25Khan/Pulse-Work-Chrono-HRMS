@@ -41,6 +41,7 @@ public inherited sharing class PWChrono_EmployeeSeparationController {
     try {
       requireAccess(portalUserId, sessionToken);
       Boolean isHR = isHrAdmin(portalUserId);
+      Integer queryLimit = PWChrono_Constants.DEFAULT_QUERY_LIMIT;
 
       String query =
         'SELECT Id, Name, Employee__c, Employee__r.Name, Employee_Name__c,' +
@@ -53,24 +54,17 @@ public inherited sharing class PWChrono_EmployeeSeparationController {
 
       List<String> filters = new List<String>();
       if (!isHR) {
-        filters.add(
-          'Employee__c = \'' + String.escapeSingleQuotes(portalUserId) + '\''
-        );
+        filters.add('Employee__c = :portalUserId');
       }
       if (String.isNotBlank(statusFilter) && statusFilter != 'All') {
-        filters.add(
-          'Status__c = \'' + String.escapeSingleQuotes(statusFilter) + '\''
-        );
+        filters.add('Status__c = :statusFilter');
       }
       if (!filters.isEmpty()) {
         query += ' WHERE ' + String.join(filters, ' AND ');
       }
-      query +=
-        ' ORDER BY Resignation_Letter_Date__c DESC NULLS LAST' +
-        ' LIMIT ' +
-        PWChrono_Constants.DEFAULT_QUERY_LIMIT;
+      query += ' ORDER BY Resignation_Letter_Date__c DESC NULLS LAST LIMIT :queryLimit';
 
-      return Database.query(query); // NOPMD
+      return Database.query(query);
     } catch (Exception ex) {
       PWChrono_Logger.error(
         'PWChrono_EmployeeSeparationController.getSeparations',
@@ -290,7 +284,21 @@ public inherited sharing class PWChrono_EmployeeSeparationController {
           'Only HR Admins can delete separation records.'
         );
       }
-      delete new PWChrono_Employee_Separation__c(Id = separationId);
+      List<PWChrono_Employee_Separation__c> separations = [
+        SELECT Id, Status__c
+        FROM PWChrono_Employee_Separation__c
+        WHERE Id = :separationId
+        LIMIT 1
+      ];
+      if (separations.isEmpty()) {
+        throw new AuraHandledException('Separation record not found.');
+      }
+      if (separations[0].Status__c != 'Pending') {
+        throw new AuraHandledException(
+          'Only pending separation records can be deleted.'
+        );
+      }
+      delete separations[0];
     } catch (Exception ex) {
       PWChrono_Logger.error(
         'PWChrono_EmployeeSeparationController.deleteSeparation',

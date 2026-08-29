@@ -1,19 +1,14 @@
 <template lwc:render-mode="light">
   <div class="expense-line-item-editor">
+
     <!-- Section header -->
     <div class="d-flex align-items-center justify-content-between mb-3">
       <h6 class="fw-semibold mb-0">
         Expense Items
-        <span class="badge bg-secondary ms-1" style="font-size: 0.7rem"
-          >{items.length}</span
-        >
+        <span class="badge bg-secondary ms-1" style="font-size:0.7rem">{items.length}</span>
       </h6>
       <template if:false={readOnly}>
-        <button
-          type="button"
-          class="btn btn-outline-primary btn-sm"
-          onclick={handleAddItem}
-        >
+        <button type="button" class="btn btn-outline-primary btn-sm" onclick={handleAddItem}>
           <i class="fa-solid fa-plus me-1"></i>Add Item
         </button>
       </template>
@@ -24,13 +19,13 @@
       <table class="table table-sm mb-0 align-middle">
         <thead class="table-light">
           <tr>
-            <th style="width: 115px">Date</th>
-            <th style="width: 160px">Type</th>
+            <th style="width:115px">Date</th>
+            <th style="width:160px">Type</th>
             <th>Description</th>
-            <th style="width: 140px">Merchant</th>
-            <th style="width: 120px" class="text-end">Amount (MYR)</th>
+            <th style="width:140px">Merchant</th>
+            <th style="width:120px" class="text-end">Amount (MYR)</th>
             <template if:false={readOnly}>
-              <th style="width: 48px"></th>
+              <th style="width:48px"></th>
             </template>
           </tr>
         </thead>
@@ -67,9 +62,7 @@
                   ></lightning-combobox>
                 </template>
                 <template if:true={readOnly}>
-                  <span class="badge bg-light text-dark border"
-                    >{item.itemType}</span
-                  >
+                  <span class="badge bg-light text-dark border">{item.itemType}</span>
                 </template>
               </td>
               <!-- Description -->
@@ -152,14 +145,9 @@
           <!-- Empty state (edit mode) -->
           <template if:true={showEmptyRow}>
             <tr>
-              <td
-                colspan="6"
-                class="text-center text-muted py-4"
-                style="font-size: 0.875rem"
-              >
+              <td colspan="6" class="text-center text-muted py-4" style="font-size:0.875rem">
                 <i class="fa-solid fa-list-ul me-1"></i>
-                No items yet — click <strong>Add Item</strong> to add an
-                expense.
+                No items yet — click <strong>Add Item</strong> to add an expense.
               </td>
             </tr>
           </template>
@@ -168,11 +156,7 @@
           <template if:false={hasItems}>
             <template if:true={readOnly}>
               <tr>
-                <td
-                  colspan="5"
-                  class="text-center text-muted py-3"
-                  style="font-size: 0.875rem"
-                >
+                <td colspan="5" class="text-center text-muted py-3" style="font-size:0.875rem">
                   No expense items.
                 </td>
               </tr>
@@ -201,5 +185,6 @@
         </template>
       </table>
     </div>
+
   </div>
 </template>

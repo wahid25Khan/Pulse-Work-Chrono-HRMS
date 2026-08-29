@@ -26,6 +26,7 @@ public inherited sharing class PWChrono_FullFinalSettlementController {
         LIMIT 1
       ];
       Boolean isHR = caller.Role__c == PWChrono_Constants.ROLE_HR_ADMIN;
+      Integer queryLimit = PWChrono_Constants.DEFAULT_QUERY_LIMIT;
 
       String q =
         'SELECT Id, Name, Employee__c, Employee__r.Name, Employee_Name__c, ' +
@@ -36,22 +37,16 @@ public inherited sharing class PWChrono_FullFinalSettlementController {
 
       List<String> whereClauses = new List<String>();
       if (!isHR) {
-        whereClauses.add(
-          'Employee__c = \'' + String.escapeSingleQuotes(portalUserId) + '\''
-        );
+        whereClauses.add('Employee__c = :portalUserId');
       }
       if (String.isNotBlank(statusFilter) && statusFilter != 'All') {
-        whereClauses.add(
-          'Status__c = \'' + String.escapeSingleQuotes(statusFilter) + '\''
-        );
+        whereClauses.add('Status__c = :statusFilter');
       }
       if (!whereClauses.isEmpty()) {
         q += 'WHERE ' + String.join(whereClauses, ' AND ') + ' ';
       }
-      q +=
-        'ORDER BY CreatedDate DESC LIMIT ' +
-        PWChrono_Constants.DEFAULT_QUERY_LIMIT; // NOPMD
-      return Database.query(q); // NOPMD
+      q += 'ORDER BY CreatedDate DESC LIMIT :queryLimit';
+      return Database.query(q);
     } catch (Exception e) {
       PWChrono_Logger.error(
         'PWChrono_FullFinalSettlementController.getSettlements',
@@ -391,12 +386,21 @@ public inherited sharing class PWChrono_FullFinalSettlementController {
       if (caller.Role__c != PWChrono_Constants.ROLE_HR_ADMIN) {
         throw new AuraHandledException('Insufficient permissions.');
       }
-      delete [
-        SELECT Id
+      List<PWChrono_Full_Final_Settlement__c> settlements = [
+        SELECT Id, Status__c
         FROM PWChrono_Full_Final_Settlement__c
         WHERE Id = :settlementId
         LIMIT 1
       ];
+      if (settlements.isEmpty()) {
+        throw new AuraHandledException('Settlement not found.');
+      }
+      if (settlements[0].Status__c != 'Draft') {
+        throw new AuraHandledException(
+          'Only draft settlements can be deleted.'
+        );
+      }
+      delete settlements[0];
     } catch (Exception e) {
       PWChrono_Logger.error(
         'PWChrono_FullFinalSettlementController.deleteSettlement',

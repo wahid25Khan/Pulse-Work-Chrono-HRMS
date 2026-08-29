@@ -16,14 +16,16 @@ private class PWChrono_EmployeeTransferController_Test {
       Portal_Users__c employee = new Portal_Users__c(
         Name = 'Test Employee',
         Email__c = 'emp@test.com',
-        Role__c = 'Employee'
+        Role__c = 'Employee',
+        Is_Active__c = true
       );
       insert employee;
 
       Portal_Users__c hrAdmin = new Portal_Users__c(
         Name = 'HR Admin',
         Email__c = 'hr@test.com',
-        Role__c = PWChrono_Constants.ROLE_HR_ADMIN
+        Role__c = PWChrono_Constants.ROLE_HR_ADMIN,
+        Is_Active__c = true
       );
       insert hrAdmin;
 
@@ -358,5 +360,64 @@ private class PWChrono_EmployeeTransferController_Test {
     List<Portal_Users__c> results = PWChrono_EmployeeTransferController.getActiveEmployees();
     Test.stopTest();
     System.assert(results.size() >= 1);
+  }
+
+  @isTest
+  static void testGetTransfers_GuestHrSession() {
+    Portal_Users__c hr = [
+      SELECT Id, Session_Token__c, Session_Expires_At__c
+      FROM Portal_Users__c
+      WHERE Email__c = 'hr@test.com'
+      LIMIT 1
+    ];
+    hr.Session_Token__c = 'guest_transfer_token';
+    hr.Session_Expires_At__c = System.now().addHours(1);
+    update hr;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      Test.startTest();
+      List<PWChrono_Employee_Transfer__c> results =
+        PWChrono_EmployeeTransferController.getTransfers(
+          'All',
+          String.valueOf(hr.Id),
+          'guest_transfer_token'
+        );
+      Test.stopTest();
+      System.assertEquals(1, results.size(), 'Guest HR should see transfer records.');
+    } finally {
+      PWChrono_GuestSession.testUserTypeOverride = null;
+      PWChrono_GuestSession.testNowOverride = null;
+    }
+  }
+
+  @isTest
+  static void testDeleteTransfer_NonDraftThrows() {
+    Portal_Users__c hr = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Email__c = 'hr@test.com'
+      LIMIT 1
+    ];
+    PWChrono_Employee_Transfer__c transfer = [
+      SELECT Id, Status__c
+      FROM PWChrono_Employee_Transfer__c
+      LIMIT 1
+    ];
+    transfer.Status__c = 'Approved';
+    update transfer;
+
+    Test.startTest();
+    try {
+      PWChrono_EmployeeTransferController.deleteTransfer(
+        String.valueOf(transfer.Id),
+        String.valueOf(hr.Id),
+        null
+      );
+      System.assert(false, 'Only draft transfer records should be deletable.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+    Test.stopTest();
   }
 }

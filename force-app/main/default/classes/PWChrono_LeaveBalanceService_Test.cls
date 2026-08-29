@@ -1,5 +1,6 @@
 @IsTest
 private class PWChrono_LeaveBalanceService_Test {
+
   @TestSetup
   static void setupTestData() {
     PWChrono_LeaveTestDataFactory.setupStandardTestData();
@@ -8,16 +9,10 @@ private class PWChrono_LeaveBalanceService_Test {
   @IsTest
   static void testPendingRequestsIncludedInBalance() {
     Portal_Users__c employee = [
-      SELECT Id, Reports_To__c
-      FROM Portal_Users__c
-      WHERE Name = 'Test Employee'
-      LIMIT 1
+      SELECT Id, Reports_To__c FROM Portal_Users__c WHERE Name = 'Test Employee' LIMIT 1
     ];
     PWChrono_Leave_Type__c annualLeave = [
-      SELECT Id
-      FROM PWChrono_Leave_Type__c
-      WHERE Name = 'Annual Leave'
-      LIMIT 1
+      SELECT Id FROM PWChrono_Leave_Type__c WHERE Name = 'Annual Leave' LIMIT 1
     ];
 
     PWChrono_LeaveTestDataFactory.createLeave(
@@ -30,10 +25,8 @@ private class PWChrono_LeaveBalanceService_Test {
     );
 
     Test.startTest();
-    PWChrono_LeaveBalanceService.LeaveBalanceWrapper balance = PWChrono_LeaveBalanceService.getBalanceForType(
-      employee.Id,
-      annualLeave.Id
-    );
+    PWChrono_LeaveBalanceService.LeaveBalanceWrapper balance =
+      PWChrono_LeaveBalanceService.getBalanceForType(employee.Id, annualLeave.Id);
     Test.stopTest();
 
     System.assertEquals(2, balance.pendingRequests);
@@ -42,16 +35,10 @@ private class PWChrono_LeaveBalanceService_Test {
   @IsTest
   static void testDeductAndReverseBalance() {
     Portal_Users__c employee = [
-      SELECT Id
-      FROM Portal_Users__c
-      WHERE Name = 'Test Employee'
-      LIMIT 1
+      SELECT Id FROM Portal_Users__c WHERE Name = 'Test Employee' LIMIT 1
     ];
     PWChrono_Leave_Type__c annualLeave = [
-      SELECT Id
-      FROM PWChrono_Leave_Type__c
-      WHERE Name = 'Annual Leave'
-      LIMIT 1
+      SELECT Id FROM PWChrono_Leave_Type__c WHERE Name = 'Annual Leave' LIMIT 1
     ];
 
     Test.startTest();
@@ -62,7 +49,8 @@ private class PWChrono_LeaveBalanceService_Test {
     PWChrono_Leave_Allocation__c allocation = [
       SELECT Total_Leaves_Used__c
       FROM PWChrono_Leave_Allocation__c
-      WHERE Employees__c = :employee.Id AND Leave_Type__c = :annualLeave.Id
+      WHERE Employees__c = :employee.Id
+        AND Leave_Type__c = :annualLeave.Id
       LIMIT 1
     ];
     System.assertEquals(2, allocation.Total_Leaves_Used__c);

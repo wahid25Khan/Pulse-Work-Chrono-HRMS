@@ -47,6 +47,7 @@ public inherited sharing class PWChrono_ExitInterviewController {
     try {
       requireAccess(portalUserId, sessionToken);
       Boolean isHR = isHrAdmin(portalUserId);
+      Integer queryLimit = PWChrono_Constants.DEFAULT_QUERY_LIMIT;
 
       String query =
         'SELECT Id, Name, Employee__c, Employee__r.Name, Employee_Name__c,' +
@@ -59,24 +60,17 @@ public inherited sharing class PWChrono_ExitInterviewController {
 
       List<String> filters = new List<String>();
       if (!isHR) {
-        filters.add(
-          'Employee__c = \'' + String.escapeSingleQuotes(portalUserId) + '\''
-        );
+        filters.add('Employee__c = :portalUserId');
       }
       if (String.isNotBlank(statusFilter) && statusFilter != 'All') {
-        filters.add(
-          'Status__c = \'' + String.escapeSingleQuotes(statusFilter) + '\''
-        );
+        filters.add('Status__c = :statusFilter');
       }
       if (!filters.isEmpty()) {
         query += ' WHERE ' + String.join(filters, ' AND ');
       }
-      query +=
-        ' ORDER BY Interview_Date__c DESC NULLS LAST' +
-        ' LIMIT ' +
-        PWChrono_Constants.DEFAULT_QUERY_LIMIT;
+      query += ' ORDER BY Interview_Date__c DESC NULLS LAST LIMIT :queryLimit';
 
-      return Database.query(query); // NOPMD
+      return Database.query(query);
     } catch (Exception ex) {
       PWChrono_Logger.error(
         'PWChrono_ExitInterviewController.getInterviews',
@@ -295,7 +289,21 @@ public inherited sharing class PWChrono_ExitInterviewController {
       requireAccess(portalUserId, sessionToken);
       requireHrAdmin(portalUserId);
 
-      delete new PWChrono_Exit_Interview__c(Id = interviewId);
+      List<PWChrono_Exit_Interview__c> interviews = [
+        SELECT Id, Status__c
+        FROM PWChrono_Exit_Interview__c
+        WHERE Id = :interviewId
+        LIMIT 1
+      ];
+      if (interviews.isEmpty()) {
+        throw new AuraHandledException('Exit interview not found.');
+      }
+      if (interviews[0].Status__c != 'Pending') {
+        throw new AuraHandledException(
+          'Only pending exit interviews can be deleted.'
+        );
+      }
+      delete interviews[0];
     } catch (AuraHandledException ex) {
       throw ex;
     } catch (Exception ex) {

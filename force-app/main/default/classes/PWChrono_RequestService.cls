@@ -3,20 +3,15 @@
  *              Handles status transitions, notification dispatch, and common orchestration.
  */
 public inherited sharing class PWChrono_RequestService {
+
   /**
    * @description Transition a request record's status with validation.
    * @param currentStatus Current status value
    * @param newStatus Desired status value
    * @return The validated new status
    */
-  public static String transitionStatus(
-    String currentStatus,
-    String newStatus
-  ) {
-    String error = PWChrono_RequestValidator.validateStatusTransition(
-      currentStatus,
-      newStatus
-    );
+  public static String transitionStatus(String currentStatus, String newStatus) {
+    String error = PWChrono_RequestValidator.validateStatusTransition(currentStatus, newStatus);
     if (error != null) {
       throw new AuraHandledException(error);
     }
@@ -69,15 +64,8 @@ public inherited sharing class PWChrono_RequestService {
     Id relatedRecordId
   ) {
     String title = requestType + ' Request ' + action;
-    String message =
-      actorName +
-      ' has ' +
-      action.toLowerCase() +
-      ' ' +
-      requestType.toLowerCase() +
-      ' request ' +
-      requestName +
-      '.';
+    String message = actorName + ' has ' + action.toLowerCase() + ' ' +
+                     requestType.toLowerCase() + ' request ' + requestName + '.';
 
     // Resolve the User Id from Portal_Users__c for OwnerId
     Id ownerId = resolveUserId(recipientEmployeeId);
@@ -109,12 +97,7 @@ public inherited sharing class PWChrono_RequestService {
   ) {
     try {
       TLG_Task_Notifications__c notif = buildNotification(
-        recipientEmployeeId,
-        requestType,
-        requestName,
-        action,
-        actorName,
-        relatedRecordId
+        recipientEmployeeId, requestType, requestName, action, actorName, relatedRecordId
       );
       insert notif;
     } catch (Exception e) {
@@ -125,18 +108,14 @@ public inherited sharing class PWChrono_RequestService {
   /**
    * @description Send notifications in bulk.
    */
-  public static void sendNotifications(
-    List<TLG_Task_Notifications__c> notifications
-  ) {
+  public static void sendNotifications(List<TLG_Task_Notifications__c> notifications) {
     if (notifications == null || notifications.isEmpty()) {
       return;
     }
     try {
       insert notifications;
     } catch (Exception e) {
-      PWChrono_Logger.warn(
-        'Failed to send bulk notifications: ' + e.getMessage()
-      );
+      PWChrono_Logger.warn('Failed to send bulk notifications: ' + e.getMessage());
     }
   }
 

@@ -41,23 +41,10 @@ public inherited sharing class PWChrono_LeaveController {
     String sessionToken
   ) {
     try {
-      Id currentEmpId = PWChrono_RequestValidator.resolveEmployeeId(
+      Id targetEmpId = PWChrono_RequestValidator.resolveEmployeeId(
         employeeId,
         sessionToken
       );
-      Id targetEmpId = currentEmpId;
-
-      // Admin can view other employees
-      if (
-        String.isNotBlank(employeeId) &&
-        employeeId != String.valueOf(currentEmpId)
-      ) {
-        targetEmpId = PWChrono_RequestValidator.enforceDataAccess(
-          currentEmpId,
-          (Id) employeeId
-        );
-      }
-
       return PWChrono_LeaveSelector.getLeavesByEmployee(
         targetEmpId,
         statusFilter,
@@ -295,7 +282,7 @@ public inherited sharing class PWChrono_LeaveController {
       PWChrono_RequestCommentService.addSystemComment(
         leaveId,
         'PWChrono_Leave__c',
-        'Attachment uploaded: ' + fileName,
+        'Attachment uploaded: ' + fileDto.name,
         empId
       );
 

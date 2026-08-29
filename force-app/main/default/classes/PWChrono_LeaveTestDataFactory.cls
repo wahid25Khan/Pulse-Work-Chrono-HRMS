@@ -4,6 +4,7 @@
  */
 @IsTest
 public class PWChrono_LeaveTestDataFactory {
+
   public static Portal_Users__c createEmployee(String name, Boolean isActive) {
     Portal_Users__c emp = new Portal_Users__c(
       Name = name,
@@ -39,10 +40,7 @@ public class PWChrono_LeaveTestDataFactory {
     return mgr;
   }
 
-  public static PWChrono_Leave_Type__c createLeaveType(
-    String name,
-    Decimal maxDays
-  ) {
+  public static PWChrono_Leave_Type__c createLeaveType(String name, Decimal maxDays) {
     PWChrono_Leave_Type__c lt = new PWChrono_Leave_Type__c(
       Name = name,
       Max_Days_Allowed__c = maxDays,
@@ -69,10 +67,7 @@ public class PWChrono_LeaveTestDataFactory {
     return blockedDate;
   }
 
-  public static PWChrono_Salary_Slip__c createPaidSalarySlip(
-    Id employeeId,
-    Date payrollPeriod
-  ) {
+  public static PWChrono_Salary_Slip__c createPaidSalarySlip(Id employeeId, Date payrollPeriod) {
     PWChrono_Salary_Slip__c salarySlip = new PWChrono_Salary_Slip__c(
       Employees__c = employeeId,
       Payroll_Period__c = payrollPeriod,
@@ -86,9 +81,7 @@ public class PWChrono_LeaveTestDataFactory {
   }
 
   public static PWChrono_Leave_Allocation__c createAllocation(
-    Id employeeId,
-    Id leaveTypeId,
-    Decimal allocated
+    Id employeeId, Id leaveTypeId, Decimal allocated
   ) {
     PWChrono_Leave_Allocation__c alloc = new PWChrono_Leave_Allocation__c(
       Employees__c = employeeId,
@@ -106,12 +99,8 @@ public class PWChrono_LeaveTestDataFactory {
 
   @SuppressWarnings('PMD.ExcessiveParameterList')
   public static PWChrono_Leave__c createLeave(
-    Id employeeId,
-    Id leaveTypeId,
-    Id approverId,
-    Date fromDate,
-    Date toDate,
-    String status
+    Id employeeId, Id leaveTypeId, Id approverId,
+    Date fromDate, Date toDate, String status
   ) {
     PWChrono_Leave__c leave = new PWChrono_Leave__c(
       Employees__c = employeeId,
@@ -147,14 +136,10 @@ public class PWChrono_LeaveTestDataFactory {
     bundle.annualLeave = createLeaveType('Annual Leave', 20);
     bundle.sickLeave = createLeaveType('Sick Leave', 10);
     bundle.annualAllocation = createAllocation(
-      bundle.employee.Id,
-      bundle.annualLeave.Id,
-      20
+      bundle.employee.Id, bundle.annualLeave.Id, 20
     );
     bundle.sickAllocation = createAllocation(
-      bundle.employee.Id,
-      bundle.sickLeave.Id,
-      10
+      bundle.employee.Id, bundle.sickLeave.Id, 10
     );
 
     return bundle;

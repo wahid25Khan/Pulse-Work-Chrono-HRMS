@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
     <flexiPageRegions>
         <itemInstances>
@@ -125,16 +125,6 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Portal_User_Profile__c</fieldItem>
-                <identifier>RecordPortal_User_Profile_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
                 <fieldItem>Record.Contact__c</fieldItem>
                 <identifier>RecordContact_cField</identifier>
             </fieldInstance>
@@ -157,6 +147,26 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.OTP_Generated_Time__c</fieldItem>
                 <identifier>RecordOTP_Generated_Time_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Is_Active__c</fieldItem>
+                <identifier>RecordIs_Active_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Reports_To__c</fieldItem>
+                <identifier>RecordReports_To_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-acd488ca-29bd-44e6-99ac-59e9454c7be5</name>
@@ -193,10 +203,116 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Department__c</fieldItem>
-                <identifier>RecordDepartment_cField</identifier>
+                <fieldItem>Record.Show_Overview_Dashboard__c</fieldItem>
+                <identifier>RecordShow_Overview_Dashboard_cField</identifier>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Is_Executive__c</fieldItem>
+                <identifier>RecordIs_Executive_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Is_Project_Manager__c</fieldItem>
+                <identifier>RecordIs_Project_Manager_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-0338381c-3d4f-48a8-b166-3904ecee742d</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Show_Executive_Dashboard__c</fieldItem>
+                <identifier>RecordShow_Executive_Dashboard_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Show_VP_Dashboard__c</fieldItem>
+                <identifier>RecordShow_VP_Dashboard_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Show_PM_Dashboard__c</fieldItem>
+                <identifier>RecordShow_PM_Dashboard_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-6e2bba2d-dcc9-4e83-b953-2d42b4393bde</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-0338381c-3d4f-48a8-b166-3904ecee742d</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column9</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-6e2bba2d-dcc9-4e83-b953-2d42b4393bde</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column10</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-79652f20-6e75-488d-98c8-a788cb5fe7ea</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Portal_User_Profile__c</fieldItem>
+                <identifier>RecordPortal_User_Profile_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Image_Urls__c</fieldItem>
+                <identifier>RecordImage_Urls__cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-33df530a-bd32-4602-a118-84a8d9a07550</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
@@ -207,31 +323,17 @@
                 <identifier>RecordDesignation_cField</identifier>
             </fieldInstance>
         </itemInstances>
-        <name>Facet-6364627d-7343-4524-8a12-a5c23d7eb748</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Reports_To__c</fieldItem>
-                <identifier>RecordReports_To_cField</identifier>
+                <fieldItem>Record.Departments__c</fieldItem>
+                <identifier>RecordDepartments__cField</identifier>
             </fieldInstance>
         </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Is_Active__c</fieldItem>
-                <identifier>RecordIs_Active_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <name>Facet-f474d41e-563f-4ef4-bfc0-1b4a858c601d</name>
+        <name>Facet-8042c3d1-596c-4404-a793-4a8638ab505b</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -239,23 +341,23 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
-                    <value>Facet-6364627d-7343-4524-8a12-a5c23d7eb748</value>
+                    <value>Facet-33df530a-bd32-4602-a118-84a8d9a07550</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:column</componentName>
-                <identifier>flexipage_column5</identifier>
+                <identifier>flexipage_column11</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
-                    <value>Facet-f474d41e-563f-4ef4-bfc0-1b4a858c601d</value>
+                    <value>Facet-8042c3d1-596c-4404-a793-4a8638ab505b</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:column</componentName>
-                <identifier>flexipage_column6</identifier>
+                <identifier>flexipage_column12</identifier>
             </componentInstance>
         </itemInstances>
-        <name>Facet-1a4ede7b-6968-40cc-8506-1e5c21058730</name>
+        <name>Facet-528dfc21-7298-429e-af74-b2efd22cc849</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -343,7 +445,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>columns</name>
-                    <value>Facet-1a4ede7b-6968-40cc-8506-1e5c21058730</value>
+                    <value>Facet-79652f20-6e75-488d-98c8-a788cb5fe7ea</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>horizontalAlignment</name>
@@ -351,10 +453,28 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
-                    <value>Section</value>
+                    <value>Dashboards</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:fieldSection</componentName>
-                <identifier>flexipage_fieldSection3</identifier>
+                <identifier>flexipage_fieldSection5</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-528dfc21-7298-429e-af74-b2efd22cc849</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Profile &amp; Designation</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection6</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -444,13 +564,176 @@
                     <name>showLegacyActivityComposer</name>
                     <value>false</value>
                 </componentInstanceProperties>
-                <componentName
-        >runtime_sales_activities:activityPanel</componentName>
+                <componentName>runtime_sales_activities:activityPanel</componentName>
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>
         <name>activityTabContent</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Access_Token__c</fieldItem>
+                <identifier>RecordGoogle_Access_Token_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Auth_Code__c</fieldItem>
+                <identifier>RecordGoogle_Auth_Code_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Auth_State__c</fieldItem>
+                <identifier>RecordGoogle_Auth_State_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Auth_State_Expiry_At__c</fieldItem>
+                <identifier>RecordGoogle_Auth_State_Expiry_At_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Use_No_Profile_Picture__c</fieldItem>
+                <identifier>RecordUse_No_Profile_Picture_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_User_Id__c</fieldItem>
+                <identifier>RecordGoogle_User_Id_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-6cd38987-c68a-42f5-83bb-b009eae80704</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Chat_Consent__c</fieldItem>
+                <identifier>RecordGoogle_Chat_Consent_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Picture_Last_Synced_At__c</fieldItem>
+                <identifier>RecordGoogle_Picture_Last_Synced_At_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Picture_URL__c</fieldItem>
+                <identifier>RecordGoogle_Picture_URL_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Token_Expiry_At__c</fieldItem>
+                <identifier>RecordGoogle_Token_Expiry_At_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Google_Refresh_Token__c</fieldItem>
+                <identifier>RecordGoogle_Refresh_Token_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <name>Facet-ec8cfbf8-2a85-4646-8861-1a8f09713153</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-6cd38987-c68a-42f5-83bb-b009eae80704</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column7</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-ec8cfbf8-2a85-4646-8861-1a8f09713153</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:column</componentName>
+                <identifier>flexipage_column8</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-569334f3-53dc-4ab1-a7c3-339d5157c70b</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>columns</name>
+                    <value>Facet-569334f3-53dc-4ab1-a7c3-339d5157c70b</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>label</name>
+                    <value>Section</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:fieldSection</componentName>
+                <identifier>flexipage_fieldSection4</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-76df09ee-6241-4a9c-9708-542cc246f0f6</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -470,6 +753,20 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>activityTab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-76df09ee-6241-4a9c-9708-542cc246f0f6</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Google Auth</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab</identifier>
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>

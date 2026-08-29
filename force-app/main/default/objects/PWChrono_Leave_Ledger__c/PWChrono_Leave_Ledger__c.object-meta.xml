@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>Accept</actionName>
@@ -143,8 +143,7 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description
-  >Audit trail of leave balance changes — allocations, usage, cancellations, adjustments, carry-forwards and encashments.</description>
+    <description>Audit trail of leave balance changes — allocations, usage, cancellations, adjustments, carry-forwards and encashments.</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
@@ -155,14 +154,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Leave Ledger</label>
+    <label>PWChrono Leave Ledger</label>
     <nameField>
         <displayFormat>LED-{00000}</displayFormat>
         <label>Ledger Number</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Leave Ledgers</pluralLabel>
-    <searchLayouts />
+    <pluralLabel>PWChrono Leave Ledgers</pluralLabel>
+    <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

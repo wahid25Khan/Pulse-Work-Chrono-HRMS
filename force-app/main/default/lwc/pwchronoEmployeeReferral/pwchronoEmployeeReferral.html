@@ -1,4 +1,4 @@
-<template>
+<template lwc:render-mode="light">
   <div class="pwchrono-employee-referral">
     <!-- Header -->
     <div class="page-header mb-4">
@@ -95,7 +95,7 @@
         <h6 class="mb-0 fw-semibold">Referrals</h6>
         <select
           class="form-select form-select-sm w-auto"
-          value={statusFilter}
+          data-status-filter
           onchange={handleStatusFilter}
         >
           <option value="All">All Statuses</option>
@@ -118,8 +118,10 @@
         <template if:false={isLoading}>
           <!-- Empty state -->
           <template if:true={isEmpty}>
-            <div class="text-center py-5">
-              <i class="fa-solid fa-user-group fa-3x text-muted mb-3"></i>
+            <div class="d-flex flex-column align-items-center justify-content-center py-5 text-center">
+              <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mb-3" style="width: 64px; height: 64px; float: none !important; margin: 0 auto !important;">
+                <i class="fa-solid fa-user-group fa-2x text-muted" style="float: none !important; margin: 0 !important;"></i>
+              </div>
               <h6 class="text-muted">No referrals found</h6>
               <p class="text-muted small mb-3">
                 Submit a referral to get started.
@@ -291,7 +293,6 @@
                   >
                   <select
                     class="form-select form-select-sm"
-                    value={editRecord.For_Designation__c}
                     data-field="For_Designation__c"
                     onchange={handleFieldChange}
                   >
@@ -307,7 +308,6 @@
                     <label class="form-label small fw-semibold">Status</label>
                     <select
                       class="form-select form-select-sm"
-                      value={editRecord.Status__c}
                       data-field="Status__c"
                       onchange={handleFieldChange}
                     >
@@ -325,7 +325,6 @@
                   >
                   <select
                     class="form-select form-select-sm"
-                    value={editRecord.Job_Applicant__c}
                     data-field="Job_Applicant__c"
                     onchange={handleFieldChange}
                   >
@@ -357,7 +356,6 @@
                     >
                     <select
                       class="form-select form-select-sm"
-                      value={editRecord.Referral_Bonus_Payment_Status__c}
                       data-field="Referral_Bonus_Payment_Status__c"
                       onchange={handleFieldChange}
                     >
@@ -392,7 +390,6 @@
                   <textarea
                     class="form-control form-control-sm"
                     rows="4"
-                    value={editRecord.Additional_Information__c}
                     data-field="Additional_Information__c"
                     onchange={handleFieldChange}
                     placeholder="Any extra notes about the referral..."

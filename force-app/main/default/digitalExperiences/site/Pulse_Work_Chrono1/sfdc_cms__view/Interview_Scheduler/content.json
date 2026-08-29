@@ -1,0 +1,103 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Interview Scheduler",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"11184cca-6345-4e8a-8803-b5254d438f22\",\"columns\":[{\"UUID\":\"63f9326f-243e-49be-abcb-f699686b1974\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoMainLayout",
+              "id" : "1a3c6f4d-1d17-4f39-ba44-70c15d2ddcb4",
+              "type" : "component"
+            } ],
+            "id" : "63f9326f-243e-49be-abcb-f699686b1974",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "11184cca-6345-4e8a-8803-b5254d438f22",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"03ff1981-7bd5-46cb-99d0-1fb2660ccdc0\",\"columns\":[{\"UUID\":\"ef79b0c9-7e20-42e5-9ee7-04bb185a8e6a\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoInterviewScheduler",
+              "id" : "00973557-123e-43f2-91cb-d1ff20cd85f3",
+              "type" : "component"
+            } ],
+            "id" : "ef79b0c9-7e20-42e5-9ee7-04bb185a8e6a",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "03ff1981-7bd5-46cb-99d0-1fb2660ccdc0",
+          "type" : "component"
+        } ],
+        "id" : "f0ea03f3-48df-49a1-adef-38527a01e84a",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Interview Scheduler",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "e4717c5a-4bf1-436f-9490-732161bcaa21",
+          "type" : "component"
+        } ],
+        "id" : "ade030d8-ae62-40a0-ac86-355f48ab422c",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "f2b94e78-87e7-4bf9-884c-7401b40e9959",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-interview-scheduler"
+  },
+  "urlName" : "interview-scheduler"
+}

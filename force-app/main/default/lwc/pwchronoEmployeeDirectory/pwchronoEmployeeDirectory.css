@@ -1,8 +1,6 @@
 .employee-card {
   position: relative;
-  transition:
-    box-shadow 0.15s ease,
-    transform 0.15s ease;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 .employee-card:hover {

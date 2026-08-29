@@ -45,6 +45,9 @@ $RECYCLE.BIN/
 # Local VS Code MCP runtime config
 .vscode/mcp.json
 
+# Local archive for metadata retrieved from other orgs
+archive/
+
 # Python Salesforce Functions
 **/__pycache__/
 **/.venv/

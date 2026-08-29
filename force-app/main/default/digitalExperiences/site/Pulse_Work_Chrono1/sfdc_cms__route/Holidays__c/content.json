@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Holidays",
+  "contentBody" : {
+    "activeViewId" : "Holidays",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-holidays",
+    "urlPrefix" : "holidays"
+  },
+  "urlName" : "holidays"
+}

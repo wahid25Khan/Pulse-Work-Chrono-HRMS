@@ -1,0 +1,5 @@
+{
+  "apiName" : "Interview_Scheduler",
+  "type" : "sfdc_cms__view",
+  "path" : "views"
+}

@@ -4,6 +4,11 @@
  *              they have a valid, server-issued session token.
  */
 public without sharing class PWChrono_GuestSession {
+  @TestVisible
+  private static String testUserTypeOverride;
+  @TestVisible
+  private static Datetime testNowOverride;
+
   /**
    * @description Resolve the effective portal user Id for the current context.
    *              - Non-Guest: uses provided portalUserId if present, otherwise maps current Salesforce user.
@@ -14,12 +19,12 @@ public without sharing class PWChrono_GuestSession {
     String sessionToken
   ) {
     // Internal Salesforce users or authenticated Experience users.
-    if (UserInfo.getUserType() != 'Guest') {
+    if (currentUserType() != 'Guest') {
       if (String.isNotBlank(portalUserId)) {
         try {
           return (Id) portalUserId;
         } catch (Exception e) {
-          throw new AuraHandledException('Session invalid.');
+          throw handledException('Session invalid.');
         }
       }
       return PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
@@ -27,7 +32,7 @@ public without sharing class PWChrono_GuestSession {
 
     // Guest runtime MUST prove identity with a server-issued token.
     if (String.isBlank(portalUserId) || String.isBlank(sessionToken)) {
-      throw new AuraHandledException(
+      throw handledException(
         'Session invalid or expired. Please log in again.'
       );
     }
@@ -36,7 +41,7 @@ public without sharing class PWChrono_GuestSession {
     try {
       pid = (Id) portalUserId;
     } catch (Exception e) {
-      throw new AuraHandledException('Session invalid.');
+      throw handledException('Session invalid.');
     }
 
     List<Portal_Users__c> users = [
@@ -53,35 +58,35 @@ public without sharing class PWChrono_GuestSession {
     ];
 
     if (users.isEmpty()) {
-      throw new AuraHandledException('Session invalid.');
+      throw handledException('Session invalid.');
     }
 
     Portal_Users__c u = users[0];
     if (u.Is_Active__c != true) {
-      throw new AuraHandledException('Account is inactive.');
+      throw handledException('Account is inactive.');
     }
 
     if (
       u.Session_Locked_Until__c != null &&
-      u.Session_Locked_Until__c > System.now()
+      u.Session_Locked_Until__c > currentNow()
     ) {
-      throw new AuraHandledException(
+      throw handledException(
         'Too many invalid session attempts. Please try again later.'
       );
     }
 
     if (String.isBlank(u.Session_Token__c) || u.Session_Expires_At__c == null) {
-      throw new AuraHandledException('Session expired. Please log in again.');
+      throw handledException('Session expired. Please log in again.');
     }
 
-    if (u.Session_Expires_At__c <= System.now()) {
+    if (u.Session_Expires_At__c <= currentNow()) {
       clearSessionValidationState(u);
-      throw new AuraHandledException('Session expired. Please log in again.');
+      throw handledException('Session expired. Please log in again.');
     }
 
     if (u.Session_Token__c != sessionToken) {
       registerFailedSessionAttempt(u);
-      throw new AuraHandledException('Session invalid. Please log in again.');
+      throw handledException('Session invalid. Please log in again.');
     }
 
     clearSessionValidationState(u);
@@ -99,7 +104,7 @@ public without sharing class PWChrono_GuestSession {
     userRecord.Session_Failed_Attempts__c = attempts;
     if (attempts >= PWChrono_Constants.PORTAL_SESSION_MAX_FAILED_ATTEMPTS) {
       userRecord.Session_Failed_Attempts__c = 0;
-      userRecord.Session_Locked_Until__c = System.now()
+      userRecord.Session_Locked_Until__c = currentNow()
         .addMinutes(PWChrono_Constants.PORTAL_SESSION_LOCKOUT_MINUTES);
       userRecord.Session_Token__c = null;
       userRecord.Session_Expires_At__c = null;
@@ -119,5 +124,23 @@ public without sharing class PWChrono_GuestSession {
     userRecord.Session_Failed_Attempts__c = 0;
     userRecord.Session_Locked_Until__c = null;
     update userRecord;
+  }
+
+  private static AuraHandledException handledException(String message) {
+    AuraHandledException ex = new AuraHandledException(message);
+    ex.setMessage(message);
+    return ex;
+  }
+
+  private static String currentUserType() {
+    return Test.isRunningTest() && testUserTypeOverride != null
+      ? testUserTypeOverride
+      : UserInfo.getUserType();
+  }
+
+  private static Datetime currentNow() {
+    return Test.isRunningTest() && testNowOverride != null
+      ? testNowOverride
+      : System.now();
   }
 }

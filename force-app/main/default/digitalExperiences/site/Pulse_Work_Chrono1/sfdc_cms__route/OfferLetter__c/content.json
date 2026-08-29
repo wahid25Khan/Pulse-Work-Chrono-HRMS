@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Offer Letter",
+  "contentBody" : {
+    "activeViewId" : "Offer_Letter",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-offer-letter",
+    "urlPrefix" : "offer-letter"
+  },
+  "urlName" : "offer-letter"
+}

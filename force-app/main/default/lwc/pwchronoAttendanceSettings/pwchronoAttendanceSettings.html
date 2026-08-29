@@ -37,14 +37,10 @@
                 <tr key={shift.Id}>
                   <td class="fw-medium">{shift.Name}</td>
                   <td class="text-muted">
-                    <lightning-formatted-time
-                      value={shift.Start_Time__c}
-                    ></lightning-formatted-time>
+                    <lightning-formatted-time value={shift.Start_Time__c}></lightning-formatted-time>
                   </td>
                   <td class="text-muted">
-                    <lightning-formatted-time
-                      value={shift.End_Time__c}
-                    ></lightning-formatted-time>
+                    <lightning-formatted-time value={shift.End_Time__c}></lightning-formatted-time>
                   </td>
                   <td class="text-muted">{shift.Grace_Period_Minutes__c}</td>
                   <td class="text-end">
@@ -111,11 +107,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{modalTitle}</h5>
-            <button
-              type="button"
-              class="btn-close"
-              onclick={closeModal}
-            ></button>
+            <button type="button" class="btn-close" onclick={closeModal}></button>
           </div>
           <div class="modal-body">
             <div class="row g-3">
@@ -160,16 +152,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <lightning-button
-              label="Cancel"
-              variant="neutral"
-              onclick={closeModal}
-            ></lightning-button>
-            <lightning-button
-              label="Save"
-              variant="brand"
-              onclick={handleSaveShift}
-            ></lightning-button>
+            <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>
+            <lightning-button label="Save" variant="brand" onclick={handleSaveShift}></lightning-button>
           </div>
         </div>
       </div>

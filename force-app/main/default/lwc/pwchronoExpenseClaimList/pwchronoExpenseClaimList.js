@@ -8,25 +8,25 @@ export default class PwchronoExpenseClaimList extends LightningElement {
   static renderMode = "light";
 
   @track isLoading = true;
-  @track error = null;
+  @track error     = null;
   @track allClaims = [];
-  @track claims = [];
+  @track claims    = [];
   @track currentPage = 1;
 
   // Filters
   @track statusFilter = "";
-  @track monthFilter = "";
+  @track monthFilter  = "";
 
-  employeeId = getEmployeeId();
+  employeeId   = getEmployeeId();
   sessionToken = getSessionToken();
 
   statusOptions = [
     { label: "All Statuses", value: "" },
-    { label: "Draft", value: "Draft" },
-    { label: "Submitted", value: "Submitted" },
-    { label: "Approved", value: "Approved" },
-    { label: "Rejected", value: "Rejected" },
-    { label: "Cancelled", value: "Cancelled" }
+    { label: "Draft",        value: "Draft" },
+    { label: "Submitted",    value: "Submitted" },
+    { label: "Approved",     value: "Approved" },
+    { label: "Rejected",     value: "Rejected" },
+    { label: "Cancelled",    value: "Cancelled" }
   ];
 
   connectedCallback() {
@@ -37,7 +37,7 @@ export default class PwchronoExpenseClaimList extends LightningElement {
 
   loadClaims() {
     this.isLoading = true;
-    this.error = null;
+    this.error     = null;
 
     const { startDate, endDate } = this.getMonthRange();
 
@@ -45,7 +45,7 @@ export default class PwchronoExpenseClaimList extends LightningElement {
       statusFilter: this.statusFilter || null,
       startDate,
       endDate,
-      employeeId: this.employeeId,
+      employeeId:   this.employeeId,
       sessionToken: this.sessionToken
     })
       .then((data) => {
@@ -54,8 +54,7 @@ export default class PwchronoExpenseClaimList extends LightningElement {
         this.applyPage();
       })
       .catch((err) => {
-        this.error =
-          err?.body?.message || err?.message || "Error loading claims.";
+        this.error = err?.body?.message || err?.message || "Error loading claims.";
       })
       .finally(() => {
         this.isLoading = false;
@@ -69,33 +68,15 @@ export default class PwchronoExpenseClaimList extends LightningElement {
 
   // ── Computed ──────────────────────────────────────────────────────────────
 
-  get totalRecords() {
-    return this.allClaims.length;
-  }
-  get totalPages() {
-    return Math.ceil(this.totalRecords / PAGE_SIZE) || 1;
-  }
-  get startRecord() {
-    return this.totalRecords === 0 ? 0 : (this.currentPage - 1) * PAGE_SIZE + 1;
-  }
-  get endRecord() {
-    return Math.min(this.currentPage * PAGE_SIZE, this.totalRecords);
-  }
-  get paginationInfo() {
-    return `${this.startRecord}–${this.endRecord} of ${this.totalRecords}`;
-  }
-  get isPrevDisabled() {
-    return this.currentPage <= 1;
-  }
-  get isNextDisabled() {
-    return this.currentPage >= this.totalPages;
-  }
-  get hasClaims() {
-    return this.claims && this.claims.length > 0;
-  }
-  get hasNoClaims() {
-    return !this.isLoading && this.claims.length === 0;
-  }
+  get totalRecords() { return this.allClaims.length; }
+  get totalPages()   { return Math.ceil(this.totalRecords / PAGE_SIZE) || 1; }
+  get startRecord()  { return this.totalRecords === 0 ? 0 : (this.currentPage - 1) * PAGE_SIZE + 1; }
+  get endRecord()    { return Math.min(this.currentPage * PAGE_SIZE, this.totalRecords); }
+  get paginationInfo() { return `${this.startRecord}–${this.endRecord} of ${this.totalRecords}`; }
+  get isPrevDisabled() { return this.currentPage <= 1; }
+  get isNextDisabled() { return this.currentPage >= this.totalPages; }
+  get hasClaims()      { return this.claims && this.claims.length > 0; }
+  get hasNoClaims()    { return !this.isLoading && this.claims.length === 0; }
 
   // ── Filter handlers ───────────────────────────────────────────────────────
 
@@ -110,25 +91,17 @@ export default class PwchronoExpenseClaimList extends LightningElement {
   }
 
   handlePrevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.applyPage();
-    }
+    if (this.currentPage > 1) { this.currentPage--; this.applyPage(); }
   }
 
   handleNextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.applyPage();
-    }
+    if (this.currentPage < this.totalPages) { this.currentPage++; this.applyPage(); }
   }
 
   // ── User actions ──────────────────────────────────────────────────────────
 
   handleNewClaim() {
-    this.dispatchEvent(
-      new CustomEvent("newclaim", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new CustomEvent("newclaim", { bubbles: true, composed: true }));
   }
 
   handleRowClick(event) {
@@ -145,15 +118,13 @@ export default class PwchronoExpenseClaimList extends LightningElement {
   // ── Utilities ─────────────────────────────────────────────────────────────
 
   getMonthRange() {
-    if (!this.monthFilter) {
-      return { startDate: null, endDate: null };
-    }
+    if (!this.monthFilter) { return { startDate: null, endDate: null }; }
     const [year, month] = this.monthFilter.split("-").map(Number);
     const first = new Date(year, month - 1, 1);
-    const last = new Date(year, month, 0);
+    const last  = new Date(year, month, 0);
     return {
       startDate: this.fmt(first),
-      endDate: this.fmt(last)
+      endDate:   this.fmt(last)
     };
   }
 

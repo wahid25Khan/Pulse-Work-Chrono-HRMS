@@ -1,0 +1,40 @@
+{
+  "type" : "sfdc_cms__trustedSites",
+  "title" : "trustedSites",
+  "contentBody" : {
+    "trustedSites" : [ {
+      "isActive" : true,
+      "source" : "https://thelodestonegroup6-dev-ed--c.develop.vf.force.com/resource/1767071053000/tlg_santa",
+      "sourceName" : "Login Icom"
+    }, {
+      "isActive" : true,
+      "source" : "https://thelodestonegroup6-dev-ed--c.develop.vf.force.com/resource/1766466120000/Santa_Inspector",
+      "sourceName" : "Image"
+    }, {
+      "isActive" : true,
+      "source" : "https://thelodestonegroup6-dev-ed.develop.my.salesforce.com",
+      "sourceName" : "PWChrono"
+    }, {
+      "isActive" : true,
+      "source" : "https://cdn.jsdelivr.net",
+      "sourceName" : "JSDelivr"
+    }, {
+      "isActive" : true,
+      "source" : "https://cdnjs.cloudflare.com",
+      "sourceName" : "Cloudflare"
+    }, {
+      "isActive" : true,
+      "source" : "https://fonts.googleapis.com",
+      "sourceName" : "GoogleFonts"
+    }, {
+      "isActive" : true,
+      "source" : "https://cdn.quilljs.com",
+      "sourceName" : "QuillJS"
+    }, {
+      "isActive" : true,
+      "source" : "https://thelodestonegroup6-dev-ed.develop.my.site.com",
+      "sourceName" : "PulseWChrono"
+    } ]
+  },
+  "urlName" : "trustedsites"
+}

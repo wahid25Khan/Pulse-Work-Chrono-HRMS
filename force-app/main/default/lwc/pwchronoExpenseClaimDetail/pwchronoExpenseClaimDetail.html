@@ -18,13 +18,10 @@
   <template if:true={hasData}>
     <div class="page-wrapper">
       <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
+
         <!-- Back Button -->
         <div class="mb-3">
-          <button
-            type="button"
-            class="btn btn-sm btn-white"
-            onclick={handleBack}
-          >
+          <button type="button" class="btn btn-sm btn-white" onclick={handleBack}>
             <i class="fa-solid fa-arrow-left me-1"></i>Back to Claims
           </button>
         </div>
@@ -40,33 +37,34 @@
 
         <!-- Status alert banners -->
         <template if:true={rejectionReason}>
-          <div
-            class="alert alert-danger mt-3 mb-0 d-flex align-items-start gap-2"
-          >
+          <div class="alert alert-danger mt-3 mb-0 d-flex align-items-start gap-2">
             <i class="fa-solid fa-circle-xmark mt-1 flex-shrink-0"></i>
-            <div><strong>Rejected:</strong> {rejectionReason}</div>
+            <div>
+              <strong>Rejected:</strong> {rejectionReason}
+            </div>
           </div>
         </template>
         <template if:true={cancelledReason}>
-          <div
-            class="alert alert-secondary mt-3 mb-0 d-flex align-items-start gap-2"
-          >
+          <div class="alert alert-secondary mt-3 mb-0 d-flex align-items-start gap-2">
             <i class="fa-solid fa-ban mt-1 flex-shrink-0"></i>
-            <div><strong>Cancelled:</strong> {cancelledReason}</div>
+            <div>
+              <strong>Cancelled:</strong> {cancelledReason}
+            </div>
           </div>
         </template>
         <template if:true={approverComments}>
-          <div
-            class="alert alert-info mt-3 mb-0 d-flex align-items-start gap-2"
-          >
+          <div class="alert alert-info mt-3 mb-0 d-flex align-items-start gap-2">
             <i class="fa-solid fa-comment mt-1 flex-shrink-0"></i>
-            <div><strong>Approver Notes:</strong> {approverComments}</div>
+            <div>
+              <strong>Approver Notes:</strong> {approverComments}
+            </div>
           </div>
         </template>
 
         <div class="row g-3 mt-1">
           <!-- Left Column: Details + Line Items + Files -->
           <div class="col-12 col-xl-8">
+
             <!-- Claim Details Card -->
             <div class="card">
               <div class="card-header">
@@ -75,65 +73,47 @@
               <div class="card-body">
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <span class="form-label text-muted fs-12 mb-1"
-                      >Claim Date</span
-                    >
+                    <span class="form-label text-muted fs-12 mb-1">Claim Date</span>
                     <p class="fw-medium mb-0">{claimDate}</p>
                   </div>
                   <div class="col-md-6">
                     <span class="form-label text-muted fs-12 mb-1">Status</span>
                     <div>
-                      <c-pwchrono-request-status-badge
-                        status={claimStatus}
-                      ></c-pwchrono-request-status-badge>
+                      <c-pwchrono-request-status-badge status={claimStatus}></c-pwchrono-request-status-badge>
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <span class="form-label text-muted fs-12 mb-1"
-                      >Submitted By</span
-                    >
+                    <span class="form-label text-muted fs-12 mb-1">Submitted By</span>
                     <p class="fw-medium mb-0">{employeeName}</p>
                   </div>
                   <div class="col-md-6">
-                    <span class="form-label text-muted fs-12 mb-1"
-                      >Approver</span
-                    >
+                    <span class="form-label text-muted fs-12 mb-1">Approver</span>
                     <p class="fw-medium mb-0">{approverName}</p>
                   </div>
                   <template if:true={appliedDate}>
                     <div class="col-md-6">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >Applied Date</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">Applied Date</span>
                       <p class="fw-medium mb-0">{appliedDate}</p>
                     </div>
                   </template>
                   <template if:true={approvalDate}>
                     <div class="col-md-6">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >Approval Date</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">Approval Date</span>
                       <p class="fw-medium mb-0">{approvalDate}</p>
                     </div>
                   </template>
                   <div class="col-12">
-                    <span class="form-label text-muted fs-12 mb-1"
-                      >Description</span
-                    >
+                    <span class="form-label text-muted fs-12 mb-1">Description</span>
                     <p class="mb-0">{description}</p>
                   </div>
                   <template if:true={businessPurpose}>
                     <div class="col-12">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >Business Purpose</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">Business Purpose</span>
                       <p class="mb-0">{businessPurpose}</p>
                     </div>
                   </template>
                   <div class="col-md-6">
-                    <span class="form-label text-muted fs-12 mb-1"
-                      >Total Amount</span
-                    >
+                    <span class="form-label text-muted fs-12 mb-1">Total Amount</span>
                     <p class="fw-bold mb-0 text-primary">
                       <lightning-formatted-number
                         value={totalAmount}
@@ -169,10 +149,12 @@
                 onfilesselected={handleFilesSelected}
               ></c-pwchrono-file-upload-panel>
             </div>
+
           </div>
 
           <!-- Right Column: Actions + Comments -->
           <div class="col-12 col-xl-4">
+
             <!-- Shared Action Bar (Approve / Reject / Cancel) -->
             <c-pwchrono-request-action-bar
               status={claimStatus}
@@ -198,8 +180,7 @@
                       class="btn btn-primary btn-sm w-100"
                       onclick={handleResubmit}
                     >
-                      <i class="fa-solid fa-paper-plane me-1"></i>Submit for
-                      Approval
+                      <i class="fa-solid fa-paper-plane me-1"></i>Submit for Approval
                     </button>
                   </template>
                 </div>
@@ -214,8 +195,10 @@
                 onnewcomment={handleNewComment}
               ></c-pwchrono-request-comments>
             </div>
+
           </div>
         </div>
+
       </div>
     </div>
   </template>

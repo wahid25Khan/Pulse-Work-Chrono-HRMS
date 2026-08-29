@@ -6,6 +6,7 @@ import updateJobRequisitionStatus from "@salesforce/apex/PWChrono_JobRequisition
 import getActiveDesignations from "@salesforce/apex/PWChrono_JobRequisitionController.getActiveDesignations";
 import getActiveDepartments from "@salesforce/apex/PWChrono_JobRequisitionController.getActiveDepartments";
 import getAvailableStaffingPlans from "@salesforce/apex/PWChrono_JobRequisitionController.getAvailableStaffingPlans";
+import LightningConfirm from "lightning/confirm";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track } from "lwc";
 import { getSession, getSessionToken } from "c/pwchronoSession";
@@ -108,14 +109,16 @@ export default class PwchronoJobRequisition extends LightningElement {
   }
 
   enrichRecord(r) {
-    const fmt = (d) =>
-      d
-        ? new Date(d).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric"
-          })
-        : "—";
+    const fmt = (d) => {
+      if (d) {
+        return new Date(d).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        });
+      }
+      return "—";
+    };
     return {
       ...r,
       designationName: r.Designation__r?.Name ?? "—",
@@ -298,6 +301,12 @@ export default class PwchronoJobRequisition extends LightningElement {
         "statusBadgeClass",
         "cannotApprove"
       ].forEach((k) => delete payload[k]);
+      if (!payload.Id) delete payload.Id;
+      if (!payload.Department__c) payload.Department__c = null;
+      if (!payload.Designation__c) payload.Designation__c = null;
+      if (!payload.Staffing_Plan__c) payload.Staffing_Plan__c = null;
+      if (!payload.Expected_By_Date__c) payload.Expected_By_Date__c = null;
+      if (!payload.Posting_Date__c) payload.Posting_Date__c = null;
 
       await saveJobRequisition({
         requisitionJson: JSON.stringify(payload),
@@ -338,9 +347,12 @@ export default class PwchronoJobRequisition extends LightningElement {
 
   async handleDelete(event) {
     const id = event.currentTarget.dataset.id;
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    if (!confirm("Are you sure you want to delete this Job Requisition?"))
-      return;
+    const confirmed = await LightningConfirm.open({
+      message: "Are you sure you want to delete this Job Requisition?",
+      label: "Confirm Delete",
+      theme: "warning"
+    });
+    if (!confirmed) return;
     try {
       await deleteJobRequisition({
         requisitionId: id,

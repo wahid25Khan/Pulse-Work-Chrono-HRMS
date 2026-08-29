@@ -75,7 +75,7 @@ public inherited sharing class PWChrono_AuthController {
       }
 
       // Send OTP via email
-      Boolean emailSent = sendOTPEmail(email, otp, user.Contact__c, user.Id);
+      Boolean emailSent = sendOTPEmail(email, otp);
 
       if (emailSent) {
         return 'Success';
@@ -124,74 +124,36 @@ public inherited sharing class PWChrono_AuthController {
     }
   }
 
-  private static Boolean sendOTPEmail(
-    String email,
-    String otp,
-    Id contactId,
-    Id portalUserId
-  ) {
+  private static Boolean sendOTPEmail(String email, String otp) {
     Boolean emailSent = false;
     try {
       Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
       mail.setToAddresses(new List<String>{ email });
-
-      // Try the Lightning Email Template first.
-      // Guest users cannot query EmailTemplate — getEmailTemplateId returns null safely
-      // in that case and we fall through to the inline HTML fallback.
-      Id templateId = PWChrono_EmailHandler.getEmailTemplateId(
-        'PWChrono_OTP_Login'
+      mail.setSubject('Your PWChrono Login Code');
+      mail.setPlainTextBody(
+        'Your one-time password (OTP) for PWChrono Portal login is: ' +
+          otp +
+          '\n\n' +
+          'This code will expire in ' +
+          PWChrono_Constants.OTP_EXPIRATION_MINUTES +
+          ' minutes.\n\n' +
+          'If you did not request this code, please ignore this email.'
       );
-
-      if (templateId != null) {
-        mail.setTemplateId(templateId);
-        // setWhatId resolves {{{RelatedTo.One_Time_Password__c}}} from Portal_Users__c.
-        if (String.isNotBlank(portalUserId)) {
-          mail.setWhatId(portalUserId);
-        }
-        // If the Portal User has a linked Contact, associate the email with it so
-        // it appears in the Contact's Activity History. setSaveAsActivity(true)
-        // requires a valid targetObjectId — omit when no Contact is linked.
-        if (String.isNotBlank(contactId)) {
-          mail.setTargetObjectId(contactId);
-          mail.setSaveAsActivity(true);
-        } else {
-          mail.setSaveAsActivity(false);
-        }
-      } else {
-        // Fallback: inline HTML (used when template is unavailable, e.g. Guest context).
-        if (String.isNotBlank(contactId)) {
-          mail.setTargetObjectId(contactId);
-          mail.setSaveAsActivity(true);
-        } else {
-          mail.setSaveAsActivity(false);
-        }
-        mail.setSubject('Your PWChrono Login Code');
-        mail.setPlainTextBody(
-          'Your one-time password (OTP) for PWChrono Portal login is: ' +
-            otp +
-            '\n\nThis code will expire in ' +
-            PWChrono_Constants.OTP_EXPIRATION_MINUTES +
-            ' minutes.\n\nIf you did not request this code, please ignore this email.'
-        );
-        mail.setHtmlBody(
-          '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">' +
-            '<h2 style="color:#4e73df;">PWChrono Portal</h2>' +
-            '<p>Your one-time password (OTP) for login is:</p>' +
-            '<div style="background:#f8f9fc;padding:20px;text-align:center;border-radius:8px;margin:20px 0;">' +
-            '<span style="font-size:32px;font-weight:bold;letter-spacing:8px;color:#4e73df;">' +
-            otp +
-            '</span>' +
-            '</div>' +
-            '<p style="color:#666;">This code will expire in ' +
-            PWChrono_Constants.OTP_EXPIRATION_MINUTES +
-            ' minutes.</p>' +
-            '<p style="color:#999;font-size:12px;">If you did not request this code, please ignore this email.</p>' +
-            '</div>'
-        );
-      }
-
-      // Use the 'Pulse Work Chrono' org-wide email address as the verified sender.
-      PWChrono_EmailHandler.applyOrgWideEmailAddress(mail);
+      mail.setHtmlBody(
+        '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
+          '<h2 style="color: #4e73df;">PWChrono Portal</h2>' +
+          '<p>Your one-time password (OTP) for login is:</p>' +
+          '<div style="background: #f8f9fc; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">' +
+          '<span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #4e73df;">' +
+          otp +
+          '</span>' +
+          '</div>' +
+          '<p style="color: #666;">This code will expire in ' +
+          PWChrono_Constants.OTP_EXPIRATION_MINUTES +
+          ' minutes.</p>' +
+          '<p style="color: #999; font-size: 12px;">If you did not request this code, please ignore this email.</p>' +
+          '</div>'
+      );
 
       Messaging.SendEmailResult[] results = Messaging.sendEmail(
         new List<Messaging.SingleEmailMessage>{ mail }
@@ -199,14 +161,11 @@ public inherited sharing class PWChrono_AuthController {
 
       if (results[0].isSuccess()) {
         emailSent = true;
-        PWChrono_Logger.info('OTP email sent successfully to: ' + email);
+        PWChrono_Logger.info('OTP email sent successfully.');
       } else {
         for (Messaging.SendEmailError err : results[0].getErrors()) {
           PWChrono_Logger.warn(
-            'OTP email delivery failed [' +
-              err.getStatusCode() +
-              ']: ' +
-              err.getMessage()
+            'OTP email error: ' + err.getStatusCode() + ' - ' + err.getMessage()
           );
         }
       }
@@ -415,7 +374,6 @@ public inherited sharing class PWChrono_AuthController {
           Role__c,
           Portal_User_Profile__c,
           Portal_User_Profile__r.Name,
-          Contact__c,
           One_Time_Password__c,
           OTP_Generated_Time__c,
           Session_Token__c,

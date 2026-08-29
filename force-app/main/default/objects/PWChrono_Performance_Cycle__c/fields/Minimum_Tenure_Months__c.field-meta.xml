@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Minimum_Tenure_Months__c</fullName>
     <defaultValue>0</defaultValue>
     <externalId>false</externalId>
-    <inlineHelpText
-  >Minimum number of months an employee must be active to be eligible for this review cycle.</inlineHelpText>
+    <inlineHelpText>Minimum number of months an employee must be active to be eligible for this review cycle.</inlineHelpText>
     <label>Minimum Tenure (Months)</label>
     <precision>2</precision>
     <required>false</required>

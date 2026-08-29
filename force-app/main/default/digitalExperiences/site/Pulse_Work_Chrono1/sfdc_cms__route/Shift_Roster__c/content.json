@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Shift Roster",
+  "contentBody" : {
+    "activeViewId" : "Shift_Roster",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-shift-roster",
+    "urlPrefix" : "shift-roster"
+  },
+  "urlName" : "shift-roster"
+}

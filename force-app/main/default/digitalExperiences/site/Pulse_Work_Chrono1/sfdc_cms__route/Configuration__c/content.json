@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Configuration",
+  "contentBody" : {
+    "activeViewId" : "Configuration",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-configuration",
+    "urlPrefix" : "configuration"
+  },
+  "urlName" : "configuration"
+}

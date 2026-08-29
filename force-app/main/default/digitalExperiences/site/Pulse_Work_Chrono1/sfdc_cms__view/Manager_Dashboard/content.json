@@ -1,0 +1,78 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Manager Dashboard",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : {
+              "margin" : {
+                "bottom" : "",
+                "left" : "4.5%",
+                "right" : "",
+                "top" : ""
+              }
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"62a60304-0280-4a7e-95d6-c692e4b27b64\",\"columns\":[{\"UUID\":\"4739cc99-2ffc-4642-99f6-20d58e0f45a7\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoManagerDashboardPage",
+              "id" : "1a8e8685-47cc-4e0a-825f-0763175181bb",
+              "type" : "component"
+            } ],
+            "id" : "4739cc99-2ffc-4642-99f6-20d58e0f45a7",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "62a60304-0280-4a7e-95d6-c692e4b27b64",
+          "type" : "component"
+        } ],
+        "id" : "ae9b9d29-80a4-442e-90f7-a7d884520ef0",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Manager Dashboard",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "2f9e2f80-e621-40dc-8a57-5ccb3100d14d",
+          "type" : "component"
+        } ],
+        "id" : "fbc79bb4-9d47-4daa-a55d-f4a55cc2813b",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "83c46d0c-818f-4c58-bd3a-905c7d92598c",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-manager-dashboard"
+  },
+  "urlName" : "manager-dashboard"
+}

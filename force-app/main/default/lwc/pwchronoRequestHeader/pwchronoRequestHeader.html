@@ -5,9 +5,7 @@
         <h4 class="mb-0 fw-semibold">{recordName}</h4>
         <span class="text-muted fs-13">{recordType}</span>
       </div>
-      <c-pwchrono-request-status-badge
-        status={status}
-      ></c-pwchrono-request-status-badge>
+      <c-pwchrono-request-status-badge status={status}></c-pwchrono-request-status-badge>
     </div>
     <div class="text-end">
       <template if:true={hasMetadata}>

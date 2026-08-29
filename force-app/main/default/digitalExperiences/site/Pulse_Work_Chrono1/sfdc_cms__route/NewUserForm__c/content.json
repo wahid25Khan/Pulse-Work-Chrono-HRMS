@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "New User Form",
+  "contentBody" : {
+    "activeViewId" : "New_User_Form",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-new-user-form",
+    "urlPrefix" : "new-user-form"
+  },
+  "urlName" : "new-user-form"
+}

@@ -98,22 +98,43 @@ export default class OvertimeManagement extends LightningElement {
   handleSave(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
-    console.log("Saving Data:", Object.fromEntries(formData));
+    this.dispatchEvent(
+      new CustomEvent("saveovertime", {
+        detail: Object.fromEntries(formData),
+        bubbles: true,
+        composed: true
+      })
+    );
     this.closeModal();
-    // Here you would dispatch an event to the parent to save in Salesforce
   }
 
   // Buttons actions
   exportPDF() {
-    console.log("Exporting PDF...");
+    this.dispatchEvent(
+      new CustomEvent("exportpdf", { bubbles: true, composed: true })
+    );
   }
   exportExcel() {
-    console.log("Exporting Excel...");
+    this.dispatchEvent(
+      new CustomEvent("exportexcel", { bubbles: true, composed: true })
+    );
   }
   handleEdit(event) {
-    console.log("Edit ID:", event.currentTarget.dataset.id);
+    this.dispatchEvent(
+      new CustomEvent("editovertime", {
+        detail: { id: event.currentTarget.dataset.id },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
   handleDelete(event) {
-    console.log("Delete ID:", event.currentTarget.dataset.id);
+    this.dispatchEvent(
+      new CustomEvent("deleteovertime", {
+        detail: { id: event.currentTarget.dataset.id },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 }

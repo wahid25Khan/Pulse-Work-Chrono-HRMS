@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>Pulse Work Chrono</label>
+    <navType>Standard</navType>
+    <tabs>Portal_Users__c</tabs>
+    <tabs>Portal_User_Profile__c</tabs>
+    <tabs>PWChrono_Department__c</tabs>
+    <tabs>PWChrono_Designation__c</tabs>
+    <tabs>PWChrono_Leave_Type__c</tabs>
+    <tabs>PWChrono_Leave_Period__c</tabs>
+    <tabs>PWChrono_Leave_Policy__c</tabs>
+    <tabs>PWChrono_Holiday_List__c</tabs>
+    <tabs>PWChrono_Holiday__c</tabs>
+    <tabs>PWChrono_Job_Opening__c</tabs>
+    <tabs>PWChrono_Performance_Cycle__c</tabs>
+    <tabs>PWChrono_Salary_Component__c</tabs>
+    <tabs>PWChrono_Salary_Structure__c</tabs>
+    <tabs>PWChrono_Shift_Type__c</tabs>
+    <tabs>PWChrono_Training_Program__c</tabs>
+    <tabs>PWChrono_Project__c</tabs>
+    <tabs>Benefit_Plan__c</tabs>
+    <tabs>PWChrono_Company_Policy__c</tabs>
+    <tabs>TLG_Team__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Pulse_Work_Chrono_UtilityBar</utilityBar>
+</CustomApplication>

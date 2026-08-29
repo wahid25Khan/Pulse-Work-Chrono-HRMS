@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Enable_Leave_Encashment__c</fullName>
     <defaultValue>true</defaultValue>
-    <description
-  >Allow employees to encash unused leave balances. If disabled, encashment functionality will be hidden.</description>
-    <inlineHelpText
-  >Check to enable leave encashment feature for employees to convert unused leaves to cash.</inlineHelpText>
+    <description>Allow employees to encash unused leave balances. If disabled, encashment functionality will be hidden.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Check to enable leave encashment feature for employees to convert unused leaves to cash.</inlineHelpText>
     <label>Enable Leave Encashment</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

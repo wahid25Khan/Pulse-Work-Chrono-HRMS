@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
         <name>Notify_HR_New_Applicant</name>
@@ -17,15 +17,13 @@
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue
-        >New Job Applicant - {!$Record.Job_Opening__r.Name}</stringValue>
+                <stringValue>New Job Applicant - {!$Record.Job_Opening__r.Name}</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>emailBody</name>
             <value>
-                <stringValue
-        >A new applicant {!$Record.Name} has applied for {!$Record.Job_Opening__r.Name}. Email: {!$Record.Email__c}, Phone: {!$Record.Phone__c}</stringValue>
+                <stringValue>A new applicant {!$Record.Name} has applied for {!$Record.Job_Opening__r.Name}. Email: {!$Record.Email__c}, Phone: {!$Record.Phone__c}</stringValue>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
@@ -33,8 +31,7 @@
     <apiVersion>65.0</apiVersion>
     <description>Alert HR team when new job applicant is created</description>
     <environments>Default</environments>
-    <interviewLabel
-  >New Applicant Alert {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>New Applicant Alert {!$Flow.CurrentDateTime}</interviewLabel>
     <label>New Applicant Alert to HR</label>
     <processMetadataValues>
         <name>BuilderType</name>

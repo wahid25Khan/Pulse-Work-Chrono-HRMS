@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Status__c</fullName>
+    <externalId>false</externalId>
     <label>Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
         <restricted>true</restricted>
@@ -9,20 +12,19 @@
             <sorted>false</sorted>
             <value>
                 <fullName>Pending</fullName>
-                <label>Pending</label>
                 <default>true</default>
+                <label>Pending</label>
             </value>
             <value>
                 <fullName>Recovered</fullName>
-                <label>Recovered</label>
                 <default>false</default>
+                <label>Recovered</label>
             </value>
             <value>
                 <fullName>Waived</fullName>
-                <label>Waived</label>
                 <default>false</default>
+                <label>Waived</label>
             </value>
         </valueSetDefinition>
     </valueSet>
-    <required>false</required>
 </CustomField>

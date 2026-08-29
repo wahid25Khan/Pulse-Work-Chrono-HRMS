@@ -3,7 +3,14 @@
     "**/node_modules": true,
     "**/bower_components": true,
     "**/.sf": true,
-    "**/.sfdx": true
+    "**/.sfdx": true,
+    "**/archive": true
+  },
+  "files.exclude": {
+    "**/archive": true
+  },
+  "files.watcherExclude": {
+    "**/archive/**": true
   },
   "xml.validation.enabled": false,
   "xml.preferences.showSchemaDocumentationType": "none",

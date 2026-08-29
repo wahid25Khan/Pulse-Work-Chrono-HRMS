@@ -61,10 +61,7 @@ export default class PwchronoCareerPortal extends LightningElement {
   _loadDepartments() {
     getActiveDepartments()
       .then((depts) => {
-        this.departmentOptions = depts.map((d) => ({
-          label: d.Name,
-          value: d.Id
-        }));
+        this.departmentOptions = depts.map((d) => ({ label: d.Name, value: d.Id }));
       })
       .catch(() => {});
   }
@@ -103,8 +100,7 @@ export default class PwchronoCareerPortal extends LightningElement {
       departmentName: r.Department__r?.Name ?? "—",
       designationName: r.Designation__r?.Name ?? "—",
       formattedClosingDate: closing,
-      descriptionPreview:
-        desc.length > 120 ? desc.substring(0, 120) + "…" : desc,
+      descriptionPreview: desc.length > 120 ? desc.substring(0, 120) + "…" : desc,
       employmentTypeBadge:
         EMPLOYMENT_TYPE_BADGE[r.Employment_Type__c] ||
         "badge bg-secondary-subtle text-secondary me-2",
@@ -210,8 +206,7 @@ export default class PwchronoCareerPortal extends LightningElement {
       })
       .catch((err) => {
         this.applyError =
-          err?.body?.message ||
-          "An error occurred while submitting your application.";
+          err?.body?.message || "An error occurred while submitting your application.";
       })
       .finally(() => {
         this.isSubmitting = false;

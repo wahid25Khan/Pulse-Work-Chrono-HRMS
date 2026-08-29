@@ -2,7 +2,6 @@ import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUse
 import getCurrentUserContext from "@salesforce/apex/PWChrono_AuthController.getCurrentUserContext";
 import { navigateTo } from "c/pwchronoRouter";
 import {
-  SESSION_CHANGED_EVENT,
   clearSession,
   getEmployeeId,
   getSession,
@@ -15,6 +14,9 @@ import { LightningElement, track } from "lwc";
 export default class PwchronoMainLayout extends NavigationMixin(
   LightningElement
 ) {
+  uiAssetsLoadedKey = "__pwchronoUiAssetsLoaded";
+  @track isUiReady = false;
+  @track isAuthChecked = false;
   @track isLoggedIn = false;
   @track isExperienceBuilder = false;
   @track user;
@@ -27,6 +29,15 @@ export default class PwchronoMainLayout extends NavigationMixin(
 
   connectedCallback() {
     this.sessionToken = getSessionToken();
+    this.isUiReady = Boolean(globalThis[this.uiAssetsLoadedKey]);
+
+    // Safety fallback: if asset loading takes too long (>2.5s), display the page
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    setTimeout(() => {
+      this.isUiReady = true;
+      this.isAuthChecked = true;
+    }, 2500);
+
     // If we're embedded inside Salesforce Lightning Experience (tabs/app pages),
     // don't render the portal chrome (header/sidebar) because Salesforce already provides navigation.
     const path = globalThis.location?.pathname || "";
@@ -45,38 +56,41 @@ export default class PwchronoMainLayout extends NavigationMixin(
     this.isLightningExperience = isLightning && !isLightningSetup;
 
     this.checkLoginStatus();
-
-    // React to setSession() calls that happen in the same JS context (SPA navigation)
-    // so isLoggedIn updates without requiring a full page reload.
-    this._sessionChangedHandler = () => {
-      const session = getSession();
-      if (session.isLoggedIn && !this.isLoggedIn) {
-        this.sessionToken = session.sessionToken;
-        this.setSessionState(session.user, session.permissions);
-        this.loadFeatureAccess(getEmployeeId());
-      }
-    };
-    try {
-      (globalThis.window ?? globalThis).addEventListener(
-        SESSION_CHANGED_EVENT,
-        this._sessionChangedHandler
-      );
-    } catch {
-      // no-op
-    }
-
-    // Styling is expected to be loaded globally by the Experience site (Head Markup / Theme).
   }
 
-  disconnectedCallback() {
-    try {
-      (globalThis.window ?? globalThis).removeEventListener(
-        SESSION_CHANGED_EVENT,
-        this._sessionChangedHandler
-      );
-    } catch {
-      // no-op
+  handleAssetsReady() {
+    this.isUiReady = true;
+  }
+
+  get isPageReady() {
+    if (this.isExperienceBuilder || this.isLightningExperience) {
+      return true;
     }
+    return this.isUiReady && this.isAuthChecked;
+  }
+
+  get globalLoaderStyle() {
+    if (this.isPageReady) {
+      return "display: none !important;";
+    }
+    return [
+      "position: fixed",
+      "inset: 0",
+      "z-index: 9999999",
+      "display: flex",
+      "flex-direction: column",
+      "align-items: center",
+      "justify-content: center",
+      "background-color: #ffffff",
+      "transition: opacity 0.3s ease-out"
+    ].join("; ");
+  }
+
+  get mainWrapperStyle() {
+    if (this.isPageReady) {
+      return "opacity: 1; transition: opacity 0.25s ease-in-out;";
+    }
+    return "visibility: hidden; opacity: 0; pointer-events: none;";
   }
 
   getCommunityBasePath() {
@@ -174,13 +188,17 @@ export default class PwchronoMainLayout extends NavigationMixin(
   }
 
   async checkLoginStatus() {
-    const session = getSession();
+    try {
+      const session = getSession();
 
-    if (session.isLoggedIn) {
-      this.setSessionState(session.user, session.permissions);
-      await this.loadFeatureAccess(getEmployeeId());
-    } else {
-      await this.attemptAutoBootstrap();
+      if (session.isLoggedIn) {
+        this.setSessionState(session.user, session.permissions);
+        await this.loadFeatureAccess(getEmployeeId());
+      } else {
+        await this.attemptAutoBootstrap();
+      }
+    } finally {
+      this.isAuthChecked = true;
     }
   }
 

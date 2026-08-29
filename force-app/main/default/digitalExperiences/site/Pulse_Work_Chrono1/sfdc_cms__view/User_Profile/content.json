@@ -1,0 +1,78 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "User Profile",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : {
+              "margin" : {
+                "bottom" : "",
+                "left" : "2px",
+                "right" : "",
+                "top" : ""
+              }
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"7f0764e2-73c5-4c6e-b7dd-3e615ed1f2e8\",\"columns\":[{\"UUID\":\"a90f7af0-1367-4faf-bcd3-c9016f4d0327\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoProfileUpdatePage",
+              "id" : "668b30b8-81a9-4126-bd98-e230737df9c1",
+              "type" : "component"
+            } ],
+            "id" : "a90f7af0-1367-4faf-bcd3-c9016f4d0327",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "7f0764e2-73c5-4c6e-b7dd-3e615ed1f2e8",
+          "type" : "component"
+        } ],
+        "id" : "26bfcb26-666b-4019-8ae7-bcf2c5ad7cb0",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "User Profile",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "c34a2fbf-9d8a-4383-b371-68639f814ebf",
+          "type" : "component"
+        } ],
+        "id" : "465c8a03-1c4f-4c34-900c-d71e0b9afc7d",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "bebf35d8-fab1-4a21-b773-4df30effa5f3",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-profile"
+  },
+  "urlName" : "user-profile"
+}

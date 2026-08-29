@@ -9,12 +9,12 @@ public inherited sharing class PWChrono_EmployeeDirectoryController {
   @AuraEnabled(cacheable=true)
   public static List<SObject> searchEmployees(String searchTerm) {
     try {
-      String query = 'SELECT Id, Name, Email__c, Departments__c, Designation__c, Phone__c, Reports_To__r.Name FROM Portal_Users__c';
+      String query = 'SELECT Id, Name, Email__c, Department__c, Designation__c, Phone__c, Reports_To__r.Name FROM Portal_Users__c';
 
       if (String.isNotBlank(searchTerm)) {
         String key = String.escapeSingleQuotes(searchTerm) + '%';
         // Note: Leading wildcard removed to prevent non-selective query
-        query += ' WHERE Name LIKE :key OR Email__c LIKE :key OR Departments__c LIKE :key';
+        query += ' WHERE Name LIKE :key OR Email__c LIKE :key OR Department__c LIKE :key';
       }
 
       query +=

@@ -1,5 +1,29 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>HRMS_AccessController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HRMS_AccessController_Test</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HRMS_Mdt_Deploy_Callback</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HRMS_Mdt_Deploy_Callback_Test</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HRMS_RoleFeatureMappingController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HRMS_RoleFeatureMappingController_Test</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <classAccesses>
         <apexClass>PWChrono_AccessController</apexClass>
         <enabled>true</enabled>
@@ -264,6 +288,10 @@
         <apexClass>PWChrono_Utils_Test</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>PortalUser</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>
         <name>PWChrono_Role_Feature_Mapping__mdt</name>
@@ -276,8 +304,7 @@
         <enabled>true</enabled>
         <name>Predefined_Tag__mdt</name>
     </customMetadataTypeAccesses>
-    <description
-  >Grants access to all PWChrono custom tabs for portal users</description>
+    <description>Grants access to all PWChrono custom tabs for portal users</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>PWChrono_Appraisal_Notification__c.Email__c</field>

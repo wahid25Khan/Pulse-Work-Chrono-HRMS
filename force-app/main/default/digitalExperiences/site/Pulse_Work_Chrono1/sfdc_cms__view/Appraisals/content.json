@@ -1,0 +1,71 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Appraisals",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"5dd24a37-dd06-4abc-bdf2-2fc500dc157c\",\"columns\":[{\"UUID\":\"c876706f-5273-4a78-bc4f-baac4ff19956\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoAppraisalForm",
+              "id" : "edf43783-39df-415c-ab8d-bdaf68fb3794",
+              "type" : "component"
+            } ],
+            "id" : "c876706f-5273-4a78-bc4f-baac4ff19956",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "5dd24a37-dd06-4abc-bdf2-2fc500dc157c",
+          "type" : "component"
+        } ],
+        "id" : "a8aea5b3-78c7-4411-b390-cc6911edbe59",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Appraisals",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "09206a74-1378-4fd2-88a4-2dc7a275fa2b",
+          "type" : "component"
+        } ],
+        "id" : "2fabe1cd-5ba3-4d2f-a1b8-5a14b921818f",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "e8113d00-e9af-4324-9583-e6b48a2ef078",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-appraisals"
+  },
+  "urlName" : "appraisals"
+}

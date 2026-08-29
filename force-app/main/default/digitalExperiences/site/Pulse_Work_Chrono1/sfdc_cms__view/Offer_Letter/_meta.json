@@ -1,0 +1,5 @@
+{
+  "apiName" : "Offer_Letter",
+  "type" : "sfdc_cms__view",
+  "path" : "views"
+}

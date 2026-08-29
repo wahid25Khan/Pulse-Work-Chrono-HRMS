@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>Accept</actionName>
@@ -143,8 +143,7 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description
-  >Shared request comments and system history events for request-based modules.</description>
+    <description>Shared request comments and system history events for request-based modules.</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
@@ -155,14 +154,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Request Comment</label>
+    <label>PWChrono Request Comment</label>
     <nameField>
         <displayFormat>RCM-{00000}</displayFormat>
         <label>Request Comment Number</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Request Comments</pluralLabel>
-    <searchLayouts />
+    <pluralLabel>PWChrono Request Comments</pluralLabel>
+    <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

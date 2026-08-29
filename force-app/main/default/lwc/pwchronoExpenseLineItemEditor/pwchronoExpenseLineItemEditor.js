@@ -97,10 +97,10 @@ export default class PwchronoExpenseLineItemEditor extends LightningElement {
     }
 
     this.items = this.items.map((item) => {
-      if (item._key !== key) {
-        return item;
+      if (item._key === key) {
+        return { ...item, [field]: value };
       }
-      return { ...item, [field]: value };
+      return item;
     });
     this.notifyParent();
   }
@@ -112,9 +112,9 @@ export default class PwchronoExpenseLineItemEditor extends LightningElement {
       new CustomEvent("itemschange", {
         detail: {
           items: this.items.map((item) => {
-            const copy = { ...item };
-            delete copy._key;
-            return copy;
+            const cleanItem = { ...item };
+            delete cleanItem._key;
+            return cleanItem;
           })
         }
       })

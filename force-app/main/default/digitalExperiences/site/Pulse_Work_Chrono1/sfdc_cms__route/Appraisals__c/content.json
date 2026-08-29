@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Appraisals",
+  "contentBody" : {
+    "activeViewId" : "Appraisals",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-appraisals",
+    "urlPrefix" : "appraisals"
+  },
+  "urlName" : "appraisals"
+}

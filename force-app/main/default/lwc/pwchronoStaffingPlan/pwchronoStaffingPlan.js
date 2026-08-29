@@ -6,6 +6,7 @@ import updateStaffingPlanStatus from "@salesforce/apex/PWChrono_StaffingPlanCont
 import getActiveDesignations from "@salesforce/apex/PWChrono_StaffingPlanController.getActiveDesignations";
 import getActiveDepartments from "@salesforce/apex/PWChrono_StaffingPlanController.getActiveDepartments";
 import getStaffingPlanById from "@salesforce/apex/PWChrono_StaffingPlanController.getStaffingPlanById";
+import LightningConfirm from "lightning/confirm";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track } from "lwc";
 import { getSession, getSessionToken } from "c/pwchronoSession";
@@ -100,22 +101,26 @@ export default class PwchronoStaffingPlan extends LightningElement {
   }
 
   enrichPlan(p) {
-    const fmt = (d) =>
-      d
-        ? new Date(d).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric"
-          })
-        : "—";
-    const fmtCurrency = (v) =>
-      v != null
-        ? new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: CURRENCY_CODE,
-            maximumFractionDigits: 0
-          }).format(v)
-        : "—";
+    const fmt = (d) => {
+      if (d) {
+        return new Date(d).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        });
+      }
+      return "—";
+    };
+    const fmtCurrency = (v) => {
+      if (v != null) {
+        return new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: CURRENCY_CODE,
+          maximumFractionDigits: 0
+        }).format(v);
+      }
+      return "—";
+    };
     const badgeMap = {
       Draft: "badge bg-warning-subtle text-warning",
       Submitted: "badge bg-success-subtle text-success",
@@ -314,6 +319,10 @@ export default class PwchronoStaffingPlan extends LightningElement {
       delete planPayload.formattedCost;
       delete planPayload.statusBadgeClass;
       delete planPayload.isSubmitted;
+      if (!planPayload.Id) delete planPayload.Id;
+      if (!planPayload.From_Date__c) planPayload.From_Date__c = null;
+      if (!planPayload.To_Date__c) planPayload.To_Date__c = null;
+      if (!planPayload.Department__c) planPayload.Department__c = null;
 
       const planId = await saveStaffingPlan({
         planJson: JSON.stringify(planPayload),
@@ -368,8 +377,12 @@ export default class PwchronoStaffingPlan extends LightningElement {
 
   async handleDelete(event) {
     const id = event.currentTarget.dataset.id;
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    if (!confirm("Are you sure you want to delete this Staffing Plan?")) return;
+    const confirmed = await LightningConfirm.open({
+      message: "Are you sure you want to delete this Staffing Plan?",
+      label: "Confirm Delete",
+      theme: "warning"
+    });
+    if (!confirmed) return;
     try {
       await deleteStaffingPlan({
         planId: id,

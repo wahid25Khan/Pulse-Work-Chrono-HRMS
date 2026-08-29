@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
         <fullName>fsc_AccessLevel</fullName>
@@ -30,8 +30,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ConditionLogicHelpText</shortDescription>
-        <value
-    >Use parentheses, AND, OR, and NOT to customize the logic. For example, if you enter “(1 AND 2 AND 3) OR 4”, the flow evaluates whether the first three conditions are true or only the fourth condition is true.</value>
+        <value>Use parentheses, AND, OR, and NOT to customize the logic. For example, if you enter “(1 AND 2 AND 3) OR 4”, the flow evaluates whether the first three conditions are true or only the fourth condition is true.</value>
     </labels>
     <labels>
         <fullName>fsc_Delete</fullName>
@@ -55,8 +54,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>fsc_FieldTypeNotSuportedMessage</shortDescription>
-        <value
-    >You provided an unsupported value for the DataTypeFilter input on Object and Field Picker. Currently the only supported value is ’picklist’</value>
+        <value>You provided an unsupported value for the DataTypeFilter input on Object and Field Picker. Currently the only supported value is ’picklist’</value>
     </labels>
     <labels>
         <fullName>fsc_For</fullName>
@@ -79,8 +77,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>LackingPermissions</shortDescription>
-        <value
-    >You don\&apos;t have the proper permissions for ths action</value>
+        <value>You don\&apos;t have the proper permissions for ths action</value>
     </labels>
     <labels>
         <fullName>fsc_ManagerEmptyMessage</fullName>
@@ -127,8 +124,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>OWDReadWrite</shortDescription>
-        <value
-    >Sharing Settings must be private or public read/write to enable manual sharing</value>
+        <value>Sharing Settings must be private or public read/write to enable manual sharing</value>
     </labels>
     <labels>
         <fullName>fsc_OwnerAdminModify</fullName>
@@ -136,8 +132,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>OwnerAdminModify</shortDescription>
-        <value
-    >Only the record owner or administrators can modify permissions</value>
+        <value>Only the record owner or administrators can modify permissions</value>
     </labels>
     <labels>
         <fullName>fsc_PublicGroups</fullName>
@@ -224,8 +219,7 @@
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription
-    >SupportedAddCapabilitiesEmptyMessage</shortDescription>
+        <shortDescription>SupportedAddCapabilitiesEmptyMessage</shortDescription>
         <value>&quot;Add Capabilities&quot; can not be empty</value>
     </labels>
     <labels>
@@ -241,8 +235,7 @@
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription
-    >SupportedEditCapabilitiesEmptyMessage</shortDescription>
+        <shortDescription>SupportedEditCapabilitiesEmptyMessage</shortDescription>
         <value>&quot;Edit Capabilities&quot; can not be empty</value>
     </labels>
     <labels>
@@ -251,8 +244,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>TooManyResultsMessage</shortDescription>
-        <value
-    >Your search found more than 200 results.  Keep typing to make it more specific</value>
+        <value>Your search found more than 200 results.  Keep typing to make it more specific</value>
     </labels>
     <labels>
         <fullName>fsc_Type</fullName>
@@ -314,5 +306,111 @@
         <protected>false</protected>
         <shortDescription>Search existing Flow resources</shortDescription>
         <value>Search existing Flow resources</value>
+    </labels>
+    <labels>
+        <fullName>Attendee_QR_Base_Url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Base URL for attendee QR check-in links</shortDescription>
+        <value>https://membertitan.my.site.com/mamportal/s</value>
+    </labels>
+    <labels>
+        <fullName>CardPayment_labels</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CardPayment_labels</shortDescription>
+        <value>Name On Card|Card Number|Security Code|Month|Year|Address|City|State|Zip/Postal Code|Country</value>
+    </labels>
+    <labels>
+        <fullName>CardPayment_lables</fullName>
+        <categories>Payment</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Payment component field labels</shortDescription>
+        <value>Card Name|Card Number|Security Number|Month|Year|Billing Address|City|State|ZIP / Postal Code|Country</value>
+    </labels>
+    <labels>
+        <fullName>Default_Event_Locale</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Default_Event_Locale</shortDescription>
+        <value>en-US</value>
+    </labels>
+    <labels>
+        <fullName>Default_Event_Timezone</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Default_Event_Timezone</shortDescription>
+        <value>America/Mexico_City</value>
+    </labels>
+    <labels>
+        <fullName>EmailReminderInfo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EmailReminderInfo</shortDescription>
+        <value>Enter your email address and &quot;check&quot; the box for each event that interests you will automatically receive an email reminder before the event!</value>
+    </labels>
+    <labels>
+        <fullName>Event_Time_Zone</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Event Time Zone</shortDescription>
+        <value>America/Chicago</value>
+    </labels>
+    <labels>
+        <fullName>IndSupFormHeader</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>IndSupFormHeader</shortDescription>
+        <value>Thank you for your interest in joining the MemberTitan as an Industry Supplier. Please fill out the information below for your company and MemberTitan will review the application and contact you regarding the next steps. If you have any questions, please contact us at (417) 815-0133.</value>
+    </labels>
+    <labels>
+        <fullName>MemberFormHeader</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MemberFormHeader</shortDescription>
+        <value>Thank you for your interest in joining the MemberTitan</value>
+    </labels>
+    <labels>
+        <fullName>MemberTitan_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MemberTitan Label</shortDescription>
+        <value>Thank you for your interest in joining the MemberTitan.  Please fill out the information below for your company and a MemberTitan representative will review the application and contact you regarding the next steps in the Membership process.  If you have any questions, please contact MemberTitan at (417) 815-0133 and someone will assist you.</value>
+    </labels>
+    <labels>
+        <fullName>MemberTitan_Supplier_Success_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MemberTitan_Supplier_Success_Message</shortDescription>
+        <value>Thank you for joining the MemberTitan. We have received your application for Industry Supplier and someone will be contacting you soon regarding onboarding and set up. If you have any questions, please call us at (417) 815-0133 or email us at hr@thelodestonegroup.com. We are excited you have chosen to become a part of MemberTitan.</value>
+    </labels>
+    <labels>
+        <fullName>Member_Success_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Member_Success_Message</shortDescription>
+        <value>Thank you for joining the MemberTitan. We have received your application for Member and someone will be contacting you soon regarding onboarding and set up. If you have any questions, please call us at (417) 815-0133 or email us at hr@thelodestonegroup.com. We are excited you have chosen to become a part of MemberTitan.</value>
+    </labels>
+    <labels>
+        <fullName>Price_Book_Name</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Price Book Name</shortDescription>
+        <value>Member Titan Membership Price Book</value>
+    </labels>
+    <labels>
+        <fullName>Print_Agent_Token</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Badge print agent auth token</shortDescription>
+        <value>CHANGE_ME</value>
+    </labels>
+    <labels>
+        <fullName>Print_Agent_Url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Badge print agent endpoint URL</shortDescription>
+        <value>https://localhost:8789</value>
     </labels>
 </CustomLabels>

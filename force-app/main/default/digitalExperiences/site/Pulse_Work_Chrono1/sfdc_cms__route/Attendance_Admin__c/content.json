@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Attendance Admin",
+  "contentBody" : {
+    "activeViewId" : "Attendance_Admin",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-attendance-admin",
+    "urlPrefix" : "attendance-admin"
+  },
+  "urlName" : "attendance-admin"
+}

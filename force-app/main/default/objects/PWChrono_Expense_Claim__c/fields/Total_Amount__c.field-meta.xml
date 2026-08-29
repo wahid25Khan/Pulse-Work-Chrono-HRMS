@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Total_Amount__c</fullName>
+    <externalId>false</externalId>
     <label>Total Amount</label>
     <summarizedField>PWChrono_Expense_Item__c.Amount__c</summarizedField>
     <summaryFilterItems>
@@ -8,8 +9,7 @@
         <operation>greaterThan</operation>
         <value>0</value>
     </summaryFilterItems>
-    <summaryForeignKey
-  >PWChrono_Expense_Item__c.Expense_Claim__c</summaryForeignKey>
+    <summaryForeignKey>PWChrono_Expense_Item__c.Expense_Claim__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>

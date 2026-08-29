@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>Accept</actionName>
@@ -143,8 +143,7 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description
-  >Dates where leave applications are blocked (e.g. month-end close, critical project deadlines).</description>
+    <description>Dates where leave applications are blocked (e.g. month-end close, critical project deadlines).</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
@@ -155,14 +154,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Leave Block Date</label>
+    <label>PWChrono Leave Block Date</label>
     <nameField>
         <displayFormat>BLK-{00000}</displayFormat>
         <label>Block Date Number</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Leave Block Dates</pluralLabel>
-    <searchLayouts />
+    <pluralLabel>PWChrono Leave Block Dates</pluralLabel>
+    <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

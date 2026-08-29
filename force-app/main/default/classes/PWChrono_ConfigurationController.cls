@@ -71,7 +71,7 @@ public inherited sharing class PWChrono_ConfigurationController {
           Email__c,
           Phone__c,
           Role__c,
-          Departments__c,
+          Department__c,
           Designation__c,
           Is_Active__c,
           Photo_Url__c,
@@ -97,9 +97,7 @@ public inherited sharing class PWChrono_ConfigurationController {
         config.designation = pu.Designation__c != null
           ? pu.Designation__c
           : 'N/A';
-        config.department = pu.Departments__c != null
-          ? pu.Departments__c
-          : 'N/A';
+        config.department = pu.Department__c != null ? pu.Department__c : 'N/A';
         config.isActive = pu.Is_Active__c != null ? pu.Is_Active__c : false;
         config.photoUrl = pu.Photo_Url__c;
         config.lastLoginDate = pu.Last_Login_Date__c;

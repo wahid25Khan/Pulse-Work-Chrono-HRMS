@@ -268,7 +268,7 @@ export default class PwchronoLeaveRequestDetail extends LightningElement {
     this.isLoading = true;
     try {
       await Promise.all(
-        files.map(async (file) => {
+        Array.from(files).map(async (file) => {
           const base64Data = await this.readFileAsBase64(file);
           return uploadLeaveFile({
             leaveId: this.leaveId,

@@ -131,24 +131,24 @@ private class PWChrono_AdminController_Test {
     );
     insert settings;
 
-    // Minimal Opportunity data for sales overview aggregation
+    // Minimal project data for sales overview aggregation
     Account acc = new Account(Name = 'Test Account');
     insert acc;
     Integer y = Date.today().year();
-    insert new List<Opportunity>{
-      new Opportunity(
-        Name = 'Test Opp Jan',
-        StageName = 'Prospecting',
-        CloseDate = Date.newInstance(y, 1, 15),
-        Amount = 25000,
-        AccountId = acc.Id
+    insert new List<PWChrono_Project__c>{
+      new PWChrono_Project__c(
+        Name = 'Test Project Jan',
+        Account__c = acc.Id,
+        End_Date__c = Date.newInstance(y, 1, 15),
+        Amount__c = 25000,
+        Status__c = 'Completed'
       ),
-      new Opportunity(
-        Name = 'Test Opp Feb',
-        StageName = 'Qualification',
-        CloseDate = Date.newInstance(y, 2, 10),
-        Amount = 50000,
-        AccountId = acc.Id
+      new PWChrono_Project__c(
+        Name = 'Test Project Feb',
+        Account__c = acc.Id,
+        End_Date__c = Date.newInstance(y, 2, 10),
+        Amount__c = 50000,
+        Status__c = 'Completed'
       )
     };
   }

@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Leaves Employees",
+  "contentBody" : {
+    "activeViewId" : "Leaves_Employees",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-leaves-employees",
+    "urlPrefix" : "leaves-employees"
+  },
+  "urlName" : "leaves-employees"
+}

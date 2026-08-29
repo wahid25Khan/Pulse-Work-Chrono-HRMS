@@ -1,4 +1,5 @@
 import { LightningElement, track } from "lwc";
+import LightningConfirm from "lightning/confirm";
 import { getSession, getSessionToken } from "c/pwchronoSession";
 import { PAGES } from "c/pwchronoRouter";
 
@@ -319,7 +320,10 @@ export default class PwchronoEmployeePromotion extends LightningElement {
     const key = evt.currentTarget.dataset.key;
     const col = evt.currentTarget.dataset.col;
     this.detailLines = this.detailLines.map((l) => {
-      return l._key === key ? { ...l, [col]: evt.target.value } : l;
+      if (l._key === key) {
+        return { ...l, [col]: evt.target.value };
+      }
+      return l;
     });
   }
 
@@ -350,8 +354,12 @@ export default class PwchronoEmployeePromotion extends LightningElement {
     this.validationError = "";
     this.isSaving = true;
     try {
-      // strip _key from detail lines before sending
-      const cleanDetails = this.detailLines.map(({ _key, ...rest }) => rest); // eslint-disable-line no-unused-vars
+      // strip client-only keys from detail lines before sending
+      const cleanDetails = this.detailLines.map((line) => {
+        const cleanLine = { ...line };
+        delete cleanLine._key;
+        return cleanLine;
+      });
       await savePromotion({
         promotionJson: JSON.stringify(this.editRecord),
         detailsJson: JSON.stringify(cleanDetails),
@@ -375,9 +383,12 @@ export default class PwchronoEmployeePromotion extends LightningElement {
   async handleDelete(evt) {
     const id = evt.currentTarget.dataset.id ?? this.editRecord.Id;
     if (!id) return;
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    if (!confirm("Delete this promotion record? This cannot be undone."))
-      return;
+    const confirmed = await LightningConfirm.open({
+      message: "Delete this promotion record? This cannot be undone.",
+      label: "Confirm Delete",
+      theme: "warning"
+    });
+    if (!confirmed) return;
     try {
       await deletePromotion({
         promotionId: id,

@@ -129,6 +129,34 @@ private class PWChrono_CareerPortalController_Test {
     );
   }
 
+  @isTest
+  static void testGetOpenJobs_LocationFilter() {
+    Test.startTest();
+    List<PWChrono_Job_Opening__c> results = PWChrono_CareerPortalController.getOpenJobs(
+      null,
+      null,
+      null,
+      null,
+      'Remote'
+    );
+    Test.stopTest();
+    System.assertEquals(1, results.size(), 'Location filter should match');
+  }
+
+  @isTest
+  static void testGetOpenJobs_KeywordMatchesDescription() {
+    Test.startTest();
+    List<PWChrono_Job_Opening__c> results = PWChrono_CareerPortalController.getOpenJobs(
+      'amazing',
+      null,
+      null,
+      null,
+      null
+    );
+    Test.stopTest();
+    System.assertEquals(1, results.size(), 'Keyword should also match the job description.');
+  }
+
   // ─────────────────────────────────────────────────────────────────────────
   // getJobById
   // ─────────────────────────────────────────────────────────────────────────
@@ -230,5 +258,65 @@ private class PWChrono_CareerPortalController_Test {
     }
     Test.stopTest();
     System.assert(threw, 'Should throw on blank JSON');
+  }
+
+  @isTest
+  static void testSubmitApplication_DuplicateEmailForJobRejected() {
+    PWChrono_Job_Opening__c job = [
+      SELECT Id
+      FROM PWChrono_Job_Opening__c
+      WHERE Status__c = 'Open'
+      LIMIT 1
+    ];
+    Map<String, Object> appMap = new Map<String, Object>{
+      'Name' => 'Jane Doe',
+      'Email__c' => 'duplicate@example.com',
+      'Phone__c' => '+1-555-0100',
+      'Country__c' => 'United States',
+      'Job_Opening__c' => job.Id,
+      'Source__c' => 'Website'
+    };
+    insert new PWChrono_Job_Applicant__c(
+      Name = 'Existing Applicant',
+      Email__c = 'duplicate@example.com',
+      Job_Opening__c = job.Id,
+      Status__c = 'Applied'
+    );
+
+    Test.startTest();
+    Boolean threw = false;
+    try {
+      PWChrono_CareerPortalController.submitApplication(JSON.serialize(appMap));
+    } catch (AuraHandledException e) {
+      threw = true;
+    }
+    Test.stopTest();
+    System.assert(threw, 'Duplicate applications for the same job should be rejected.');
+  }
+
+  @isTest
+  static void testSubmitApplication_InvalidEmailRejected() {
+    PWChrono_Job_Opening__c job = [
+      SELECT Id
+      FROM PWChrono_Job_Opening__c
+      WHERE Status__c = 'Open'
+      LIMIT 1
+    ];
+    Map<String, Object> appMap = new Map<String, Object>{
+      'Name' => 'Invalid Email Applicant',
+      'Email__c' => 'not-an-email',
+      'Phone__c' => '+1-555-0101',
+      'Country__c' => 'United States',
+      'Job_Opening__c' => job.Id
+    };
+
+    Test.startTest();
+    try {
+      PWChrono_CareerPortalController.submitApplication(JSON.serialize(appMap));
+      System.assert(false, 'Invalid email should be rejected.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+    Test.stopTest();
   }
 }

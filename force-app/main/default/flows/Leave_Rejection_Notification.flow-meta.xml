@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
         <name>Send_Rejection_Email</name>
@@ -11,8 +11,7 @@
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <elementReference
-        >$Record.Employees__r.Email__c</elementReference>
+                <elementReference>$Record.Employees__r.Email__c</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -24,8 +23,7 @@
         <inputParameters>
             <name>emailBody</name>
             <value>
-                <stringValue
-        >Your leave request from {!$Record.From_Date__c} to {!$Record.To_Date__c} has been rejected. Please contact your manager for details.</stringValue>
+                <stringValue>Your leave request from {!$Record.From_Date__c} to {!$Record.To_Date__c} has been rejected. Please contact your manager for details.</stringValue>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
@@ -33,8 +31,7 @@
     <apiVersion>65.0</apiVersion>
     <description>Send email when leave request is rejected</description>
     <environments>Default</environments>
-    <interviewLabel
-  >Leave Rejection Notification {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>Leave Rejection Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Leave Rejection Notification</label>
     <processMetadataValues>
         <name>BuilderType</name>

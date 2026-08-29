@@ -285,12 +285,10 @@ private class PWChrono_AttendanceService_Test {
 
   @IsTest
   static void testProcessApproval_notApprover_throwsException() {
-    Portal_Users__c emp = [
-      SELECT Id
-      FROM Portal_Users__c
-      WHERE Role__c = 'Employee'
-      LIMIT 1
-    ];
+    Portal_Users__c other = PWChrono_AttendanceTestDataFactory.createEmployee(
+      'Other Employee',
+      true
+    );
     PWChrono_Attendance_Request__c req = [
       SELECT Id
       FROM PWChrono_Attendance_Request__c
@@ -300,7 +298,12 @@ private class PWChrono_AttendanceService_Test {
 
     Test.startTest();
     try {
-      PWChrono_AttendanceService.processApproval(req.Id, 'Approve', '', emp.Id);
+      PWChrono_AttendanceService.processApproval(
+        req.Id,
+        'Approve',
+        '',
+        other.Id
+      );
       System.assert(false, 'Non-approver should be blocked');
     } catch (AuraHandledException e) {
       System.assert(
@@ -388,20 +391,6 @@ private class PWChrono_AttendanceService_Test {
 
   @IsTest
   static void testCancelRequest_byNonOwner_throwsException() {
-    Portal_Users__c mgr = [
-      SELECT Id
-      FROM Portal_Users__c
-      WHERE Role__c = 'Manager'
-      LIMIT 1
-    ];
-    Portal_Users__c emp = [
-      SELECT Id
-      FROM Portal_Users__c
-      WHERE Role__c = 'Employee'
-      LIMIT 1
-    ];
-
-    // Create a second employee who is not the owner
     Portal_Users__c other = PWChrono_AttendanceTestDataFactory.createEmployee(
       'Other Employee',
       true
@@ -433,7 +422,7 @@ private class PWChrono_AttendanceService_Test {
   }
 
   @IsTest
-  static void testCancelRequest_alreadyApproved_throwsException() {
+  static void testCancelRequest_alreadyApproved_followsStatusMachine() {
     Portal_Users__c emp = [
       SELECT Id
       FROM Portal_Users__c
@@ -448,22 +437,18 @@ private class PWChrono_AttendanceService_Test {
     ];
 
     Test.startTest();
-    try {
-      PWChrono_AttendanceService.cancelRequest(
-        req.Id,
-        'Want to cancel',
-        emp.Id
-      );
-      System.assert(
-        false,
-        'Cancelling Approved request should follow status machine'
-      );
-    } catch (AuraHandledException e) {
-      // Status machine may or may not allow Approved → Cancelled depending on shared validator config
-      // If it throws, the error is acceptable
-      System.assert(true);
-    }
+    PWChrono_Attendance_Request__c result = PWChrono_AttendanceService.cancelRequest(
+      req.Id,
+      'Want to cancel',
+      emp.Id
+    );
     Test.stopTest();
+
+    System.assertEquals(
+      'Cancelled',
+      result.Status__c,
+      'Approved requests should follow the shared status machine.'
+    );
   }
 
   // ─────────────────────── getDashboardSummary ────────────────────────────

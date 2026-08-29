@@ -1,6 +1,7 @@
 import getContacts from "@salesforce/apex/PWChrono_ChatController.getContacts";
 import getMessages from "@salesforce/apex/PWChrono_ChatController.getMessages";
 import sendMessage from "@salesforce/apex/PWChrono_ChatController.sendMessage";
+import { logError } from "c/pwchronoErrorHandler";
 import { getSession } from "c/pwchronoSession";
 import { LightningElement, track } from "lwc";
 
@@ -68,7 +69,7 @@ export default class PwchronoChat extends LightningElement {
           : ""
       }));
     } catch (error) {
-      console.error("Error loading contacts", error);
+      logError("pwchronoChat.loadContacts", error);
     }
   }
 
@@ -86,7 +87,7 @@ export default class PwchronoChat extends LightningElement {
       }));
       this.scrollToBottom();
     } catch (error) {
-      console.error("Error loading messages", error);
+      logError("pwchronoChat.loadMessages", error);
     }
   }
 
@@ -131,7 +132,7 @@ export default class PwchronoChat extends LightningElement {
       // Refresh messages
       await this.loadMessages();
     } catch (error) {
-      console.error("Error sending message", error);
+      logError("pwchronoChat.handleSendMessage", error);
     } finally {
       this.isSending = false;
     }

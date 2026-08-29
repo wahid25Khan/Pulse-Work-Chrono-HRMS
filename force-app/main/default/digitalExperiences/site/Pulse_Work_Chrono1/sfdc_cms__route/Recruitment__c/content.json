@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Recruitment",
+  "contentBody" : {
+    "activeViewId" : "Recruitment",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-recruitment",
+    "urlPrefix" : "recruitment"
+  },
+  "urlName" : "recruitment"
+}

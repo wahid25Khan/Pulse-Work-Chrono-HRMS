@@ -1,0 +1,71 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "WFH Management",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"7e3b9621-6f72-4456-9447-1f6f729bbf04\",\"columns\":[{\"UUID\":\"6c229b7e-8387-4cb8-b1fa-c7f6346b9a7e\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoWorkFromHomeManagement",
+              "id" : "6e9e20de-2bea-4a09-a3bb-fe76fcd60c9a",
+              "type" : "component"
+            } ],
+            "id" : "6c229b7e-8387-4cb8-b1fa-c7f6346b9a7e",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "7e3b9621-6f72-4456-9447-1f6f729bbf04",
+          "type" : "component"
+        } ],
+        "id" : "9f5e21dc-43d6-41ae-8384-586c9d88753f",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "WFH Management",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "b84fc022-354b-437a-8a4a-ce1db322ec65",
+          "type" : "component"
+        } ],
+        "id" : "6e629fbb-4595-4eab-aea8-9b8291f5bbd4",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "40eebf1a-155e-494c-b95f-0f888100cf75",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-wfh-management"
+  },
+  "urlName" : "wfh-management"
+}

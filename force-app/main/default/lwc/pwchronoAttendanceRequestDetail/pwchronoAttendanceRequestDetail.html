@@ -1,10 +1,8 @@
 <template>
   <div class="attendance-request-detail">
+
     <!-- Back navigation -->
-    <button
-      class="btn btn-sm btn-link p-0 mb-3 text-decoration-none"
-      onclick={handleBack}
-    >
+    <button class="btn btn-sm btn-link p-0 mb-3 text-decoration-none" onclick={handleBack}>
       &larr; Back
     </button>
 
@@ -25,14 +23,14 @@
 
     <!-- Content -->
     <template if:true={hasData}>
+
       <!-- Request Header (shared component) -->
       <c-pwchrono-request-header
         record-name={request.Name}
         record-type="Attendance Correction"
         status={request.Status__c}
         submitted-by={request.Employees__r.Name}
-        submitted-date={request.Applied_Date__c}
-      >
+        submitted-date={request.Applied_Date__c}>
       </c-pwchrono-request-header>
 
       <!-- Correction Details Card -->
@@ -74,12 +72,8 @@
             </template>
             <template if:true={hasRejectionReason}>
               <div class="col-12">
-                <p class="text-muted small mb-1 text-danger">
-                  Rejection Reason
-                </p>
-                <p class="fw-medium mb-0 text-danger">
-                  {request.Rejection_Reason__c}
-                </p>
+                <p class="text-muted small mb-1 text-danger">Rejection Reason</p>
+                <p class="fw-medium mb-0 text-danger">{request.Rejection_Reason__c}</p>
               </div>
             </template>
             <div class="col-12">
@@ -121,8 +115,7 @@
           status={request.Status__c}
           is-approver={isApprover}
           is-owner={isOwner}
-          onrequestaction={handleRequestAction}
-        >
+          onrequestaction={handleRequestAction}>
         </c-pwchrono-request-action-bar>
       </div>
 
@@ -140,8 +133,7 @@
           <c-pwchrono-request-comments
             entries={commentEntries}
             allow-new-comment={canComment}
-            onnewcomment={handleNewComment}
-          >
+            onnewcomment={handleNewComment}>
           </c-pwchrono-request-comments>
         </div>
       </div>
@@ -159,11 +151,12 @@
             accept=".pdf,.jpg,.jpeg,.png"
             max-file-size={maxFileSize}
             onfilesselected={handleFilesSelected}
-            onfileerror={handleFileError}
-          >
+            onfileerror={handleFileError}>
           </c-pwchrono-file-upload-panel>
         </div>
       </div>
+
     </template>
+
   </div>
 </template>

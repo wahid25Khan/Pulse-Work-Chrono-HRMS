@@ -1,14 +1,10 @@
 <template lwc:render-mode="light">
   <div class="page-wrapper">
     <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
-      <div
-        class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
-      >
+      <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
         <div class="my-auto mb-2">
           <h2 class="mb-1">Company Policies</h2>
-          <p class="text-muted mb-0">
-            Review organizational policies and guidelines
-          </p>
+          <p class="text-muted mb-0">Review organizational policies and guidelines</p>
         </div>
         <div class="d-flex my-xl-auto right-content"></div>
       </div>
@@ -48,19 +44,11 @@
                       <div class="p-3">
                         <div class="row g-3 mb-3">
                           <div class="col-12 col-sm-6">
-                            <p
-                              class="small text-muted text-uppercase fw-medium mb-1"
-                            >
-                              Category
-                            </p>
+                            <p class="small text-muted text-uppercase fw-medium mb-1">Category</p>
                             <p class="mb-0">{policy.Category__c}</p>
                           </div>
                           <div class="col-12 col-sm-6">
-                            <p
-                              class="small text-muted text-uppercase fw-medium mb-1"
-                            >
-                              Effective Date
-                            </p>
+                            <p class="small text-muted text-uppercase fw-medium mb-1">Effective Date</p>
                             <p class="mb-0">
                               <lightning-formatted-date-time
                                 value={policy.Effective_Date__c}
@@ -79,19 +67,14 @@
               <template if:false={hasPolicies}>
                 <div class="text-center py-5">
                   <i class="ti ti-file-off fs-1 text-muted d-block mb-2"></i>
-                  <p class="text-muted mb-0">
-                    No policies found for this category.
-                  </p>
+                  <p class="text-muted mb-0">No policies found for this category.</p>
                 </div>
               </template>
             </template>
           </template>
 
           <template if:true={error}>
-            <div
-              class="alert alert-danger d-flex align-items-center gap-2"
-              role="alert"
-            >
+            <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
               <i class="ti ti-alert-circle flex-shrink-0"></i>
               <span>{error}</span>
             </div>

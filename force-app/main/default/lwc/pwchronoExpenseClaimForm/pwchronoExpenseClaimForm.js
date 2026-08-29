@@ -11,13 +11,16 @@ export default class PwchronoExpenseClaimForm extends LightningElement {
   static renderMode = "light";
 
   _claimId = null;
+  _internalClaimId = null;
 
   @api
   get claimId() {
     return this._claimId;
   }
-  set claimId(val) {
-    this._claimId = val;
+
+  set claimId(value) {
+    this._claimId = value || null;
+    this._internalClaimId = null;
   }
 
   @track isLoading = false;
@@ -39,7 +42,7 @@ export default class PwchronoExpenseClaimForm extends LightningElement {
   sessionToken = getSessionToken();
 
   connectedCallback() {
-    if (this.claimId) {
+    if (this.effectiveClaimId) {
       this.loadExistingClaim();
     } else {
       // New claim: start with one empty item
@@ -52,7 +55,7 @@ export default class PwchronoExpenseClaimForm extends LightningElement {
   loadExistingClaim() {
     this.isLoading = true;
     getExpenseClaimDetail({
-      claimId: this.claimId,
+      claimId: this.effectiveClaimId,
       employeeId: this.employeeId,
       sessionToken: this.sessionToken
     })
@@ -94,7 +97,7 @@ export default class PwchronoExpenseClaimForm extends LightningElement {
   // ── Computed ──────────────────────────────────────────────────────────────
 
   get modalTitle() {
-    return this.claimId ? "Edit Expense Claim" : "New Expense Claim";
+    return this.effectiveClaimId ? "Edit Expense Claim" : "New Expense Claim";
   }
 
   get hasErrors() {
@@ -107,7 +110,11 @@ export default class PwchronoExpenseClaimForm extends LightningElement {
   }
 
   get isSavedClaim() {
-    return !!this.claimId;
+    return !!this.effectiveClaimId;
+  }
+
+  get effectiveClaimId() {
+    return this._internalClaimId || this.claimId;
   }
 
   // ── Field handlers ────────────────────────────────────────────────────────
@@ -145,7 +152,7 @@ export default class PwchronoExpenseClaimForm extends LightningElement {
       sessionToken: this.sessionToken
     })
       .then((saved) => {
-        this._claimId = saved.Id;
+        this._internalClaimId = saved.Id;
         this.showToast("Saved", "Expense claim saved as Draft.", "success");
         this.dispatchEvent(
           new CustomEvent("claimsubmitted", {
@@ -184,7 +191,7 @@ export default class PwchronoExpenseClaimForm extends LightningElement {
       sessionToken: this.sessionToken
     })
       .then((saved) => {
-        this._claimId = saved.Id;
+        this._internalClaimId = saved.Id;
         return submitExpenseClaim({
           claimId: saved.Id,
           employeeId: this.employeeId,
@@ -261,7 +268,7 @@ export default class PwchronoExpenseClaimForm extends LightningElement {
 
   buildDTO() {
     return {
-      claimId: this.claimId || null,
+      claimId: this.effectiveClaimId || null,
       claimDate: this.claimDate,
       description: this.description.trim(),
       businessPurpose: this.businessPurpose

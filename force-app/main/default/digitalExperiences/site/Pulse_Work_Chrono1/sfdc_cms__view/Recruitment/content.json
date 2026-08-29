@@ -1,0 +1,71 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Recruitment",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"3df9d504-d24d-4082-8bd1-802db6a25f7c\",\"columns\":[{\"UUID\":\"4fcddc73-5019-43eb-abc5-3218fb7cd280\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoRecruitment",
+              "id" : "bd7960fe-4695-4f41-a6ea-29c4ee496164",
+              "type" : "component"
+            } ],
+            "id" : "4fcddc73-5019-43eb-abc5-3218fb7cd280",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "3df9d504-d24d-4082-8bd1-802db6a25f7c",
+          "type" : "component"
+        } ],
+        "id" : "611e5e22-777e-4db5-800c-48b5fd0c9dba",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Recruitment",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "f3bdde54-d7ba-4530-81ea-80b97c94c442",
+          "type" : "component"
+        } ],
+        "id" : "079be8a0-2362-4a25-83bf-c8de5d6adf0b",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "2d543ae8-553b-4ecf-981e-fdca708660d0",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-recruitment"
+  },
+  "urlName" : "recruitment"
+}

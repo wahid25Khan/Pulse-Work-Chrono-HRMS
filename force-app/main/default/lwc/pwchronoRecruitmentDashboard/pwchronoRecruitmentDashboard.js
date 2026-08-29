@@ -58,9 +58,7 @@ export default class PwchronoRecruitmentDashboard extends LightningElement {
         // Enrich offer status badges
         const enrichedOffers = (result.offersByStatus || []).map((r) => ({
           ...r,
-          badgeClass:
-            OFFER_STATUS_BADGE[r.label] ||
-            "badge bg-secondary-subtle text-secondary"
+          badgeClass: OFFER_STATUS_BADGE[r.label] || "badge bg-secondary-subtle text-secondary"
         }));
         this.data = { ...result, offersByStatus: enrichedOffers };
       })

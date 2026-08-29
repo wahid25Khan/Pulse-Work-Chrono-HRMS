@@ -3,7 +3,10 @@ private class PWChrono_HRDashboardController_Test {
   @IsTest
   static void getDashboardSummary_notNull() {
     Test.startTest();
-    PWChrono_HRDashboardController.HRDashboardDTO dto = PWChrono_HRDashboardController.getDashboardSummary();
+    PWChrono_HRDashboardController.HRDashboardDTO dto = PWChrono_HRDashboardController.getDashboardSummary(
+      null,
+      null
+    );
     Test.stopTest();
 
     System.assertNotEquals(null, dto, 'DTO should not be null');

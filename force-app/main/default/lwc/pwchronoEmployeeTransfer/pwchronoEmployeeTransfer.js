@@ -1,4 +1,5 @@
 import { LightningElement, track } from "lwc";
+import LightningConfirm from "lightning/confirm";
 import { getSession, getSessionToken } from "c/pwchronoSession";
 import { PAGES } from "c/pwchronoRouter";
 
@@ -300,8 +301,12 @@ export default class PwchronoEmployeeTransfer extends LightningElement {
   async handleDelete(evt) {
     const id = evt.currentTarget.dataset.id ?? this.editRecord.Id;
     if (!id) return;
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    if (!confirm("Delete this transfer record? This cannot be undone.")) return;
+    const confirmed = await LightningConfirm.open({
+      message: "Delete this transfer record? This cannot be undone.",
+      label: "Confirm Delete",
+      theme: "warning"
+    });
+    if (!confirmed) return;
     try {
       await deleteTransfer({
         transferId: id,

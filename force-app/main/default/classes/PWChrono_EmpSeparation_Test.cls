@@ -483,4 +483,98 @@ private class PWChrono_EmpSeparation_Test {
     Test.stopTest();
     System.assert(r.size() >= 1);
   }
+
+  @isTest
+  static void testGetSeparations_GuestHrSession() {
+    Portal_Users__c hr = [
+      SELECT Id, Session_Token__c, Session_Expires_At__c
+      FROM Portal_Users__c
+      WHERE Email__c = 'hr@test.com'
+      LIMIT 1
+    ];
+    hr.Session_Token__c = 'guest_separation_token';
+    hr.Session_Expires_At__c = System.now().addHours(1);
+    update hr;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      Test.startTest();
+      List<PWChrono_Employee_Separation__c> results =
+        PWChrono_EmployeeSeparationController.getSeparations(
+          'All',
+          String.valueOf(hr.Id),
+          'guest_separation_token'
+        );
+      Test.stopTest();
+      System.assertEquals(1, results.size());
+    } finally {
+      PWChrono_GuestSession.testUserTypeOverride = null;
+      PWChrono_GuestSession.testNowOverride = null;
+    }
+  }
+
+  @isTest
+  static void testDeleteSeparation_NonPendingThrows() {
+    Portal_Users__c hr = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Email__c = 'hr@test.com'
+      LIMIT 1
+    ];
+    PWChrono_Employee_Separation__c separation = [
+      SELECT Id, Status__c
+      FROM PWChrono_Employee_Separation__c
+      LIMIT 1
+    ];
+    separation.Status__c = 'Completed';
+    update separation;
+
+    Test.startTest();
+    try {
+      PWChrono_EmployeeSeparationController.deleteSeparation(
+        String.valueOf(separation.Id),
+        String.valueOf(hr.Id),
+        null
+      );
+      System.assert(false, 'Only pending separation records should be deletable.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+    Test.stopTest();
+  }
+
+  @isTest
+  static void testMalformedPayloadsThrow() {
+    Portal_Users__c hr = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Name = 'HR Admin'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    try {
+      PWChrono_EmployeeSeparationController.saveSeparation(
+        '{bad json',
+        '[]',
+        hr.Id,
+        null
+      );
+      System.assert(false, 'Malformed separation JSON should throw.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+
+    try {
+      PWChrono_EmployeeSeparationController.saveExitRecord(
+        '{bad json',
+        hr.Id,
+        null
+      );
+      System.assert(false, 'Malformed exit record JSON should throw.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+    Test.stopTest();
+  }
 }

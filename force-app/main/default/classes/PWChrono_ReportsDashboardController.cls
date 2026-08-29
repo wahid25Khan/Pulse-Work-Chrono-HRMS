@@ -347,30 +347,22 @@ public inherited sharing class PWChrono_ReportsDashboardController {
     }
 
     // Get employee counts by department
-    Map<String, Integer> deptMap = new Map<String, Integer>();
-    for (Portal_Users__c pu : [
-      SELECT Departments__c
+    List<AggregateResult> deptCounts = [
+      SELECT Department__c, COUNT(Id) cnt
       FROM Portal_Users__c
       WHERE Is_Active__c = TRUE
-    ]) {
-      if (String.isBlank(pu.Departments__c)) {
-        continue;
-      }
-      String dept = pu.Departments__c;
-      deptMap.put(
-        dept,
-        (deptMap.containsKey(dept) ? deptMap.get(dept) : 0) + 1
-      );
-    }
-    Integer deptLimit = 0;
-    for (String dept : deptMap.keySet()) {
-      if (deptLimit++ >= 8) {
-        break;
-      }
+      GROUP BY Department__c
+      ORDER BY COUNT(Id) DESC
+      LIMIT 8
+    ];
+
+    for (AggregateResult ar : deptCounts) {
       DepartmentBreakdown db = new DepartmentBreakdown();
-      db.department = dept;
-      db.count = deptMap.get(dept);
-      metrics.byDepartment.add(db);
+      db.department = (String) ar.get('Department__c');
+      db.count = (Integer) ar.get('cnt');
+      if (db.department != null) {
+        metrics.byDepartment.add(db);
+      }
     }
 
     return metrics;

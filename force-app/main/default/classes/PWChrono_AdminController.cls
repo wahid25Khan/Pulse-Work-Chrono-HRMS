@@ -2,9 +2,7 @@
  * @description Controller for Admin Settings Panel LWC
  * @author PWChrono Team
  */
-@SuppressWarnings(
-  'PMD.ApexCRUDViolation,PMD.ExcessiveClassLength,PMD.CognitiveComplexity,PMD.ExcessivePublicCount'
-)
+@SuppressWarnings('PMD.ApexCRUDViolation,PMD.ExcessiveClassLength,PMD.CognitiveComplexity,PMD.ExcessivePublicCount')
 public inherited sharing class PWChrono_AdminController {
   // --- Guest portal authorization helpers (Admin Settings) ---
   // The portal runs in Guest runtime with a server-issued session token.
@@ -615,7 +613,7 @@ public inherited sharing class PWChrono_AdminController {
           To_Time__c,
           Employee__r.Name,
           Employee__r.Designation__c,
-          Employee__r.Departments__c,
+          Employee__r.Department__c,
           Employee__r.Photo_Url__c,
           CreatedDate
         FROM PWChrono_Attendance_Request__c
@@ -1019,7 +1017,7 @@ public inherited sharing class PWChrono_AdminController {
   ) {
     try {
       return [
-        SELECT Id, Name, Designation__c, Departments__c, Photo_Url__c
+        SELECT Id, Name, Designation__c, Department__c, Photo_Url__c
         FROM Portal_Users__c
         WHERE Is_Active__c = TRUE
         ORDER BY Name ASC
@@ -1408,7 +1406,7 @@ public inherited sharing class PWChrono_AdminController {
           Name,
           Email__c,
           Designation__c,
-          Departments__c,
+          Department__c,
           Photo_Url__c,
           CreatedDate
         FROM Portal_Users__c
@@ -1490,26 +1488,22 @@ public inherited sharing class PWChrono_AdminController {
     try {
       List<ChartPoint> out = new List<ChartPoint>();
 
-      Map<String, Integer> deptMap = new Map<String, Integer>();
-      for (Portal_Users__c pu : [
-        SELECT Departments__c
+      for (AggregateResult ar : [
+        SELECT Department__c dept, COUNT(Id) cnt
         FROM Portal_Users__c
         WHERE Is_Active__c = TRUE
+        GROUP BY Department__c
+        ORDER BY COUNT(Id) DESC
+        LIMIT 10
       ]) {
-        String dept = String.isBlank(pu.Departments__c)
-          ? 'Unassigned'
-          : pu.Departments__c;
-        deptMap.put(
-          dept,
-          (deptMap.containsKey(dept) ? deptMap.get(dept) : 0) + 1
+        String dept = (String) ar.get('dept');
+        Integer cnt = (Integer) ar.get('cnt');
+        out.add(
+          new ChartPoint(
+            (dept == null ? 'Unassigned' : dept),
+            (cnt == null ? 0 : cnt)
+          )
         );
-      }
-      Integer deptLimit = 0;
-      for (String dept : deptMap.keySet()) {
-        if (deptLimit++ >= 10) {
-          break;
-        }
-        out.add(new ChartPoint(dept, deptMap.get(dept)));
       }
 
       return out;

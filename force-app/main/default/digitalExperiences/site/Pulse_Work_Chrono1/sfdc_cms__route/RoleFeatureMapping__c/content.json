@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Role Feature Mapping",
+  "contentBody" : {
+    "activeViewId" : "Role_Feature_Mapping",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-role-feature-mapping",
+    "urlPrefix" : "role-feature-mapping"
+  },
+  "urlName" : "role-feature-mapping"
+}

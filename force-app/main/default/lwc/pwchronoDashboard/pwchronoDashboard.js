@@ -53,9 +53,7 @@ export default class PwchronoDashboard extends NavigationMixin(
           leaveBalance: data.leaveBalance || [],
           pendingApprovals: data.pendingApprovals || { total: 0 },
           upcomingShifts: (data.upcomingShifts || []).map((shift) => {
-            const shiftDate = shift.From_Date__c
-              ? new Date(shift.From_Date__c)
-              : null;
+            const shiftDate = shift.From_Date__c ? new Date(shift.From_Date__c) : null;
             return {
               ...shift,
               shiftName: shift.Shift_Type__r?.Name || "Unnamed",

@@ -140,6 +140,7 @@ public inherited sharing class PWChrono_ExpenseSelector {
         Name,
         Employees__c,
         Employees__r.Name,
+        Approvers__c,
         Claim_Date__c,
         Description__c,
         Total_Amount__c,

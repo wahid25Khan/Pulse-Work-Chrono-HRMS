@@ -2,13 +2,10 @@
   <div class="pwchrono-career-portal">
     <!-- Header -->
     <div class="page-header mb-4">
-      <div
-        class="d-flex align-items-center justify-content-between flex-wrap gap-2"
-      >
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div>
           <h4 class="mb-1 fw-semibold">
-            <i class="fa-solid fa-briefcase fa-fw me-2 text-primary"></i>Career
-            Portal
+            <i class="fa-solid fa-briefcase fa-fw me-2 text-primary"></i>Career Portal
           </h4>
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 small">
@@ -55,9 +52,7 @@
             </select>
           </div>
           <div class="col-6 col-md-2">
-            <label class="form-label small fw-semibold mb-1"
-              >Employment Type</label
-            >
+            <label class="form-label small fw-semibold mb-1">Employment Type</label>
             <select
               class="form-select form-select-sm"
               value={filters.employmentType}
@@ -98,10 +93,7 @@
           <button class="btn btn-primary btn-sm" onclick={handleSearch}>
             <i class="fa-solid fa-magnifying-glass fa-fw me-1"></i>Search
           </button>
-          <button
-            class="btn btn-outline-secondary btn-sm"
-            onclick={handleClearFilters}
-          >
+          <button class="btn btn-outline-secondary btn-sm" onclick={handleClearFilters}>
             <i class="fa-solid fa-rotate-left fa-fw me-1"></i>Clear
           </button>
         </div>
@@ -140,39 +132,26 @@
             <div key={job.Id} class="col-12 col-md-6 col-lg-4">
               <div class="card h-100 border-0 shadow-sm job-card">
                 <div class="card-body d-flex flex-column">
-                  <div
-                    class="d-flex justify-content-between align-items-start mb-2"
-                  >
-                    <span class={job.employmentTypeBadge}
-                      >{job.Employment_Type__c}</span
-                    >
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class={job.employmentTypeBadge}>{job.Employment_Type__c}</span>
                     <small class="text-muted">
-                      <i class="fa-regular fa-calendar fa-fw me-1"></i
-                      >{job.formattedClosingDate}
+                      <i class="fa-regular fa-calendar fa-fw me-1"></i>{job.formattedClosingDate}
                     </small>
                   </div>
                   <h6 class="fw-semibold mb-1">{job.Name}</h6>
                   <p class="text-muted small mb-1">
-                    <i class="fa-solid fa-building fa-fw me-1"></i
-                    >{job.Company__c}
+                    <i class="fa-solid fa-building fa-fw me-1"></i>{job.Company__c}
                   </p>
                   <p class="text-muted small mb-1">
-                    <i class="fa-solid fa-layer-group fa-fw me-1"></i
-                    >{job.departmentName}
+                    <i class="fa-solid fa-layer-group fa-fw me-1"></i>{job.departmentName}
                   </p>
                   <p class="text-muted small mb-2">
-                    <i class="fa-solid fa-location-dot fa-fw me-1"></i
-                    >{job.Location__c}
+                    <i class="fa-solid fa-location-dot fa-fw me-1"></i>{job.Location__c}
                   </p>
-                  <p class="text-muted small flex-grow-1 description-preview">
-                    {job.descriptionPreview}
-                  </p>
-                  <div
-                    class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"
-                  >
+                  <p class="text-muted small flex-grow-1 description-preview">{job.descriptionPreview}</p>
+                  <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
                     <small class="text-muted">
-                      <i class="fa-solid fa-user-group fa-fw me-1"></i
-                      >{job.No_of_Positions__c} position{job.positionsPlural}
+                      <i class="fa-solid fa-user-group fa-fw me-1"></i>{job.No_of_Positions__c} position{job.positionsPlural}
                     </small>
                     <button
                       class="btn btn-primary btn-sm"
@@ -192,24 +171,15 @@
 
     <!-- Job Detail Modal -->
     <template if:true={isDetailOpen}>
-      <div
-        class="modal fade show d-block"
-        tabindex="-1"
-        role="dialog"
-        style="background: rgba(0, 0, 0, 0.5)"
-      >
+      <div class="modal fade show d-block" tabindex="-1" role="dialog"
+           style="background:rgba(0,0,0,0.5)">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
           <div class="modal-content border-0 shadow">
             <div class="modal-header">
               <h5 class="modal-title fw-semibold">
-                <i class="fa-solid fa-briefcase fa-fw me-2 text-primary"></i
-                >{selectedJob.Name}
+                <i class="fa-solid fa-briefcase fa-fw me-2 text-primary"></i>{selectedJob.Name}
               </h5>
-              <button
-                type="button"
-                class="btn-close"
-                onclick={handleCloseDetail}
-              ></button>
+              <button type="button" class="btn-close" onclick={handleCloseDetail}></button>
             </div>
             <div class="modal-body">
               <div class="row g-3 mb-3">
@@ -219,9 +189,7 @@
                 </div>
                 <div class="col-6 col-md-3">
                   <div class="small text-muted">Department</div>
-                  <div class="fw-semibold small">
-                    {selectedJob.departmentName}
-                  </div>
+                  <div class="fw-semibold small">{selectedJob.departmentName}</div>
                 </div>
                 <div class="col-6 col-md-3">
                   <div class="small text-muted">Location</div>
@@ -229,47 +197,27 @@
                 </div>
                 <div class="col-6 col-md-3">
                   <div class="small text-muted">Employment Type</div>
-                  <div class="fw-semibold small">
-                    {selectedJob.Employment_Type__c}
-                  </div>
+                  <div class="fw-semibold small">{selectedJob.Employment_Type__c}</div>
                 </div>
                 <div class="col-6 col-md-3">
                   <div class="small text-muted">Designation</div>
-                  <div class="fw-semibold small">
-                    {selectedJob.designationName}
-                  </div>
+                  <div class="fw-semibold small">{selectedJob.designationName}</div>
                 </div>
                 <div class="col-6 col-md-3">
                   <div class="small text-muted">Positions</div>
-                  <div class="fw-semibold small">
-                    {selectedJob.No_of_Positions__c}
-                  </div>
+                  <div class="fw-semibold small">{selectedJob.No_of_Positions__c}</div>
                 </div>
                 <div class="col-6 col-md-3">
                   <div class="small text-muted">Closing Date</div>
-                  <div class="fw-semibold small">
-                    {selectedJob.formattedClosingDate}
-                  </div>
+                  <div class="fw-semibold small">{selectedJob.formattedClosingDate}</div>
                 </div>
               </div>
               <h6 class="fw-semibold mb-2">Job Description</h6>
-              <p class="text-muted small" style="white-space: pre-wrap">
-                {selectedJob.Job_Description__c}
-              </p>
+              <p class="text-muted small" style="white-space:pre-wrap">{selectedJob.Job_Description__c}</p>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-outline-secondary btn-sm"
-                onclick={handleCloseDetail}
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary btn-sm"
-                onclick={handleOpenApply}
-              >
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick={handleCloseDetail}>Close</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick={handleOpenApply}>
                 <i class="fa-solid fa-paper-plane fa-fw me-1"></i>Apply Now
               </button>
             </div>
@@ -280,32 +228,21 @@
 
     <!-- Apply Modal -->
     <template if:true={isApplyOpen}>
-      <div
-        class="modal fade show d-block"
-        tabindex="-1"
-        role="dialog"
-        style="background: rgba(0, 0, 0, 0.5)"
-      >
+      <div class="modal fade show d-block" tabindex="-1" role="dialog"
+           style="background:rgba(0,0,0,0.5)">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
           <div class="modal-content border-0 shadow">
             <div class="modal-header">
               <h5 class="modal-title fw-semibold">
-                <i class="fa-solid fa-paper-plane fa-fw me-2 text-primary"></i
-                >Apply — {selectedJob.Name}
+                <i class="fa-solid fa-paper-plane fa-fw me-2 text-primary"></i>Apply — {selectedJob.Name}
               </h5>
-              <button
-                type="button"
-                class="btn-close"
-                onclick={handleCloseApply}
-              ></button>
+              <button type="button" class="btn-close" onclick={handleCloseApply}></button>
             </div>
             <div class="modal-body">
               <div class="row g-3">
                 <!-- Applicant Name -->
                 <div class="col-12 col-md-6">
-                  <label class="form-label small fw-semibold"
-                    >Applicant Name <span class="text-danger">*</span></label
-                  >
+                  <label class="form-label small fw-semibold">Applicant Name <span class="text-danger">*</span></label>
                   <input
                     type="text"
                     class="form-control form-control-sm"
@@ -317,9 +254,7 @@
                 </div>
                 <!-- Email -->
                 <div class="col-12 col-md-6">
-                  <label class="form-label small fw-semibold"
-                    >Email Address <span class="text-danger">*</span></label
-                  >
+                  <label class="form-label small fw-semibold">Email Address <span class="text-danger">*</span></label>
                   <input
                     type="email"
                     class="form-control form-control-sm"
@@ -331,9 +266,7 @@
                 </div>
                 <!-- Phone -->
                 <div class="col-12 col-md-6">
-                  <label class="form-label small fw-semibold"
-                    >Phone Number</label
-                  >
+                  <label class="form-label small fw-semibold">Phone Number</label>
                   <input
                     type="tel"
                     class="form-control form-control-sm"
@@ -345,9 +278,7 @@
                 </div>
                 <!-- Country -->
                 <div class="col-12 col-md-6">
-                  <label class="form-label small fw-semibold"
-                    >Country of Residence</label
-                  >
+                  <label class="form-label small fw-semibold">Country of Residence</label>
                   <input
                     type="text"
                     class="form-control form-control-sm"
@@ -376,9 +307,7 @@
                 </div>
                 <!-- Expected Salary -->
                 <div class="col-12 col-md-6">
-                  <label class="form-label small fw-semibold"
-                    >Expected Salary</label
-                  >
+                  <label class="form-label small fw-semibold">Expected Salary</label>
                   <input
                     type="number"
                     class="form-control form-control-sm"
@@ -391,9 +320,7 @@
                 </div>
                 <!-- Salary Range -->
                 <div class="col-6">
-                  <label class="form-label small fw-semibold"
-                    >Lower Salary Range</label
-                  >
+                  <label class="form-label small fw-semibold">Lower Salary Range</label>
                   <input
                     type="number"
                     class="form-control form-control-sm"
@@ -405,9 +332,7 @@
                   />
                 </div>
                 <div class="col-6">
-                  <label class="form-label small fw-semibold"
-                    >Upper Salary Range</label
-                  >
+                  <label class="form-label small fw-semibold">Upper Salary Range</label>
                   <input
                     type="number"
                     class="form-control form-control-sm"
@@ -420,9 +345,7 @@
                 </div>
                 <!-- Resume Link -->
                 <div class="col-12">
-                  <label class="form-label small fw-semibold"
-                    >Resume Link</label
-                  >
+                  <label class="form-label small fw-semibold">Resume Link</label>
                   <input
                     type="url"
                     class="form-control form-control-sm"
@@ -434,9 +357,7 @@
                 </div>
                 <!-- Cover Letter -->
                 <div class="col-12">
-                  <label class="form-label small fw-semibold"
-                    >Cover Letter</label
-                  >
+                  <label class="form-label small fw-semibold">Cover Letter</label>
                   <textarea
                     class="form-control form-control-sm"
                     rows="5"
@@ -451,36 +372,21 @@
               <!-- Error -->
               <template if:true={applyError}>
                 <div class="alert alert-danger mt-3 py-2 small" role="alert">
-                  <i class="fa-solid fa-circle-exclamation fa-fw me-1"></i
-                  >{applyError}
+                  <i class="fa-solid fa-circle-exclamation fa-fw me-1"></i>{applyError}
                 </div>
               </template>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-outline-secondary btn-sm"
-                onclick={handleCloseApply}
-                disabled={isSubmitting}
-              >
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick={handleCloseApply} disabled={isSubmitting}>
                 Cancel
               </button>
-              <button
-                type="button"
-                class="btn btn-primary btn-sm"
-                onclick={handleSubmitApplication}
-                disabled={isSubmitting}
-              >
+              <button type="button" class="btn btn-primary btn-sm" onclick={handleSubmitApplication} disabled={isSubmitting}>
                 <template if:true={isSubmitting}>
-                  <span
-                    class="spinner-border spinner-border-sm me-1"
-                    role="status"
-                  ></span>
+                  <span class="spinner-border spinner-border-sm me-1" role="status"></span>
                   Submitting...
                 </template>
                 <template if:false={isSubmitting}>
-                  <i class="fa-solid fa-paper-plane fa-fw me-1"></i>Submit
-                  Application
+                  <i class="fa-solid fa-paper-plane fa-fw me-1"></i>Submit Application
                 </template>
               </button>
             </div>
@@ -491,21 +397,15 @@
 
     <!-- Success Toast -->
     <template if:true={showSuccessToast}>
-      <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
-        <div
-          class="toast show align-items-center text-bg-success border-0"
-          role="alert"
-        >
+      <div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+        <div class="toast show align-items-center text-bg-success border-0" role="alert">
           <div class="d-flex">
             <div class="toast-body">
               <i class="fa-solid fa-circle-check fa-fw me-2"></i>
               Application submitted successfully! We'll be in touch.
             </div>
-            <button
-              type="button"
-              class="btn-close btn-close-white me-2 m-auto"
-              onclick={handleDismissToast}
-            ></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    onclick={handleDismissToast}></button>
           </div>
         </div>
       </div>

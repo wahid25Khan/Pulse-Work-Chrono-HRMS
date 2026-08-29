@@ -9,6 +9,7 @@ public class PWChrono_ExpenseTestDataFactory {
   public static Portal_Users__c createEmployee(String name, Boolean isActive) {
     Portal_Users__c emp = new Portal_Users__c(
       Name = name,
+      Email__c = name.deleteWhitespace().toLowerCase() + '@example.com',
       Is_Active__c = isActive,
       Role__c = 'Employee',
       Date_Of_Joining__c = Date.today().addYears(-1)

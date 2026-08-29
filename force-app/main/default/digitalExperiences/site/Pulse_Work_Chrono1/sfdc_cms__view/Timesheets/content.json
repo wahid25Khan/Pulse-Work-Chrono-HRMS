@@ -1,0 +1,71 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Timesheets",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"fcecad27-6f1b-4cfc-8e3f-5905366c81ea\",\"columns\":[{\"UUID\":\"312b0528-c4d1-4ae5-afd5-fa40f19c72d0\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoTimesheets",
+              "id" : "879db151-f6b2-46c3-b7f6-ead269db9345",
+              "type" : "component"
+            } ],
+            "id" : "312b0528-c4d1-4ae5-afd5-fa40f19c72d0",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "fcecad27-6f1b-4cfc-8e3f-5905366c81ea",
+          "type" : "component"
+        } ],
+        "id" : "2ed71628-bbd1-4dfb-aacf-5c778e47e3bb",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Timesheets",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "183f8515-626d-4063-a205-aa6b9ac74115",
+          "type" : "component"
+        } ],
+        "id" : "a0e2e850-16d7-453b-aa58-596d0ea36b16",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "676be12c-8728-4f68-989a-33c49a00be7f",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-timesheets"
+  },
+  "urlName" : "timesheets"
+}

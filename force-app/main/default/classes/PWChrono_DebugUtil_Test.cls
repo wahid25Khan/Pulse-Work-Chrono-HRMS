@@ -70,7 +70,7 @@ private class PWChrono_DebugUtil_Test {
 
   @isTest
   static void testGetTestUsers_ReturnsMaskedUserData() {
-    User testUser = [SELECT Id FROM User WHERE Alias = 'tuser' LIMIT 1];
+    User testUser = [SELECT Id FROM User WHERE Alias = 'admin' LIMIT 1];
 
     System.runAs(testUser) {
       Test.startTest();

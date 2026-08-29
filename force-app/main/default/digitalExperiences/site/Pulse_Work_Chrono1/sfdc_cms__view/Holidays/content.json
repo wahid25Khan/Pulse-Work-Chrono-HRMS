@@ -1,0 +1,71 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Holidays",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"84bf3e18-4f5d-434d-83c1-19407c0a6023\",\"columns\":[{\"UUID\":\"ba13aacb-9e9f-4bc4-9368-741461bbee41\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoHolidayCalendar",
+              "id" : "a86b2c50-6156-4d7a-9acf-9855c1bc6cae",
+              "type" : "component"
+            } ],
+            "id" : "ba13aacb-9e9f-4bc4-9368-741461bbee41",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "84bf3e18-4f5d-434d-83c1-19407c0a6023",
+          "type" : "component"
+        } ],
+        "id" : "bad65706-2811-4fa1-8909-18faa8222a94",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Holidays",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "eede96aa-d5e3-48ee-80fd-49fef751c183",
+          "type" : "component"
+        } ],
+        "id" : "52432c17-246e-43e2-b2d0-2381d9a97b9e",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "6aa0cf19-4204-4826-b590-f504fb16d96d",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-holidays"
+  },
+  "urlName" : "holidays"
+}

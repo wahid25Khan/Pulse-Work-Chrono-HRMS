@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Policies",
+  "contentBody" : {
+    "activeViewId" : "Policies",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-policies",
+    "urlPrefix" : "policies"
+  },
+  "urlName" : "policies"
+}

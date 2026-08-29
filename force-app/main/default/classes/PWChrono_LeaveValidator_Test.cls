@@ -6,24 +6,21 @@
 @SuppressWarnings('PMD.MethodNamingConventions')
 @IsTest
 private class PWChrono_LeaveValidator_Test {
+
   @TestSetup
   static void setupTestData() {
     PWChrono_LeaveTestDataFactory.setupStandardTestData();
   }
 
   static PWChrono_LeaveTestDataFactory.TestDataBundle getBundle() {
-    PWChrono_LeaveTestDataFactory.TestDataBundle bundle = new PWChrono_LeaveTestDataFactory.TestDataBundle();
+    PWChrono_LeaveTestDataFactory.TestDataBundle bundle =
+      new PWChrono_LeaveTestDataFactory.TestDataBundle();
     bundle.employee = [
-      SELECT Id, Name
-      FROM Portal_Users__c
-      WHERE Name = 'Test Employee'
-      LIMIT 1
+      SELECT Id, Name FROM Portal_Users__c WHERE Name = 'Test Employee' LIMIT 1
     ];
     bundle.annualLeave = [
       SELECT Id, Name, Max_Days_Allowed__c
-      FROM PWChrono_Leave_Type__c
-      WHERE Name = 'Annual Leave'
-      LIMIT 1
+      FROM PWChrono_Leave_Type__c WHERE Name = 'Annual Leave' LIMIT 1
     ];
     return bundle;
   }
@@ -35,9 +32,7 @@ private class PWChrono_LeaveValidator_Test {
     PWChrono_LeaveTestDataFactory.TestDataBundle b = getBundle();
 
     Test.startTest();
-    String error = PWChrono_RequestValidator.validateActiveEmployee(
-      b.employee.Id
-    );
+    String error = PWChrono_RequestValidator.validateActiveEmployee(b.employee.Id);
     Test.stopTest();
 
     System.assertEquals(null, error, 'Active employee should pass validation');
@@ -46,14 +41,11 @@ private class PWChrono_LeaveValidator_Test {
   @IsTest
   static void testValidateActiveEmployee_Inactive() {
     Portal_Users__c inactive = PWChrono_LeaveTestDataFactory.createEmployee(
-      'Inactive User',
-      false
+      'Inactive User', false
     );
 
     Test.startTest();
-    String error = PWChrono_RequestValidator.validateActiveEmployee(
-      inactive.Id
-    );
+    String error = PWChrono_RequestValidator.validateActiveEmployee(inactive.Id);
     Test.stopTest();
 
     System.assertNotEquals(null, error, 'Inactive employee should fail');
@@ -73,8 +65,7 @@ private class PWChrono_LeaveValidator_Test {
   @IsTest
   static void testValidateDateRange_Valid() {
     String error = PWChrono_RequestValidator.validateDateRange(
-      Date.today(),
-      Date.today().addDays(3)
+      Date.today(), Date.today().addDays(3)
     );
     System.assertEquals(null, error, 'Valid range should pass');
   }
@@ -82,35 +73,27 @@ private class PWChrono_LeaveValidator_Test {
   @IsTest
   static void testValidateDateRange_EndBeforeStart() {
     String error = PWChrono_RequestValidator.validateDateRange(
-      Date.today().addDays(3),
-      Date.today()
+      Date.today().addDays(3), Date.today()
     );
     System.assertNotEquals(null, error, 'Invalid range should fail');
   }
 
   @IsTest
   static void testValidateDateRange_NullStart() {
-    String error = PWChrono_RequestValidator.validateDateRange(
-      null,
-      Date.today()
-    );
+    String error = PWChrono_RequestValidator.validateDateRange(null, Date.today());
     System.assertNotEquals(null, error, 'Null start should fail');
   }
 
   @IsTest
   static void testValidateDateRange_NullEnd() {
-    String error = PWChrono_RequestValidator.validateDateRange(
-      Date.today(),
-      null
-    );
+    String error = PWChrono_RequestValidator.validateDateRange(Date.today(), null);
     System.assertNotEquals(null, error, 'Null end should fail');
   }
 
   @IsTest
   static void testValidateBackdatedLimit_Valid() {
     String error = PWChrono_RequestValidator.validateBackdatedLimit(
-      Date.today().addDays(-3),
-      7
+      Date.today().addDays(-3), 7
     );
     System.assertEquals(null, error, 'Within limit should pass');
   }
@@ -118,8 +101,7 @@ private class PWChrono_LeaveValidator_Test {
   @IsTest
   static void testValidateBackdatedLimit_TooFarBack() {
     String error = PWChrono_RequestValidator.validateBackdatedLimit(
-      Date.today().addDays(-30),
-      7
+      Date.today().addDays(-30), 7
     );
     System.assertNotEquals(null, error, 'Beyond limit should fail');
   }
@@ -127,8 +109,7 @@ private class PWChrono_LeaveValidator_Test {
   @IsTest
   static void testValidateAdvanceLimit_Valid() {
     String error = PWChrono_RequestValidator.validateAdvanceLimit(
-      Date.today().addDays(10),
-      30
+      Date.today().addDays(10), 30
     );
     System.assertEquals(null, error, 'Within limit should pass');
   }
@@ -136,8 +117,7 @@ private class PWChrono_LeaveValidator_Test {
   @IsTest
   static void testValidateAdvanceLimit_TooFarAhead() {
     String error = PWChrono_RequestValidator.validateAdvanceLimit(
-      Date.today().addDays(60),
-      30
+      Date.today().addDays(60), 30
     );
     System.assertNotEquals(null, error, 'Beyond limit should fail');
   }
@@ -146,83 +126,47 @@ private class PWChrono_LeaveValidator_Test {
 
   @IsTest
   static void testStatusTransitions() {
-    System.assertEquals(
-      true,
-      PWChrono_RequestValidator.isValidStatusTransition('Draft', 'Submitted')
-    );
-    System.assertEquals(
-      true,
-      PWChrono_RequestValidator.isValidStatusTransition('Draft', 'Cancelled')
-    );
-    System.assertEquals(
-      true,
-      PWChrono_RequestValidator.isValidStatusTransition('Submitted', 'Approved')
-    );
-    System.assertEquals(
-      true,
-      PWChrono_RequestValidator.isValidStatusTransition('Submitted', 'Rejected')
-    );
-    System.assertEquals(
-      true,
-      PWChrono_RequestValidator.isValidStatusTransition(
-        'Submitted',
-        'Cancelled'
-      )
-    );
-    System.assertEquals(
-      true,
-      PWChrono_RequestValidator.isValidStatusTransition('Approved', 'Cancelled')
-    );
-    System.assertEquals(
-      true,
-      PWChrono_RequestValidator.isValidStatusTransition('Rejected', 'Draft')
-    );
+    System.assertEquals(true,
+      PWChrono_RequestValidator.isValidStatusTransition('Draft', 'Submitted'));
+    System.assertEquals(true,
+      PWChrono_RequestValidator.isValidStatusTransition('Draft', 'Cancelled'));
+    System.assertEquals(true,
+      PWChrono_RequestValidator.isValidStatusTransition('Submitted', 'Approved'));
+    System.assertEquals(true,
+      PWChrono_RequestValidator.isValidStatusTransition('Submitted', 'Rejected'));
+    System.assertEquals(true,
+      PWChrono_RequestValidator.isValidStatusTransition('Submitted', 'Cancelled'));
+    System.assertEquals(true,
+      PWChrono_RequestValidator.isValidStatusTransition('Approved', 'Cancelled'));
+    System.assertEquals(true,
+      PWChrono_RequestValidator.isValidStatusTransition('Rejected', 'Draft'));
 
     // Invalid transitions
-    System.assertEquals(
-      false,
-      PWChrono_RequestValidator.isValidStatusTransition(
-        'Cancelled',
-        'Submitted'
-      )
-    );
-    System.assertEquals(
-      false,
-      PWChrono_RequestValidator.isValidStatusTransition('Approved', 'Rejected')
-    );
-    System.assertEquals(
-      false,
-      PWChrono_RequestValidator.isValidStatusTransition('Rejected', 'Approved')
-    );
-    System.assertEquals(
-      false,
-      PWChrono_RequestValidator.isValidStatusTransition(null, 'Submitted')
-    );
-    System.assertEquals(
-      false,
-      PWChrono_RequestValidator.isValidStatusTransition('Submitted', null)
-    );
+    System.assertEquals(false,
+      PWChrono_RequestValidator.isValidStatusTransition('Cancelled', 'Submitted'));
+    System.assertEquals(false,
+      PWChrono_RequestValidator.isValidStatusTransition('Approved', 'Rejected'));
+    System.assertEquals(false,
+      PWChrono_RequestValidator.isValidStatusTransition('Rejected', 'Approved'));
+    System.assertEquals(false,
+      PWChrono_RequestValidator.isValidStatusTransition(null, 'Submitted'));
+    System.assertEquals(false,
+      PWChrono_RequestValidator.isValidStatusTransition('Submitted', null));
   }
 
   @IsTest
   static void testValidateStatusTransition_Error() {
     String error = PWChrono_RequestValidator.validateStatusTransition(
-      'Cancelled',
-      'Submitted'
+      'Cancelled', 'Submitted'
     );
-    System.assertNotEquals(
-      null,
-      error,
-      'Invalid transition should return error'
-    );
+    System.assertNotEquals(null, error, 'Invalid transition should return error');
     System.assert(error.contains('Invalid status transition'));
   }
 
   @IsTest
   static void testValidateStatusTransition_Valid() {
     String error = PWChrono_RequestValidator.validateStatusTransition(
-      'Submitted',
-      'Approved'
+      'Submitted', 'Approved'
     );
     System.assertEquals(null, error, 'Valid transition should return null');
   }
@@ -244,11 +188,8 @@ private class PWChrono_LeaveValidator_Test {
     List<String> errors = PWChrono_LeaveValidator.validate(dto, b.employee.Id);
     Test.stopTest();
 
-    System.assertEquals(
-      0,
-      errors.size(),
-      'Valid DTO should produce 0 errors. Got: ' + String.join(errors, ' | ')
-    );
+    System.assertEquals(0, errors.size(),
+      'Valid DTO should produce 0 errors. Got: ' + String.join(errors, ' | '));
   }
 
   @IsTest
@@ -293,8 +234,7 @@ private class PWChrono_LeaveValidator_Test {
     PWChrono_LeaveTestDataFactory.TestDataBundle b = getBundle();
 
     Id result = PWChrono_RequestValidator.enforceDataAccess(
-      b.employee.Id,
-      b.employee.Id
+      b.employee.Id, b.employee.Id
     );
     System.assertEquals(b.employee.Id, result, 'Own data should return own Id');
   }
@@ -304,13 +244,8 @@ private class PWChrono_LeaveValidator_Test {
     PWChrono_LeaveTestDataFactory.TestDataBundle b = getBundle();
 
     Id result = PWChrono_RequestValidator.enforceDataAccess(
-      b.employee.Id,
-      null
+      b.employee.Id, null
     );
-    System.assertEquals(
-      b.employee.Id,
-      result,
-      'Null target should return own Id'
-    );
+    System.assertEquals(b.employee.Id, result, 'Null target should return own Id');
   }
 }

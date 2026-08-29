@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Timesheets",
+  "contentBody" : {
+    "activeViewId" : "Timesheets",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-timesheets",
+    "urlPrefix" : "timesheets"
+  },
+  "urlName" : "timesheets"
+}

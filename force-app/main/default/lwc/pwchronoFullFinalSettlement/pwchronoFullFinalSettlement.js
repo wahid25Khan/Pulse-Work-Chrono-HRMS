@@ -1,4 +1,5 @@
 import { LightningElement, track } from "lwc";
+import LightningConfirm from "lightning/confirm";
 import { getSession, getSessionToken } from "c/pwchronoSession";
 import { PAGES } from "c/pwchronoRouter";
 import getSettlements from "@salesforce/apex/PWChrono_FullFinalSettlementController.getSettlements";
@@ -315,12 +316,14 @@ export default class PwchronoFullFinalSettlement extends LightningElement {
 
   // ─── Delete ───────────────────────────────────────────────────────────────
 
-  handleDelete(event) {
+  async handleDelete(event) {
     const id = event.currentTarget.dataset.id;
-    if (
-      !window.confirm("Delete this settlement? This action cannot be undone.")
-    )
-      return; // eslint-disable-line no-alert
+    const confirmed = await LightningConfirm.open({
+      message: "Delete this settlement? This action cannot be undone.",
+      label: "Confirm Delete",
+      theme: "warning"
+    });
+    if (!confirmed) return;
     const puid = this._session ? this._session.portalUserId : "";
     const tok = getSessionToken();
     deleteSettlement({
@@ -421,14 +424,22 @@ export default class PwchronoFullFinalSettlement extends LightningElement {
     const puid = this._session ? this._session.portalUserId : "";
     const tok = getSessionToken();
 
-    // Strip _key and _status* helpers before serializing
-    const cleanPayables = this.payableLines.map(
-      ({ _key, _statusPending, _statusPaid, _statusWaived, ...rest }) => rest
-    ); // eslint-disable-line no-unused-vars
-    const cleanReceivables = this.receivableLines.map(
-      ({ _key, _statusPending, _statusRecovered, _statusWaived, ...rest }) =>
-        rest
-    ); // eslint-disable-line no-unused-vars
+    const cleanPayables = this.payableLines.map((line) =>
+      stripClientFields(line, [
+        "_key",
+        "_statusPending",
+        "_statusPaid",
+        "_statusWaived"
+      ])
+    );
+    const cleanReceivables = this.receivableLines.map((line) =>
+      stripClientFields(line, [
+        "_key",
+        "_statusPending",
+        "_statusRecovered",
+        "_statusWaived"
+      ])
+    );
 
     saveSettlement({
       settlementJson: JSON.stringify(this.currentRecord),
@@ -453,4 +464,12 @@ export default class PwchronoFullFinalSettlement extends LightningElement {
   handleModalClose() {
     this.showModal = false;
   }
+}
+
+function stripClientFields(record, fields) {
+  const cleanRecord = { ...record };
+  fields.forEach((field) => {
+    delete cleanRecord[field];
+  });
+  return cleanRecord;
 }

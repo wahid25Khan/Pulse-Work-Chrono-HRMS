@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Employee Dashboard",
+  "contentBody" : {
+    "activeViewId" : "Employee_Dashboard",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-employee-dashboard",
+    "urlPrefix" : "employee-dashboard"
+  },
+  "urlName" : "employee-dashboard"
+}

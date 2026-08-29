@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
         <name>Send_Expense_Approval_Email</name>
@@ -11,8 +11,7 @@
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <elementReference
-        >$Record.Employees__r.Email__c</elementReference>
+                <elementReference>$Record.Employees__r.Email__c</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -24,8 +23,7 @@
         <inputParameters>
             <name>emailBody</name>
             <value>
-                <stringValue
-        >Your expense claim for {!$Record.Total_Amount__c} has been approved and will be processed in the next payroll cycle.</stringValue>
+                <stringValue>Your expense claim for {!$Record.Total_Amount__c} has been approved and will be processed in the next payroll cycle.</stringValue>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
@@ -33,8 +31,7 @@
     <apiVersion>65.0</apiVersion>
     <description>Notify employee when expense claim is approved</description>
     <environments>Default</environments>
-    <interviewLabel
-  >Expense Approval Notification {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>Expense Approval Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Expense Approval Notification</label>
     <processMetadataValues>
         <name>BuilderType</name>

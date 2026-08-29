@@ -64,7 +64,9 @@ export default class PwchronoFileUploadPanel extends LightningElement {
 
   handleRemoveFile(event) {
     const fileId = event.currentTarget.dataset.id;
-    this.dispatchEvent(new CustomEvent("removefile", { detail: { fileId } }));
+    this.dispatchEvent(
+      new CustomEvent("removefile", { detail: { fileId } })
+    );
   }
 
   _processFiles(fileList) {

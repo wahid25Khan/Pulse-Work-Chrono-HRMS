@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Expenses",
+  "contentBody" : {
+    "activeViewId" : "Expenses",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-expenses",
+    "urlPrefix" : "expenses"
+  },
+  "urlName" : "expenses"
+}

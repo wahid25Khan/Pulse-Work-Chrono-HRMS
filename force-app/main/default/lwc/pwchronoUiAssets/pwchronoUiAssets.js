@@ -59,10 +59,12 @@ export default class PwchronoUiAssets extends LightningElement {
 
     // Always chain onto the in-flight promise so THIS instance fires assetsready
     // once loading completes — even if another instance started the load.
-    globalThis[GLOBAL_PROMISE_KEY].then(() => {
-      this.notifyReady();
-    }).catch(() => {
-      this.notifyReady();
-    });
+    globalThis[GLOBAL_PROMISE_KEY]
+      .then(() => {
+        this.notifyReady();
+      })
+      .catch(() => {
+        this.notifyReady();
+      });
   }
 }

@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "WFH Management",
+  "contentBody" : {
+    "activeViewId" : "WFH_Management",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-wfh-management",
+    "urlPrefix" : "wfh-management"
+  },
+  "urlName" : "wfh-management"
+}

@@ -40,15 +40,11 @@ export default class PwchronoRequestActionBar extends LightningElement {
   // ── Modal Computed ──
 
   get modalTitle() {
-    return this.pendingAction === "Reject"
-      ? "Reject Request"
-      : "Cancel Request";
+    return this.pendingAction === "Reject" ? "Reject Request" : "Cancel Request";
   }
 
   get reasonLabel() {
-    return this.pendingAction === "Reject"
-      ? "Rejection Reason"
-      : "Cancellation Reason";
+    return this.pendingAction === "Reject" ? "Rejection Reason" : "Cancellation Reason";
   }
 
   get reasonPlaceholder() {
@@ -58,15 +54,11 @@ export default class PwchronoRequestActionBar extends LightningElement {
   }
 
   get confirmButtonLabel() {
-    return this.pendingAction === "Reject"
-      ? "Confirm Rejection"
-      : "Confirm Cancellation";
+    return this.pendingAction === "Reject" ? "Confirm Rejection" : "Confirm Cancellation";
   }
 
   get confirmButtonClass() {
-    return this.pendingAction === "Reject"
-      ? "btn btn-danger"
-      : "btn btn-warning";
+    return this.pendingAction === "Reject" ? "btn btn-danger" : "btn btn-warning";
   }
 
   get isReasonEmpty() {

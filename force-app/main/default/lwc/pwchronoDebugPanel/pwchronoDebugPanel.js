@@ -44,7 +44,6 @@ export default class PwchronoDebugPanel extends LightningElement {
       .then((result) => {
         this.debugInfo = result;
         this.addLog("✅ Debug info loaded successfully");
-        console.log("Debug Info:", result);
       })
       .catch((error) => {
         this.addLog(
@@ -88,8 +87,6 @@ export default class PwchronoDebugPanel extends LightningElement {
 
     testOTPSend({ email: this.testEmail })
       .then((result) => {
-        console.log("OTP Test Result:", result);
-
         // Log each step
         for (const [key, value] of Object.entries(result)) {
           if (typeof value === "object") {
@@ -135,8 +132,6 @@ export default class PwchronoDebugPanel extends LightningElement {
       featureName: this.selectedFeature
     })
       .then((result) => {
-        console.log("Feature Assignment Test Result:", result);
-
         // Log each step
         for (const [key, value] of Object.entries(result)) {
           if (typeof value === "object") {
@@ -199,7 +194,6 @@ export default class PwchronoDebugPanel extends LightningElement {
   addLog(message) {
     const timestamp = new Date().toLocaleTimeString();
     this.debugLogs = [...this.debugLogs, `[${timestamp}] ${message}`];
-    console.log(`[${timestamp}] ${message}`);
   }
 
   showToast(title, message, variant) {

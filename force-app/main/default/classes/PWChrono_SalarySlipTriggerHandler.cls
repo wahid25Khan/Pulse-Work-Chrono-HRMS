@@ -11,13 +11,32 @@ public inherited sharing class PWChrono_SalarySlipTriggerHandler {
     List<PWChrono_Salary_Slip__c> salarySlips
   ) {
     List<PWChrono_Salary_History__c> historyRecords = new List<PWChrono_Salary_History__c>();
+    Set<Id> slipIds = new Set<Id>();
+
+    for (PWChrono_Salary_Slip__c slip : salarySlips) {
+      if (slip.Id != null) {
+        slipIds.add(slip.Id);
+      }
+    }
+
+    Set<Id> existingHistorySlipIds = new Set<Id>();
+    if (!slipIds.isEmpty()) {
+      for (PWChrono_Salary_History__c history : [
+        SELECT Salary_Slip__c
+        FROM PWChrono_Salary_History__c
+        WHERE Salary_Slip__c IN :slipIds
+      ]) {
+        existingHistorySlipIds.add(history.Salary_Slip__c);
+      }
+    }
 
     for (PWChrono_Salary_Slip__c slip : salarySlips) {
       // Only create history for paid slips with valid amounts
       if (
         slip.Status__c == PWChrono_Constants.STATUS_PAID &&
         slip.Net_Pay__c != null &&
-        slip.Net_Pay__c > 0
+        slip.Net_Pay__c > 0 &&
+        !existingHistorySlipIds.contains(slip.Id)
       ) {
         PWChrono_Salary_History__c history = new PWChrono_Salary_History__c();
         history.Employee__c = slip.Employees__c;

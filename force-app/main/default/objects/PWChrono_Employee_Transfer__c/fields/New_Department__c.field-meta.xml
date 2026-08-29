@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>New_Department__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
     <label>New Department</label>
     <referenceTo>PWChrono_Department__c</referenceTo>
     <relationshipLabel>Transfers (New Department)</relationshipLabel>
     <relationshipName>PWChrono_Transfers_New_Dept</relationshipName>
     <required>false</required>
-    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Lookup</type>
-    <deleteConstraint>SetNull</deleteConstraint>
 </CustomField>

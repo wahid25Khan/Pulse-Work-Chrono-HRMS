@@ -26,9 +26,7 @@
         <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
           <template if:true={isLoading}>
             <div class="card card-body">
-              <div
-                class="d-flex flex-column align-items-center justify-content-center py-5"
-              >
+              <div class="d-flex flex-column align-items-center justify-content-center py-5">
                 <div class="spinner-border text-primary mb-3" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
@@ -81,9 +79,7 @@
                   onrowaction={handleRowAction}
                   hide-checkbox-column
                 ></lightning-datatable>
-                <div
-                  class="d-flex align-items-center justify-content-between p-3 border-top"
-                >
+                <div class="d-flex align-items-center justify-content-between p-3 border-top">
                   <span class="text-muted small">{paginationInfo}</span>
                   <div class="d-flex gap-2 align-items-center">
                     <lightning-button-icon
@@ -93,9 +89,7 @@
                       disabled={isPrevDisabled}
                       variant="border-filled"
                     ></lightning-button-icon>
-                    <span class="small text-muted"
-                      >Page {currentPage} of {totalPages}</span
-                    >
+                    <span class="small text-muted">Page {currentPage} of {totalPages}</span>
                     <lightning-button-icon
                       icon-name="utility:chevronright"
                       alternative-text="Next"
@@ -112,9 +106,7 @@
               <div class="card card-body text-center py-5">
                 <i class="ti ti-receipt-off fs-1 text-muted d-block mb-2"></i>
                 <p class="text-muted fw-medium mb-1">No expense claims found</p>
-                <p class="text-muted small mb-0">
-                  Create a new claim to get started
-                </p>
+                <p class="text-muted small mb-0">Create a new claim to get started</p>
               </div>
             </template>
           </template>
@@ -129,11 +121,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{modalTitle}</h5>
-            <button
-              type="button"
-              class="btn-close"
-              onclick={closeModal}
-            ></button>
+            <button type="button" class="btn-close" onclick={closeModal}></button>
           </div>
 
           <div class="modal-body">
@@ -188,11 +176,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <template
-                    for:each={currentItems}
-                    for:item="item"
-                    for:index="index"
-                  >
+                  <template for:each={currentItems} for:item="item" for:index="index">
                     <tr key={item.key}>
                       <td>
                         <lightning-input
@@ -272,23 +256,11 @@
           </div>
 
           <div class="modal-footer">
-            <lightning-button
-              label="Cancel"
-              variant="neutral"
-              onclick={closeModal}
-            ></lightning-button>
+            <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>
             <template if:false={isReadOnly}>
-              <lightning-button
-                label="Save Draft"
-                variant="brand"
-                onclick={handleSave}
-              ></lightning-button>
+              <lightning-button label="Save Draft" variant="brand" onclick={handleSave}></lightning-button>
               <template if:true={currentClaim.Id}>
-                <lightning-button
-                  label="Submit"
-                  variant="success"
-                  onclick={handleSubmit}
-                ></lightning-button>
+                <lightning-button label="Submit" variant="success" onclick={handleSubmit}></lightning-button>
               </template>
             </template>
           </div>

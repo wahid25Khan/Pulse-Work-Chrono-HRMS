@@ -389,7 +389,8 @@ public inherited sharing class PWChrono_AttendanceController {
       return PWChrono_RequestAttachmentService.uploadFile(
         requestId,
         fileName,
-        base64Data
+        base64Data,
+        contentType
       );
     } catch (AuraHandledException ahe) {
       throw ahe;

@@ -129,8 +129,8 @@ export default class PwchronoNewManagerDashboard extends LightningElement {
       .then(() => {
         this.initializeCharts();
       })
-      .catch((error) => {
-        console.error("Error loading scripts and styles", error);
+      .catch(() => {
+        this.chartInitialized = false;
       });
   }
 

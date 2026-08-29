@@ -457,20 +457,26 @@ public inherited sharing class PWChrono_HRDashboardController {
     Integer react = 0;
     Integer ui = 0;
 
-    for (Portal_Users__c pu : [
-      SELECT Departments__c
+    for (AggregateResult ar : [
+      SELECT Department__c dep, COUNT(Id) c
       FROM Portal_Users__c
+      GROUP BY Department__c
       LIMIT 200
     ]) {
-      String dep = safeLower(pu.Departments__c);
+      String dep = safeLower(ar.get('dep'));
+      Integer countVal = (Integer) ar.get('c');
+      if (countVal == null) {
+        countVal = 0;
+      }
+
       if (dep.contains('sales')) {
-        sales += 1;
+        sales += countVal;
       } else if (dep.contains('front')) {
-        frontEnd += 1;
+        frontEnd += countVal;
       } else if (dep.contains('react')) {
-        react += 1;
+        react += countVal;
       } else if (dep.contains('ui') || dep.contains('design')) {
-        ui += 1;
+        ui += countVal;
       }
     }
 
@@ -635,7 +641,7 @@ public inherited sharing class PWChrono_HRDashboardController {
     if (!employeeIds.isEmpty()) {
       usersById = new Map<Id, Portal_Users__c>(
         [
-          SELECT Id, Name, Departments__c
+          SELECT Id, Name, Department__c
           FROM Portal_Users__c
           WHERE Id IN :employeeIds
         ]
@@ -650,8 +656,8 @@ public inherited sharing class PWChrono_HRDashboardController {
         ? employee.Name
         : 'Employee';
       row.department = employee != null &&
-        String.isNotBlank(employee.Departments__c)
-        ? employee.Departments__c
+        String.isNotBlank(employee.Department__c)
+        ? employee.Department__c
         : 'Department';
       row.arrivalTime = formatTime(item.From_Time__c);
       row.lateBy = formatLateBy(item.From_Time__c, lateThreshold);

@@ -1,5 +1,10 @@
 @isTest
 private class PWChrono_GuestSession_Test {
+  private static void resetGuestSessionOverrides() {
+    PWChrono_GuestSession.testUserTypeOverride = null;
+    PWChrono_GuestSession.testNowOverride = null;
+  }
+
   @testSetup
   static void setupData() {
     PWChrono_TestDataFactory.createTestUsers();
@@ -48,6 +53,179 @@ private class PWChrono_GuestSession_Test {
         System.assertEquals('Session invalid.', e.getMessage());
       }
     }
+  }
+
+  @isTest
+  static void testRequireVerifiedPortalUserId_NonGuestFallsBackToMappedEmployee() {
+    User testUser = [SELECT Id FROM User WHERE Alias = 'tuser' LIMIT 1];
+    Portal_Users__c employee = [SELECT Id, User__c FROM Portal_Users__c LIMIT 1];
+
+    System.runAs(testUser) {
+      Id result = PWChrono_GuestSession.requireVerifiedPortalUserId(null, null);
+      System.assertEquals(employee.Id, result);
+    }
+  }
+
+  @isTest
+  static void testRequireVerifiedPortalUserId_GuestBlankSessionRejected() {
+    Portal_Users__c employee = [SELECT Id FROM Portal_Users__c LIMIT 1];
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      PWChrono_GuestSession.requireVerifiedPortalUserId(
+        String.valueOf(employee.Id),
+        null
+      );
+      System.assert(false, 'Expected guest session validation to reject blank token.');
+    } catch (AuraHandledException e) {
+      System.assertEquals(
+        'Session invalid or expired. Please log in again.',
+        e.getMessage()
+      );
+    } finally {
+      resetGuestSessionOverrides();
+    }
+  }
+
+  @isTest
+  static void testRequireVerifiedPortalUserId_GuestInactiveRejected() {
+    Portal_Users__c employee = [SELECT Id, Is_Active__c FROM Portal_Users__c LIMIT 1];
+    employee.Is_Active__c = false;
+    update employee;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      PWChrono_GuestSession.requireVerifiedPortalUserId(
+        String.valueOf(employee.Id),
+        'valid_token'
+      );
+      System.assert(false, 'Expected inactive account to be rejected.');
+    } catch (AuraHandledException e) {
+      System.assertEquals('Account is inactive.', e.getMessage());
+    } finally {
+      resetGuestSessionOverrides();
+    }
+  }
+
+  @isTest
+  static void testRequireVerifiedPortalUserId_GuestExpiredSessionRejected() {
+    Portal_Users__c employee = [
+      SELECT Id, Session_Failed_Attempts__c, Session_Locked_Until__c
+      FROM Portal_Users__c
+      LIMIT 1
+    ];
+    employee.Session_Failed_Attempts__c = 2;
+    update employee;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    PWChrono_GuestSession.testNowOverride = System.now().addHours(2);
+    try {
+      PWChrono_GuestSession.requireVerifiedPortalUserId(
+        String.valueOf(employee.Id),
+        'valid_token'
+      );
+      System.assert(false, 'Expected expired session to be rejected.');
+    } catch (AuraHandledException e) {
+      System.assertEquals('Session expired. Please log in again.', e.getMessage());
+    } finally {
+      resetGuestSessionOverrides();
+    }
+
+    Portal_Users__c refreshed = [
+      SELECT Session_Failed_Attempts__c, Session_Locked_Until__c
+      FROM Portal_Users__c
+      WHERE Id = :employee.Id
+      LIMIT 1
+    ];
+    System.assertEquals(0, Integer.valueOf(refreshed.Session_Failed_Attempts__c));
+    System.assertEquals(null, refreshed.Session_Locked_Until__c);
+  }
+
+  @isTest
+  static void testRequireVerifiedPortalUserId_GuestTokenMismatchRegistersFailure() {
+    Portal_Users__c employee = [
+      SELECT Id, Session_Failed_Attempts__c
+      FROM Portal_Users__c
+      LIMIT 1
+    ];
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      PWChrono_GuestSession.requireVerifiedPortalUserId(
+        String.valueOf(employee.Id),
+        'wrong_token'
+      );
+      System.assert(false, 'Expected invalid token to be rejected.');
+    } catch (AuraHandledException e) {
+      System.assertEquals('Session invalid. Please log in again.', e.getMessage());
+    } finally {
+      resetGuestSessionOverrides();
+    }
+
+    Portal_Users__c refreshed = [
+      SELECT Session_Failed_Attempts__c
+      FROM Portal_Users__c
+      WHERE Id = :employee.Id
+      LIMIT 1
+    ];
+    System.assertEquals(1, Integer.valueOf(refreshed.Session_Failed_Attempts__c));
+  }
+
+  @isTest
+  static void testRequireVerifiedPortalUserId_GuestLockedSessionRejected() {
+    Portal_Users__c employee = [
+      SELECT Id
+      FROM Portal_Users__c
+      LIMIT 1
+    ];
+    employee.Session_Locked_Until__c = System.now().addMinutes(15);
+    update employee;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      PWChrono_GuestSession.requireVerifiedPortalUserId(
+        String.valueOf(employee.Id),
+        'valid_token'
+      );
+      System.assert(false, 'Expected locked session to be rejected.');
+    } catch (AuraHandledException e) {
+      System.assertEquals(
+        'Too many invalid session attempts. Please try again later.',
+        e.getMessage()
+      );
+    } finally {
+      resetGuestSessionOverrides();
+    }
+  }
+
+  @isTest
+  static void testRequireVerifiedPortalUserId_GuestSuccessClearsValidationState() {
+    Portal_Users__c employee = [
+      SELECT Id, Session_Failed_Attempts__c
+      FROM Portal_Users__c
+      LIMIT 1
+    ];
+    employee.Session_Failed_Attempts__c = 2;
+    update employee;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      Id result = PWChrono_GuestSession.requireVerifiedPortalUserId(
+        String.valueOf(employee.Id),
+        'valid_token'
+      );
+      System.assertEquals(employee.Id, result);
+    } finally {
+      resetGuestSessionOverrides();
+    }
+
+    Portal_Users__c refreshed = [
+      SELECT Session_Failed_Attempts__c, Session_Locked_Until__c
+      FROM Portal_Users__c
+      WHERE Id = :employee.Id
+      LIMIT 1
+    ];
+    System.assertEquals(0, Integer.valueOf(refreshed.Session_Failed_Attempts__c));
+    System.assertEquals(null, refreshed.Session_Locked_Until__c);
   }
 
   @isTest
@@ -137,5 +315,20 @@ private class PWChrono_GuestSession_Test {
       updatedEmployee.Session_Locked_Until__c,
       'Lockout timestamp should be cleared.'
     );
+  }
+
+  @isTest
+  static void testClearSessionValidationState_NoOpForCleanRecord() {
+    Portal_Users__c employee = [
+      SELECT Id, Session_Failed_Attempts__c, Session_Locked_Until__c
+      FROM Portal_Users__c
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    PWChrono_GuestSession.clearSessionValidationState(employee);
+    Test.stopTest();
+
+    System.assert(true, 'Clean records should be left untouched.');
   }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <consoleConfig>
         <detailPageRefreshMethod>none</detailPageRefreshMethod>
@@ -181,106 +181,58 @@
     <tabs>standard-Case</tabs>
     <tabs>standard-Opportunity</tabs>
     <tabs>standard-Lead</tabs>
-    <tabs>Portal_Object__c</tabs>
-    <tabs>Portal_Object_Field__c</tabs>
-    <tabs>Portal_Object_Field_ChangeEvent__c</tabs>
-    <tabs>Portal_Field_Permission__c</tabs>
-    <tabs>Portal_Field_Permission_ChangeEvent__c</tabs>
-    <tabs>Portal_Object_Permission__c</tabs>
-    <tabs>Portal_Object_Permission_ChangeEvent__c</tabs>
-    <tabs>Portal_Users__c</tabs>
-    <tabs>Portal_User_Profile__c</tabs>
-    <tabs>Portal_Users_ChangeEvent__c</tabs>
-    <tabs>TLG_Task__c</tabs>
-    <tabs>TLG_Task_History__c</tabs>
-    <tabs>TLG_Task_Notifications__c</tabs>
-    <tabs>TLG_TaskFeed__c</tabs>
-    <tabs>TLG_Team__c</tabs>
-    <tabs>TLG_Team_Member__c</tabs>
-    <tabs>TLG_Team_Status__c</tabs>
-    <tabs>TLG_Community_Partner_Form__c</tabs>
-    <tabs>Purchase_Order__c</tabs>
-    <tabs>Purchase_Order_Line__c</tabs>
-    <tabs>Warehouses__c</tabs>
-    <tabs>Stocking_Location__c</tabs>
-    <tabs>Inventory__c</tabs>
-    <tabs>Collison_Detection</tabs>
-    <tabs>TLG_Document_Template__c</tabs>
+    <tabs>Shipment__c</tabs>
+    <tabs>Attendee__c</tabs>
+    <tabs>Event__c</tabs>
+    <tabs>PromoCode__c</tabs>
+    <tabs>Venue__c</tabs>
+    <tabs>Error_Log__c</tabs>
+    <tabs>Plant_Tours__c</tabs>
+    <tabs>Event_Registration__c</tabs>
+    <tabs>Portal_Payment_Transaction__c</tabs>
+    <tabs>Invoice__c</tabs>
+    <tabs>Portal_Branding__c</tabs>
+    <tabs>Voucher__c</tabs>
+    <tabs>PWChrono_Department__c</tabs>
     <workspaceConfig>
         <mappings>
-            <tab>Collison_Detection</tab>
+            <tab>Attendee__c</tab>
         </mappings>
         <mappings>
-            <tab>Inventory__c</tab>
+            <tab>Error_Log__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Field_Permission_ChangeEvent__c</tab>
+            <tab>Event_Registration__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Field_Permission__c</tab>
+            <tab>Event__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Object_Field_ChangeEvent__c</tab>
+            <tab>Invoice__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Object_Field__c</tab>
+            <tab>PWChrono_Department__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Object_Permission_ChangeEvent__c</tab>
+            <tab>Plant_Tours__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Object_Permission__c</tab>
+            <tab>Portal_Branding__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Object__c</tab>
+            <tab>Portal_Payment_Transaction__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_User_Profile__c</tab>
+            <tab>PromoCode__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Users_ChangeEvent__c</tab>
+            <tab>Shipment__c</tab>
         </mappings>
         <mappings>
-            <tab>Portal_Users__c</tab>
+            <tab>Venue__c</tab>
         </mappings>
         <mappings>
-            <tab>Purchase_Order_Line__c</tab>
-        </mappings>
-        <mappings>
-            <tab>Purchase_Order__c</tab>
-        </mappings>
-        <mappings>
-            <tab>Stocking_Location__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_Community_Partner_Form__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_Document_Template__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_TaskFeed__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_Task_History__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_Task_Notifications__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_Task__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_Team_Member__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_Team_Status__c</tab>
-        </mappings>
-        <mappings>
-            <tab>TLG_Team__c</tab>
-        </mappings>
-        <mappings>
-            <tab>Warehouses__c</tab>
+            <tab>Voucher__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>

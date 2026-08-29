@@ -5,25 +5,11 @@ import getMyAppraisals from "@salesforce/apex/PWChrono_PerformanceController.get
 import saveAppraisal from "@salesforce/apex/PWChrono_PerformanceController.saveAppraisal";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
-const RATING_MAP = {
-  Beginner: 1,
-  Intermediate: 2,
-  Advanced: 3,
-  Expert: 4,
-  Leader: 5
-};
+const RATING_MAP = { Beginner: 1, Intermediate: 2, Advanced: 3, Expert: 4, Leader: 5 };
 
 const TECHNICAL_COMPETENCIES = [
-  {
-    key: "customer_experience",
-    label: "Customer Experience",
-    expected: "Advanced"
-  },
-  {
-    key: "technical_knowledge",
-    label: "Technical Knowledge",
-    expected: "Expert"
-  },
+  { key: "customer_experience", label: "Customer Experience", expected: "Advanced" },
+  { key: "technical_knowledge", label: "Technical Knowledge", expected: "Expert" },
   { key: "problem_solving", label: "Problem Solving", expected: "Advanced" },
   { key: "code_quality", label: "Code Quality", expected: "Intermediate" },
   { key: "system_design", label: "System Design", expected: "Advanced" },
@@ -88,12 +74,9 @@ export default class PerformanceAppraisal extends LightningElement {
         name: record.Employees__r ? record.Employees__r.Name : record.Name,
         designation: record.Employees__r?.Designation__c || "--",
         department: record.Employees__r?.Department__c || "--",
-        appraisalDate:
-          record.Appraisal_Period__c || record.Start_Date__c || "--",
+        appraisalDate: record.Appraisal_Period__c || record.Start_Date__c || "--",
         status: record.Status__c || "Draft",
-        initials: this.getInitials(
-          record.Employees__r?.Name || record.Name || ""
-        ),
+        initials: this.getInitials(record.Employees__r?.Name || record.Name || ""),
         statusClass:
           record.Status__c === "Completed" || record.Status__c === "Active"
             ? "badge badge-success d-inline-flex align-items-center badge-xs"
@@ -121,9 +104,7 @@ export default class PerformanceAppraisal extends LightningElement {
     if (!name) return "?";
     const parts = name.trim().split(" ");
     if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-    return (
-      parts[0].charAt(0) + parts[parts.length - 1].charAt(0)
-    ).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
   }
 
   computeSelfRating() {
@@ -153,9 +134,7 @@ export default class PerformanceAppraisal extends LightningElement {
         this.isModalOpen = false;
         break;
       case "delete":
-        this.appraisalData = this.appraisalData.filter(
-          (item) => item.id !== recordId
-        );
+        this.appraisalData = this.appraisalData.filter((item) => item.id !== recordId);
         break;
       default:
         break;
@@ -177,11 +156,7 @@ export default class PerformanceAppraisal extends LightningElement {
 
   async handleSave() {
     if (!this.formFields.appraisalDate) {
-      this.showToast(
-        "Validation",
-        "Please select an appraisal date.",
-        "warning"
-      );
+      this.showToast("Validation", "Please select an appraisal date.", "warning");
       return;
     }
     this.isSaving = true;

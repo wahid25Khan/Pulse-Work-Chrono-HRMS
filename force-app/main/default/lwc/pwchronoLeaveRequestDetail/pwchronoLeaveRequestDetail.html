@@ -20,11 +20,7 @@
       <div class="content container-fluid pt-2 ps-2 pe-3 pb-0">
         <!-- Back Button -->
         <div class="mb-3">
-          <button
-            type="button"
-            class="btn btn-sm btn-white"
-            onclick={handleBack}
-          >
+          <button type="button" class="btn btn-sm btn-white" onclick={handleBack}>
             <i class="fa-solid fa-arrow-left me-1"></i>Back to Leaves
           </button>
         </div>
@@ -50,91 +46,68 @@
                 <div class="row g-3">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >Leave Type</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">Leave Type</span>
                       <p class="fw-medium mb-0">{leaveTypeName}</p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >Status</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">Status</span>
                       <div>
-                        <c-pwchrono-request-status-badge
-                          status={leaveStatus}
-                        ></c-pwchrono-request-status-badge>
+                        <c-pwchrono-request-status-badge status={leaveStatus}></c-pwchrono-request-status-badge>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >From Date</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">From Date</span>
                       <p class="fw-medium mb-0">{fromDate}</p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >To Date</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">To Date</span>
                       <p class="fw-medium mb-0">{toDate}</p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >Total Days</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">Total Days</span>
                       <p class="fw-medium mb-0">{totalDays}</p>
                     </div>
                   </div>
                   <template if:true={isHalfDay}>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <span class="form-label text-muted fs-12 mb-1"
-                          >Half Day Session</span
-                        >
+                        <span class="form-label text-muted fs-12 mb-1">Half Day Session</span>
                         <p class="fw-medium mb-0">{halfDaySession}</p>
                       </div>
                     </div>
                   </template>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >Approver</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">Approver</span>
                       <p class="fw-medium mb-0">{approverName}</p>
                     </div>
                   </div>
                   <template if:true={approvalDate}>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <span class="form-label text-muted fs-12 mb-1"
-                          >Approval Date</span
-                        >
+                        <span class="form-label text-muted fs-12 mb-1">Approval Date</span>
                         <p class="fw-medium mb-0">{approvalDate}</p>
                       </div>
                     </div>
                   </template>
                   <div class="col-12">
                     <div class="mb-0">
-                      <span class="form-label text-muted fs-12 mb-1"
-                        >Reason</span
-                      >
+                      <span class="form-label text-muted fs-12 mb-1">Reason</span>
                       <p class="mb-0">{reason}</p>
                     </div>
                   </div>
                   <template if:true={rejectionReason}>
                     <div class="col-12">
                       <div class="mb-0">
-                        <span
-                          class="form-label text-muted fs-12 mb-1 text-danger"
-                          >Rejection Reason</span
-                        >
+                        <span class="form-label text-muted fs-12 mb-1 text-danger">Rejection Reason</span>
                         <p class="mb-0 text-danger">{rejectionReason}</p>
                       </div>
                     </div>
@@ -168,10 +141,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <template
-                          for:each={enrichedLedgerEntries}
-                          for:item="entry"
-                        >
+                        <template for:each={enrichedLedgerEntries} for:item="entry">
                           <tr key={entry.key}>
                             <td>{entry.displayDate}</td>
                             <td>{entry.transactionType}</td>
@@ -185,9 +155,7 @@
                   </div>
                 </template>
                 <template if:false={hasLedgerEntries}>
-                  <p class="text-muted text-center py-3 mb-0">
-                    No ledger entries yet.
-                  </p>
+                  <p class="text-muted text-center py-3 mb-0">No ledger entries yet.</p>
                 </template>
               </div>
             </div>

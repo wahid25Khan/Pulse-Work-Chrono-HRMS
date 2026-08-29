@@ -81,6 +81,11 @@ public inherited sharing class PWChrono_ExpenseValidator {
       return errors;
     }
 
+    if (dto == null) {
+      errors.add('Expense claim data is required.');
+      return errors;
+    }
+
     // ── Rule 1: claim date required ──────────────────────────────────────────
     if (dto.claimDate == null) {
       errors.add('Claim date is required.');

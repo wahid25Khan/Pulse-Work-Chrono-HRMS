@@ -254,11 +254,10 @@ export default class PwchronoAdminDashboard extends LightningElement {
           }
         }
       });
-    } catch (e) {
+    } catch {
       // Experience Builder / LWR Locker can expose a non-constructable global.
       // Disable charts to avoid breaking the whole page.
       this.chartsDisabled = true;
-      console.warn("Chart.js constructor unavailable; charts disabled", e);
     }
   }
 
@@ -305,9 +304,8 @@ export default class PwchronoAdminDashboard extends LightningElement {
           plugins: { legend: { display: false } }
         }
       });
-    } catch (e) {
+    } catch {
       this.chartsDisabled = true;
-      console.warn("Chart.js constructor unavailable; charts disabled", e);
     }
   }
 

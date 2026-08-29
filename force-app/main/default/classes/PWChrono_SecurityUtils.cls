@@ -64,8 +64,7 @@ public without sharing class PWChrono_SecurityUtils {
       return true;
     }
 
-    Map<String, Schema.SObjectField> fieldMap = objType.getDescribe()
-      .fields.getMap();
+    Map<String, Schema.SObjectField> fieldMap = objType.getDescribe().fields.getMap();
     for (String fieldName : fields) {
       if (String.isBlank(fieldName) || !fieldMap.containsKey(fieldName)) {
         return false;

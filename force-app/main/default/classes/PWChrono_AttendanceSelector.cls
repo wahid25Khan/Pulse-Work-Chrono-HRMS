@@ -22,8 +22,18 @@ public inherited sharing class PWChrono_AttendanceSelector {
         Attendance_Date__c,
         From_Time__c,
         To_Time__c,
+        Actual_Check_In__c,
+        Actual_Check_Out__c,
+        Correction_Type__c,
         Reason__c,
         Status__c,
+        Applied_Date__c,
+        Approval_Date__c,
+        Approver_Comments__c,
+        Rejection_Reason__c,
+        Cancelled_Date__c,
+        Cancelled_Reason__c,
+        Shift_Assignment__c,
         CreatedDate
       FROM PWChrono_Attendance_Request__c
       WHERE Id = :requestId

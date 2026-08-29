@@ -2,13 +2,10 @@
   <div class="pwchrono-recruitment-dashboard">
     <!-- Header -->
     <div class="page-header mb-4">
-      <div
-        class="d-flex align-items-center justify-content-between flex-wrap gap-2"
-      >
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div>
           <h4 class="mb-1 fw-semibold">
-            <i class="fa-solid fa-chart-line fa-fw me-2 text-primary"></i
-            >Recruitment Dashboard
+            <i class="fa-solid fa-chart-line fa-fw me-2 text-primary"></i>Recruitment Dashboard
           </h4>
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 small">
@@ -17,11 +14,7 @@
             </ol>
           </nav>
         </div>
-        <button
-          class="btn btn-sm btn-outline-secondary"
-          onclick={handleRefresh}
-          title="Refresh"
-        >
+        <button class="btn btn-sm btn-outline-secondary" onclick={handleRefresh} title="Refresh">
           <i class="fa-solid fa-rotate fa-fw"></i>
         </button>
       </div>
@@ -43,9 +36,7 @@
         <div class="col-6 col-md-4 col-lg-2">
           <div class="card border-0 shadow-sm h-100 text-center">
             <div class="card-body py-3">
-              <div class="fs-2 fw-bold text-primary">
-                {data.totalJobOpenings}
-              </div>
+              <div class="fs-2 fw-bold text-primary">{data.totalJobOpenings}</div>
               <div class="small text-muted">Total Openings</div>
             </div>
           </div>
@@ -54,9 +45,7 @@
         <div class="col-6 col-md-4 col-lg-2">
           <div class="card border-0 shadow-sm h-100 text-center">
             <div class="card-body py-3">
-              <div class="fs-2 fw-bold text-success">
-                {data.openJobOpenings}
-              </div>
+              <div class="fs-2 fw-bold text-success">{data.openJobOpenings}</div>
               <div class="small text-muted">Open</div>
             </div>
           </div>
@@ -65,9 +54,7 @@
         <div class="col-6 col-md-4 col-lg-2">
           <div class="card border-0 shadow-sm h-100 text-center">
             <div class="card-body py-3">
-              <div class="fs-2 fw-bold text-secondary">
-                {data.closedJobOpenings}
-              </div>
+              <div class="fs-2 fw-bold text-secondary">{data.closedJobOpenings}</div>
               <div class="small text-muted">Closed</div>
             </div>
           </div>
@@ -108,8 +95,7 @@
           <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white border-bottom py-2 px-3">
               <h6 class="mb-0 fw-semibold">
-                <i class="fa-solid fa-filter fa-fw me-2 text-primary"></i>Hiring
-                Funnel
+                <i class="fa-solid fa-filter fa-fw me-2 text-primary"></i>Hiring Funnel
               </h6>
             </div>
             <div class="card-body py-3 px-4">
@@ -120,10 +106,7 @@
                       <span class="fw-semibold">{stage.label}</span>
                       <span class="text-muted">{stage.count}</span>
                     </div>
-                    <div
-                      class="progress"
-                      style="height: 18px; border-radius: 4px"
-                    >
+                    <div class="progress" style="height:18px;border-radius:4px;">
                       <div
                         class={stage.barClass}
                         role="progressbar"
@@ -131,9 +114,7 @@
                         aria-valuenow={stage.pct}
                         aria-valuemin="0"
                         aria-valuemax="100"
-                      >
-                        {stage.pctLabel}
-                      </div>
+                      >{stage.pctLabel}</div>
                     </div>
                   </div>
                 </template>
@@ -147,8 +128,7 @@
           <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white border-bottom py-2 px-3">
               <h6 class="mb-0 fw-semibold">
-                <i class="fa-solid fa-users fa-fw me-2 text-info"></i>Applicants
-                by Status
+                <i class="fa-solid fa-users fa-fw me-2 text-info"></i>Applicants by Status
               </h6>
             </div>
             <div class="card-body py-3">
@@ -159,10 +139,7 @@
                       <span>{row.label}</span>
                       <span class="fw-semibold">{row.count}</span>
                     </div>
-                    <div
-                      class="progress"
-                      style="height: 14px; border-radius: 4px"
-                    >
+                    <div class="progress" style="height:14px;border-radius:4px;">
                       <div
                         class="progress-bar bg-info"
                         role="progressbar"
@@ -176,9 +153,7 @@
                 </template>
               </template>
               <template if:false={hasApplicantsByStatus}>
-                <p class="text-muted small text-center mt-3">
-                  No applicant data available.
-                </p>
+                <p class="text-muted small text-center mt-3">No applicant data available.</p>
               </template>
             </div>
           </div>
@@ -192,10 +167,7 @@
           <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white border-bottom py-2 px-3">
               <h6 class="mb-0 fw-semibold">
-                <i
-                  class="fa-solid fa-arrow-up-right-dots fa-fw me-2 text-success"
-                ></i
-                >Applicants by Source
+                <i class="fa-solid fa-arrow-up-right-dots fa-fw me-2 text-success"></i>Applicants by Source
               </h6>
             </div>
             <div class="card-body py-3">
@@ -206,10 +178,7 @@
                       <span>{row.label}</span>
                       <span class="fw-semibold">{row.count}</span>
                     </div>
-                    <div
-                      class="progress"
-                      style="height: 14px; border-radius: 4px"
-                    >
+                    <div class="progress" style="height:14px;border-radius:4px;">
                       <div
                         class="progress-bar bg-success"
                         role="progressbar"
@@ -223,9 +192,7 @@
                 </template>
               </template>
               <template if:false={hasApplicantsBySource}>
-                <p class="text-muted small text-center mt-3">
-                  No source data available.
-                </p>
+                <p class="text-muted small text-center mt-3">No source data available.</p>
               </template>
             </div>
           </div>
@@ -236,10 +203,7 @@
           <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white border-bottom py-2 px-3">
               <h6 class="mb-0 fw-semibold">
-                <i
-                  class="fa-solid fa-envelope-open-text fa-fw me-2 text-warning"
-                ></i
-                >Job Offers by Status
+                <i class="fa-solid fa-envelope-open-text fa-fw me-2 text-warning"></i>Job Offers by Status
               </h6>
             </div>
             <div class="card-body p-0">
@@ -264,9 +228,7 @@
                 </table>
               </template>
               <template if:false={hasOffersByStatus}>
-                <p class="text-muted small text-center py-4">
-                  No offer data available.
-                </p>
+                <p class="text-muted small text-center py-4">No offer data available.</p>
               </template>
             </div>
           </div>
@@ -280,8 +242,7 @@
           <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white border-bottom py-2 px-3">
               <h6 class="mb-0 fw-semibold">
-                <i class="fa-solid fa-building fa-fw me-2 text-secondary"></i
-                >Department-wise Openings
+                <i class="fa-solid fa-building fa-fw me-2 text-secondary"></i>Department-wise Openings
               </h6>
             </div>
             <div class="card-body py-3">
@@ -292,10 +253,7 @@
                       <span>{row.label}</span>
                       <span class="fw-semibold">{row.count}</span>
                     </div>
-                    <div
-                      class="progress"
-                      style="height: 14px; border-radius: 4px"
-                    >
+                    <div class="progress" style="height:14px;border-radius:4px;">
                       <div
                         class="progress-bar bg-secondary"
                         role="progressbar"
@@ -309,9 +267,7 @@
                 </template>
               </template>
               <template if:false={hasDeptWiseOpenings}>
-                <p class="text-muted small text-center mt-3">
-                  No department data available.
-                </p>
+                <p class="text-muted small text-center mt-3">No department data available.</p>
               </template>
             </div>
           </div>
@@ -322,8 +278,7 @@
           <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white border-bottom py-2 px-3">
               <h6 class="mb-0 fw-semibold">
-                <i class="fa-solid fa-ranking-star fa-fw me-2 text-danger"></i
-                >Top Openings by Applicants
+                <i class="fa-solid fa-ranking-star fa-fw me-2 text-danger"></i>Top Openings by Applicants
               </h6>
             </div>
             <div class="card-body p-0">
@@ -336,16 +291,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <template
-                      for:each={data.applicantsByJobOpening}
-                      for:item="row"
-                    >
+                    <template for:each={data.applicantsByJobOpening} for:item="row">
                       <tr key={row.label}>
                         <td>{row.label}</td>
                         <td class="text-end">
-                          <span class="badge bg-danger-subtle text-danger"
-                            >{row.count}</span
-                          >
+                          <span class="badge bg-danger-subtle text-danger">{row.count}</span>
                         </td>
                       </tr>
                     </template>
@@ -353,9 +303,7 @@
                 </table>
               </template>
               <template if:false={hasApplicantsByJobOpening}>
-                <p class="text-muted small text-center py-4">
-                  No applicant data by opening.
-                </p>
+                <p class="text-muted small text-center py-4">No applicant data by opening.</p>
               </template>
             </div>
           </div>

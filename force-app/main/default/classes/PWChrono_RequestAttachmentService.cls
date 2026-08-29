@@ -3,11 +3,45 @@
  *              Stores files in Salesforce Files and links them to request records.
  */
 public inherited sharing class PWChrono_RequestAttachmentService {
+  private static final Integer MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+  private static final Set<String> ALLOWED_EXTENSIONS = new Set<String>{
+    'csv',
+    'doc',
+    'docx',
+    'jpeg',
+    'jpg',
+    'pdf',
+    'png',
+    'txt',
+    'xls',
+    'xlsx'
+  };
+  private static final Set<String> ALLOWED_CONTENT_TYPES = new Set<String>{
+    'application/msword',
+    'application/pdf',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'image/jpeg',
+    'image/png',
+    'text/csv',
+    'text/plain'
+  };
+
   @AuraEnabled
   public static FileDescriptorDTO uploadFile(
     Id recordId,
     String fileName,
     String base64Data
+  ) {
+    return uploadFile(recordId, fileName, base64Data, null);
+  }
+
+  public static FileDescriptorDTO uploadFile(
+    Id recordId,
+    String fileName,
+    String base64Data,
+    String contentType
   ) {
     if (recordId == null) {
       throw new AuraHandledException('Record Id is required for file upload.');
@@ -15,11 +49,24 @@ public inherited sharing class PWChrono_RequestAttachmentService {
     if (String.isBlank(fileName) || String.isBlank(base64Data)) {
       throw new AuraHandledException('File name and data are required.');
     }
+    if (!ContentVersion.SObjectType.getDescribe().isCreateable()) {
+      throw new AuraHandledException(
+        'You do not have permission to upload files.'
+      );
+    }
+
+    String safeFileName = sanitizeFileName(fileName);
+    validateExtension(safeFileName);
+    validateContentType(contentType);
+    Blob fileBody = decodeFile(base64Data);
+    if (fileBody.size() > MAX_FILE_SIZE_BYTES) {
+      throw new AuraHandledException('File exceeds the 5 MB upload limit.');
+    }
 
     ContentVersion version = new ContentVersion();
-    version.Title = fileName;
-    version.PathOnClient = '/' + fileName;
-    version.VersionData = EncodingUtil.base64Decode(base64Data);
+    version.Title = safeFileName;
+    version.PathOnClient = '/' + safeFileName;
+    version.VersionData = fileBody;
     version.FirstPublishLocationId = recordId;
     insert version;
 
@@ -44,6 +91,11 @@ public inherited sharing class PWChrono_RequestAttachmentService {
   public static List<FileDescriptorDTO> getFilesForRecord(Id recordId) {
     if (recordId == null) {
       return new List<FileDescriptorDTO>();
+    }
+    if (!ContentDocumentLink.SObjectType.getDescribe().isAccessible()) {
+      throw new AuraHandledException(
+        'You do not have permission to view files.'
+      );
     }
 
     List<FileDescriptorDTO> files = new List<FileDescriptorDTO>();
@@ -120,6 +172,51 @@ public inherited sharing class PWChrono_RequestAttachmentService {
       return kiloBytes.setScale(1) + ' KB';
     }
     return String.valueOf(bytes) + ' B';
+  }
+
+  private static Blob decodeFile(String base64Data) {
+    try {
+      return EncodingUtil.base64Decode(base64Data);
+    } catch (Exception e) {
+      throw new AuraHandledException('File data is not valid.');
+    }
+  }
+
+  private static String sanitizeFileName(String fileName) {
+    String safeFileName = fileName.trim()
+      .replaceAll('[\\\\/\\r\\n\\t]+', '_')
+      .replaceAll('[^A-Za-z0-9._ -]', '_');
+    while (safeFileName.contains('..')) {
+      safeFileName = safeFileName.replaceAll('\\.\\.', '.');
+    }
+    if (safeFileName.length() > 120) {
+      safeFileName = safeFileName.substring(0, 120);
+    }
+    if (String.isBlank(safeFileName)) {
+      throw new AuraHandledException('File name is not valid.');
+    }
+    return safeFileName;
+  }
+
+  private static void validateExtension(String fileName) {
+    Integer dotIndex = fileName.lastIndexOf('.');
+    if (dotIndex <= 0 || dotIndex == fileName.length() - 1) {
+      throw new AuraHandledException('File type is required.');
+    }
+    String extension = fileName.substring(dotIndex + 1).toLowerCase();
+    if (!ALLOWED_EXTENSIONS.contains(extension)) {
+      throw new AuraHandledException('File type is not allowed.');
+    }
+  }
+
+  private static void validateContentType(String contentType) {
+    if (String.isBlank(contentType)) {
+      return;
+    }
+    String normalizedType = contentType.trim().toLowerCase();
+    if (!ALLOWED_CONTENT_TYPES.contains(normalizedType)) {
+      throw new AuraHandledException('File content type is not allowed.');
+    }
   }
 
   public class FileDescriptorDTO {

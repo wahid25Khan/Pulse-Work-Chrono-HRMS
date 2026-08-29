@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Overtime",
+  "contentBody" : {
+    "activeViewId" : "Overtime",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-overtime",
+    "urlPrefix" : "overtime"
+  },
+  "urlName" : "overtime"
+}

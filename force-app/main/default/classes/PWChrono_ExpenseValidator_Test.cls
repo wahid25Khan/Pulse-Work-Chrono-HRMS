@@ -4,64 +4,45 @@
  */
 @IsTest
 private class PWChrono_ExpenseValidator_Test {
+
   // ─────────────────────── validate ─────────────────────────────────────────
 
   @IsTest
   static void testValidate_validDTO_returnsNoErrors() {
-    PWChrono_ExpenseTestDataFactory.TestDataBundle bundle = PWChrono_ExpenseTestDataFactory.setupStandardTestData();
+    PWChrono_ExpenseTestDataFactory.TestDataBundle bundle =
+      PWChrono_ExpenseTestDataFactory.setupStandardTestData();
 
-    PWChrono_ExpenseValidator.ExpenseClaimDTO dto = PWChrono_ExpenseTestDataFactory.buildClaimDTO(
-      null,
-      Date.today().addDays(-5)
-    );
+    PWChrono_ExpenseValidator.ExpenseClaimDTO dto =
+      PWChrono_ExpenseTestDataFactory.buildClaimDTO(null, Date.today().addDays(-5));
 
     Test.startTest();
-    List<String> errors = PWChrono_ExpenseValidator.validate(
-      dto,
-      bundle.employee.Id
-    );
+    List<String> errors = PWChrono_ExpenseValidator.validate(dto, bundle.employee.Id);
     Test.stopTest();
 
-    System.assert(
-      errors.isEmpty(),
-      'Valid DTO should produce no errors: ' + errors
-    );
+    System.assert(errors.isEmpty(), 'Valid DTO should produce no errors: ' + errors);
   }
 
   @IsTest
   static void testValidate_nullDTO_returnsError() {
-    Portal_Users__c emp = new Portal_Users__c(
-      Name = 'E',
-      Is_Active__c = true,
-      Role__c = 'Employee',
-      Date_Of_Joining__c = Date.today().addYears(-1)
-    );
+    Portal_Users__c emp = new Portal_Users__c(Name='E', Is_Active__c=true, Role__c='Employee',
+      Date_Of_Joining__c=Date.today().addYears(-1));
     insert emp;
 
     Test.startTest();
     List<String> errors = PWChrono_ExpenseValidator.validate(null, emp.Id);
     Test.stopTest();
 
-    System.assert(
-      !errors.isEmpty(),
-      'Null DTO should produce at least one error'
-    );
+    System.assert(!errors.isEmpty(), 'Null DTO should produce at least one error');
   }
 
   @IsTest
   static void testValidate_noItems_returnsError() {
-    Portal_Users__c emp = new Portal_Users__c(
-      Name = 'E',
-      Is_Active__c = true,
-      Role__c = 'Employee',
-      Date_Of_Joining__c = Date.today().addYears(-1)
-    );
+    Portal_Users__c emp = new Portal_Users__c(Name='E', Is_Active__c=true, Role__c='Employee',
+      Date_Of_Joining__c=Date.today().addYears(-1));
     insert emp;
 
-    PWChrono_ExpenseValidator.ExpenseClaimDTO dto = PWChrono_ExpenseTestDataFactory.buildClaimDTO(
-      null,
-      Date.today().addDays(-5)
-    );
+    PWChrono_ExpenseValidator.ExpenseClaimDTO dto =
+      PWChrono_ExpenseTestDataFactory.buildClaimDTO(null, Date.today().addDays(-5));
     dto.items = new List<PWChrono_ExpenseValidator.ExpenseItemDTO>();
 
     Test.startTest();
@@ -73,78 +54,51 @@ private class PWChrono_ExpenseValidator_Test {
 
   @IsTest
   static void testValidate_missingDescription_returnsError() {
-    Portal_Users__c emp = new Portal_Users__c(
-      Name = 'E',
-      Is_Active__c = true,
-      Role__c = 'Employee',
-      Date_Of_Joining__c = Date.today().addYears(-1)
-    );
+    Portal_Users__c emp = new Portal_Users__c(Name='E', Is_Active__c=true, Role__c='Employee',
+      Date_Of_Joining__c=Date.today().addYears(-1));
     insert emp;
 
-    PWChrono_ExpenseValidator.ExpenseClaimDTO dto = PWChrono_ExpenseTestDataFactory.buildClaimDTO(
-      null,
-      Date.today().addDays(-5)
-    );
+    PWChrono_ExpenseValidator.ExpenseClaimDTO dto =
+      PWChrono_ExpenseTestDataFactory.buildClaimDTO(null, Date.today().addDays(-5));
     dto.description = null;
 
     Test.startTest();
     List<String> errors = PWChrono_ExpenseValidator.validate(dto, emp.Id);
     Test.stopTest();
 
-    System.assert(
-      !errors.isEmpty(),
-      'Missing description should produce an error'
-    );
+    System.assert(!errors.isEmpty(), 'Missing description should produce an error');
   }
 
   @IsTest
   static void testValidate_futureClaimDate_returnsError() {
-    Portal_Users__c emp = new Portal_Users__c(
-      Name = 'E',
-      Is_Active__c = true,
-      Role__c = 'Employee',
-      Date_Of_Joining__c = Date.today().addYears(-1)
-    );
+    Portal_Users__c emp = new Portal_Users__c(Name='E', Is_Active__c=true, Role__c='Employee',
+      Date_Of_Joining__c=Date.today().addYears(-1));
     insert emp;
 
-    PWChrono_ExpenseValidator.ExpenseClaimDTO dto = PWChrono_ExpenseTestDataFactory.buildClaimDTO(
-      null,
-      Date.today().addDays(5)
-    );
+    PWChrono_ExpenseValidator.ExpenseClaimDTO dto =
+      PWChrono_ExpenseTestDataFactory.buildClaimDTO(null, Date.today().addDays(5));
 
     Test.startTest();
     List<String> errors = PWChrono_ExpenseValidator.validate(dto, emp.Id);
     Test.stopTest();
 
-    System.assert(
-      !errors.isEmpty(),
-      'Future claim date should produce an error'
-    );
+    System.assert(!errors.isEmpty(), 'Future claim date should produce an error');
   }
 
   @IsTest
   static void testValidate_exceedsBackdatedLimit_returnsError() {
-    Portal_Users__c emp = new Portal_Users__c(
-      Name = 'E',
-      Is_Active__c = true,
-      Role__c = 'Employee',
-      Date_Of_Joining__c = Date.today().addYears(-1)
-    );
+    Portal_Users__c emp = new Portal_Users__c(Name='E', Is_Active__c=true, Role__c='Employee',
+      Date_Of_Joining__c=Date.today().addYears(-1));
     insert emp;
 
-    PWChrono_ExpenseValidator.ExpenseClaimDTO dto = PWChrono_ExpenseTestDataFactory.buildClaimDTO(
-      null,
-      Date.today().addDays(-100)
-    );
+    PWChrono_ExpenseValidator.ExpenseClaimDTO dto =
+      PWChrono_ExpenseTestDataFactory.buildClaimDTO(null, Date.today().addDays(-100));
 
     Test.startTest();
     List<String> errors = PWChrono_ExpenseValidator.validate(dto, emp.Id);
     Test.stopTest();
 
-    System.assert(
-      !errors.isEmpty(),
-      'Backdated > 90 days should produce an error'
-    );
+    System.assert(!errors.isEmpty(), 'Backdated > 90 days should produce an error');
   }
 
   // ─────────────────────── validateNotFuture ────────────────────────────────
@@ -160,9 +114,7 @@ private class PWChrono_ExpenseValidator_Test {
   @IsTest
   static void testValidateNotFuture_past_returnsNull() {
     Test.startTest();
-    String error = PWChrono_ExpenseValidator.validateNotFuture(
-      Date.today().addDays(-1)
-    );
+    String error = PWChrono_ExpenseValidator.validateNotFuture(Date.today().addDays(-1));
     Test.stopTest();
     System.assertEquals(null, error, 'Past date should be valid');
   }
@@ -170,9 +122,7 @@ private class PWChrono_ExpenseValidator_Test {
   @IsTest
   static void testValidateNotFuture_future_returnsError() {
     Test.startTest();
-    String error = PWChrono_ExpenseValidator.validateNotFuture(
-      Date.today().addDays(1)
-    );
+    String error = PWChrono_ExpenseValidator.validateNotFuture(Date.today().addDays(1));
     Test.stopTest();
     System.assertNotEquals(null, error, 'Future date should return an error');
   }
@@ -182,13 +132,7 @@ private class PWChrono_ExpenseValidator_Test {
   @IsTest
   static void testValidateItemType_valid_returnsNull() {
     List<String> validTypes = new List<String>{
-      'Travel',
-      'Food',
-      'Lodging',
-      'Communication',
-      'Training',
-      'Entertainment',
-      'Other'
+      'Travel','Food','Lodging','Communication','Training','Entertainment','Other'
     };
     Test.startTest();
     for (String t : validTypes) {
@@ -218,19 +162,14 @@ private class PWChrono_ExpenseValidator_Test {
 
   @IsTest
   static void testComputeTotal_multipleItems_sumsCorrectly() {
-    List<PWChrono_ExpenseValidator.ExpenseItemDTO> items = PWChrono_ExpenseTestDataFactory.buildItemDTOs(
-      Date.today().addDays(-1)
-    );
+    List<PWChrono_ExpenseValidator.ExpenseItemDTO> items =
+      PWChrono_ExpenseTestDataFactory.buildItemDTOs(Date.today().addDays(-1));
 
     Test.startTest();
     Decimal total = PWChrono_ExpenseValidator.computeTotal(items);
     Test.stopTest();
 
-    System.assertEquals(
-      165.00,
-      total,
-      'Total should be 45.00 + 120.00 = 165.00'
-    );
+    System.assertEquals(165.00, total, 'Total should be 45.00 + 120.00 = 165.00');
   }
 
   @IsTest

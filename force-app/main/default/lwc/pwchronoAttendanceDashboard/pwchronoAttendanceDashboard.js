@@ -4,18 +4,8 @@ import getAttendanceDashboardSummary from "@salesforce/apex/PWChrono_AttendanceC
 import getAttendanceTrackerData from "@salesforce/apex/PWChrono_AttendanceController.getAttendanceTrackerData";
 
 const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
 ];
 
 export default class PwchronoAttendanceDashboard extends LightningElement {
@@ -55,9 +45,9 @@ export default class PwchronoAttendanceDashboard extends LightningElement {
     this.error = null;
 
     const firstDay = new Date(this.currentYear, this.currentMonth, 1);
-    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+    const lastDay  = new Date(this.currentYear, this.currentMonth + 1, 0);
     const startDate = this.formatDate(firstDay);
-    const endDate = this.formatDate(lastDay);
+    const endDate   = this.formatDate(lastDay);
 
     Promise.all([
       getAttendanceDashboardSummary({
@@ -78,10 +68,7 @@ export default class PwchronoAttendanceDashboard extends LightningElement {
         this.stats = this.computeStats(trackerDays);
       })
       .catch((err) => {
-        this.error =
-          err?.body?.message ||
-          err?.message ||
-          "Error loading attendance data.";
+        this.error = err?.body?.message || err?.message || "Error loading attendance data.";
       })
       .finally(() => {
         this.isLoading = false;
@@ -94,10 +81,8 @@ export default class PwchronoAttendanceDashboard extends LightningElement {
     for (const day of days) {
       if (day.status === "Present") stats.present++;
       else if (day.status === "Absent") stats.absent++;
-      else if (day.status === "Late") {
-        stats.present++;
-        stats.late++;
-      } else if (day.status === "Leave") stats.onLeave++;
+      else if (day.status === "Late")   { stats.present++; stats.late++; }
+      else if (day.status === "Leave")  stats.onLeave++;
     }
     return stats;
   }
@@ -127,15 +112,11 @@ export default class PwchronoAttendanceDashboard extends LightningElement {
   // ── User Actions ──────────────────────────────────────────────────────────
 
   handleNewRequest() {
-    this.dispatchEvent(
-      new CustomEvent("newrequest", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new CustomEvent("newrequest", { bubbles: true, composed: true }));
   }
 
   handleViewAll() {
-    this.dispatchEvent(
-      new CustomEvent("viewall", { bubbles: true, composed: true })
-    );
+    this.dispatchEvent(new CustomEvent("viewall", { bubbles: true, composed: true }));
   }
 
   handleRowClick(event) {
@@ -153,8 +134,8 @@ export default class PwchronoAttendanceDashboard extends LightningElement {
 
   formatDate(d) {
     const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
+    const mm   = String(d.getMonth() + 1).padStart(2, "0");
+    const dd   = String(d.getDate()).padStart(2, "0");
     return `${yyyy}-${mm}-${dd}`;
   }
 }

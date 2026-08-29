@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Requires_Certificate__c</fullName>
     <defaultValue>false</defaultValue>
-    <description
-  >If checked, leave applications of this type require a medical certificate or attachment.</description>
+    <description>If checked, leave applications of this type require a medical certificate or attachment.</description>
+    <externalId>false</externalId>
     <label>Requires Certificate</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

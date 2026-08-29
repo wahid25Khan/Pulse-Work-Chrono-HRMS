@@ -3,6 +3,7 @@
  */
 @IsTest
 private class PWChrono_AttendanceValidator_Test {
+
   @TestSetup
   static void setup() {
     PWChrono_AttendanceTestDataFactory.setupStandardTestData();
@@ -13,11 +14,7 @@ private class PWChrono_AttendanceValidator_Test {
   @IsTest
   static void testParseTime_valid() {
     Time t = PWChrono_AttendanceValidator.parseTime('09:30');
-    System.assertEquals(
-      Time.newInstance(9, 30, 0, 0),
-      t,
-      'Should parse HH:mm correctly'
-    );
+    System.assertEquals(Time.newInstance(9, 30, 0, 0), t, 'Should parse HH:mm correctly');
   }
 
   @IsTest
@@ -36,9 +33,7 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testValidateNotFuture_future_returnsError() {
-    String error = PWChrono_AttendanceValidator.validateNotFuture(
-      Date.today().addDays(1)
-    );
+    String error = PWChrono_AttendanceValidator.validateNotFuture(Date.today().addDays(1));
     System.assertNotEquals(null, error, 'Future date should produce an error');
   }
 
@@ -50,9 +45,7 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testValidateNotFuture_past_returnsNull() {
-    String error = PWChrono_AttendanceValidator.validateNotFuture(
-      Date.today().addDays(-5)
-    );
+    String error = PWChrono_AttendanceValidator.validateNotFuture(Date.today().addDays(-5));
     System.assertEquals(null, error, 'Past date should be valid');
   }
 
@@ -66,23 +59,15 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testValidateCorrectionType_invalid_returnsError() {
-    String error = PWChrono_AttendanceValidator.validateCorrectionType(
-      'InvalidType'
-    );
+    String error = PWChrono_AttendanceValidator.validateCorrectionType('InvalidType');
     System.assertNotEquals(null, error, 'Invalid type should fail');
   }
 
   @IsTest
   static void testValidateCorrectionType_valid_returnsNull() {
-    for (
-      String ct : new List<String>{
-        'Check-In Missing',
-        'Check-Out Missing',
-        'Both Missing',
-        'Wrong Time',
-        'Other'
-      }
-    ) {
+    for (String ct : new List<String>{
+      'Check-In Missing', 'Check-Out Missing', 'Both Missing', 'Wrong Time', 'Other'
+    }) {
       String error = PWChrono_AttendanceValidator.validateCorrectionType(ct);
       System.assertEquals(null, error, ct + ' should be valid');
     }
@@ -92,9 +77,10 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testValidateTimeLogic_checkInAfterCheckOut_returnsError() {
-    PWChrono_AttendanceValidator.AttendanceRequestDTO dto = new PWChrono_AttendanceValidator.AttendanceRequestDTO();
-    dto.correctionType = 'Wrong Time';
-    dto.requestedCheckIn = '18:00';
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto =
+      new PWChrono_AttendanceValidator.AttendanceRequestDTO();
+    dto.correctionType    = 'Wrong Time';
+    dto.requestedCheckIn  = '18:00';
     dto.requestedCheckOut = '09:00';
     String error = PWChrono_AttendanceValidator.validateTimeLogic(dto);
     System.assertNotEquals(null, error, 'Check-in after check-out should fail');
@@ -102,9 +88,10 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testValidateTimeLogic_checkInEqualsCheckOut_returnsError() {
-    PWChrono_AttendanceValidator.AttendanceRequestDTO dto = new PWChrono_AttendanceValidator.AttendanceRequestDTO();
-    dto.correctionType = 'Wrong Time';
-    dto.requestedCheckIn = '09:00';
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto =
+      new PWChrono_AttendanceValidator.AttendanceRequestDTO();
+    dto.correctionType    = 'Wrong Time';
+    dto.requestedCheckIn  = '09:00';
     dto.requestedCheckOut = '09:00';
     String error = PWChrono_AttendanceValidator.validateTimeLogic(dto);
     System.assertNotEquals(null, error, 'Equal times should fail');
@@ -112,22 +99,20 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testValidateTimeLogic_missingRequiredCheckIn_returnsError() {
-    PWChrono_AttendanceValidator.AttendanceRequestDTO dto = new PWChrono_AttendanceValidator.AttendanceRequestDTO();
-    dto.correctionType = 'Check-In Missing';
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto =
+      new PWChrono_AttendanceValidator.AttendanceRequestDTO();
+    dto.correctionType   = 'Check-In Missing';
     dto.requestedCheckIn = '';
     String error = PWChrono_AttendanceValidator.validateTimeLogic(dto);
-    System.assertNotEquals(
-      null,
-      error,
-      'Missing required check-in should fail'
-    );
+    System.assertNotEquals(null, error, 'Missing required check-in should fail');
   }
 
   @IsTest
   static void testValidateTimeLogic_validTimes_returnsNull() {
-    PWChrono_AttendanceValidator.AttendanceRequestDTO dto = new PWChrono_AttendanceValidator.AttendanceRequestDTO();
-    dto.correctionType = 'Wrong Time';
-    dto.requestedCheckIn = '09:00';
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto =
+      new PWChrono_AttendanceValidator.AttendanceRequestDTO();
+    dto.correctionType    = 'Wrong Time';
+    dto.requestedCheckIn  = '09:00';
     dto.requestedCheckOut = '18:00';
     String error = PWChrono_AttendanceValidator.validateTimeLogic(dto);
     System.assertEquals(null, error, 'Valid times should pass');
@@ -137,15 +122,9 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testNotOnApprovedLeave_noLeave_returnsNull() {
-    Portal_Users__c emp = [
-      SELECT Id
-      FROM Portal_Users__c
-      WHERE Role__c = 'Employee'
-      LIMIT 1
-    ];
+    Portal_Users__c emp = [SELECT Id FROM Portal_Users__c WHERE Role__c = 'Employee' LIMIT 1];
     String error = PWChrono_AttendanceValidator.validateNotOnApprovedLeave(
-      Date.today().addDays(-20),
-      emp.Id
+      Date.today().addDays(-20), emp.Id
     );
     System.assertEquals(null, error, 'No leave should return null');
   }
@@ -154,41 +133,24 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testValidate_valid_emptyErrors() {
-    Portal_Users__c emp = [
-      SELECT Id
-      FROM Portal_Users__c
-      WHERE Role__c = 'Employee'
-      LIMIT 1
-    ];
-    PWChrono_AttendanceValidator.AttendanceRequestDTO dto = PWChrono_AttendanceTestDataFactory.buildDTO(
-      Date.today().addDays(-2),
-      'Wrong Time'
-    );
+    Portal_Users__c emp = [SELECT Id FROM Portal_Users__c WHERE Role__c = 'Employee' LIMIT 1];
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto =
+      PWChrono_AttendanceTestDataFactory.buildDTO(Date.today().addDays(-2), 'Wrong Time');
 
     Test.startTest();
     List<String> errors = PWChrono_AttendanceValidator.validate(dto, emp.Id);
     Test.stopTest();
 
-    System.assert(
-      errors.isEmpty(),
-      'Valid DTO should produce no errors: ' + String.join(errors, ', ')
-    );
+    System.assert(errors.isEmpty(), 'Valid DTO should produce no errors: ' + String.join(errors, ', '));
   }
 
   // ── Full validate() — future date ─────────────────────────────────────
 
   @IsTest
   static void testValidate_futureDate_returnsError() {
-    Portal_Users__c emp = [
-      SELECT Id
-      FROM Portal_Users__c
-      WHERE Role__c = 'Employee'
-      LIMIT 1
-    ];
-    PWChrono_AttendanceValidator.AttendanceRequestDTO dto = PWChrono_AttendanceTestDataFactory.buildDTO(
-      Date.today().addDays(5),
-      'Wrong Time'
-    );
+    Portal_Users__c emp = [SELECT Id FROM Portal_Users__c WHERE Role__c = 'Employee' LIMIT 1];
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto =
+      PWChrono_AttendanceTestDataFactory.buildDTO(Date.today().addDays(5), 'Wrong Time');
 
     Test.startTest();
     List<String> errors = PWChrono_AttendanceValidator.validate(dto, emp.Id);
@@ -201,24 +163,14 @@ private class PWChrono_AttendanceValidator_Test {
 
   @IsTest
   static void testValidate_tooOldDate_returnsError() {
-    Portal_Users__c emp = [
-      SELECT Id
-      FROM Portal_Users__c
-      WHERE Role__c = 'Employee'
-      LIMIT 1
-    ];
-    PWChrono_AttendanceValidator.AttendanceRequestDTO dto = PWChrono_AttendanceTestDataFactory.buildDTO(
-      Date.today().addDays(-60),
-      'Wrong Time'
-    );
+    Portal_Users__c emp = [SELECT Id FROM Portal_Users__c WHERE Role__c = 'Employee' LIMIT 1];
+    PWChrono_AttendanceValidator.AttendanceRequestDTO dto =
+      PWChrono_AttendanceTestDataFactory.buildDTO(Date.today().addDays(-60), 'Wrong Time');
 
     Test.startTest();
     List<String> errors = PWChrono_AttendanceValidator.validate(dto, emp.Id);
     Test.stopTest();
 
-    System.assert(
-      !errors.isEmpty(),
-      'Date older than backdate limit should fail'
-    );
+    System.assert(!errors.isEmpty(), 'Date older than backdate limit should fail');
   }
 }

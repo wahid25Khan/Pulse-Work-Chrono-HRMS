@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Time_Zone__c</fullName>
     <defaultValue>&quot;America/New_York&quot;</defaultValue>
-    <description
-  >Default time zone for attendance and time tracking</description>
+    <description>Default time zone for attendance and time tracking</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
     <label>Organization Time Zone</label>

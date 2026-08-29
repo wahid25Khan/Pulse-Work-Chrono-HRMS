@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Leaves",
+  "contentBody" : {
+    "activeViewId" : "Leaves",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-leaves",
+    "urlPrefix" : "leaves"
+  },
+  "urlName" : "leaves"
+}

@@ -2,9 +2,7 @@
   <div class="card overflow-hidden">
     <div class="card-header bg-primary text-white">
       <h5 class="card-title mb-0">Leave Calendar</h5>
-      <p class="mb-0 small opacity-75 mt-1">
-        View scheduled leaves and holidays
-      </p>
+      <p class="mb-0 small opacity-75 mt-1">View scheduled leaves and holidays</p>
     </div>
 
     <div class="card-body">
@@ -49,11 +47,7 @@
                 <div class="day-number">{day.number}</div>
                 <div class="day-events">
                   <template for:each={day.events} for:item="event">
-                    <div
-                      key={event.id}
-                      class={event.cssClass}
-                      title={event.title}
-                    >
+                    <div key={event.id} class={event.cssClass} title={event.title}>
                       {event.title}
                     </div>
                   </template>

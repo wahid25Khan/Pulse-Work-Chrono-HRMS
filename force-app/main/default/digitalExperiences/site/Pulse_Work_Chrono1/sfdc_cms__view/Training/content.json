@@ -1,0 +1,78 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Training",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"0bce6588-27e4-41a8-889a-2c5f6a3fa2ec\",\"columns\":[{\"UUID\":\"017ee6c7-fec8-48a7-9316-3b1ce50ceb21\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:trainingList",
+              "id" : "d460bef8-aae5-4a2e-bbf2-f4b0f62caaba",
+              "type" : "component"
+            }, {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoTrainingManagement",
+              "id" : "147675a6-9916-41e5-99ef-b1eb6d090cb8",
+              "type" : "component"
+            } ],
+            "id" : "017ee6c7-fec8-48a7-9316-3b1ce50ceb21",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "0bce6588-27e4-41a8-889a-2c5f6a3fa2ec",
+          "type" : "component"
+        } ],
+        "id" : "7a8ccd69-8b4e-49dd-a6e8-11ddda2f29c7",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Training",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "aecc1d64-0c6c-479d-825f-aeb9f79aea69",
+          "type" : "component"
+        } ],
+        "id" : "ceb50c14-66a8-4973-a928-0b89ae05f39a",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "9a7046ac-0334-4599-b261-538a4fc8ef16",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-training"
+  },
+  "urlName" : "training"
+}

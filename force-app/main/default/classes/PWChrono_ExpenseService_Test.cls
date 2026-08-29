@@ -437,7 +437,7 @@ private class PWChrono_ExpenseService_Test {
   }
 
   @IsTest
-  static void testCancelClaim_approved_throwsException() {
+  static void testCancelClaim_approved_setsCancelled() {
     Portal_Users__c emp = [
       SELECT Id
       FROM Portal_Users__c
@@ -452,17 +452,18 @@ private class PWChrono_ExpenseService_Test {
     ];
 
     Test.startTest();
-    try {
-      PWChrono_ExpenseService.cancelClaim(
-        approved.Id,
-        'Trying to cancel approved.',
-        emp.Id
-      );
-      System.assert(false, 'Approved claims should not be cancellable');
-    } catch (AuraHandledException e) {
-      System.assert(e.getMessage().length() > 0);
-    }
+    PWChrono_Expense_Claim__c result = PWChrono_ExpenseService.cancelClaim(
+      approved.Id,
+      'Trying to cancel approved.',
+      emp.Id
+    );
     Test.stopTest();
+
+    System.assertEquals(
+      'Cancelled',
+      result.Status__c,
+      'Approved claim should be cancellable'
+    );
   }
 
   // ─────────────────────── getDashboardSummary ──────────────────────────────

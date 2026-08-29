@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Enable_Payroll_Module__c</fullName>
     <defaultValue>true</defaultValue>
-    <description
-  >Enable or disable the entire payroll functionality including salary structures and slip generation.</description>
-    <inlineHelpText
-  >Uncheck if your organization uses external payroll system and doesn&apos;t need in-app payroll.</inlineHelpText>
+    <description>Enable or disable the entire payroll functionality including salary structures and slip generation.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Uncheck if your organization uses external payroll system and doesn&apos;t need in-app payroll.</inlineHelpText>
     <label>Enable Payroll Module</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

@@ -1,0 +1,71 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Employee Directory",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"e63cbe7a-bba1-4948-9fcd-973ba3fc6eb7\",\"columns\":[{\"UUID\":\"8cf1e4de-5530-4ee0-8a9d-c7428629fd23\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:pwchronoEmployeeDirectoryPage",
+              "id" : "02ebdbe1-60fd-4133-9f95-4c0625b1871f",
+              "type" : "component"
+            } ],
+            "id" : "8cf1e4de-5530-4ee0-8a9d-c7428629fd23",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "e63cbe7a-bba1-4948-9fcd-973ba3fc6eb7",
+          "type" : "component"
+        } ],
+        "id" : "07cb91a4-c567-4d20-a987-0aa54ea45dae",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Employee Directory",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "e0dfbf4e-f8c5-477f-bb73-3120130c769f",
+          "type" : "component"
+        } ],
+        "id" : "1a19b942-fbe2-4249-95da-2b26e24cb273",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "97773b80-37f5-45dc-9b99-f8f0d1f0d3f5",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-employee-directory"
+  },
+  "urlName" : "employee-directory"
+}
