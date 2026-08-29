@@ -7,7 +7,7 @@ const globals = require("globals");
 
 module.exports = defineConfig([
   {
-    ignores: ["archive/**"]
+    ignores: ["archive/**", ".sf/**", ".sfdx/**"]
   },
 
   // Aura configuration

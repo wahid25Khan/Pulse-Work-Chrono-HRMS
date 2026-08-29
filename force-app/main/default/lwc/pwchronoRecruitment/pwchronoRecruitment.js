@@ -29,7 +29,7 @@ export default class PwchronoRecruitment extends LightningElement {
     portalUserId: "$portalUserId",
     sessionToken: "$sessionToken"
   })
-  wiredMetrics({ error, data }) {
+  wiredMetrics({ data }) {
     if (data) {
       this.metrics = {
         openJobsCount: data.openJobsCount || 0,

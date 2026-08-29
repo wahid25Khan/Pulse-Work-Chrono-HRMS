@@ -38,8 +38,11 @@ export default class PwchronoPayrollDashboard extends LightningElement {
       this.loadSummary();
     };
     try {
-      window.addEventListener(SESSION_CHANGED_EVENT, this._sessionChangedHandler);
-    } catch (e) {
+      window.addEventListener(
+        SESSION_CHANGED_EVENT,
+        this._sessionChangedHandler
+      );
+    } catch {
       // ignore
     }
     this.loadSummary();
@@ -115,7 +118,7 @@ export default class PwchronoPayrollDashboard extends LightningElement {
         SESSION_CHANGED_EVENT,
         this._sessionChangedHandler
       );
-    } catch (e) {
+    } catch {
       // ignore
     }
     this._sessionChangedHandler = null;
