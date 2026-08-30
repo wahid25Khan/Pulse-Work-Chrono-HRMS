@@ -404,15 +404,15 @@ used, it must be owned by and queried exclusively through
 
 ### Profile assignment inventory
 
-| Profile key | Display name   | Profile type | Active users | Inactive users | Permission records | Approval destination | Verified date |
-| ----------- | -------------- | ------------ | -----------: | -------------: | ------------------ | -------------------- | ------------- |
-| `PUP-0000`  | [TBD]          | [TBD]        |            5 |              2 | 22 object, 0 field | [TBD]                | 2026-08-31    |
-| `PUP-0001`  | [TBD]          | [TBD]        |            1 |              0 | 1 object, 0 field  | [TBD]                | 2026-08-31    |
-| Unassigned  | Not applicable | Mixed        |            5 |              0 | None               | None                 | 2026-08-31    |
+| Profile key | Display name   | Profile type              | Active users | Inactive users | Permission records | Approval destination | Verified date |
+| ----------- | -------------- | ------------------------- | -----------: | -------------: | ------------------ | -------------------- | ------------- |
+| `PUP-0000`  | [TBD]          | Broad HR Admin usage      |            6 |              2 | 22 object, 0 field | [TBD]                | 2026-08-31    |
+| `PUP-0001`  | [TBD]          | Restricted Employee usage |            2 |              0 | 1 object, 0 field  | [TBD]                | 2026-08-31    |
+| Unassigned  | Not applicable | Mixed                     |            5 |              0 | None               | None                 | 2026-08-31    |
 
-Current live-org review found 13 Portal Users, of which 8 have a profile and 5
+Current live-org review found 15 Portal Users, of which 10 have a profile and 5
 do not. Resolve every unassigned user before enabling profile-only enforcement.
-Three active, profiled users have organizational email addresses suitable for
+Five active, profiled users have non-placeholder email addresses suitable for
 OTP delivery. Other active records either lack an email, use an `example.com`
 address, or have no profile and are not considered fully test-ready.
 
