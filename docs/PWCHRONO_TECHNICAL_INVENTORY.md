@@ -335,12 +335,12 @@ Copy this record when introducing a new business module.
 
 | Category       | Inventory                                                                                                                                                                       |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Components     | `pwchronoConfigurationCenter`, `pwchronoAdminDashboard`, `pwchronoAdminDashboardReports`, `pwchronoRoleFeatureMapping`, profile permission components                           |
+| Components     | `pwchronoConfigurationCenter`, `pwchronoNewUserForm`, `pwchronoProfilePermissions`, `pwchronoAdminDashboard`, `pwchronoAdminDashboardReports`, legacy role/feature components   |
 | Controllers    | `PWChrono_AdminController`, `PWChrono_ConfigurationController`, `PWChrono_ReportsDashboardController`, `PWChrono_PermissionController`, `PWChrono_RoleFeatureMappingController` |
 | Objects        | Portal access objects, feature settings, role mappings, reporting module objects                                                                                                |
-| Primary fields | Feature name, access level, active status, CRUD flags, field read/edit flags, module settings                                                                                   |
-| Dependencies   | Verified admin portal session, custom metadata deployment callback, every business module                                                                                       |
-| Status         | Partial; legacy access mechanisms must be consolidated into Portal User Profile                                                                                                 |
+| Primary fields | `Portal_User_Profile__c`, active status, CRUD flags, field read/edit flags, module settings                                                                                     |
+| Dependencies   | Verified admin portal session, Portal User Profile object permissions, custom metadata deployment callback, every business module                                               |
+| Status         | Partial; Configuration Center user assignment now uses Portal User Profiles, while other legacy runtime access mechanisms still require consolidation                           |
 
 ## 16. Request comments, attachments, and notifications
 
@@ -382,6 +382,26 @@ Do not introduce runtime fallbacks to:
 
 Legacy stores may be read only by a controlled migration utility and must not
 remain part of the post-cutover access resolver.
+
+### Implemented profile-assignment administration
+
+The standard Salesforce `PWChrono_Admin` and `Configuration_Center` tabs both
+load `pwchronoConfigurationCenter`. This active administration component now:
+
+- lists the `Portal_User_Profile__c` assigned to every `Portal_Users__c` record;
+- assigns an existing profile through
+  `PWChrono_ConfigurationController.assignUserProfile`;
+- requires a profile when creating a Portal User through
+  `pwchronoNewUserForm`; and
+- authorizes a guest caller in Apex only when the caller's assigned profile has
+  view and edit permission for `Portal_Users__c`.
+
+`pwchronoProfilePermissions` remains the profile-record component used to
+maintain object and field permission records. Older per-user feature methods in
+`PWChrono_ConfigurationController` remain temporarily for backward
+compatibility, but the active Configuration Center and New User Form no longer
+call them. They must be retired after all remaining legacy consumers are
+migrated.
 
 ### Portal User Profile schema inventory
 
@@ -478,7 +498,12 @@ the profile; the individual user field is retained only for audit history.
 - [ ] Every active Portal User has exactly one active Portal User Profile.
 - [ ] Every profile has a stable developer key and display name.
 - [ ] HR Manager is represented by an explicit profile value.
-- [ ] Feature access resolves only from the Portal User Profile contract.
+- [x] Configuration Center profile assignment writes only
+      `Portal_Users__c.Portal_User_Profile__c`.
+- [x] Guest profile assignment is authorized server-side through the caller's
+      Portal User Profile object permission for `Portal_Users__c`.
+- [ ] Feature access across every runtime module resolves only from the Portal
+      User Profile contract.
 - [ ] All active portal objects have profile object-permission records.
 - [ ] Restricted fields have profile field-permission records.
 - [ ] Guest Apex calls validate the server-issued portal session.

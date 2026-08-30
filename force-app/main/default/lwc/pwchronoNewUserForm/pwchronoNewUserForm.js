@@ -1,54 +1,57 @@
-import { LightningElement, track } from "lwc";
+import { api, LightningElement, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import getAvailableFeatures from "@salesforce/apex/PWChrono_ConfigurationController.getAvailableFeatures";
 import createPortalUser from "@salesforce/apex/PWChrono_ConfigurationController.createPortalUser";
+import getAvailableProfiles from "@salesforce/apex/PWChrono_ConfigurationController.getAvailableProfiles";
 
 export default class PwchronoNewUserForm extends LightningElement {
+  @api callerPortalUserId;
+  @api sessionToken;
   @track newUser = {
     Name: "",
     Email__c: "",
     Role__c: "Employee",
     Designation__c: "",
-    Department__c: ""
+    Department__c: "",
+    Is_Active__c: true
   };
-  @track features = [];
+  @track selectedProfileId = "";
+  @track profileOptions = [];
   @track isSaving = false;
-  @track isLoadingFeatures = true;
-  @track featureLoadError = null;
-  baseFeatures = [];
+  @track isLoadingProfiles = true;
+  @track profileLoadError = null;
 
   connectedCallback() {
-    this.loadFeatures();
+    this.loadProfiles();
   }
 
-  async loadFeatures() {
-    this.isLoadingFeatures = true;
-    this.featureLoadError = null;
+  async loadProfiles() {
+    this.isLoadingProfiles = true;
+    this.profileLoadError = null;
     try {
-      const data = await getAvailableFeatures();
+      const data = await getAvailableProfiles({
+        portalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
+      });
       if (data && data.length > 0) {
-        this.baseFeatures = data;
-        this.features = this.baseFeatures.map((f) => ({
-          name: f,
-          hasAccess: false
+        this.profileOptions = data.map((profile) => ({
+          label: profile.profileName,
+          value: profile.profileId
         }));
       } else {
-        // Distinguish between no features and loading error
-        this.featureLoadError =
-          "No features are available in the system. Please contact your administrator.";
-        this.features = [];
+        this.profileLoadError =
+          "No Portal User Profiles are available. Create a profile before adding users.";
+        this.profileOptions = [];
       }
     } catch (error) {
-      // Capture specific error message from Apex
       const errorMsg =
         error?.body?.message ||
         error?.message ||
-        "Failed to load features. Please try again.";
-      this.featureLoadError = errorMsg;
-      this.features = [];
+        "Failed to load Portal User Profiles. Please try again.";
+      this.profileLoadError = errorMsg;
+      this.profileOptions = [];
       this.showToast("Error", errorMsg, "error");
     } finally {
-      this.isLoadingFeatures = false;
+      this.isLoadingProfiles = false;
     }
   }
 
@@ -57,16 +60,8 @@ export default class PwchronoNewUserForm extends LightningElement {
     this.newUser[field] = event.target.value;
   }
 
-  handleFeatureToggle(event) {
-    const featureName = event.target.dataset.name;
-    const isChecked = event.target.checked;
-
-    this.features = this.features.map((f) => {
-      if (f.name === featureName) {
-        return { ...f, hasAccess: isChecked };
-      }
-      return f;
-    });
+  handleProfileChange(event) {
+    this.selectedProfileId = event.detail.value;
   }
 
   async handleSave() {
@@ -75,14 +70,12 @@ export default class PwchronoNewUserForm extends LightningElement {
     }
 
     this.isSaving = true;
-    const activeFeatures = this.features
-      .filter((f) => f.hasAccess)
-      .map((f) => f.name);
-
     try {
       const userId = await createPortalUser({
         userRecord: this.newUser,
-        featureNames: activeFeatures
+        profileId: this.selectedProfileId,
+        portalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
       });
 
       this.showToast(
@@ -105,7 +98,7 @@ export default class PwchronoNewUserForm extends LightningElement {
 
   validateInput() {
     const allValid = [
-      ...this.template.querySelectorAll("lightning-input")
+      ...this.template.querySelectorAll("lightning-input, lightning-combobox")
     ].reduce((validSoFar, inputCmp) => {
       inputCmp.reportValidity();
       return validSoFar && inputCmp.checkValidity();
