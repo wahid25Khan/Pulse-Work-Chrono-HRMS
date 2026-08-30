@@ -2,22 +2,22 @@
 
 ## Document control
 
-| Property                   | Value                                                                               |
-| -------------------------- | ----------------------------------------------------------------------------------- |
-| Product                    | Pulse Work Chrono                                                                   |
-| Salesforce project         | PWChrono-HRMS                                                                       |
-| Document purpose           | Module, metadata, data-model, access, and dependency inventory                      |
-| Status                     | Current org-baseline inventory with local navigation reconciliation pending release |
-| Repository owner           | `wahid25Khan`                                                                       |
-| Source of truth owner      | Pulse Work Chrono Technical Team                                                    |
-| Technical approver         | Pulse Work Chrono Technical Lead                                                    |
-| Security approver          | Pulse Work Chrono HR/System Administrator                                           |
-| Last repository review     | 2026-08-30                                                                          |
-| Last live-org verification | 2026-08-30                                                                          |
-| Target org alias           | PWChrono                                                                            |
-| Target site                | Pulse Work Chrono                                                                   |
-| Git repository             | `wahid25Khan/Pulse-Work-Chrono-HRMS`                                                |
-| Review cadence             | Before each release and after every schema or access change                         |
+| Property                   | Value                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| Product                    | Pulse Work Chrono                                                              |
+| Salesforce project         | PWChrono-HRMS                                                                  |
+| Document purpose           | Module, metadata, data-model, access, and dependency inventory                 |
+| Status                     | Navigation reconciliation deployed and published; browser verification pending |
+| Repository owner           | `wahid25Khan`                                                                  |
+| Source of truth owner      | Pulse Work Chrono Technical Team                                               |
+| Technical approver         | Pulse Work Chrono Technical Lead                                               |
+| Security approver          | Pulse Work Chrono HR/System Administrator                                      |
+| Last repository review     | 2026-08-30                                                                     |
+| Last live-org verification | 2026-08-31                                                                     |
+| Target org alias           | PWChrono                                                                       |
+| Target site                | Pulse Work Chrono                                                              |
+| Git repository             | `wahid25Khan/Pulse-Work-Chrono-HRMS`                                           |
+| Review cadence             | Before each release and after every schema or access change                    |
 
 ## How to maintain this inventory
 
@@ -404,13 +404,17 @@ used, it must be owned by and queried exclusively through
 
 ### Profile assignment inventory
 
-| Profile key | Display name | Profile type | Active users | Inactive users | Enabled features | Approval destination | Verified date |
-| ----------- | ------------ | ------------ | -----------: | -------------: | ---------------- | -------------------- | ------------- |
-| `PUP-0000`  | [TBD]        | [TBD]        |        [TBD] |          [TBD] | [TBD]            | [TBD]                | 2026-08-30    |
-| `PUP-0001`  | [TBD]        | [TBD]        |        [TBD] |          [TBD] | [TBD]            | [TBD]                | 2026-08-30    |
+| Profile key | Display name   | Profile type | Active users | Inactive users | Permission records | Approval destination | Verified date |
+| ----------- | -------------- | ------------ | -----------: | -------------: | ------------------ | -------------------- | ------------- |
+| `PUP-0000`  | [TBD]          | [TBD]        |            5 |              2 | 22 object, 0 field | [TBD]                | 2026-08-31    |
+| `PUP-0001`  | [TBD]          | [TBD]        |            1 |              0 | 1 object, 0 field  | [TBD]                | 2026-08-31    |
+| Unassigned  | Not applicable | Mixed        |            5 |              0 | None               | None                 | 2026-08-31    |
 
 Current live-org review found 13 Portal Users, of which 8 have a profile and 5
 do not. Resolve every unassigned user before enabling profile-only enforcement.
+Three active, profiled users have organizational email addresses suitable for
+OTP delivery. Other active records either lack an email, use an `example.com`
+address, or have no profile and are not considered fully test-ready.
 
 ### Feature-access matrix
 
@@ -591,12 +595,13 @@ or Salesforce Approval Process is configured and verified.
 
 ## 21. Release and verification history
 
-| Date       | Scope                                   | Git commit           | Validation/deploy ID | Tests                    | Site published | Browser verified | Reviewer     |
-| ---------- | --------------------------------------- | -------------------- | -------------------- | ------------------------ | -------------- | ---------------- | ------------ |
-| 2026-08-30 | Initial reconciliation dry run          | Not committed        | `0Afg800000BaxsrCAB` | 14/14 metadata, 5/5 Apex | No             | No               | Codex review |
-| 2026-08-30 | Pre-commit reconciliation revalidation  | Pending local commit | `0Afg800000BdRjZCAV` | 14/14 metadata, 5/5 Apex | No             | No               | Codex review |
-| 2026-08-30 | Portal navigation and access deployment | `fdce2a5`            | `0Afg800000BcmepCAB` | 14/14 metadata, 5/5 Apex | No             | No               | Codex review |
-| [TBD]      | [TBD]                                   | [TBD]                | [TBD]                | [TBD]                    | Yes / No       | Yes / No         | [TBD]        |
+| Date       | Scope                                   | Git commit           | Validation/deploy ID | Tests                        | Site published | Browser verified | Reviewer     |
+| ---------- | --------------------------------------- | -------------------- | -------------------- | ---------------------------- | -------------- | ---------------- | ------------ |
+| 2026-08-30 | Initial reconciliation dry run          | Not committed        | `0Afg800000BaxsrCAB` | 14/14 metadata, 5/5 Apex     | No             | No               | Codex review |
+| 2026-08-30 | Pre-commit reconciliation revalidation  | Pending local commit | `0Afg800000BdRjZCAV` | 14/14 metadata, 5/5 Apex     | No             | No               | Codex review |
+| 2026-08-30 | Portal navigation and access deployment | `fdce2a5`            | `0Afg800000BcmepCAB` | 14/14 metadata, 5/5 Apex     | No             | No               | Codex review |
+| 2026-08-31 | Pulse Work Chrono site publication      | `f4b0f67`            | `08Pg800000JQ8U7EAL` | Deployment previously passed | Yes            | No               | Codex review |
+| [TBD]      | [TBD]                                   | [TBD]                | [TBD]                | [TBD]                        | Yes / No       | Yes / No         | [TBD]        |
 
 ## 22. Open inventory actions
 
@@ -607,6 +612,8 @@ or Salesforce Approval Process is configured and verified.
 - [ ] Resolve the invalid `Portal_Object__c` record with no API name.
 - [ ] Populate missing field-permission records.
 - [ ] Assign all Portal Users to an approved profile.
+- [ ] Reconcile the locally defined `Session_Locked_Until__c` field with the
+      live org before deploying Apex classes that reference it.
 - [ ] Complete the profile-only access migration plan.
 - [ ] Complete the HR Manager profile approval-routing design.
 - [ ] Mark placeholder and mock-backed modules explicitly.

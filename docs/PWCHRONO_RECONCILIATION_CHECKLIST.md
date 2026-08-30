@@ -26,7 +26,8 @@ change is never mistaken for a live release.
       job `0Afg800000BdRjZCAV`: 14/14 components and 5/5 Apex tests passed).
 - [x] Deploy the validated batch to the intended PWChrono org (deployment job
       `0Afg800000BcmepCAB`: 14/14 components and 5/5 Apex tests passed).
-- [ ] Publish the Pulse Work Chrono Experience Cloud site.
+- [x] Publish the Pulse Work Chrono Experience Cloud site (publication job
+      `08Pg800000JQ8U7EAL`; Network status confirmed `Live`).
 - [ ] Verify employee, manager, HR admin, and unauthorized-user navigation in
       an authenticated browser session.
 
@@ -132,6 +133,9 @@ business modules.
       check currently includes thousands of retrieved org files.
 - [ ] Refresh `docs/pulse-work-chrono-go-live-audit.md`; its site bundle and
       permission-set inventory is stale.
+- [ ] Reconcile `Portal_Users__c.Session_Locked_Until__c`: the field exists in
+      the repository and is referenced by local Apex, but the live org reported
+      it as absent on 2026-08-31.
 - [ ] Run relevant Apex tests for every controller changed by a batch.
 - [ ] Run a check-only Salesforce deployment before every real deployment.
 - [ ] Publish the site after Experience metadata deployment.
