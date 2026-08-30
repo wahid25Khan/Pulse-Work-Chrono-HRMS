@@ -24,7 +24,8 @@ change is never mistaken for a live release.
       `PWChrono_Portal`.
 - [x] Complete Salesforce check-only validation for this batch (latest dry-run
       job `0Afg800000BdRjZCAV`: 14/14 components and 5/5 Apex tests passed).
-- [ ] Deploy the validated batch to the intended PWChrono org.
+- [x] Deploy the validated batch to the intended PWChrono org (deployment job
+      `0Afg800000BcmepCAB`: 14/14 components and 5/5 Apex tests passed).
 - [ ] Publish the Pulse Work Chrono Experience Cloud site.
 - [ ] Verify employee, manager, HR admin, and unauthorized-user navigation in
       an authenticated browser session.

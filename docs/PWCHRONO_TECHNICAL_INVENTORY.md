@@ -63,12 +63,12 @@ For every inventory row:
 
 ### Repository baseline and local-change provenance
 
-| Scope                                    | Provenance                                | Current state                                                         | Evidence                                                  |
-| ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------- |
-| Business modules and Salesforce metadata | Retrieved from the connected PWChrono org | Committed org baseline; not newly developed in the current batch      | Commit `2e9525f`                                          |
-| Frontend validation cleanup              | Repository reconciliation follow-up       | Committed; no new module introduced                                   | Commit `32b903d`                                          |
-| Portal navigation and route bindings     | Local reconciliation after org retrieval  | Validated locally/check-only; deployment and site publication pending | Reconciliation checklist and dry-run `0Afg800000BdRjZCAV` |
-| New business functionality               | None in the current local batch           | No new business module should be attributed to this batch             | Working-tree review dated 2026-08-30                      |
+| Scope                                    | Provenance                                | Current state                                                           | Evidence                             |
+| ---------------------------------------- | ----------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
+| Business modules and Salesforce metadata | Retrieved from the connected PWChrono org | Committed org baseline; not newly developed in the current batch        | Commit `2e9525f`                     |
+| Frontend validation cleanup              | Repository reconciliation follow-up       | Committed; no new module introduced                                     | Commit `32b903d`                     |
+| Portal navigation and route bindings     | Local reconciliation after org retrieval  | Deployed; Experience Cloud publication and browser verification pending | Deployment `0Afg800000BcmepCAB`      |
+| New business functionality               | None in the current local batch           | No new business module should be attributed to this batch               | Working-tree review dated 2026-08-30 |
 
 The local reconciliation changes connect existing components to navigation,
 routes, tabs, and access checks. They do not represent new development of the
@@ -591,11 +591,12 @@ or Salesforce Approval Process is configured and verified.
 
 ## 21. Release and verification history
 
-| Date       | Scope                                  | Git commit           | Validation/deploy ID | Tests                    | Site published | Browser verified | Reviewer     |
-| ---------- | -------------------------------------- | -------------------- | -------------------- | ------------------------ | -------------- | ---------------- | ------------ |
-| 2026-08-30 | Initial reconciliation dry run         | Not committed        | `0Afg800000BaxsrCAB` | 14/14 metadata, 5/5 Apex | No             | No               | Codex review |
-| 2026-08-30 | Pre-commit reconciliation revalidation | Pending local commit | `0Afg800000BdRjZCAV` | 14/14 metadata, 5/5 Apex | No             | No               | Codex review |
-| [TBD]      | [TBD]                                  | [TBD]                | [TBD]                | [TBD]                    | Yes / No       | Yes / No         | [TBD]        |
+| Date       | Scope                                   | Git commit           | Validation/deploy ID | Tests                    | Site published | Browser verified | Reviewer     |
+| ---------- | --------------------------------------- | -------------------- | -------------------- | ------------------------ | -------------- | ---------------- | ------------ |
+| 2026-08-30 | Initial reconciliation dry run          | Not committed        | `0Afg800000BaxsrCAB` | 14/14 metadata, 5/5 Apex | No             | No               | Codex review |
+| 2026-08-30 | Pre-commit reconciliation revalidation  | Pending local commit | `0Afg800000BdRjZCAV` | 14/14 metadata, 5/5 Apex | No             | No               | Codex review |
+| 2026-08-30 | Portal navigation and access deployment | `fdce2a5`            | `0Afg800000BcmepCAB` | 14/14 metadata, 5/5 Apex | No             | No               | Codex review |
+| [TBD]      | [TBD]                                   | [TBD]                | [TBD]                | [TBD]                    | Yes / No       | Yes / No         | [TBD]        |
 
 ## 22. Open inventory actions
 
