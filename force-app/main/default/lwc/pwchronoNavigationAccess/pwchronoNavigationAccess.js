@@ -1,0 +1,57 @@
+const MENU_FEATURE_MAP = {
+  Dashboard: ["Dashboard"],
+  "Admin Dashboard": ["Admin Settings", "Configuration", "Admin"],
+  "Manager Dashboard": ["Manager Dashboard", "Admin"],
+  "Employee Dashboard": ["Dashboard"],
+  "My Profile": ["My Profile"],
+  "Attendance Management": ["Attendance Management"],
+  "Attendance Employee": ["Attendance Management"],
+  "Attendance (Admin)": ["Attendance Management", "Admin"],
+  Overtime: ["Attendance Management"],
+  "WFH Management": ["Attendance Management"],
+  Timesheets: ["Attendance Management"],
+  "Attendance Settings": ["Admin Settings", "Configuration", "Admin"],
+  "Leave Management": ["Leave Management"],
+  "Leaves (Employee)": ["Leave Management"],
+  "Leaves Admin": ["Leave Management", "Admin"],
+  "Leave Settings": ["Admin Settings", "Configuration", "Admin"],
+  Holidays: ["Holidays"],
+  "Employee Directory": ["Employee Directory"],
+  Recruitment: ["Recruitment"],
+  Onboarding: ["Onboarding"],
+  Performance: ["Performance Management", "Appraisal", "Goals"],
+  Training: ["Training Management"],
+  "Projects List": ["Projects", "Dashboard"],
+  Projects: ["Projects", "Dashboard"],
+  "Expense Management": ["Expense Management"],
+  Payroll: ["Payroll"],
+  Administration: ["Admin Settings", "Configuration", "Admin"],
+  "Reports Dashboard": [
+    "Reports Dashboard",
+    "Admin Settings",
+    "Configuration",
+    "Admin"
+  ],
+  "Role Feature Mapping": ["Admin Settings", "Configuration", "Admin"]
+};
+
+function hasMenuAccess(item, featureSet) {
+  const requiredFeatures = MENU_FEATURE_MAP[item?.label];
+  return Boolean(requiredFeatures?.some((feature) => featureSet.has(feature)));
+}
+
+export function filterMenuItemsByFeatures(items, features) {
+  const featureSet = new Set(features || []);
+  if (featureSet.has("Admin")) {
+    return items || [];
+  }
+
+  return (items || []).reduce((visibleItems, item) => {
+    const children = filterMenuItemsByFeatures(item.children || [], features);
+    if (!hasMenuAccess(item, featureSet) && children.length === 0) {
+      return visibleItems;
+    }
+    visibleItems.push({ ...item, children });
+    return visibleItems;
+  }, []);
+}

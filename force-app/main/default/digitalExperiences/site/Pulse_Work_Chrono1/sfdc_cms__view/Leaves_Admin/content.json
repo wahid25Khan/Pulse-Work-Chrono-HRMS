@@ -1,63 +1,82 @@
 {
-  "type" : "sfdc_cms__view",
-  "title" : "Leaves Admin",
-  "contentBody" : {
-    "component" : {
-      "children" : [ {
-        "children" : [ {
-          "attributes" : {
-            "backgroundImageConfig" : "",
-            "backgroundImageOverlay" : "rgba(0,0,0,0)",
-            "componentSpacerSize" : "",
-            "dxpStyle" : { },
-            "layoutDirectionDesktop" : "row",
-            "layoutDirectionMobile" : "column",
-            "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
-            "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"87d3d9f2-57ce-42d9-b290-bde579df3441\",\"columns\":[{\"UUID\":\"14c2db4b-8999-45fe-8c58-7b67612762e0\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
-            "sectionMinHeight" : "",
-            "sectionVerticalAlign" : "flex-start"
-          },
-          "children" : [ {
-            "id" : "14c2db4b-8999-45fe-8c58-7b67612762e0",
-            "name" : "col1",
-            "title" : "Column 1",
-            "type" : "region"
-          } ],
-          "definition" : "community_layout:section",
-          "id" : "87d3d9f2-57ce-42d9-b290-bde579df3441",
-          "type" : "component"
-        } ],
-        "id" : "0d592fbc-f752-4aae-bcc5-f8e4820b867e",
-        "name" : "content",
-        "title" : "Content",
-        "type" : "region"
-      }, {
-        "children" : [ {
-          "attributes" : {
-            "customHeadTags" : "",
-            "description" : "",
-            "dxpStyle" : { },
-            "pageTitle" : "Leaves Admin",
-            "recordId" : "{!recordId}"
-          },
-          "definition" : "community_builder:seoAssistant",
-          "id" : "c8aff3cf-1cc1-4f9e-8d34-d7bf63752687",
-          "type" : "component"
-        } ],
-        "id" : "e177907a-9ddf-4de1-8355-8dfa8ea6899e",
-        "name" : "sfdcHiddenRegion",
-        "title" : "sfdcHiddenRegion",
-        "type" : "region"
-      } ],
-      "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "44d551d8-0b86-4249-92ae-49f0a35c682f",
-      "type" : "component"
+  "type": "sfdc_cms__view",
+  "title": "Leaves Admin",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "dxpStyle": {},
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"87d3d9f2-57ce-42d9-b290-bde579df3441\",\"columns\":[{\"UUID\":\"14c2db4b-8999-45fe-8c58-7b67612762e0\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
+              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": {
+                        "dxpStyle": {}
+                      },
+                      "definition": "c:pwchronoLeaveAdmin",
+                      "id": "5cc4a93f-301d-4dc2-adbf-430f80bf6137",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "14c2db4b-8999-45fe-8c58-7b67612762e0",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "87d3d9f2-57ce-42d9-b290-bde579df3441",
+              "type": "component"
+            }
+          ],
+          "id": "0d592fbc-f752-4aae-bcc5-f8e4820b867e",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "dxpStyle": {},
+                "pageTitle": "Leaves Admin",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "c8aff3cf-1cc1-4f9e-8d34-d7bf63752687",
+              "type": "component"
+            }
+          ],
+          "id": "e177907a-9ddf-4de1-8355-8dfa8ea6899e",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "44d551d8-0b86-4249-92ae-49f0a35c682f",
+      "type": "component"
     },
-    "dataProviders" : [ ],
-    "themeLayoutType" : "Inner",
-    "viewType" : "custom-leaves-admin"
+    "dataProviders": [],
+    "themeLayoutType": "Inner",
+    "viewType": "custom-leaves-admin"
   },
-  "urlName" : "leaves-admin"
+  "urlName": "leaves-admin"
 }
