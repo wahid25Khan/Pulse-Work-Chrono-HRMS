@@ -358,16 +358,15 @@ Copy this record when introducing a new business module.
 ### Canonical access model
 
 `Portal_Users__c.Portal_User_Profile__c` must be the only runtime source for
-feature visibility, object access, field access, and approval routing. The
+feature visibility and approval routing. The
 target resolution contract is:
 
 ```text
 Verified custom portal session
   -> Portal_Users__c
     -> Portal_User_Profile__c
-      -> enabled features
-      -> object permissions
-      -> field permissions
+      -> enabled component features
+      -> feature dependency metadata
       -> approval profile and routing settings
 ```
 
@@ -396,8 +395,17 @@ load `pwchronoConfigurationCenter`. This active administration component now:
 - authorizes a guest caller in Apex only when the caller's assigned profile has
   view and edit permission for `Portal_Users__c`.
 
+### Component feature access model
+
+Component access is profile-owned through `Portal_Profile_Feature__c`. Each
+assignment stores the feature key/label, enabled state, and required object or
+field dependency metadata. These fields describe component requirements only;
+they do not create field-level read/edit permissions. If no field dependency is
+listed, the application adds no extra field restriction, while Salesforce
+CRUD/FLS remains authoritative.
+
 `pwchronoProfilePermissions` remains the profile-record component used to
-maintain object and field permission records. Older per-user feature methods in
+maintain optional object CRUD records. Older per-user feature methods in
 `PWChrono_ConfigurationController` remain temporarily for backward
 compatibility, but the active Configuration Center and New User Form no longer
 call them. They must be retired after all remaining legacy consumers are
@@ -504,8 +512,9 @@ the profile; the individual user field is retained only for audit history.
       Portal User Profile object permission for `Portal_Users__c`.
 - [ ] Feature access across every runtime module resolves only from the Portal
       User Profile contract.
-- [ ] All active portal objects have profile object-permission records.
-- [ ] Restricted fields have profile field-permission records.
+- [ ] Every enabled component feature has complete object dependency metadata.
+- [ ] Field dependency metadata is documented where a component requires it;
+      no field-level permission matrix is maintained.
 - [ ] Guest Apex calls validate the server-issued portal session.
 - [ ] Guest, employee, manager, HR Manager, and unauthorized cases are tested.
 - [ ] Approval requests route to a profile, not `Reports_To__c` or Salesforce

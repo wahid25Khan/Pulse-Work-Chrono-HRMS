@@ -2,16 +2,32 @@
 private class PWChrono_AccessController_Test {
   @TestSetup
   static void makeData() {
-    PWChrono_TestDataFactory.createPortalUser(
+    Portal_User_Profile__c profile = new Portal_User_Profile__c();
+    insert profile;
+    Portal_Users__c admin = PWChrono_TestDataFactory.createPortalUser(
       'Test Admin',
       'admin@test.com',
       'HR Admin'
     );
-    PWChrono_TestDataFactory.createPortalUser(
+    admin.Portal_User_Profile__c = profile.Id;
+    admin.Session_Token__c = 'profile_feature_token';
+    admin.Session_Expires_At__c = System.now().addHours(1);
+    update admin;
+    insert new Portal_Profile_Feature__c(
+      Portal_User_Profile__c = profile.Id,
+      Feature_Key__c = 'Attendance Management',
+      Feature_Label__c = 'Attendance Management',
+      Is_Enabled__c = true,
+      Required_Objects__c = 'PWChrono_Attendance__c',
+      Required_Fields__c = 'Status__c'
+    );
+    Portal_Users__c employee = PWChrono_TestDataFactory.createPortalUser(
       'Test Employee',
       'emp@test.com',
       'Employee'
     );
+    employee.Portal_User_Profile__c = profile.Id;
+    update employee;
   }
 
   @isTest
