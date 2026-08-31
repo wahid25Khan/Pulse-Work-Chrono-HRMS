@@ -22,6 +22,15 @@ public without sharing class PWChrono_StaffingPlanController {
     if (users.isEmpty()) {
       return;
     }
+    if (users[0].Is_Active__c == false) {
+      throw new AuraHandledException('Account is inactive.');
+    }
+    if (
+      users[0].Role__c != PWChrono_Constants.ROLE_HR_ADMIN &&
+      users[0].Role__c != 'System Admin'
+    ) {
+      throw new AuraHandledException('Unauthorized.');
+    }
   }
 
   private static PWChrono_Staffing_Plan__c parsePlanJson(String planJson, String portalUserId) {
@@ -87,7 +96,7 @@ public without sharing class PWChrono_StaffingPlanController {
   /**
    * @description Returns all Staffing Plans ordered by creation date
    */
-  @AuraEnabled(cacheable=true)
+  @AuraEnabled
   public static List<PWChrono_Staffing_Plan__c> getStaffingPlans(
     String statusFilter,
     String portalUserId,

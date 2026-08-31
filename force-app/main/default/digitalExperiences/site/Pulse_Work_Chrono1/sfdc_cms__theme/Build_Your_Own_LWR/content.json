@@ -8,8 +8,11 @@
       "layoutId" : "snaThemeLayout",
       "layoutType" : "ServiceNotAvailable"
     }, {
-      "layoutId" : "scopedHeaderAndFooter",
+      "layoutId" : "scopedHeaderAndFooter_1",
       "layoutType" : "Inner"
+    }, {
+      "layoutId" : "scopedHeaderAndFooter",
+      "layoutType" : "vEHuLHFeEwNFShTIe5Y3zxU813Irbj"
     } ]
   },
   "urlName" : "build-your-own-lwr"
