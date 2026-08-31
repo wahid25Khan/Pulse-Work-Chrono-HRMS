@@ -1,5 +1,6 @@
 import getNavigationMenuItems from "@salesforce/apex/PWChrono_NavigationController.getNavigationMenuItems";
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
+import { filterMenuItemsByFeatures } from "c/pwchronoNavigationAccess";
 import { getSession } from "c/pwchronoSession";
 import { navigateTo } from "c/pwchronoRouter";
 import { NavigationMixin } from "lightning/navigation";
@@ -300,18 +301,8 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
       return this.rawMenuItems;
     }
 
-    // If features not yet loaded, don't render an empty menu (show Dashboard only).
-    // if (!this.features || this.features.length === 0) {
-    //   return this.rawMenuItems.filter((item) => item.label === "Dashboard");
-    // }
-
-    // Filter root items based on feature labels (Dashboard always visible)
-    // return this.rawMenuItems.filter(
-    //   (item) => this.features.includes(item.label) || item.label === "Dashboard"
-    // );
-
-    // "Bring back all navigation tabs" - Bypass feature check for now
-    return this.rawMenuItems;
+    // This is a visibility aid. Apex remains responsible for authorization.
+    return filterMenuItemsByFeatures(this.rawMenuItems, this.features);
   }
 
   get menuGroupLabelValue() {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <classAccesses>
         <apexClass>HRMS_AccessController</apexClass>
@@ -304,7 +304,8 @@
         <enabled>true</enabled>
         <name>Predefined_Tag__mdt</name>
     </customMetadataTypeAccesses>
-    <description>Grants access to all PWChrono custom tabs for portal users</description>
+    <description
+  >Grants access to all PWChrono custom tabs for portal users</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>PWChrono_Appraisal_Notification__c.Email__c</field>
@@ -1853,6 +1854,10 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>PWChrono_Dashboard</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>PWChrono_Bonus__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
@@ -1866,6 +1871,14 @@
     </tabSettings>
     <tabSettings>
         <tab>PWChrono_Goals</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>PWChrono_Holidays</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>PWChrono_Leaves</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>

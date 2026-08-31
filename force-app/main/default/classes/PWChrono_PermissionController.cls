@@ -4,9 +4,8 @@
  */
 public inherited sharing class PWChrono_PermissionController {
   // --- Guest portal authorization helpers (Admin Settings) ---
-  // Permissions management is an admin/config function.
-  // In the portal Guest runtime, require a verified portal session AND
-  // that the caller has the Admin Settings feature.
+  // Permissions management is an admin/config function. In the guest runtime,
+  // require a verified session and profile-level access to Portal Users.
   private static void requireAdminSettingsAccessForGuest(
     String callerPortalUserId,
     String sessionToken
@@ -20,29 +19,28 @@ public inherited sharing class PWChrono_PermissionController {
       sessionToken
     );
 
-    Portal_Users__c caller = [
-      SELECT Id, Access_Features__c
+    List<Portal_Users__c> callers = [
+      SELECT Id, Portal_User_Profile__c
       FROM Portal_Users__c
       WHERE Id = :verifiedPortalUserId
       LIMIT 1
     ];
-
-    if (!hasFeature(caller.Access_Features__c, 'Admin Settings')) {
+    if (callers.isEmpty() || callers[0].Portal_User_Profile__c == null) {
       throw new AuraHandledException('Unauthorized.');
     }
-  }
-
-  private static Boolean hasFeature(String accessFeatures, String featureName) {
-    if (String.isBlank(accessFeatures) || String.isBlank(featureName)) {
-      return false;
+    if (
+      [
+        SELECT COUNT()
+        FROM Portal_Object_Permission__c
+        WHERE
+          Portal_User_Profile__c = :callers[0].Portal_User_Profile__c
+          AND Portal_Object__r.Object_API_Name__c = 'Portal_Users__c'
+          AND Can_View__c = TRUE
+          AND Can_Edit__c = TRUE
+      ] == 0
+    ) {
+      throw new AuraHandledException('Unauthorized.');
     }
-
-    for (String part : accessFeatures.split('\\s*;\\s*')) {
-      if (part == featureName) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**

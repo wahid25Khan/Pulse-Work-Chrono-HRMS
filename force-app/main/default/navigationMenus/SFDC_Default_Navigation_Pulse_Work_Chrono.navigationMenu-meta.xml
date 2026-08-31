@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <NavigationMenu xmlns="http://soap.sforce.com/2006/04/metadata">
     <container>Pulse Work Chrono</container>
     <containerType>Network</containerType>
@@ -170,6 +170,42 @@
                 <position>0</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/project-list</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+        </subMenu>
+        <type>MenuLabel</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Expense Management</label>
+        <position>12</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <target>/expenses</target>
+        <type>InternalLink</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Payroll</label>
+        <position>13</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <target>/payroll</target>
+        <type>InternalLink</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Administration</label>
+        <position>14</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <subMenu>
+            <navigationMenuItem>
+                <label>Reports Dashboard</label>
+                <position>0</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/reports-dashboard</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Role Feature Mapping</label>
+                <position>1</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/role-feature-mapping</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
         </subMenu>

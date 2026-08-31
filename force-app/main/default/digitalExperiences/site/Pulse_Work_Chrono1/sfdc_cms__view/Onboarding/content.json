@@ -1,71 +1,82 @@
 {
-  "type" : "sfdc_cms__view",
-  "title" : "Onboarding",
-  "contentBody" : {
-    "component" : {
-      "children" : [ {
-        "children" : [ {
-          "attributes" : {
-            "backgroundImageConfig" : "",
-            "backgroundImageOverlay" : "rgba(0,0,0,0)",
-            "componentSpacerSize" : "",
-            "dxpStyle" : { },
-            "layoutDirectionDesktop" : "row",
-            "layoutDirectionMobile" : "column",
-            "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
-            "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"67f5e4cd-53fb-4567-933f-8568c7e1b2b6\",\"columns\":[{\"UUID\":\"31e37918-c2c7-41f4-a493-d6968dd0a599\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
-            "sectionMinHeight" : "",
-            "sectionVerticalAlign" : "flex-start"
-          },
-          "children" : [ {
-            "children" : [ {
-              "attributes" : {
-                "dxpStyle" : { }
+  "type": "sfdc_cms__view",
+  "title": "Onboarding",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "dxpStyle": {},
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"67f5e4cd-53fb-4567-933f-8568c7e1b2b6\",\"columns\":[{\"UUID\":\"31e37918-c2c7-41f4-a493-d6968dd0a599\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
               },
-              "definition" : "c:pwchronoOnboarding",
-              "id" : "6b20fdbc-cf2e-4d8a-8f28-4f0ea5c371df",
-              "type" : "component"
-            } ],
-            "id" : "31e37918-c2c7-41f4-a493-d6968dd0a599",
-            "name" : "col1",
-            "title" : "Column 1",
-            "type" : "region"
-          } ],
-          "definition" : "community_layout:section",
-          "id" : "67f5e4cd-53fb-4567-933f-8568c7e1b2b6",
-          "type" : "component"
-        } ],
-        "id" : "a2fd7ecc-6f56-49fa-b34a-d20887a07e55",
-        "name" : "content",
-        "title" : "Content",
-        "type" : "region"
-      }, {
-        "children" : [ {
-          "attributes" : {
-            "customHeadTags" : "",
-            "description" : "",
-            "dxpStyle" : { },
-            "pageTitle" : "Onboarding",
-            "recordId" : "{!recordId}"
-          },
-          "definition" : "community_builder:seoAssistant",
-          "id" : "904d8cc0-9786-4746-a4bb-f2c3224cf011",
-          "type" : "component"
-        } ],
-        "id" : "818019c8-6576-4dd0-97ed-bd2cbbeeefaf",
-        "name" : "sfdcHiddenRegion",
-        "title" : "sfdcHiddenRegion",
-        "type" : "region"
-      } ],
-      "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "ebf222a7-3cb7-4d61-8fe0-ec971cefa013",
-      "type" : "component"
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": {
+                        "dxpStyle": {}
+                      },
+                      "definition": "c:pwchronoOnboardingChecklist",
+                      "id": "6b20fdbc-cf2e-4d8a-8f28-4f0ea5c371df",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "31e37918-c2c7-41f4-a493-d6968dd0a599",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "67f5e4cd-53fb-4567-933f-8568c7e1b2b6",
+              "type": "component"
+            }
+          ],
+          "id": "a2fd7ecc-6f56-49fa-b34a-d20887a07e55",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "dxpStyle": {},
+                "pageTitle": "Onboarding",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "904d8cc0-9786-4746-a4bb-f2c3224cf011",
+              "type": "component"
+            }
+          ],
+          "id": "818019c8-6576-4dd0-97ed-bd2cbbeeefaf",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "ebf222a7-3cb7-4d61-8fe0-ec971cefa013",
+      "type": "component"
     },
-    "dataProviders" : [ ],
-    "themeLayoutType" : "Inner",
-    "viewType" : "custom-onboarding"
+    "dataProviders": [],
+    "themeLayoutType": "Inner",
+    "viewType": "custom-onboarding"
   },
-  "urlName" : "onboarding"
+  "urlName": "onboarding"
 }

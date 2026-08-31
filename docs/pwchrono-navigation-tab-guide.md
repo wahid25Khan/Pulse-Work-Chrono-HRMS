@@ -261,17 +261,17 @@ This is controlled by `SFDC_Default_Navigation_Pulse_Work_Chrono.navigationMenu-
 
 **Recommended sub-tabs:**
 
-| Sub-tab              | Primary component                                           | Notes                                                  |
-| -------------------- | ----------------------------------------------------------- | ------------------------------------------------------ |
-| Admin Dashboard      | `pwchronoAdminDashboard`                                    | Main admin landing page                                |
-| Configuration Center | `pwchronoConfigurationCenter`                               | Current config tab component                           |
-| Configuration        | `pwchronoConfiguration` / `pwchronoConfigurationPage`       | Operational setup page                                 |
-| Admin Settings       | `pwchronoAdminSettings` / `pwchronoAdminSettingsPanel`      | Settings area                                          |
-| Role Feature Mapping | `pwchronoRoleFeatureMapping`                                | Admin-only                                             |
-| Reports Dashboard    | `pwchronoReportsDashboard` / `pwchronoReportsDashboardPage` | Good admin child                                       |
-| New User Form        | `pwchronoNewUserForm`                                       | HR/admin task                                          |
-| Debug Panel          | `pwchronoDebugPanel`                                        | Do not expose in production navigation unless required |
-| Design Preview       | `pwchronoAdminDashboardDesign`                              | Keep hidden or dev-only                                |
+| Sub-tab              | Primary component                                           | Notes                                                      |
+| -------------------- | ----------------------------------------------------------- | ---------------------------------------------------------- |
+| Admin Dashboard      | `pwchronoAdminDashboard`                                    | Main admin landing page                                    |
+| Configuration Center | `pwchronoConfigurationCenter`                               | Assigns Portal User Profiles; current config tab component |
+| Configuration        | `pwchronoConfiguration` / `pwchronoConfigurationPage`       | Operational setup page                                     |
+| Admin Settings       | `pwchronoAdminSettings` / `pwchronoAdminSettingsPanel`      | Settings area                                              |
+| Role Feature Mapping | `pwchronoRoleFeatureMapping`                                | Admin-only                                                 |
+| Reports Dashboard    | `pwchronoReportsDashboard` / `pwchronoReportsDashboardPage` | Good admin child                                           |
+| New User Form        | `pwchronoNewUserForm`                                       | Creates a Portal User with a required Portal User Profile  |
+| Debug Panel          | `pwchronoDebugPanel`                                        | Do not expose in production navigation unless required     |
+| Design Preview       | `pwchronoAdminDashboardDesign`                              | Keep hidden or dev-only                                    |
 
 ---
 
