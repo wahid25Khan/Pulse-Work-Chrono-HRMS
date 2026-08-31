@@ -149,4 +149,72 @@ private class PWChrono_AccessController_Test {
       'Test user should be recognized as Salesforce internal user'
     );
   }
+
+  @isTest
+  static void testProfileFeatureAccessBranches() {
+    Portal_Users__c employee = [
+      SELECT Id, Portal_User_Profile__c
+      FROM Portal_Users__c
+      WHERE Name = 'Test Employee'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    Map<String, Object> portalResult = PWChrono_AccessController.getUserAccessImpl(
+      employee.Id,
+      'PowerCustomerSuccess'
+    );
+    Map<String, Object> guestResult = PWChrono_AccessController.getUserAccessImpl(
+      employee.Id,
+      'Guest'
+    );
+    Map<String, Object> guestLoginResult = PWChrono_AccessController.getUserAccessImpl(
+      null,
+      'Guest'
+    );
+    Map<String, Object> missingUserResult = PWChrono_AccessController.getUserAccessImpl(
+      null,
+      'PowerCustomerSuccess'
+    );
+    Test.stopTest();
+
+    System.assertEquals(true, portalResult.get('hasAccess'));
+    System.assertEquals(
+      new List<String>{ 'Attendance Management' },
+      (List<String>) portalResult.get('features')
+    );
+    System.assertEquals(true, guestResult.get('hasAccess'));
+    System.assertEquals(
+      new List<String>{ 'Attendance Management' },
+      (List<String>) guestResult.get('features')
+    );
+    System.assertEquals(
+      new List<String>{ 'Dashboard', 'My Profile' },
+      (List<String>) guestLoginResult.get('features')
+    );
+    System.assertEquals(false, missingUserResult.get('hasAccess'));
+  }
+
+  @isTest
+  static void testPublicAccessWrappersAndInternalAdmin() {
+    Portal_Users__c employee = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Name = 'Test Employee'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    Map<String, Object> result = PWChrono_AccessController.getUserAccessById(
+      employee.Id,
+      null
+    );
+    Boolean adminResult = PWChrono_AccessController.isAdmin(employee.Id);
+    Boolean nullAdminResult = PWChrono_AccessController.isAdmin(null);
+    Test.stopTest();
+
+    System.assertEquals(true, result.get('hasAccess'));
+    System.assertEquals(true, adminResult);
+    System.assertEquals(true, nullAdminResult);
+  }
 }

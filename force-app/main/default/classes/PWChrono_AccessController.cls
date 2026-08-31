@@ -113,13 +113,21 @@ public inherited sharing class PWChrono_AccessController {
    * @return Map containing role and accessible features
    */
   private static Map<String, Object> getUserAccessImpl(Id employeeId) {
+    return getUserAccessImpl(employeeId, UserInfo.getUserType());
+  }
+
+  @TestVisible
+  private static Map<String, Object> getUserAccessImpl(
+    Id employeeId,
+    String effectiveUserType
+  ) {
     try {
       Id userId = UserInfo.getUserId();
-      String userType = UserInfo.getUserType();
+      String userType = effectiveUserType;
 
       // SALESFORCE INTERNAL USERS: Grant FULL ACCESS to all features
       // This allows Salesforce users to use the portal without any permission restrictions
-      if (isSalesforceInternalUser()) {
+      if (userType == 'Standard' || userType == 'AdminUser') {
         return new Map<String, Object>{
           'hasAccess' => true,
           'role' => 'Salesforce User',
