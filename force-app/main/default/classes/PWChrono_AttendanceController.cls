@@ -511,9 +511,9 @@ public inherited sharing class PWChrono_AttendanceController {
       requestsMap.put(req.Attendance_Date__c, req);
     }
 
-    List<PWChrono_Leave__c> leaves = [
+    List<Leave__c> leaves = [
       SELECT From_Date__c, To_Date__c, Leave_Type__r.Name
-      FROM PWChrono_Leave__c
+      FROM Leave__c
       WHERE
         Employees__c = :employeeId
         AND Status__c = :PWChrono_Constants.STATUS_APPROVED
@@ -543,7 +543,7 @@ public inherited sharing class PWChrono_AttendanceController {
     Date d,
     List<PWChrono_Shift_Assignment__c> shifts,
     Map<Date, PWChrono_Attendance_Request__c> reqMap,
-    List<PWChrono_Leave__c> leaves,
+    List<Leave__c> leaves,
     Map<Date, String> holidays
   ) {
     AttendanceDayWrapper day = new AttendanceDayWrapper();
@@ -569,7 +569,7 @@ public inherited sharing class PWChrono_AttendanceController {
     }
 
     // Approved leave overrides
-    for (PWChrono_Leave__c lv : leaves) {
+    for (Leave__c lv : leaves) {
       if (d >= lv.From_Date__c && d <= lv.To_Date__c) {
         day.status = 'Leave';
         day.leaveType = lv.Leave_Type__r.Name;

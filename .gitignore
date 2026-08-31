@@ -48,6 +48,9 @@ $RECYCLE.BIN/
 # Local archive for metadata retrieved from other orgs
 archive/
 
+# Local retrieval snapshots and rendered review artifacts
+tmp/
+
 # Python Salesforce Functions
 **/__pycache__/
 **/.venv/

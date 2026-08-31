@@ -1,63 +1,135 @@
-import checkRecordAccess from "@salesforce/apex/PWChrono_EmployeeDirectoryController.checkRecordAccess";
-import searchEmployees from "@salesforce/apex/PWChrono_EmployeeDirectoryController.searchEmployees";
-import { NavigationMixin } from "lightning/navigation";
+import deleteEmployee from "@salesforce/apex/PWChrono_EmployeeDirectoryController.deleteEmployee";
+import getEmployeeDesignations from "@salesforce/apex/PWChrono_EmployeeDirectoryController.getEmployeeDesignations";
+import getEmployeeDetail from "@salesforce/apex/PWChrono_EmployeeDirectoryController.getEmployeeDetail";
+import getEmployeeDirectoryMetrics from "@salesforce/apex/PWChrono_EmployeeDirectoryController.getEmployeeDirectoryMetrics";
+import getEmployees from "@salesforce/apex/PWChrono_EmployeeDirectoryController.getEmployees";
+import saveEmployee from "@salesforce/apex/PWChrono_EmployeeDirectoryController.saveEmployee";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import { LightningElement, track, wire } from "lwc";
+import { LightningElement, track } from "lwc";
 
-export default class PwchronoEmployeeDirectory extends NavigationMixin(
-  LightningElement
-) {
-  @track searchTerm = "";
+export default class PwchronoEmployeeDirectory extends LightningElement {
+  static renderMode = "light";
+
+  // View state: 'list', 'grid', 'detail'
+  @track currentView = "list";
+  @track previousView = "list";
+
   @track allEmployees = [];
-  @track employees = [];
+  @track displayedEmployees = [];
+  @track selectedEmployee = null;
+
   @track isLoading = true;
-  @track loadError = null;
+  @track isMetricsLoading = true;
+
+  // Filter & Search states
+  @track searchTerm = "";
+  @track selectedDesignation = "All";
+  @track selectedStatus = "All";
+  @track sortBy = "Last 7 Days";
+
+  // Options
+  @track designationOptions = [{ label: "All Designations", value: "All" }];
+  statusOptions = [
+    { label: "All Status", value: "All" },
+    { label: "Active", value: "Active" },
+    { label: "Inactive", value: "Inactive" }
+  ];
+  sortOptions = [
+    { label: "Last 7 Days", value: "Last 7 Days" },
+    { label: "Recently Added", value: "Recently Added" },
+    { label: "Ascending", value: "Ascending" },
+    { label: "Descending", value: "Descending" }
+  ];
+
+  // Metrics
+  @track metrics = {
+    total: 0,
+    active: 0,
+    inactive: 0,
+    newJoiners: 0
+  };
 
   // Pagination
   @track currentPage = 1;
-  @track pageSize = 12;
+  @track pageSize = 10;
+  pageSizeOptions = [
+    { label: "10", value: 10 },
+    { label: "25", value: 25 },
+    { label: "50", value: 50 },
+    { label: "100", value: 100 }
+  ];
 
-  get pageSizeOptions() {
-    return [
-      { label: "8 per page", value: "8" },
-      { label: "12 per page", value: "12" },
-      { label: "24 per page", value: "24" },
-      { label: "48 per page", value: "48" }
-    ];
+  // Selection
+  @track selectAllChecked = false;
+  @track selectedEmployeeIds = new Set();
+
+  // Modals
+  @track isAddEditModalOpen = false;
+  @track isDeleteModalOpen = false;
+  @track modalTitle = "Add Employee";
+  @track employeeForm = {
+    Id: null,
+    FirstName: "",
+    LastName: "",
+    Email: "",
+    Phone: "",
+    Title: "",
+    Department: ""
+  };
+  @track employeeToDelete = null;
+
+  // Tabs on Detail View
+  @track activeDetailTab = "projects";
+
+  connectedCallback() {
+    this.loadDesignations();
+    this.loadMetrics();
+    this.loadEmployees();
   }
 
-  @wire(searchEmployees, { searchTerm: "$searchTerm" })
-  wiredEmployees({ error, data }) {
-    this.isLoading = false;
-    if (data) {
-      this.allEmployees = data.map((emp) => ({
-        ...emp,
-        initials: this.getInitials(emp.Name),
-        managerName: emp.Reports_To__r ? emp.Reports_To__r.Name : ""
-      }));
-      this.currentPage = 1;
-      this.applyPagination();
-      this.loadError = null;
-    } else if (error) {
-      this.loadError = error?.body?.message || "Failed to load employees";
-      this.showErrorToast("Error loading employees: " + this.loadError);
-      this.employees = [];
-      this.allEmployees = [];
-    }
+  // Getters for view state
+  get headerTitle() {
+    return this.isGridView ? "Employees Grid" : "Employees List";
   }
 
-  applyPagination() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.employees = this.allEmployees.slice(start, end);
+  get isListView() {
+    return this.currentView === "list";
   }
 
-  get totalPages() {
-    return Math.ceil(this.allEmployees.length / this.pageSize) || 1;
+  get isGridView() {
+    return this.currentView === "grid";
+  }
+
+  get isDetailView() {
+    return this.currentView === "detail";
+  }
+
+  get listBtnClass() {
+    return this.isListView
+      ? "btn btn-icon btn-sm active bg-primary text-white me-1"
+      : "btn btn-icon btn-sm me-1";
+  }
+
+  get gridBtnClass() {
+    return this.isGridView
+      ? "btn btn-icon btn-sm active bg-primary text-white"
+      : "btn btn-icon btn-sm";
+  }
+
+  get isProjectsTabActive() {
+    return this.activeDetailTab === "projects";
+  }
+
+  get isAssetsTabActive() {
+    return this.activeDetailTab === "assets";
   }
 
   get totalCount() {
     return this.allEmployees.length;
+  }
+
+  get totalPages() {
+    return Math.ceil(this.allEmployees.length / this.pageSize) || 1;
   }
 
   get isPrevDisabled() {
@@ -69,16 +141,192 @@ export default class PwchronoEmployeeDirectory extends NavigationMixin(
   }
 
   get pageInfo() {
+    if (this.allEmployees.length === 0) return "0";
     const start = (this.currentPage - 1) * this.pageSize + 1;
     const end = Math.min(
       this.currentPage * this.pageSize,
       this.allEmployees.length
     );
-    return `${start}–${end} of ${this.allEmployees.length}`;
+    return `${start} - ${end}`;
+  }
+
+  get paginationPages() {
+    const pages = [];
+    const max = Math.min(this.totalPages, 5);
+    for (let i = 1; i <= max; i++) {
+      pages.push({
+        number: i,
+        className:
+          i === this.currentPage ? "page-item active" : "page-item"
+      });
+    }
+    return pages;
+  }
+
+  // View Switching
+  switchToList() {
+    this.previousView = "list";
+    this.currentView = "list";
+  }
+
+  switchToGrid() {
+    this.previousView = "grid";
+    this.currentView = "grid";
+  }
+
+  handleBackToList() {
+    this.currentView = this.previousView || "list";
+  }
+
+  // Detail Navigation
+  handleSelectEmployee(event) {
+    // If clicked on action elements (dropdown, modal trigger, checkbox), don't navigate
+    if (
+      event.target.closest(".dropdown") ||
+      event.target.closest(".form-check") ||
+      event.target.closest(".action-icon") ||
+      event.target.tagName === "INPUT"
+    ) {
+      return;
+    }
+
+    const targetWithId =
+      event.target.closest("[data-id]") || event.currentTarget;
+    const empId = targetWithId?.dataset?.id;
+    if (!empId) return;
+
+    const found = this.allEmployees.find((e) => e.id === empId);
+    if (found) {
+      this.selectedEmployee = found;
+      this.currentView = "detail";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      this.fetchEmployeeDetail(empId);
+    }
+  }
+
+  async fetchEmployeeDetail(id) {
+    this.isLoading = true;
+    try {
+      const detail = await getEmployeeDetail({ contactId: id });
+      this.selectedEmployee = detail;
+      this.currentView = "detail";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      this.showToast("Error", "Could not load employee details", "error");
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  DEFAULT_AVATAR = "https://smarthr.dreamstechnologies.com/html/assets/img/users/user-32.jpg";
+
+  handleStopPropagation(event) {
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
+    }
+  }
+
+  handleImageError(event) {
+    if (event && event.target) {
+      event.target.src = this.DEFAULT_AVATAR;
+    }
+  }
+
+  // Data Loading
+  async loadEmployees() {
+    this.isLoading = true;
+    try {
+      const data = await getEmployees({
+        searchTerm: this.searchTerm,
+        designationFilter: this.selectedDesignation,
+        statusFilter: this.selectedStatus,
+        sortBy: this.sortBy
+      });
+      this.allEmployees = data || [];
+      this.currentPage = 1;
+      this.applyPagination();
+    } catch (err) {
+      this.showToast("Error", "Failed to load employees: " + (err?.body?.message || err.message), "error");
+      this.allEmployees = [];
+      this.displayedEmployees = [];
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async loadMetrics() {
+    this.isMetricsLoading = true;
+    try {
+      const data = await getEmployeeDirectoryMetrics();
+      if (data) {
+        this.metrics = {
+          total: data.total || 0,
+          active: data.active || 0,
+          inactive: data.inactive || 0,
+          newJoiners: data.newJoiners || 0
+        };
+      }
+    } catch (err) {
+      console.error("Error loading metrics", err);
+    } finally {
+      this.isMetricsLoading = false;
+    }
+  }
+
+  async loadDesignations() {
+    try {
+      const desigs = await getEmployeeDesignations();
+      if (desigs) {
+        this.designationOptions = [
+          { label: "All Designations", value: "All" },
+          ...desigs.map((d) => ({ label: d, value: d }))
+        ];
+      }
+    } catch (err) {
+      console.error("Error loading designations", err);
+    }
+  }
+
+  applyPagination() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.displayedEmployees = this.allEmployees.slice(start, end);
+  }
+
+  // Filter Handlers
+  handleSearch(event) {
+    this.searchTerm = event.target.value;
+    this.debounceSearch();
+  }
+
+  searchTimeout;
+  debounceSearch() {
+    clearTimeout(this.searchTimeout);
+    // Deliberately debounce server-backed directory searches.
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    this.searchTimeout = setTimeout(() => {
+      this.loadEmployees();
+    }, 300);
+  }
+
+  handleDesignationChange(event) {
+    this.selectedDesignation = event.target.value;
+    this.loadEmployees();
+  }
+
+  handleStatusChange(event) {
+    this.selectedStatus = event.target.value;
+    this.loadEmployees();
+  }
+
+  handleSortChange(event) {
+    this.sortBy = event.target.value;
+    this.loadEmployees();
   }
 
   handlePageSizeChange(event) {
-    this.pageSize = Number.parseInt(event.detail.value, 10);
+    this.pageSize = parseInt(event.target.value, 10);
     this.currentPage = 1;
     this.applyPagination();
   }
@@ -97,56 +345,174 @@ export default class PwchronoEmployeeDirectory extends NavigationMixin(
     }
   }
 
-  handleSearch(event) {
-    this.isLoading = true;
-    this.searchTerm = event.target.value;
-  }
-
-  async handleNavigate(event) {
-    const recordId = event.currentTarget.dataset.id;
-
-    try {
-      // Check if user has read access to the Portal_Users record
-      const hasAccess = await checkRecordAccess({ recordId: recordId });
-
-      if (hasAccess) {
-        this[NavigationMixin.Navigate]({
-          type: "standard__recordPage",
-          attributes: {
-            recordId: recordId,
-            objectApiName: "Portal_Users__c",
-            actionName: "view"
-          }
-        });
-      } else {
-        this.showErrorToast(
-          "You do not have permission to view this employee record"
-        );
-      }
-    } catch (error) {
-      this.showErrorToast(
-        "Error checking access: " +
-          (error?.body?.message || error?.message || "Unknown error")
-      );
+  handleGoToPage(event) {
+    const page = parseInt(event.currentTarget.dataset.page, 10);
+    if (page && page !== this.currentPage) {
+      this.currentPage = page;
+      this.applyPagination();
     }
   }
 
-  getInitials(name) {
-    if (!name) return "";
-    const parts = name.split(" ");
-    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-    return (
-      parts[0].charAt(0) + parts[parts.length - 1].charAt(0)
-    ).toUpperCase();
+  // Select all checkboxes
+  handleSelectAll(event) {
+    this.selectAllChecked = event.target.checked;
+    if (this.selectAllChecked) {
+      this.displayedEmployees.forEach((e) => this.selectedEmployeeIds.add(e.id));
+    } else {
+      this.selectedEmployeeIds.clear();
+    }
   }
 
-  showErrorToast(message) {
-    const evt = new ShowToastEvent({
-      title: "Error",
-      message: message,
-      variant: "error",
-      mode: "dismissable"
-    });
-    this.dispatchEvent(evt);
+  handleSelectRow(event) {
+    const id = event.target.dataset.id;
+    if (event.target.checked) {
+      this.selectedEmployeeIds.add(id);
+    } else {
+      this.selectedEmployeeIds.delete(id);
+    }
+    this.selectAllChecked =
+      this.displayedEmployees.length > 0 &&
+      this.displayedEmployees.every((e) => this.selectedEmployeeIds.has(e.id));
+  }
+
+  // Detail tab switching
+  selectProjectsTab() {
+    this.activeDetailTab = "projects";
+  }
+
+  selectAssetsTab() {
+    this.activeDetailTab = "assets";
+  }
+
+  // Add / Edit Employee
+  handleOpenAddModal() {
+    this.modalTitle = "Add Employee";
+    this.employeeForm = {
+      Id: null,
+      FirstName: "",
+      LastName: "",
+      Email: "",
+      Phone: "",
+      Title: "",
+      Department: ""
+    };
+    this.isAddEditModalOpen = true;
+  }
+
+  handleOpenEditModal(event) {
+    event.stopPropagation();
+    const empId = event.currentTarget.dataset.id;
+    const emp = this.allEmployees.find((e) => e.id === empId);
+    if (emp) {
+      this.modalTitle = "Edit Employee";
+      this.employeeForm = {
+        Id: emp.id,
+        FirstName: emp.firstName,
+        LastName: emp.lastName,
+        Email: emp.email,
+        Phone: emp.phone,
+        Title: emp.title,
+        Department: emp.department
+      };
+      this.isAddEditModalOpen = true;
+    }
+  }
+
+  handleCloseAddEditModal() {
+    this.isAddEditModalOpen = false;
+  }
+
+  handleFormFieldChange(event) {
+    const field = event.target.name;
+    this.employeeForm[field] = event.target.value;
+  }
+
+  async handleSaveEmployee() {
+    if (!this.employeeForm.LastName) {
+      this.showToast("Validation Error", "Last Name is required", "error");
+      return;
+    }
+
+    this.isLoading = true;
+    try {
+      const contactObj = {
+        sobjectType: "Contact",
+        Id: this.employeeForm.Id || undefined,
+        FirstName: this.employeeForm.FirstName,
+        LastName: this.employeeForm.LastName,
+        Email: this.employeeForm.Email,
+        Phone: this.employeeForm.Phone,
+        Title: this.employeeForm.Title,
+        Department: this.employeeForm.Department
+      };
+
+      await saveEmployee({ contactRecord: contactObj });
+      this.showToast(
+        "Success",
+        this.employeeForm.Id
+          ? "Employee updated successfully!"
+          : "Employee added successfully!",
+        "success"
+      );
+      this.isAddEditModalOpen = false;
+      await this.loadEmployees();
+      await this.loadMetrics();
+    } catch (err) {
+      this.showToast("Error", "Error saving employee: " + (err?.body?.message || err.message), "error");
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  // Delete Modal
+  handleOpenDeleteModal(event) {
+    event.stopPropagation();
+    const empId = event.currentTarget.dataset.id;
+    this.employeeToDelete = this.allEmployees.find((e) => e.id === empId);
+    this.isDeleteModalOpen = true;
+  }
+
+  handleCloseDeleteModal() {
+    this.isDeleteModalOpen = false;
+    this.employeeToDelete = null;
+  }
+
+  async handleConfirmDelete() {
+    if (!this.employeeToDelete) return;
+    this.isLoading = true;
+    try {
+      await deleteEmployee({ contactId: this.employeeToDelete.id });
+      this.showToast("Success", "Employee deleted successfully.", "success");
+      this.isDeleteModalOpen = false;
+      this.employeeToDelete = null;
+      if (this.currentView === "detail") {
+        this.currentView = "list";
+      }
+      await this.loadEmployees();
+      await this.loadMetrics();
+    } catch (err) {
+      this.showToast("Error", "Error deleting employee: " + (err?.body?.message || err.message), "error");
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  // Copy email helper
+  handleCopyEmail(event) {
+    event.preventDefault();
+    if (this.selectedEmployee?.email) {
+      navigator.clipboard.writeText(this.selectedEmployee.email);
+      this.showToast("Copied", "Email copied to clipboard", "success");
+    }
+  }
+
+  showToast(title, message, variant) {
+    this.dispatchEvent(
+      new ShowToastEvent({
+        title,
+        message,
+        variant
+      })
+    );
   }
 }

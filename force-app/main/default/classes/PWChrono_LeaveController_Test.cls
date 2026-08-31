@@ -1,25 +1,35 @@
 @IsTest
 private class PWChrono_LeaveController_Test {
-
   @TestSetup
   static void setupTestData() {
     PWChrono_LeaveTestDataFactory.setupStandardTestData();
   }
 
   private static PWChrono_LeaveTestDataFactory.TestDataBundle getBundle() {
-    PWChrono_LeaveTestDataFactory.TestDataBundle bundle =
-      new PWChrono_LeaveTestDataFactory.TestDataBundle();
+    PWChrono_LeaveTestDataFactory.TestDataBundle bundle = new PWChrono_LeaveTestDataFactory.TestDataBundle();
     bundle.employee = [
-      SELECT Id, Reports_To__c FROM Portal_Users__c WHERE Name = 'Test Employee' LIMIT 1
+      SELECT Id, Reports_To__c
+      FROM Portal_Users__c
+      WHERE Name = 'Test Employee'
+      LIMIT 1
     ];
     bundle.manager = [
-      SELECT Id FROM Portal_Users__c WHERE Name = 'Test Manager' LIMIT 1
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Name = 'Test Manager'
+      LIMIT 1
     ];
     bundle.admin = [
-      SELECT Id FROM Portal_Users__c WHERE Name = 'Test HRAdmin' LIMIT 1
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Name = 'Test HRAdmin'
+      LIMIT 1
     ];
     bundle.annualLeave = [
-      SELECT Id FROM PWChrono_Leave_Type__c WHERE Name = 'Annual Leave' LIMIT 1
+      SELECT Id
+      FROM PWChrono_Leave_Type__c
+      WHERE Name = 'Annual Leave'
+      LIMIT 1
     ];
     return bundle;
   }
@@ -36,35 +46,38 @@ private class PWChrono_LeaveController_Test {
     dto.halfDay = false;
 
     Test.startTest();
-    PWChrono_Leave__c createdLeave = PWChrono_LeaveController.submitLeaveApplication(
+    Leave__c createdLeave = PWChrono_LeaveController.submitLeaveApplication(
       dto,
       String.valueOf(bundle.employee.Id),
       null
     );
-    PWChrono_Leave__c approvedLeave = PWChrono_LeaveController.processLeaveApproval(
+    Leave__c approvedLeave = PWChrono_LeaveController.processLeaveApproval(
       createdLeave.Id,
       'Approve',
       'Looks good',
       String.valueOf(bundle.manager.Id),
       null
     );
-    List<PWChrono_LeaveLedgerService.LedgerEntryDTO> ledgerEntries =
-      PWChrono_LeaveController.getLeaveLedgerHistory(
-        createdLeave.Id,
-        String.valueOf(bundle.employee.Id),
-        null
-      );
+    List<PWChrono_LeaveLedgerService.LedgerEntryDTO> ledgerEntries = PWChrono_LeaveController.getLeaveLedgerHistory(
+      createdLeave.Id,
+      String.valueOf(bundle.employee.Id),
+      null
+    );
     Test.stopTest();
 
     System.assertEquals('Approved', approvedLeave.Status__c);
-    System.assertEquals(1, ledgerEntries.size(), 'Approval should create a ledger entry.');
+    System.assertEquals(
+      1,
+      ledgerEntries.size(),
+      'Approval should create a ledger entry.'
+    );
     System.assertEquals('Used', ledgerEntries[0].transactionType);
   }
 
   @IsTest
   static void testAddCommentAndRetrieveComments() {
     PWChrono_LeaveTestDataFactory.TestDataBundle bundle = getBundle();
-    PWChrono_Leave__c leaveRecord = PWChrono_LeaveTestDataFactory.createLeave(
+    Leave__c leaveRecord = PWChrono_LeaveTestDataFactory.createLeave(
       bundle.employee.Id,
       bundle.annualLeave.Id,
       bundle.manager.Id,
@@ -74,19 +87,17 @@ private class PWChrono_LeaveController_Test {
     );
 
     Test.startTest();
-    PWChrono_RequestCommentService.RequestCommentDTO newComment =
-      PWChrono_LeaveController.addLeaveComment(
-        leaveRecord.Id,
-        'Please approve quickly.',
-        String.valueOf(bundle.employee.Id),
-        null
-      );
-    List<PWChrono_RequestCommentService.RequestCommentDTO> comments =
-      PWChrono_LeaveController.getLeaveComments(
-        leaveRecord.Id,
-        String.valueOf(bundle.employee.Id),
-        null
-      );
+    PWChrono_RequestCommentService.RequestCommentDTO newComment = PWChrono_LeaveController.addLeaveComment(
+      leaveRecord.Id,
+      'Please approve quickly.',
+      String.valueOf(bundle.employee.Id),
+      null
+    );
+    List<PWChrono_RequestCommentService.RequestCommentDTO> comments = PWChrono_LeaveController.getLeaveComments(
+      leaveRecord.Id,
+      String.valueOf(bundle.employee.Id),
+      null
+    );
     Test.stopTest();
 
     System.assertNotEquals(null, newComment.commentId);
@@ -97,7 +108,7 @@ private class PWChrono_LeaveController_Test {
   @IsTest
   static void testUploadLeaveFileAndRetrieveFiles() {
     PWChrono_LeaveTestDataFactory.TestDataBundle bundle = getBundle();
-    PWChrono_Leave__c leaveRecord = PWChrono_LeaveTestDataFactory.createLeave(
+    Leave__c leaveRecord = PWChrono_LeaveTestDataFactory.createLeave(
       bundle.employee.Id,
       bundle.annualLeave.Id,
       bundle.manager.Id,
@@ -107,29 +118,27 @@ private class PWChrono_LeaveController_Test {
     );
 
     Test.startTest();
-    PWChrono_RequestAttachmentService.FileDescriptorDTO uploadedFile =
-      PWChrono_LeaveController.uploadLeaveFile(
-        leaveRecord.Id,
-        'medical-note.txt',
-        EncodingUtil.base64Encode(Blob.valueOf('hello')),
-        String.valueOf(bundle.employee.Id),
-        null
-      );
-    List<PWChrono_RequestAttachmentService.FileDescriptorDTO> files =
-      PWChrono_LeaveController.getLeaveFiles(
-        leaveRecord.Id,
-        String.valueOf(bundle.employee.Id),
-        null
-      );
+    PWChrono_RequestAttachmentService.FileDescriptorDTO uploadedFile = PWChrono_LeaveController.uploadLeaveFile(
+      leaveRecord.Id,
+      'medical-note.txt',
+      EncodingUtil.base64Encode(Blob.valueOf('hello')),
+      String.valueOf(bundle.employee.Id),
+      null
+    );
+    List<PWChrono_RequestAttachmentService.FileDescriptorDTO> files = PWChrono_LeaveController.getLeaveFiles(
+      leaveRecord.Id,
+      String.valueOf(bundle.employee.Id),
+      null
+    );
     Test.stopTest();
 
     System.assertNotEquals(null, uploadedFile.contentDocumentId);
     System.assertEquals(1, files.size());
     System.assertEquals('medical-note.txt', files[0].name);
 
-    PWChrono_Leave__c refreshedLeave = [
+    Leave__c refreshedLeave = [
       SELECT Certificate_Uploaded__c
-      FROM PWChrono_Leave__c
+      FROM Leave__c
       WHERE Id = :leaveRecord.Id
       LIMIT 1
     ];
@@ -139,7 +148,7 @@ private class PWChrono_LeaveController_Test {
   @IsTest
   static void testReadOperationsReturnEmployeeAndManagerData() {
     PWChrono_LeaveTestDataFactory.TestDataBundle bundle = getBundle();
-    PWChrono_Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
+    Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
       bundle.employee.Id,
       bundle.annualLeave.Id,
       bundle.manager.Id,
@@ -147,7 +156,7 @@ private class PWChrono_LeaveController_Test {
       Date.today().addDays(5),
       'Submitted'
     );
-    PWChrono_Leave__c approvedLeave = PWChrono_LeaveTestDataFactory.createLeave(
+    Leave__c approvedLeave = PWChrono_LeaveTestDataFactory.createLeave(
       bundle.employee.Id,
       bundle.annualLeave.Id,
       bundle.manager.Id,
@@ -167,32 +176,34 @@ private class PWChrono_LeaveController_Test {
     );
 
     Test.startTest();
-    List<PWChrono_LeaveBalanceService.LeaveBalanceWrapper> balances =
-      PWChrono_LeaveController.getMyLeaveBalance(String.valueOf(bundle.employee.Id), null);
-    List<PWChrono_Leave__c> myLeaves = PWChrono_LeaveController.getMyLeaves(
+    List<PWChrono_LeaveBalanceService.LeaveBalanceWrapper> balances = PWChrono_LeaveController.getMyLeaveBalance(
+      String.valueOf(bundle.employee.Id),
+      null
+    );
+    List<Leave__c> myLeaves = PWChrono_LeaveController.getMyLeaves(
       'All',
       null,
       null,
       String.valueOf(bundle.employee.Id),
       null
     );
-    PWChrono_Leave__c detail = PWChrono_LeaveController.getLeaveDetail(
+    Leave__c detail = PWChrono_LeaveController.getLeaveDetail(
       submittedLeave.Id,
       String.valueOf(bundle.employee.Id),
       null
     );
-    List<PWChrono_Leave__c> teamPending = PWChrono_LeaveController.getTeamLeavesForApproval(
+    List<Leave__c> teamPending = PWChrono_LeaveController.getTeamLeavesForApproval(
       String.valueOf(bundle.manager.Id),
       null
     );
-    List<PWChrono_Leave__c> teamLeaves = PWChrono_LeaveController.getTeamLeaves(
+    List<Leave__c> teamLeaves = PWChrono_LeaveController.getTeamLeaves(
       'Submitted',
       null,
       null,
       String.valueOf(bundle.manager.Id),
       null
     );
-    List<PWChrono_Leave__c> calendarRows = PWChrono_LeaveController.getLeaveCalendarData(
+    List<Leave__c> calendarRows = PWChrono_LeaveController.getLeaveCalendarData(
       Date.today().addDays(6),
       Date.today().addDays(9),
       String.valueOf(bundle.employee.Id),
@@ -214,13 +225,25 @@ private class PWChrono_LeaveController_Test {
     Test.stopTest();
 
     System.assert(!balances.isEmpty(), 'Leave balance should be returned.');
-    System.assert(myLeaves.size() >= 2, 'Employee should see created leave records.');
+    System.assert(
+      myLeaves.size() >= 2,
+      'Employee should see created leave records.'
+    );
     System.assertEquals(submittedLeave.Id, detail.Id);
-    System.assert(teamPending.size() >= 1, 'Manager queue should include submitted leave.');
-    System.assert(teamLeaves.size() >= 1, 'Manager history should include submitted leave.');
+    System.assert(
+      teamPending.size() >= 1,
+      'Manager queue should include submitted leave.'
+    );
+    System.assert(
+      teamLeaves.size() >= 1,
+      'Manager history should include submitted leave.'
+    );
     System.assertEquals(approvedLeave.Id, calendarRows[0].Id);
     System.assertEquals(1, holidays.size());
-    System.assert(leaveTypes.size() >= 1, 'Active leave types should be returned.');
+    System.assert(
+      leaveTypes.size() >= 1,
+      'Active leave types should be returned.'
+    );
     System.assert(days > 0, 'Working days calculation should be positive.');
   }
 
@@ -241,7 +264,7 @@ private class PWChrono_LeaveController_Test {
     outsider.Session_Token__c = 'leave_outsider_token';
     outsider.Session_Expires_At__c = System.now().addHours(1);
     update outsider;
-    PWChrono_Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
+    Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
       bundle.employee.Id,
       bundle.annualLeave.Id,
       bundle.manager.Id,
@@ -271,7 +294,10 @@ private class PWChrono_LeaveController_Test {
             String.valueOf(outsider.Id),
             'leave_outsider_token'
           );
-          System.assert(false, 'Unauthorized employee should not be able to read another leave.');
+          System.assert(
+            false,
+            'Unauthorized employee should not be able to read another leave.'
+          );
         } catch (AuraHandledException e) {
           System.assertNotEquals(null, e.getMessage());
         }
@@ -281,7 +307,10 @@ private class PWChrono_LeaveController_Test {
     }
     Test.stopTest();
 
-    System.assert(leaveTypes.size() >= 1, 'No-arg leave type lookup should work.');
+    System.assert(
+      leaveTypes.size() >= 1,
+      'No-arg leave type lookup should work.'
+    );
   }
 
   @IsTest
@@ -315,8 +344,8 @@ private class PWChrono_LeaveController_Test {
       String.valueOf(bundle.admin.Id),
       null
     );
-    PWChrono_Leave__c savedLeave = PWChrono_LeaveController.saveLeaveApplication(
-      new PWChrono_Leave__c(
+    Leave__c savedLeave = PWChrono_LeaveController.saveLeaveApplication(
+      new Leave__c(
         Leave_Type__c = bundle.annualLeave.Id,
         From_Date__c = Date.today().addDays(12),
         To_Date__c = Date.today().addDays(13),
@@ -332,7 +361,9 @@ private class PWChrono_LeaveController_Test {
     PWChrono_Leave_Allocation__c allocation = [
       SELECT Total_Leaves_Allocated__c
       FROM PWChrono_Leave_Allocation__c
-      WHERE Employees__c = :bundle.employee.Id AND Leave_Type__c = :bundle.annualLeave.Id
+      WHERE
+        Employees__c = :bundle.employee.Id
+        AND Leave_Type__c = :bundle.annualLeave.Id
       LIMIT 1
     ];
     System.assertNotEquals(null, createdType.Id);
@@ -344,7 +375,7 @@ private class PWChrono_LeaveController_Test {
   @IsTest
   static void testCancelLeave() {
     PWChrono_LeaveTestDataFactory.TestDataBundle bundle = getBundle();
-    PWChrono_Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
+    Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
       bundle.employee.Id,
       bundle.annualLeave.Id,
       bundle.manager.Id,
@@ -354,7 +385,7 @@ private class PWChrono_LeaveController_Test {
     );
 
     Test.startTest();
-    PWChrono_Leave__c cancelled = PWChrono_LeaveController.cancelLeave(
+    Leave__c cancelled = PWChrono_LeaveController.cancelLeave(
       submittedLeave.Id,
       'Plans changed',
       String.valueOf(bundle.employee.Id),
@@ -369,7 +400,7 @@ private class PWChrono_LeaveController_Test {
   static void testAdditionalCoverageForAdminAndAttachmentGuards() {
     PWChrono_LeaveTestDataFactory.TestDataBundle bundle = getBundle();
     User orphanUser = PWChrono_TestDataFactory.createTestUser('Leave Orphan');
-    PWChrono_Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
+    Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
       bundle.employee.Id,
       bundle.annualLeave.Id,
       bundle.manager.Id,
@@ -384,8 +415,9 @@ private class PWChrono_LeaveController_Test {
     dto.reason = 'No employee context';
     dto.halfDay = false;
 
-    List<PWChrono_Leave_Type__c> leaveTypesIncludingInactive =
-      PWChrono_LeaveController.getActiveLeaveTypes(true);
+    List<PWChrono_Leave_Type__c> leaveTypesIncludingInactive = PWChrono_LeaveController.getActiveLeaveTypes(
+      true
+    );
 
     System.runAs(orphanUser) {
       Test.startTest();
@@ -437,7 +469,12 @@ private class PWChrono_LeaveController_Test {
       }
 
       try {
-        PWChrono_LeaveController.cancelLeave(submittedLeave.Id, 'No access', null, null);
+        PWChrono_LeaveController.cancelLeave(
+          submittedLeave.Id,
+          'No access',
+          null,
+          null
+        );
         System.assert(false, 'Missing employee context should throw.');
       } catch (AuraHandledException e) {
         System.assertNotEquals(null, e.getMessage());
@@ -483,7 +520,7 @@ private class PWChrono_LeaveController_Test {
 
       try {
         PWChrono_LeaveController.saveLeaveApplication(
-          new PWChrono_Leave__c(
+          new Leave__c(
             Leave_Type__c = bundle.annualLeave.Id,
             From_Date__c = Date.today().addDays(20),
             To_Date__c = Date.today().addDays(20),
@@ -499,7 +536,11 @@ private class PWChrono_LeaveController_Test {
       }
 
       try {
-        PWChrono_LeaveController.getLeaveComments(submittedLeave.Id, null, null);
+        PWChrono_LeaveController.getLeaveComments(
+          submittedLeave.Id,
+          null,
+          null
+        );
         System.assert(false, 'Missing employee context should throw.');
       } catch (AuraHandledException e) {
         System.assertNotEquals(null, e.getMessage());
@@ -513,7 +554,11 @@ private class PWChrono_LeaveController_Test {
       }
 
       try {
-        PWChrono_LeaveController.getLeaveLedgerHistory(submittedLeave.Id, null, null);
+        PWChrono_LeaveController.getLeaveLedgerHistory(
+          submittedLeave.Id,
+          null,
+          null
+        );
         System.assert(false, 'Missing employee context should throw.');
       } catch (AuraHandledException e) {
         System.assertNotEquals(null, e.getMessage());

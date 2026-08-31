@@ -31,10 +31,7 @@ export default class PwchronoHRDashboard extends LightningElement {
       this.loadSummary();
     };
     try {
-      window.addEventListener(
-        SESSION_CHANGED_EVENT,
-        this._sessionChangedHandler
-      );
+      window.addEventListener(SESSION_CHANGED_EVENT, this._sessionChangedHandler);
     } catch {
       // ignore
     }

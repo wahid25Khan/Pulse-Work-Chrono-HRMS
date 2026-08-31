@@ -2,7 +2,9 @@
  * @description Controller for Admin Settings Panel LWC
  * @author PWChrono Team
  */
-@SuppressWarnings('PMD.ApexCRUDViolation,PMD.ExcessiveClassLength,PMD.CognitiveComplexity,PMD.ExcessivePublicCount')
+@SuppressWarnings(
+  'PMD.ApexCRUDViolation,PMD.ExcessiveClassLength,PMD.CognitiveComplexity,PMD.ExcessivePublicCount'
+)
 public inherited sharing class PWChrono_AdminController {
   // --- Guest portal authorization helpers (Admin Settings) ---
   // The portal runs in Guest runtime with a server-issued session token.
@@ -195,7 +197,7 @@ public inherited sharing class PWChrono_AdminController {
       data.userName = UserInfo.getName();
       Integer pendingLeaves = [
         SELECT COUNT()
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         WHERE Status__c = 'Submitted'
       ];
       Integer pendingAttendance = [
@@ -208,14 +210,14 @@ public inherited sharing class PWChrono_AdminController {
       Date threeDaysAgo = Date.today().addDays(-3);
       data.overdueApprovals = [
         SELECT COUNT()
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         WHERE Status__c = 'Submitted' AND CreatedDate < :threeDaysAgo
       ];
 
       Date startOfWeek = Date.today().toStartOfWeek();
       data.approvedThisWeek = [
         SELECT COUNT()
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         WHERE Status__c = 'Approved' AND LastModifiedDate >= :startOfWeek
       ];
 
@@ -240,7 +242,7 @@ public inherited sharing class PWChrono_AdminController {
 
       data.onLeaveToday = [
         SELECT COUNT()
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         WHERE
           From_Date__c <= TODAY
           AND To_Date__c >= TODAY
@@ -250,7 +252,7 @@ public inherited sharing class PWChrono_AdminController {
       // Calculate Leave Trend (On Leave Today vs Yesterday)
       Integer onLeaveYesterday = [
         SELECT COUNT()
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         WHERE
           From_Date__c <= YESTERDAY
           AND To_Date__c >= YESTERDAY
@@ -267,7 +269,7 @@ public inherited sharing class PWChrono_AdminController {
       Integer requestsLast7Days =
         [
           SELECT COUNT()
-          FROM PWChrono_Leave__c
+          FROM Leave__c
           WHERE CreatedDate = LAST_N_DAYS:7
         ] +
         [
@@ -278,7 +280,7 @@ public inherited sharing class PWChrono_AdminController {
       Integer requestsPrevious7Days =
         [
           SELECT COUNT()
-          FROM PWChrono_Leave__c
+          FROM Leave__c
           WHERE CreatedDate < LAST_N_DAYS:7 AND CreatedDate >= LAST_N_DAYS:14
         ] +
         [
@@ -354,7 +356,7 @@ public inherited sharing class PWChrono_AdminController {
       ];
       Integer approvedLeaves = [
         SELECT COUNT()
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         WHERE
           Status__c = 'Approved'
           AND From_Date__c <= TODAY
@@ -368,7 +370,7 @@ public inherited sharing class PWChrono_AdminController {
         ? ((totalActive -
           [
             SELECT COUNT()
-            FROM PWChrono_Leave__c
+            FROM Leave__c
             WHERE
               Status__c = 'Approved'
               AND From_Date__c <= YESTERDAY
@@ -389,7 +391,7 @@ public inherited sharing class PWChrono_AdminController {
         (totalActive -
         [
           SELECT COUNT()
-          FROM PWChrono_Leave__c
+          FROM Leave__c
           WHERE
             Status__c = 'Approved'
             AND From_Date__c <= YESTERDAY
@@ -670,7 +672,7 @@ public inherited sharing class PWChrono_AdminController {
         items.add(item);
       }
 
-      List<PWChrono_Leave__c> leaves = [
+      List<Leave__c> leaves = [
         SELECT
           Id,
           Name,
@@ -680,12 +682,12 @@ public inherited sharing class PWChrono_AdminController {
           Employees__r.Name,
           Leave_Type__r.Name,
           CreatedDate
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         ORDER BY CreatedDate DESC
         LIMIT :size
       ];
 
-      for (PWChrono_Leave__c l : leaves) {
+      for (Leave__c l : leaves) {
         TimelineItem item = new TimelineItem();
         item.id = l.Id;
         item.category = 'Leave';
@@ -1174,9 +1176,9 @@ public inherited sharing class PWChrono_AdminController {
       }
 
       // Get recent leave requests
-      for (PWChrono_Leave__c leave : [
+      for (Leave__c leave : [
         SELECT Id, Name, Status__c, CreatedDate, CreatedBy.Name
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         ORDER BY CreatedDate DESC
         LIMIT 3
       ]) {
@@ -1338,7 +1340,7 @@ public inherited sharing class PWChrono_AdminController {
    * @return List of Leave Requests
    */
   @AuraEnabled(cacheable=true)
-  public static List<PWChrono_Leave__c> getLeaveRequests() {
+  public static List<Leave__c> getLeaveRequests() {
     try {
       return [
         SELECT
@@ -1350,7 +1352,7 @@ public inherited sharing class PWChrono_AdminController {
           To_Date__c,
           Status__c,
           Total_Days__c
-        FROM PWChrono_Leave__c
+        FROM Leave__c
         WHERE Status__c IN ('Submitted', 'Draft')
         ORDER BY CreatedDate DESC
         LIMIT 8

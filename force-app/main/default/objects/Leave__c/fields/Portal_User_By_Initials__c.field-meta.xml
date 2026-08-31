@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Portal_User_By_Initials__c</fullName>
+    <externalId>false</externalId>
+    <formula>UPPER(
+  IF( LEN(  Portal_User__r.Contact__r.FirstName ) &gt; 0, LEFT( Portal_User__r.Contact__r.FirstName, 1 ), &quot;&quot; )
+&amp; IF( LEN( Portal_User__r.Contact__r.LastName) &gt; 0, LEFT( Portal_User__r.Contact__r.LastName, 1 ), &quot;&quot; )
+)</formula>
+    <label>Portal User Initials</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
