@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <comment
+    >Action override created by Lightning App Builder during activation.</comment>
         <content>Product_Record_Page</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
@@ -14,7 +15,8 @@
         <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
     </brand>
     <defaultLandingTab>PWChrono_Dashboard</defaultLandingTab>
-    <description>Complete HR Management System Portal with module-level navigation for Dashboard, Attendance, Leave Management, Holidays, Employee Directory, Recruitment, Onboarding, Performance, Training, Expenses, Payroll, My Profile, and Configuration</description>
+    <description
+  >Complete HR Management System Portal with module-level navigation for Dashboard, Attendance, Leave Management, Holidays, Employee Directory, Recruitment, Onboarding, Performance, Training, Expenses, Payroll, My Profile, and Configuration</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
@@ -463,17 +465,5 @@
         <profile>Wynn Outfitters Profile</profile>
     </profileActionOverrides>
     <tabs>PWChrono_Dashboard</tabs>
-    <tabs>PWChrono_Attendance</tabs>
-    <tabs>PWChrono_Leaves</tabs>
-    <tabs>PWChrono_Holidays</tabs>
-    <tabs>PWChrono_Employee_Directory</tabs>
-    <tabs>PWChrono_Recruitment</tabs>
-    <tabs>PWChrono_Onboarding</tabs>
-    <tabs>PWChrono_Performance</tabs>
-    <tabs>PWChrono_Training</tabs>
-    <tabs>PWChrono_Expenses</tabs>
-    <tabs>PWChrono_Payroll</tabs>
-    <tabs>PWChrono_Profile</tabs>
-    <tabs>PWChrono_Admin</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

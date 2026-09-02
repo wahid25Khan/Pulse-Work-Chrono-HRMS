@@ -46,8 +46,17 @@ describe("pwchronoNavigationAccess", () => {
     ]);
   });
 
-  it("returns the complete menu for administrators", () => {
-    expect(filterMenuItemsByFeatures(MENU_ITEMS, ["Admin"])).toBe(MENU_ITEMS);
+  it("returns the complete menu when every required feature is assigned", () => {
+    expect(
+      filterMenuItemsByFeatures(MENU_ITEMS, [
+        "Dashboard",
+        "My Profile",
+        "Payroll",
+        "Admin Settings",
+        "Reports Dashboard",
+        "Attendance Management"
+      ])
+    ).toEqual(MENU_ITEMS.slice(0, -1));
   });
 
   it("hides unmapped leaf items", () => {

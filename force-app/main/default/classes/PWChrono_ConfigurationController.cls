@@ -80,6 +80,7 @@ public without sharing class PWChrono_ConfigurationController {
           Role__c,
           Portal_User_Profile__c,
           Portal_User_Profile__r.Name,
+          Portal_User_Profile__r.Display_Name__c,
           Department__c,
           Designation__c,
           Is_Active__c,
@@ -106,7 +107,9 @@ public without sharing class PWChrono_ConfigurationController {
           ? null
           : String.valueOf(pu.Portal_User_Profile__c);
         config.profileName = pu.Portal_User_Profile__r != null
-          ? pu.Portal_User_Profile__r.Name
+          ? (String.isNotBlank(pu.Portal_User_Profile__r.Display_Name__c)
+              ? pu.Portal_User_Profile__r.Display_Name__c
+              : pu.Portal_User_Profile__r.Name)
           : 'Unassigned';
         config.roleName = pu.Role__c != null ? pu.Role__c : 'N/A';
         config.designation = pu.Designation__c != null
@@ -139,14 +142,18 @@ public without sharing class PWChrono_ConfigurationController {
 
     List<PortalProfileOption> options = new List<PortalProfileOption>();
     for (Portal_User_Profile__c profile : [
-      SELECT Id, Name
+      SELECT Id, Name, Display_Name__c, Is_Active__c, Profile_Type__c
       FROM Portal_User_Profile__c
+      WHERE Is_Active__c = TRUE OR Is_Active__c = NULL
       ORDER BY Name
       LIMIT 1000
     ]) {
       PortalProfileOption option = new PortalProfileOption();
       option.profileId = String.valueOf(profile.Id);
-      option.profileName = profile.Name;
+      option.profileName = String.isNotBlank(profile.Display_Name__c)
+        ? profile.Display_Name__c
+        : profile.Name;
+      option.profileType = profile.Profile_Type__c;
       options.add(option);
     }
     return options;
@@ -609,6 +616,8 @@ public without sharing class PWChrono_ConfigurationController {
     public String profileId;
     @AuraEnabled
     public String profileName;
+    @AuraEnabled
+    public String profileType;
   }
 
   /**

@@ -45,11 +45,37 @@ const ICON_CLASS_MAP = {
   "Company Policies": "fa-solid fa-file-lines fa-fw"
 };
 
+const APPLICATION_ROUTES = {
+  dashboard: "dashboard",
+  "attendance management": "attendance",
+  "attendance employee": "attendance",
+  attendance: "attendance",
+  "leave management": "leave",
+  leaves: "leave",
+  holidays: "holidays",
+  "employee directory": "directory",
+  recruitment: "recruitment",
+  onboarding: "onboarding",
+  "performance management": "performance",
+  performance: "performance",
+  "training management": "training",
+  training: "training",
+  "expense management": "expenses",
+  expenses: "expenses",
+  payroll: "payroll",
+  "my profile": "profile",
+  profile: "profile",
+  configuration: "configuration",
+  "admin settings": "configuration"
+};
+
 export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
   static renderMode = "light";
   @api features = [];
   @api isSalesforceUser = false;
   @api menuGroupLabel;
+  @api applicationMode = false;
+  @api navigationContext;
 
   @track activeSidebarTab = "menu"; // menu | chat | email
 
@@ -562,6 +588,16 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
 
   _computeItemHref(item) {
     try {
+      const applicationRoute =
+        APPLICATION_ROUTES[
+          String(item?.label || "")
+            .trim()
+            .toLowerCase()
+        ];
+      if (this.isApplicationNavigation && applicationRoute) {
+        return `#${applicationRoute}`;
+      }
+
       if (!item?.type || !item?.actionValue) {
         return null;
       }
@@ -593,14 +629,27 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
   }
 
   handleItemClick(event) {
+    const navKey = event?.currentTarget?.dataset?.key;
+    const selectedItem = this._allItemsByKey?.[String(navKey)];
+    const applicationRoute =
+      APPLICATION_ROUTES[
+        String(selectedItem?.label || "")
+          .trim()
+          .toLowerCase()
+      ];
+
+    if (this.isApplicationNavigation && applicationRoute) {
+      this.activeNavKey = String(navKey);
+      this.syncExpandedToActive();
+      this._navigateWithinApplication(applicationRoute);
+      return;
+    }
+
     try {
       event.preventDefault();
     } catch {
       // no-op
     }
-
-    const navKey = event?.currentTarget?.dataset?.key;
-    const selectedItem = this._allItemsByKey?.[String(navKey)];
 
     if (!navKey || !selectedItem) {
       return;
@@ -635,6 +684,17 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
     this.activeNavKey = String(navKey);
     this.syncExpandedToActive();
 
+    const applicationRoute =
+      APPLICATION_ROUTES[
+        String(item?.label || "")
+          .trim()
+          .toLowerCase()
+      ];
+    if (this.applicationMode && applicationRoute) {
+      this._navigateWithinApplication(applicationRoute);
+      return;
+    }
+
     if (item.type === "InternalLink" || item.type === "ExternalLink") {
       const url =
         item.type === "InternalLink"
@@ -667,6 +727,24 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
         bubbles: true,
         composed: true
       })
+    );
+  }
+
+  _navigateWithinApplication(route) {
+    navigateTo(route);
+    this.dispatchEvent(
+      new CustomEvent("navigate", {
+        detail: { page: route },
+        bubbles: true,
+        composed: true
+      })
+    );
+  }
+
+  get isApplicationNavigation() {
+    return (
+      this.applicationMode ||
+      String(this.navigationContext || "").toLowerCase() === "application"
     );
   }
 }

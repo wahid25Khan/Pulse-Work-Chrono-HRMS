@@ -1,4 +1,11 @@
 <template>
+  <!--
+    Fallback for the standalone Lightning tab while Salesforce refreshes the
+    tab's component mapping. Portal pages receive these assets from
+    pwchronoMainLayout.
+  -->
+  <c-pwchrono-ui-assets></c-pwchrono-ui-assets>
+
   <template if:true={isLoading}>
     <lightning-spinner
       alternative-text="Loading"

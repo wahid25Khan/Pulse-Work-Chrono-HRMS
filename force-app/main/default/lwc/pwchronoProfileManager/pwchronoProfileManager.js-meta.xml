@@ -2,6 +2,9 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
+    <masterLabel>PWChrono Portal User Profile Manager</masterLabel>
+    <description
+  >Guided profile details and feature access manager.</description>
     <targets>
         <target>lightning__RecordPage</target>
     </targets>

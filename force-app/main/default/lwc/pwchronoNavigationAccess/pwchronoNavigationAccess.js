@@ -1,20 +1,20 @@
 const MENU_FEATURE_MAP = {
   Dashboard: ["Dashboard"],
-  "Admin Dashboard": ["Admin Settings", "Configuration", "Admin"],
-  "Manager Dashboard": ["Manager Dashboard", "Admin"],
+  "Admin Dashboard": ["Admin Settings", "Configuration"],
+  "Manager Dashboard": ["Manager Dashboard"],
   "Employee Dashboard": ["Dashboard"],
   "My Profile": ["My Profile"],
   "Attendance Management": ["Attendance Management"],
   "Attendance Employee": ["Attendance Management"],
-  "Attendance (Admin)": ["Attendance Management", "Admin"],
+  "Attendance (Admin)": ["Attendance Management"],
   Overtime: ["Attendance Management"],
   "WFH Management": ["Attendance Management"],
   Timesheets: ["Attendance Management"],
-  "Attendance Settings": ["Admin Settings", "Configuration", "Admin"],
+  "Attendance Settings": ["Admin Settings", "Configuration"],
   "Leave Management": ["Leave Management"],
   "Leaves (Employee)": ["Leave Management"],
-  "Leaves Admin": ["Leave Management", "Admin"],
-  "Leave Settings": ["Admin Settings", "Configuration", "Admin"],
+  "Leaves Admin": ["Leave Management"],
+  "Leave Settings": ["Admin Settings", "Configuration"],
   Holidays: ["Holidays"],
   "Employee Directory": ["Employee Directory"],
   Recruitment: ["Recruitment"],
@@ -25,14 +25,9 @@ const MENU_FEATURE_MAP = {
   Projects: ["Projects", "Dashboard"],
   "Expense Management": ["Expense Management"],
   Payroll: ["Payroll"],
-  Administration: ["Admin Settings", "Configuration", "Admin"],
-  "Reports Dashboard": [
-    "Reports Dashboard",
-    "Admin Settings",
-    "Configuration",
-    "Admin"
-  ],
-  "Role Feature Mapping": ["Admin Settings", "Configuration", "Admin"]
+  Administration: ["Admin Settings", "Configuration"],
+  "Reports Dashboard": ["Reports Dashboard", "Admin Settings", "Configuration"],
+  "Role Feature Mapping": ["Admin Settings", "Configuration"]
 };
 
 function hasMenuAccess(item, featureSet) {
@@ -42,10 +37,6 @@ function hasMenuAccess(item, featureSet) {
 
 export function filterMenuItemsByFeatures(items, features) {
   const featureSet = new Set(features || []);
-  if (featureSet.has("Admin")) {
-    return items || [];
-  }
-
   return (items || []).reduce((visibleItems, item) => {
     const children = filterMenuItemsByFeatures(item.children || [], features);
     if (!hasMenuAccess(item, featureSet) && children.length === 0) {

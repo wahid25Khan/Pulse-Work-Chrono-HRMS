@@ -76,6 +76,8 @@ export default class PwchronoProfilePermissions extends LightningElement {
             updatedPerm.canCreate = false;
             updatedPerm.canEdit = false;
             updatedPerm.canDelete = false;
+            updatedPerm.canViewAll = false;
+            updatedPerm.canModifyAll = false;
           }
         }
         return updatedPerm;

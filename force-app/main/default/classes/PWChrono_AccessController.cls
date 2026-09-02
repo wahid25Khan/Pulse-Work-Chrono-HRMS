@@ -3,7 +3,7 @@ public inherited sharing class PWChrono_AccessController {
    * @description All available features in the PWChrono Portal.
    *              Salesforce internal users get access to ALL these features.
    */
-  private static final List<String> ALL_FEATURES = new List<String>{
+  public static final List<String> ALL_FEATURES = new List<String>{
     'Dashboard',
     'Leave Management',
     'Attendance Management',
@@ -23,7 +23,9 @@ public inherited sharing class PWChrono_AccessController {
     'Approvals',
     'Company Policies',
     'Holidays',
-    'Tax Declaration'
+    'Tax Declaration',
+    'Projects',
+    'Reports Dashboard'
   };
 
   /**
