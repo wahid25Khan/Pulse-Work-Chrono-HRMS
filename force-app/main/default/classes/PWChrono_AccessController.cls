@@ -44,7 +44,7 @@ public inherited sharing class PWChrono_AccessController {
    * @description Get access details for the current user (no parameter version)
    * @return Map containing role and accessible features
    */
-  @AuraEnabled(cacheable=true)
+  @AuraEnabled(cacheable=false)
   public static Map<String, Object> getUserAccess() {
     return getUserAccessImpl(null);
   }
@@ -54,18 +54,19 @@ public inherited sharing class PWChrono_AccessController {
    * @param employeeId The Portal_Users__c record ID
    * @return Map containing role and accessible features
    */
-  @AuraEnabled(cacheable=true)
+  // Profile assignments are administrator-managed runtime data. Do not let the
+  // Lightning client reuse a stale authorization response after they change.
+  @AuraEnabled(cacheable=false)
   public static Map<String, Object> getUserAccessById(
     Id employeeId,
     String sessionToken
   ) {
     if (UserInfo.getUserType() == 'Guest') {
       if (employeeId != null) {
-        Id verifiedPortalUserId = PWChrono_GuestSession.requireVerifiedPortalUserId(
+        return PWChrono_GuestSession.getVerifiedUserAccess(
           (String) employeeId,
           sessionToken
         );
-        return getUserAccessImpl(verifiedPortalUserId);
       }
       // Allow null employeeId for the pre-login flow.
       return getUserAccessImpl(null);
