@@ -30,14 +30,29 @@
       <template if:true={isPerformance}>
         <c-pwchrono-appraisal-form></c-pwchrono-appraisal-form>
       </template>
+      <template if:true={isGoals}>
+        <c-pwchrono-goal-management></c-pwchrono-goal-management>
+      </template>
       <template if:true={isTraining}>
         <c-pwchrono-training-registration></c-pwchrono-training-registration>
+      </template>
+      <template if:true={isProjects}>
+        <c-pwchrono-projects-grid></c-pwchrono-projects-grid>
       </template>
       <template if:true={isExpenses}>
         <c-pwchrono-expense-claim-portal></c-pwchrono-expense-claim-portal>
       </template>
       <template if:true={isPayroll}>
         <c-pwchrono-salary-slip-viewer></c-pwchrono-salary-slip-viewer>
+      </template>
+      <template if:true={isApprovals}>
+        <c-pwchrono-approvals></c-pwchrono-approvals>
+      </template>
+      <template if:true={isPolicies}>
+        <c-pwchrono-company-policies></c-pwchrono-company-policies>
+      </template>
+      <template if:true={isReports}>
+        <c-pwchrono-admin-dashboard-reports></c-pwchrono-admin-dashboard-reports>
       </template>
       <template if:true={isProfile}>
         <c-pwchrono-profile-update></c-pwchrono-profile-update>

@@ -396,25 +396,8 @@
 
   <!-- Custom Tabs (PWChrono) -->
   <types>
-    <members>PWChrono_Admin</members>
-    <members>PWChrono_Admin_Dashboard_Design</members>
-    <members>Configuration_Center</members>
-    <members>PWChrono_Attendance</members>
-    <members>PWChrono_Attendance_Admin</members>
     <members>PWChrono_Bonus__c</members>
     <members>PWChrono_Dashboard</members>
-    <members>PWChrono_Employee_Directory</members>
-    <members>PWChrono_Expenses</members>
-    <members>PWChrono_Goals</members>
-    <members>PWChrono_Leaves</members>
-    <members>PWChrono_Manager_Dashboard</members>
-    <members>PWChrono_Onboarding</members>
-    <members>PWChrono_Payroll</members>
-    <members>PWChrono_Performance</members>
-    <members>PWChrono_Profile</members>
-    <members>PWChrono_Recruitment</members>
-    <members>PWChrono_System_Admin</members>
-    <members>PWChrono_Training</members>
     <members>Portal_Field_Permission__c</members>
     <members>Portal_Object_Field__c</members>
     <members>Portal_Object_Permission__c</members>

@@ -1,4 +1,5 @@
 import { filterMenuItemsByFeatures } from "c/pwchronoNavigationAccess";
+import { normalizeApplicationRoute } from "c/pwchronoRouter";
 
 const MENU_ITEMS = [
   { id: "dashboard", label: "Dashboard", children: [] },
@@ -66,5 +67,19 @@ describe("pwchronoNavigationAccess", () => {
         ["Dashboard"]
       )
     ).toEqual([]);
+  });
+});
+
+describe("PWChrono application routes", () => {
+  it("normalizes application menu aliases", () => {
+    expect(normalizeApplicationRoute("Employee Directory")).toBe("directory");
+    expect(normalizeApplicationRoute("Project List")).toBe("projects");
+    expect(normalizeApplicationRoute("Company Policies")).toBe("policies");
+    expect(normalizeApplicationRoute("Reports Dashboard")).toBe("reports");
+  });
+
+  it("falls back safely for unknown routes", () => {
+    expect(normalizeApplicationRoute("not-a-real-module")).toBe("dashboard");
+    expect(normalizeApplicationRoute(null)).toBe("dashboard");
   });
 });

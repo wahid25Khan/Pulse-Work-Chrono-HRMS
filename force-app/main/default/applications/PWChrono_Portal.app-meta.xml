@@ -4,6 +4,16 @@
         <actionName>View</actionName>
         <comment
     >Action override created by Lightning App Builder during activation.</comment>
+        <content>Opportunity_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment
+    >Action override created by Lightning App Builder during activation.</comment>
         <content>Product_Record_Page</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
@@ -16,13 +26,13 @@
     </brand>
     <defaultLandingTab>PWChrono_Dashboard</defaultLandingTab>
     <description
-  >Complete HR Management System Portal with module-level navigation for Dashboard, Attendance, Leave Management, Holidays, Employee Directory, Recruitment, Onboarding, Performance, Training, Expenses, Payroll, My Profile, and Configuration</description>
+  >Unified Pulse Work Chrono application with authenticated, feature-aware navigation across HR modules.</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
-    <label>PWChrono Portal</label>
+    <label>Pulse Work Chrono</label>
     <navType>Standard</navType>
     <profileActionOverrides>
         <actionName>View</actionName>

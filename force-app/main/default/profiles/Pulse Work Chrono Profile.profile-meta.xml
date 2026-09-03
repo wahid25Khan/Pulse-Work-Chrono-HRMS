@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <custom>true</custom>
     <customMetadataTypeAccesses>
@@ -655,7 +655,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>PWChrono_Employee_Referral__c.Is_Applicable_for_Referral_Bonus__c</field>
+        <field
+    >PWChrono_Employee_Referral__c.Is_Applicable_for_Referral_Bonus__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -675,7 +676,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>PWChrono_Employee_Referral__c.Referral_Bonus_Payment_Status__c</field>
+        <field
+    >PWChrono_Employee_Referral__c.Referral_Bonus_Payment_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -720,7 +722,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>PWChrono_Employee_Separation__c.Resignation_Letter_Date__c</field>
+        <field
+    >PWChrono_Employee_Separation__c.Resignation_Letter_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2340,7 +2343,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>PWChrono_Staffing_Plan_Detail__c.Estimated_Cost_Per_Position__c</field>
+        <field
+    >PWChrono_Staffing_Plan_Detail__c.Estimated_Cost_Per_Position__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2595,7 +2599,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Portal_Field_Permission_ChangeEvent__c.Portal_Object_Field__c</field>
+        <field
+    >Portal_Field_Permission_ChangeEvent__c.Portal_Object_Field__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2605,7 +2610,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Portal_Field_Permission_ChangeEvent__c.Portal_User_Profile__c</field>
+        <field
+    >Portal_Field_Permission_ChangeEvent__c.Portal_User_Profile__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2690,7 +2696,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Portal_Object_Permission_ChangeEvent__c.Portal_User_Profile__c</field>
+        <field
+    >Portal_Object_Permission_ChangeEvent__c.Portal_User_Profile__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2785,7 +2792,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Portal_Users_ChangeEvent__c.CASESAFEID_User_Profile_Type_ID__c</field>
+        <field
+    >Portal_Users_ChangeEvent__c.CASESAFEID_User_Profile_Type_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2885,7 +2893,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Portal_Users_ChangeEvent__c.Send_New_User_Notification_from_SFDC__c</field>
+        <field
+    >Portal_Users_ChangeEvent__c.Send_New_User_Notification_from_SFDC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2895,12 +2904,14 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Portal_Users_ChangeEvent__c.URL_1stTime_BuilderConnection__c</field>
+        <field
+    >Portal_Users_ChangeEvent__c.URL_1stTime_BuilderConnection__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Portal_Users_ChangeEvent__c.URL_General_Builder_Connection__c</field>
+        <field
+    >Portal_Users_ChangeEvent__c.URL_General_Builder_Connection__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3212,19 +3223,22 @@
         <layout>Leave__c-Leave Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Appraisal_Notification__c-Appraisal Notification Recipient Layout</layout>
+        <layout
+    >PWChrono_Appraisal_Notification__c-Appraisal Notification Recipient Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Appraisal__c-Appraisal Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Attendance_Request__c-Attendance Request Layout</layout>
+        <layout
+    >PWChrono_Attendance_Request__c-Attendance Request Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Bonus__c-PWChrono Bonus Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Company_Policy__c-PWChrono Company Policy Layout</layout>
+        <layout
+    >PWChrono_Company_Policy__c-PWChrono Company Policy Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Department__c-Department Layout</layout>
@@ -3236,13 +3250,15 @@
         <layout>PWChrono_Employee_Exit__c-Employee Exit Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Employee_Promotion__c-Employee Promotion Layout</layout>
+        <layout
+    >PWChrono_Employee_Promotion__c-Employee Promotion Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Employee_Referral__c-Employee Referral Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Employee_Separation__c-Employee Separation Layout</layout>
+        <layout
+    >PWChrono_Employee_Separation__c-Employee Separation Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Employee_Transfer__c-Employee Transfer Layout</layout>
@@ -3257,7 +3273,8 @@
         <layout>PWChrono_Expense_Item__c-Expense Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Full_Final_Settlement__c-Full and Final Settlement Layout</layout>
+        <layout
+    >PWChrono_Full_Final_Settlement__c-Full and Final Settlement Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Goal__c-Goal Layout</layout>
@@ -3287,10 +3304,12 @@
         <layout>PWChrono_Leave_Allocation__c-Leave Allocation Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Leave_Block_Date__c-PWChrono Leave Block Date Layout</layout>
+        <layout
+    >PWChrono_Leave_Block_Date__c-PWChrono Leave Block Date Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Leave_Encashment__c-PWChrono Leave Encashment Layout</layout>
+        <layout
+    >PWChrono_Leave_Encashment__c-PWChrono Leave Encashment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Leave_Ledger__c-PWChrono Leave Ledger Layout</layout>
@@ -3311,10 +3330,12 @@
         <layout>PWChrono_Offer_Letter__c-PWChrono Offer Letter Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Onboarding_Task__c-PWChrono Onboarding Task Layout</layout>
+        <layout
+    >PWChrono_Onboarding_Task__c-PWChrono Onboarding Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Performance_Cycle__c-PWChrono Performance Cycle Layout</layout>
+        <layout
+    >PWChrono_Performance_Cycle__c-PWChrono Performance Cycle Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Project__c-PWChrono Project Layout</layout>
@@ -3323,16 +3344,20 @@
         <layout>PWChrono_Promotion_Detail__c-Promotion Detail Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Request_Comment__c-PWChrono Request Comment Layout</layout>
+        <layout
+    >PWChrono_Request_Comment__c-PWChrono Request Comment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Role_Feature_Mapping__mdt-PWChrono Role Feature Mapping Layout</layout>
+        <layout
+    >PWChrono_Role_Feature_Mapping__mdt-PWChrono Role Feature Mapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Salary_Assignment__c-PWChrono Salary Assignment Layout</layout>
+        <layout
+    >PWChrono_Salary_Assignment__c-PWChrono Salary Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Salary_Component__c-PWChrono Salary Component Layout</layout>
+        <layout
+    >PWChrono_Salary_Component__c-PWChrono Salary Component Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Salary_History__c-Salary History Layout</layout>
@@ -3341,76 +3366,93 @@
         <layout>PWChrono_Salary_Slip__c-Salary Slip Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Salary_Structure__c-PWChrono Salary Structure Layout</layout>
+        <layout
+    >PWChrono_Salary_Structure__c-PWChrono Salary Structure Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Separation_Checklist__c-Separation Checklist Item Layout</layout>
+        <layout
+    >PWChrono_Separation_Checklist__c-Separation Checklist Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Separation_Template_Activity__c-Separation Template Activity Layout</layout>
+        <layout
+    >PWChrono_Separation_Template_Activity__c-Separation Template Activity Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Separation_Template__c-Employee Separation Template Layout</layout>
+        <layout
+    >PWChrono_Separation_Template__c-Employee Separation Template Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Settings__mdt-PWChrono Settings Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Settlement_Payable__c-Settlement Payable Layout</layout>
+        <layout
+    >PWChrono_Settlement_Payable__c-Settlement Payable Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Settlement_Receivable__c-Settlement Receivable Layout</layout>
+        <layout
+    >PWChrono_Settlement_Receivable__c-Settlement Receivable Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Shift_Assignment__c-PWChrono Shift Assignment Layout</layout>
+        <layout
+    >PWChrono_Shift_Assignment__c-PWChrono Shift Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Shift_Type__c-Shift Type Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Staffing_Plan_Detail__c-Staffing Plan Detail Layout</layout>
+        <layout
+    >PWChrono_Staffing_Plan_Detail__c-Staffing Plan Detail Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Staffing_Plan__c-Staffing Plan Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Structure_Component__c-PWChrono Structure Component Layout</layout>
+        <layout
+    >PWChrono_Structure_Component__c-PWChrono Structure Component Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Tax_Declaration__c-Tax Declaration Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Training_Attendance__c-PWChrono Training Attendance Layout</layout>
+        <layout
+    >PWChrono_Training_Attendance__c-PWChrono Training Attendance Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PWChrono_Training_Event__c-Training Event Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_Training_Program__c-PWChrono Training Program Layout</layout>
+        <layout
+    >PWChrono_Training_Program__c-PWChrono Training Program Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PWChrono_User_Feature_Access__c-User Feature Access Layout</layout>
+        <layout
+    >PWChrono_User_Feature_Access__c-User Feature Access Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Portal_Chatter__c-Portal Chatter Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Portal_Field_Permission_ChangeEvent__c-Portal Field Permission ChangeEvent Layout</layout>
+        <layout
+    >Portal_Field_Permission_ChangeEvent__c-Portal Field Permission ChangeEvent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Portal_Field_Permission__c-Portal Field Permission Layout</layout>
+        <layout
+    >Portal_Field_Permission__c-Portal Field Permission Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Portal_Object_Field_ChangeEvent__c-Portal Object Field ChangeEvent Layout</layout>
+        <layout
+    >Portal_Object_Field_ChangeEvent__c-Portal Object Field ChangeEvent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Portal_Object_Field__c-Portal Object Field Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Portal_Object_Permission_ChangeEvent__c-Portal Object Permission ChangeEvent Layout</layout>
+        <layout
+    >Portal_Object_Permission_ChangeEvent__c-Portal Object Permission ChangeEvent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Portal_Object_Permission__c-Portal Object Permission Layout</layout>
+        <layout
+    >Portal_Object_Permission__c-Portal Object Permission Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Portal_Object__c-Portal Object Layout</layout>
@@ -3422,7 +3464,8 @@
         <layout>Portal_User_Profile__c-Portal User Profile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Portal_Users_ChangeEvent__c-Portal Users ChangeEvent Layout</layout>
+        <layout
+    >Portal_Users_ChangeEvent__c-Portal Users ChangeEvent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Portal_Users__c-Portal User Layout</layout>
@@ -3896,79 +3939,11 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <tabVisibilities>
-        <tab>PWChrono_Admin</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Admin_Dashboard_Design</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Attendance</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Attendance_Admin</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>PWChrono_Bonus__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>PWChrono_Dashboard</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Employee_Directory</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Expenses</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Goals</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Holidays</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Leaves</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Manager_Dashboard</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Onboarding</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Payroll</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Performance</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Profile</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Recruitment</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_System_Admin</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>PWChrono_Training</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

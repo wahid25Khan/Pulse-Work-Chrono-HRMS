@@ -1,33 +1,9 @@
 import { LightningElement, track } from "lwc";
-import { getCurrentPage, onPageChange } from "c/pwchronoRouter";
-
-const ROUTES = new Set([
-  "dashboard",
-  "attendance",
-  "leave",
-  "holidays",
-  "directory",
-  "recruitment",
-  "onboarding",
-  "performance",
-  "training",
-  "expenses",
-  "payroll",
-  "profile",
-  "configuration"
-]);
-
-const ROUTE_ALIASES = {
-  "attendance management": "attendance",
-  "attendance employee": "attendance",
-  "leave management": "leave",
-  leaves: "leave",
-  "employee directory": "directory",
-  "expense management": "expenses",
-  expenses: "expenses",
-  "my profile": "profile",
-  administration: "configuration"
-};
+import {
+  getCurrentPage,
+  normalizeApplicationRoute,
+  onPageChange
+} from "c/pwchronoRouter";
 
 export default class PwchronoLightningApp extends LightningElement {
   @track currentRoute = "dashboard";
@@ -44,11 +20,7 @@ export default class PwchronoLightningApp extends LightningElement {
   }
 
   setRoute(page) {
-    const requestedRoute = String(page || "")
-      .trim()
-      .toLowerCase();
-    const normalized = ROUTE_ALIASES[requestedRoute] || requestedRoute;
-    this.currentRoute = ROUTES.has(normalized) ? normalized : "dashboard";
+    this.currentRoute = normalizeApplicationRoute(page);
   }
 
   handleNavigate(event) {
@@ -79,14 +51,29 @@ export default class PwchronoLightningApp extends LightningElement {
   get isPerformance() {
     return this.currentRoute === "performance";
   }
+  get isGoals() {
+    return this.currentRoute === "goals";
+  }
   get isTraining() {
     return this.currentRoute === "training";
+  }
+  get isProjects() {
+    return this.currentRoute === "projects";
   }
   get isExpenses() {
     return this.currentRoute === "expenses";
   }
   get isPayroll() {
     return this.currentRoute === "payroll";
+  }
+  get isApprovals() {
+    return this.currentRoute === "approvals";
+  }
+  get isPolicies() {
+    return this.currentRoute === "policies";
+  }
+  get isReports() {
+    return this.currentRoute === "reports";
   }
   get isProfile() {
     return this.currentRoute === "profile";
