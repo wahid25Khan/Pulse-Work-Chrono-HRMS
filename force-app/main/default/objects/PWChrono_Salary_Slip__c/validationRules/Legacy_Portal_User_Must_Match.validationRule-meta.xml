@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Legacy_Portal_User_Must_Match</fullName>
+    <active>true</active>
+    <description
+  >Prevents the retained Portal User compatibility lookups from contradicting Employees__c during migration.</description>
+    <errorConditionFormula>OR(
+  AND(NOT(ISBLANK(Employee__c)), Employee__c &lt;&gt; Employees__c),
+  AND(NOT(ISBLANK(Portal_Users__c)), Portal_Users__c &lt;&gt; Employees__c)
+)</errorConditionFormula>
+    <errorMessage
+  >Legacy Portal User relationships must match the transition Portal User field.</errorMessage>
+</ValidationRule>

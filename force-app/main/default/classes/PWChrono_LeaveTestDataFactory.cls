@@ -73,7 +73,15 @@ public class PWChrono_LeaveTestDataFactory {
     Id employeeId,
     Date payrollPeriod
   ) {
+    Id contactId = [
+      SELECT Contact__c
+      FROM Portal_Users__c
+      WHERE Id = :employeeId
+      LIMIT 1
+    ]
+    .Contact__c;
     PWChrono_Salary_Slip__c salarySlip = new PWChrono_Salary_Slip__c(
+      Contact__c = contactId,
       Employees__c = employeeId,
       Payroll_Period__c = payrollPeriod,
       Status__c = 'Paid',

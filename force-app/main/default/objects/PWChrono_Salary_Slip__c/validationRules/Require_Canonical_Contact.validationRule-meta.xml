@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Canonical_Contact</fullName>
+    <active>false</active>
+    <description
+  >Requires Contact__c as the canonical employee relationship. Activate only after Portal User links and existing payroll records are migrated.</description>
+    <errorConditionFormula>ISBLANK(Contact__c)</errorConditionFormula>
+    <errorMessage
+  >Select the employee Contact before saving the salary slip.</errorMessage>
+</ValidationRule>

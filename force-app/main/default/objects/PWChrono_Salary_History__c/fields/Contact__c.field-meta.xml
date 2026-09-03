@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contact__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description
+  >Canonical employee Contact for this historical salary record.</description>
+    <externalId>false</externalId>
+    <label>Employee Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Salary History</relationshipLabel>
+    <relationshipName>PWChrono_Salary_History</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

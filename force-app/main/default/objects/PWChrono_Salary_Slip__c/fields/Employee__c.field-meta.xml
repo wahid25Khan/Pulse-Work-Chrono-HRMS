@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Employee__c</fullName>
+    <description
+  >Legacy employee relationship retained temporarily for compatibility. Use Employees__c for all new records and code.</description>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
-    <label>Employee</label>
+    <label>Legacy Employee</label>
     <referenceTo>Portal_Users__c</referenceTo>
     <relationshipLabel>Salary Slips</relationshipLabel>
     <relationshipName>PWChrono_Salary_Slips</relationshipName>

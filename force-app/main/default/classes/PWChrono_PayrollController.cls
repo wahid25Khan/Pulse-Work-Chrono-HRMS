@@ -4,7 +4,7 @@
  */
 @SuppressWarnings('PMD.ApexSOQLInjection')
 public inherited sharing class PWChrono_PayrollController {
-  private static Id resolveVerifiedPortalEmployeeId(
+  private static Id resolveVerifiedPortalUserId(
     String portalUserId,
     String sessionToken
   ) {
@@ -14,36 +14,71 @@ public inherited sharing class PWChrono_PayrollController {
     );
   }
 
-  private static Id resolveTargetEmployeeIdForNonGuest(String employeeId) {
-    if (String.isNotBlank(employeeId)) {
-      return (Id) employeeId;
+  private static Id resolveContactIdForPortalUser(Id portalUserId) {
+    if (portalUserId == null) {
+      return null;
     }
-    return PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+
+    List<Portal_Users__c> portalUsers = [
+      SELECT Contact__c
+      FROM Portal_Users__c
+      WHERE Id = :portalUserId
+      LIMIT 1
+    ];
+    if (portalUsers.isEmpty() || portalUsers[0].Contact__c == null) {
+      throw new AuraHandledException(
+        'The portal user is not linked to an employee Contact.'
+      );
+    }
+    return portalUsers[0].Contact__c;
   }
 
-  private static Id resolveTargetEmployeeId(
-    String employeeId,
+  private static Id resolveTargetContactIdForNonGuest(String contactId) {
+    if (
+      String.isNotBlank(contactId) &&
+      FeatureManagement.checkPermission('PWChrono_Send_Payslips')
+    ) {
+      return (Id) contactId;
+    }
+
+    Id portalUserId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+    Id currentContactId = resolveContactIdForPortalUser(portalUserId);
+    if (String.isBlank(contactId)) {
+      return currentContactId;
+    }
+
+    Id requestedContactId = (Id) contactId;
+    if (requestedContactId != currentContactId) {
+      throw new AuraHandledException('Unauthorized employee selection.');
+    }
+    return requestedContactId;
+  }
+
+  private static Id resolveTargetContactId(
+    String contactId,
     String portalUserId,
     String sessionToken
   ) {
     if (UserInfo.getUserType() == 'Guest') {
-      // In Guest runtime, never trust client-supplied employeeId.
-      return resolveVerifiedPortalEmployeeId(portalUserId, sessionToken);
+      // Guest sessions identify a Portal User, but payroll ownership is Contact.
+      return resolveContactIdForPortalUser(
+        resolveVerifiedPortalUserId(portalUserId, sessionToken)
+      );
     }
-    return resolveTargetEmployeeIdForNonGuest(employeeId);
+    return resolveTargetContactIdForNonGuest(contactId);
   }
 
   private static List<PWChrono_Salary_Slip__c> getMySalarySlipsCore(
     Integer year,
     Integer month,
-    Id targetEmployeeId
+    Id targetContactId
   ) {
     String query =
-      'SELECT Id, Name, Employees__c, Payroll_Period__c, ' +
+      'SELECT Id, Name, Contact__c, Contact__r.Name, Payroll_Period__c, ' +
       'Gross_Pay__c, Total_Deductions__c, Net_Pay__c, ' +
       'Status__c, CreatedDate ' +
       'FROM PWChrono_Salary_Slip__c ' +
-      'WHERE Employees__c = :targetEmployeeId ';
+      'WHERE Contact__c = :targetContactId ';
 
     if (year != null) {
       query += 'AND CALENDAR_YEAR(Payroll_Period__c) = :year ';
@@ -62,25 +97,25 @@ public inherited sharing class PWChrono_PayrollController {
    * @description Get salary slips for current employee
    * @param year Filter by year (optional)
    * @param month Filter by month (optional)
-   * @param employeeId Optional employee ID (Portal_Users__c). If null, uses current user's employee record.
+   * @param contactId Optional employee Contact ID. If null, resolves the current Portal User's Contact.
    * @return List of salary slips
    */
   @AuraEnabled(cacheable=true)
   public static List<PWChrono_Salary_Slip__c> getMySalarySlips(
     Integer year,
     Integer month,
-    String employeeId,
+    String contactId,
     String portalUserId,
     String sessionToken
   ) {
     try {
-      Id targetEmployeeId = resolveTargetEmployeeId(
-        employeeId,
+      Id targetContactId = resolveTargetContactId(
+        contactId,
         portalUserId,
         sessionToken
       );
 
-      if (targetEmployeeId == null) {
+      if (targetContactId == null) {
         AuraHandledException ahe = new AuraHandledException(
           'No employee record found for current user.'
         );
@@ -88,7 +123,7 @@ public inherited sharing class PWChrono_PayrollController {
         throw ahe;
       }
 
-      return getMySalarySlipsCore(year, month, targetEmployeeId);
+      return getMySalarySlipsCore(year, month, targetContactId);
     } catch (Exception e) {
       PWChrono_Logger.error('An error occurred', e);
       AuraHandledException ahe = new AuraHandledException(
@@ -101,22 +136,24 @@ public inherited sharing class PWChrono_PayrollController {
 
   /**
    * @description Get list of employees for dropdown
-   * @return List of Portal_Users__c
+   * @return Employee Contacts linked to active Portal Users
    */
-  private static List<Portal_Users__c> getEmployeesForDropdownCore() {
+  private static List<Contact> getEmployeesForDropdownCore() {
     try {
-      // Check if user is Salesforce Standard User
-      Boolean isSalesforceUser = UserInfo.getUserType() == 'Standard';
+      String query = 'SELECT Id, Name, Email FROM Contact ';
 
-      String query = 'SELECT Id, Name FROM Portal_Users__c ';
-
-      if (!isSalesforceUser) {
-        // If not Salesforce user, restrict to current user
-        // In future, check for "View All Employees" permission here
-        Id currentEmployeeId = PWChrono_Utils.getCurrentEmployeeId(
+      if (FeatureManagement.checkPermission('PWChrono_Send_Payslips')) {
+        query +=
+          'WHERE Id IN (SELECT Contact__c FROM Portal_Users__c ' +
+          'WHERE Contact__c != NULL AND Is_Active__c = TRUE) ';
+      } else {
+        Id currentPortalUserId = PWChrono_Utils.getCurrentEmployeeId(
           UserInfo.getUserId()
         );
-        query += 'WHERE Id = :currentEmployeeId ';
+        Id currentContactId = resolveContactIdForPortalUser(
+          currentPortalUserId
+        );
+        query += 'WHERE Id = :currentContactId ';
       }
 
       query += 'ORDER BY Name ASC';
@@ -129,20 +166,19 @@ public inherited sharing class PWChrono_PayrollController {
   }
 
   @AuraEnabled(cacheable=true)
-  public static List<Portal_Users__c> getEmployeesForDropdown(
+  public static List<Contact> getEmployeesForDropdown(
     String portalUserId,
     String sessionToken
   ) {
     try {
       if (UserInfo.getUserType() == 'Guest') {
-        Id employeeId = resolveVerifiedPortalEmployeeId(
-          portalUserId,
-          sessionToken
+        Id contactId = resolveContactIdForPortalUser(
+          resolveVerifiedPortalUserId(portalUserId, sessionToken)
         );
         return [
-          SELECT Id, Name
-          FROM Portal_Users__c
-          WHERE Id = :employeeId
+          SELECT Id, Name, Email
+          FROM Contact
+          WHERE Id = :contactId
           ORDER BY Name ASC
         ];
       }
@@ -182,41 +218,31 @@ public inherited sharing class PWChrono_PayrollController {
     String sessionToken
   ) {
     try {
-      if (UserInfo.getUserType() == 'Guest') {
-        Id targetEmployeeId = resolveTargetEmployeeId(
-          null,
-          portalUserId,
-          sessionToken
-        );
-
-        // Verify slip ownership and lock recipient to the employee's email.
-        PWChrono_Salary_Slip__c slip = [
-          SELECT Id, Employees__c, Employees__r.Email__c
-          FROM PWChrono_Salary_Slip__c
-          WHERE Id = :salarySlipId AND Employees__c = :targetEmployeeId
-          LIMIT 1
-        ];
-
-        String employeeEmail = slip.Employees__r != null
-          ? slip.Employees__r.Email__c
-          : null;
-        if (String.isBlank(employeeEmail)) {
-          throw new AuraHandledException('Employee email not found.');
-        }
-
-        if (String.isBlank(toEmail)) {
-          toEmail = employeeEmail;
-        }
-
-        if (toEmail != employeeEmail) {
-          throw new AuraHandledException('Unauthorized.');
-        }
+      if (
+        UserInfo.getUserType() == 'Guest' ||
+        !FeatureManagement.checkPermission('PWChrono_Send_Payslips')
+      ) {
+        throw new AuraHandledException('Unauthorized.');
       }
 
-      // Non-Guest: preserve existing behavior (send to requested address).
-      Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+      PWChrono_Salary_Slip__c slip = [
+        SELECT Id, Contact__c, Contact__r.Email
+        FROM PWChrono_Salary_Slip__c
+        WHERE Id = :salarySlipId AND Contact__c != NULL
+        LIMIT 1
+      ];
+      String employeeEmail = slip.Contact__r != null
+        ? slip.Contact__r.Email
+        : null;
+      if (String.isBlank(employeeEmail)) {
+        throw new AuraHandledException('Employee Contact email not found.');
+      }
+      if (String.isNotBlank(toEmail) && toEmail != employeeEmail) {
+        throw new AuraHandledException('Unauthorized recipient.');
+      }
 
-      mail.setToAddresses(new List<String>{ toEmail });
+      Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+      mail.setToAddresses(new List<String>{ employeeEmail });
 
       if (String.isNotBlank(ccEmail)) {
         mail.setCcAddresses(new List<String>{ ccEmail });
@@ -242,19 +268,19 @@ public inherited sharing class PWChrono_PayrollController {
   /**
    * @description Get salary slip details with components breakdown
    * @param salarySlipId Salary slip ID
-   * @param employeeId Optional employee ID (Portal_Users__c). If null, uses current user's employee record.
+   * @param contactId Optional employee Contact ID. If null, resolves the current Portal User's Contact.
    * @return Salary slip with component details
    */
   @AuraEnabled(cacheable=false)
   public static Map<String, Object> getSalarySlipDetails(
     Id salarySlipId,
-    String employeeId,
+    String contactId,
     String portalUserId,
     String sessionToken
   ) {
     try {
-      Id targetEmployeeId = resolveTargetEmployeeId(
-        employeeId,
+      Id targetContactId = resolveTargetContactId(
+        contactId,
         portalUserId,
         sessionToken
       );
@@ -264,8 +290,11 @@ public inherited sharing class PWChrono_PayrollController {
         SELECT
           Id,
           Name,
-          Employees__c,
-          Employees__r.Name,
+          Contact__c,
+          Contact__r.Name,
+          Contact__r.Email,
+          Employee_Name_Snapshot__c,
+          Employee_Code_Snapshot__c,
           Payroll_Period__c,
           Gross_Pay__c,
           Total_Deductions__c,
@@ -274,7 +303,7 @@ public inherited sharing class PWChrono_PayrollController {
           Earning_Details__c,
           Deduction_Details__c
         FROM PWChrono_Salary_Slip__c
-        WHERE Id = :salarySlipId AND Employees__c = :targetEmployeeId
+        WHERE Id = :salarySlipId AND Contact__c = :targetContactId
         LIMIT 1
       ];
 
@@ -326,10 +355,12 @@ public inherited sharing class PWChrono_PayrollController {
   @AuraEnabled(cacheable=false)
   public static Map<String, Object> getMySalaryStructure() {
     try {
-      Id currentUserId = UserInfo.getUserId();
-      Id employeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
+      Id portalUserId = PWChrono_Utils.getCurrentEmployeeId(
+        UserInfo.getUserId()
+      );
+      Id contactId = resolveContactIdForPortalUser(portalUserId);
 
-      if (employeeId == null) {
+      if (contactId == null) {
         AuraHandledException ahe = new AuraHandledException(
           'No employee record found for current user.'
         );
@@ -341,13 +372,13 @@ public inherited sharing class PWChrono_PayrollController {
         SELECT
           Id,
           Name,
-          Employees__c,
+          Contact__c,
           Salary_Structure__c,
           Salary_Structure__r.Name,
           Base_Salary__c,
           From_Date__c
         FROM PWChrono_Salary_Assignment__c
-        WHERE Employees__c = :employeeId
+        WHERE Contact__c = :contactId
         ORDER BY From_Date__c DESC
         LIMIT 1
       ];
@@ -399,10 +430,12 @@ public inherited sharing class PWChrono_PayrollController {
   @AuraEnabled(cacheable=false)
   public static Map<String, Decimal> getYTDSummary(Integer year) {
     try {
-      Id currentUserId = UserInfo.getUserId();
-      Id employeeId = PWChrono_Utils.getCurrentEmployeeId(currentUserId);
+      Id portalUserId = PWChrono_Utils.getCurrentEmployeeId(
+        UserInfo.getUserId()
+      );
+      Id contactId = resolveContactIdForPortalUser(portalUserId);
 
-      if (employeeId == null) {
+      if (contactId == null) {
         AuraHandledException ahe = new AuraHandledException(
           'No employee record found for current user.'
         );
@@ -417,7 +450,7 @@ public inherited sharing class PWChrono_PayrollController {
           SUM(Net_Pay__c) totalNet
         FROM PWChrono_Salary_Slip__c
         WHERE
-          Employees__c = :employeeId
+          Contact__c = :contactId
           AND CALENDAR_YEAR(Payroll_Period__c) = :year
           AND Status__c = :PWChrono_Constants.STATUS_PAID
       ];

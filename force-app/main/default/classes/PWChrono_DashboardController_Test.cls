@@ -95,6 +95,7 @@ private class PWChrono_DashboardController_Test {
 
     // Create Salary Slip
     PWChrono_Salary_Slip__c slip = new PWChrono_Salary_Slip__c(
+      Contact__c = employee.Contact__c,
       Employees__c = employee.Id,
       Payroll_Period__c = Date.today().addMonths(-1),
       Gross_Pay__c = 5000,

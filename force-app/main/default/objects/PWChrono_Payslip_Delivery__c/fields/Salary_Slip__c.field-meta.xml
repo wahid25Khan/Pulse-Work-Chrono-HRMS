@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Salary_Slip__c</fullName>
+    <label>Salary Slip</label>
+    <referenceTo>PWChrono_Salary_Slip__c</referenceTo>
+    <relationshipLabel>Payslip Deliveries</relationshipLabel>
+    <relationshipName>Payslip_Deliveries</relationshipName>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

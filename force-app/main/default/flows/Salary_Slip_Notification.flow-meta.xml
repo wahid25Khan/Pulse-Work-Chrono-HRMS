@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
         <name>Send_Salary_Slip_Email</name>
@@ -11,7 +11,7 @@
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <elementReference>$Record.Employees__r.Email__c</elementReference>
+                <elementReference>$Record.Contact__r.Email</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -23,15 +23,18 @@
         <inputParameters>
             <name>emailBody</name>
             <value>
-                <stringValue>Your salary slip for {!$Record.Payroll_Period__c} is now available. Gross Pay: {!$Record.Gross_Pay__c}, Net Pay: {!$Record.Net_Pay__c}. Please log in to view details.</stringValue>
+                <stringValue
+        >Your salary slip for {!$Record.Payroll_Period__c} is now available. Gross Pay: {!$Record.Gross_Pay__c}, Net Pay: {!$Record.Net_Pay__c}. Please log in to view details.</stringValue>
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
     </actionCalls>
     <apiVersion>65.0</apiVersion>
-    <description>Notify employee when salary slip is generated</description>
+    <description
+  >Legacy summary notification retained in Draft. HR-controlled PDF delivery uses the canonical salary-slip Contact and the audited delivery service.</description>
     <environments>Default</environments>
-    <interviewLabel>Salary Slip Notification {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel
+  >Salary Slip Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Salary Slip Notification</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -64,5 +67,5 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>

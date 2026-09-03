@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Label_Snapshot__c</fullName>
+    <description
+  >Component label frozen when the salary slip is generated.</description>
+    <label>Label Snapshot</label>
+    <length>255</length>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+</CustomField>

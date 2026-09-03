@@ -4,6 +4,8 @@ import getEmployeeDetail from "@salesforce/apex/PWChrono_EmployeeDirectoryContro
 import getEmployeeDirectoryMetrics from "@salesforce/apex/PWChrono_EmployeeDirectoryController.getEmployeeDirectoryMetrics";
 import getEmployees from "@salesforce/apex/PWChrono_EmployeeDirectoryController.getEmployees";
 import saveEmployee from "@salesforce/apex/PWChrono_EmployeeDirectoryController.saveEmployee";
+import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
+import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track } from "lwc";
 
@@ -77,11 +79,15 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
     Department: ""
   };
   @track employeeToDelete = null;
+  callerPortalUserId = getEmployeeId();
+  sessionToken = getSessionToken();
 
   // Tabs on Detail View
   @track activeDetailTab = "projects";
 
   connectedCallback() {
+    this.callerPortalUserId = getEmployeeId();
+    this.sessionToken = getSessionToken();
     this.loadDesignations();
     this.loadMetrics();
     this.loadEmployees();
@@ -156,8 +162,7 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
     for (let i = 1; i <= max; i++) {
       pages.push({
         number: i,
-        className:
-          i === this.currentPage ? "page-item active" : "page-item"
+        className: i === this.currentPage ? "page-item active" : "page-item"
       });
     }
     return pages;
@@ -195,21 +200,21 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
     const empId = targetWithId?.dataset?.id;
     if (!empId) return;
 
-    const found = this.allEmployees.find((e) => e.id === empId);
-    if (found) {
-      this.selectedEmployee = found;
-      this.currentView = "detail";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      this.fetchEmployeeDetail(empId);
-    }
+    this.fetchEmployeeDetail(empId);
   }
 
   async fetchEmployeeDetail(id) {
     this.isLoading = true;
     try {
-      const detail = await getEmployeeDetail({ contactId: id });
-      this.selectedEmployee = detail;
+      const detail = await getEmployeeDetail({
+        contactId: id,
+        callerPortalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
+      });
+      this.selectedEmployee = {
+        ...detail,
+        avatarUrl: detail?.avatarUrl || this.DEFAULT_AVATAR
+      };
       this.currentView = "detail";
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
@@ -219,7 +224,7 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
     }
   }
 
-  DEFAULT_AVATAR = "https://smarthr.dreamstechnologies.com/html/assets/img/users/user-32.jpg";
+  DEFAULT_AVATAR = `${smarthrAssets}/assets/img/users/user-32.jpg`;
 
   handleStopPropagation(event) {
     if (event && event.stopPropagation) {
@@ -241,13 +246,22 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
         searchTerm: this.searchTerm,
         designationFilter: this.selectedDesignation,
         statusFilter: this.selectedStatus,
-        sortBy: this.sortBy
+        sortBy: this.sortBy,
+        callerPortalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
       });
-      this.allEmployees = data || [];
+      this.allEmployees = (data || []).map((employee) => ({
+        ...employee,
+        avatarUrl: employee.avatarUrl || this.DEFAULT_AVATAR
+      }));
       this.currentPage = 1;
       this.applyPagination();
     } catch (err) {
-      this.showToast("Error", "Failed to load employees: " + (err?.body?.message || err.message), "error");
+      this.showToast(
+        "Error",
+        "Failed to load employees: " + (err?.body?.message || err.message),
+        "error"
+      );
       this.allEmployees = [];
       this.displayedEmployees = [];
     } finally {
@@ -258,7 +272,10 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
   async loadMetrics() {
     this.isMetricsLoading = true;
     try {
-      const data = await getEmployeeDirectoryMetrics();
+      const data = await getEmployeeDirectoryMetrics({
+        callerPortalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
+      });
       if (data) {
         this.metrics = {
           total: data.total || 0,
@@ -276,7 +293,10 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
 
   async loadDesignations() {
     try {
-      const desigs = await getEmployeeDesignations();
+      const desigs = await getEmployeeDesignations({
+        callerPortalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
+      });
       if (desigs) {
         this.designationOptions = [
           { label: "All Designations", value: "All" },
@@ -357,7 +377,9 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
   handleSelectAll(event) {
     this.selectAllChecked = event.target.checked;
     if (this.selectAllChecked) {
-      this.displayedEmployees.forEach((e) => this.selectedEmployeeIds.add(e.id));
+      this.displayedEmployees.forEach((e) =>
+        this.selectedEmployeeIds.add(e.id)
+      );
     } else {
       this.selectedEmployeeIds.clear();
     }
@@ -446,7 +468,11 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
         Department: this.employeeForm.Department
       };
 
-      await saveEmployee({ contactRecord: contactObj });
+      await saveEmployee({
+        contactRecord: contactObj,
+        callerPortalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
+      });
       this.showToast(
         "Success",
         this.employeeForm.Id
@@ -458,7 +484,11 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
       await this.loadEmployees();
       await this.loadMetrics();
     } catch (err) {
-      this.showToast("Error", "Error saving employee: " + (err?.body?.message || err.message), "error");
+      this.showToast(
+        "Error",
+        "Error saving employee: " + (err?.body?.message || err.message),
+        "error"
+      );
     } finally {
       this.isLoading = false;
     }
@@ -481,7 +511,11 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
     if (!this.employeeToDelete) return;
     this.isLoading = true;
     try {
-      await deleteEmployee({ contactId: this.employeeToDelete.id });
+      await deleteEmployee({
+        contactId: this.employeeToDelete.id,
+        callerPortalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
+      });
       this.showToast("Success", "Employee deleted successfully.", "success");
       this.isDeleteModalOpen = false;
       this.employeeToDelete = null;
@@ -491,7 +525,11 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
       await this.loadEmployees();
       await this.loadMetrics();
     } catch (err) {
-      this.showToast("Error", "Error deleting employee: " + (err?.body?.message || err.message), "error");
+      this.showToast(
+        "Error",
+        "Error deleting employee: " + (err?.body?.message || err.message),
+        "error"
+      );
     } finally {
       this.isLoading = false;
     }
