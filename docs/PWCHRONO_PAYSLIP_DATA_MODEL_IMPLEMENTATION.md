@@ -2,7 +2,7 @@
 
 ## Scope
 
-This package implements the first four approved payslip prerequisites without generating PDFs, deploying metadata, or publishing the portal. The separately authorized Contact reconciliation changed only the employee Contact records and `Portal_Users__c.Contact__c` links documented below.
+This package implements the first four approved payslip prerequisites without generating PDFs. The Contact reconciliation, payroll metadata deployment, single-tab application deployment, and Experience Cloud publication are recorded separately below.
 
 1. Reconcile `Portal_Users__c.Contact__c` using exact unique email matches.
 2. Add the missing employee/bank fields to `Contact` with access isolated to the Payroll Manager permission set.
@@ -91,6 +91,10 @@ PDF generation, an audited delivery service, queueing, delivery-history writes, 
 - Isolated org comparison confirmed that `PWChrono_ConfigurationController` already matches the repository, while the org's older `PWChrono_ConfigurationController_Test` still calls removed per-user feature APIs. The current profile-based repository test is now included in this manifest.
 - `PWChrono_NewMgrDashboardCtrl_Test` was corrected locally to call the current `getDashboardData(portalUserId, sessionToken)` contract and is also included in the manifest; the production controller was not changed.
 - Final payslip/data-model check-only validation `0Afg800000C3pIQCAZ`: 87/87 components and 49/49 focused tests passed with zero component errors, test failures, or coverage warnings. This validation included the updated Employee Directory controller and both of its current test classes.
-- One-tab application and destructive-tab check-only validation `0Afg800000C4ELdCAN`: 27/27 components and 4/4 focused tests passed. The standalone-tab deletions were simulated only; no tabs were deleted in the org.
+- Payroll/data-model deployment `0Afg800000C45OoCAJ`: 87/87 components and 49/49 focused tests passed with no component or test errors.
+- Reporting-manager check-only validation `0Afg800000C4Ws1CAF` and deployment `0Afg800000C4JOYCA3`: 6/6 components and 5/5 focused tests passed. The Configuration Center and new-user form now use the existing `Portal_Users__c.Reports_To__c` self-lookup for manager assignment, with inactive-manager, self-reporting, and cycle rejection.
+- Alice Cooper was assigned to the established Engineering manager Harmon_Abshire through `Reports_To__c`. Existing valid reporting chains were preserved; applicant and test records without evidence were not guessed.
+- One-tab application and destructive-tab validation `0Afg800000C4ELdCAN` passed, followed by successful deployment `0Afg800000C3knOCAR`: 27/27 components and 4/4 focused tests passed. The obsolete standalone application tabs were deleted and `PWChrono_Dashboard` remains the single PWChrono application entry tab.
 - The broader `RunLocalTests` check-only validation `0Afg800000C1VJ0CAN` progressed past both PWChrono contract corrections. It is now blocked before test execution only by `SwiftSignIntegrationTest`, which references the missing `SwiftSignFlowController.EnvelopeRequest` type. SwiftSign source is not part of this repository or payslip package, so it was not imported or modified.
-- No metadata was deployed, no flow was activated, and no site was published. Org data changes were limited to the explicitly authorized creation of 13 Contacts, their 13 Portal User links, and the final exact-email link for `Wahid SFMA Test`.
+- The `Pulse Work Chrono` Experience site was published successfully with job `08Pg800000Jzu5TEAR`. The public site URL rendered the branded login page with its CSS and no browser console warnings/errors. Authenticated Configuration Center validation remains pending because it requires a user OTP.
+- The salary relationship backfill remains pending because the connected administrator has not been granted `PWChrono_Payroll_Manager`; Salesforce therefore correctly hides the new sensitive payroll fields from that user. No workaround access was added.

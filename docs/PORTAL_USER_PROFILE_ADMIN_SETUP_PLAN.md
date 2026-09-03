@@ -597,3 +597,17 @@ Before migrating the existing records, confirm:
 4. whether line managers may view only direct reports or wider department data;
 5. which sensitive employee, payroll, bank, tax, and recruitment fields require explicit access; and
 6. which current Portal Users should receive profiles versus being deactivated.
+
+## 17. Reporting-manager implementation (2026-09-03)
+
+`Portal_Users__c.Reports_To__c` already exists as a self-lookup with the `Direct Reports` child relationship. It remains the only canonical employee-to-manager relationship; no duplicate manager field was created on `Portal_User_Profile__c` or Contact.
+
+The ownership boundaries are:
+
+- `Portal_User_Profile__c`: reusable feature, object, field, and approval-policy configuration;
+- `Portal_Users__c.Reports_To__c`: the employee's concrete reporting manager and the dependency for team and approval record scope;
+- `Contact`: employee master and current bank/identity information, not portal reporting ownership.
+
+The Configuration Center now displays `Reports To` in the Portal User table and lets an administrator save the selected profile and manager atomically. The new-user form captures the manager during creation. Both operations use `PWChrono_ReportingManagerController`, which rejects inactive managers, self-reporting, and circular hierarchies. Apex access is included only in the existing PWChrono guest/portal access permission sets, while the controller independently verifies the custom portal session and administrative object permissions.
+
+Deployment `0Afg800000C4JOYCA3` passed 6/6 components and 5/5 focused tests after check-only validation `0Afg800000C4Ws1CAF`. Alice Cooper was linked to the established Engineering manager Harmon_Abshire. Existing reporting chains were retained, and records without enough business evidence were deliberately left unassigned for administrator review.

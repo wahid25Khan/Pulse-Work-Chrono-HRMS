@@ -8,6 +8,15 @@
         data-field="Name"
         required
       ></lightning-input>
+
+      <lightning-combobox
+        name="reportingManager"
+        label="Reports To"
+        value={newUser.Reports_To__c}
+        options={managerOptions}
+        onchange={handleManagerChange}
+        field-level-help="Used for approval routing and manager team access. Leave blank only for top-level users."
+      ></lightning-combobox>
       <lightning-input
         label="Email"
         type="email"

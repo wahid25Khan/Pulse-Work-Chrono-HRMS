@@ -37,6 +37,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PWChrono_ReportingManagerController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PWChrono_DashboardController</apexClass>
         <enabled>true</enabled>
     </classAccesses>

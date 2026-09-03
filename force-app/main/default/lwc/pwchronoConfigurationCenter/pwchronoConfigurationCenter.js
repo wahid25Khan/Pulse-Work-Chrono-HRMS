@@ -3,8 +3,9 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { NavigationMixin } from "lightning/navigation";
 import getAllUsersWithAccess from "@salesforce/apex/PWChrono_ConfigurationController.getAllUsersWithAccess";
-import assignUserProfile from "@salesforce/apex/PWChrono_ConfigurationController.assignUserProfile";
 import getAvailableProfiles from "@salesforce/apex/PWChrono_ConfigurationController.getAvailableProfiles";
+import getReportingOptions from "@salesforce/apex/PWChrono_ReportingManagerController.getReportingOptions";
+import saveUserSetup from "@salesforce/apex/PWChrono_ReportingManagerController.saveUserSetup";
 import getGlobalFeatureSettings from "@salesforce/apex/PWChrono_ConfigurationController.getGlobalFeatureSettings";
 import saveGlobalFeatureSettings from "@salesforce/apex/PWChrono_ConfigurationController.saveGlobalFeatureSettings";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
@@ -20,7 +21,10 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
   @track showNewUserModal = false;
   @track selectedUser = null;
   @track selectedProfileId = "";
+  @track selectedManagerId = "";
   @track profileOptions = [];
+  @track managerOptions = [];
+  reportingByUserId = new Map();
   @track globalSettings = {};
   @track isSaving = false;
   @track isLoading = true;
@@ -51,6 +55,12 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
     },
     { label: "Role", fieldName: "roleName", type: "text", sortable: true },
     {
+      label: "Reports To",
+      fieldName: "managerName",
+      type: "text",
+      sortable: true
+    },
+    {
       type: "action",
       typeAttributes: {
         rowActions: [
@@ -72,7 +82,10 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
     if (data) {
       this.users = data.map((user) => ({
         ...user,
-        profileName: user.profileName || "N/A"
+        profileName: user.profileName || "N/A",
+        managerId: this.reportingByUserId.get(user.userId)?.managerId || "",
+        managerName:
+          this.reportingByUserId.get(user.userId)?.managerName || "Unassigned"
       }));
       this.filterUsers();
     } else if (error) {
@@ -106,6 +119,42 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
       const errorMsg =
         error?.body?.message || error?.message || "Failed to load profiles";
       this.showToast("Error", "Failed to load profiles: " + errorMsg, "error");
+    }
+  }
+
+  @wire(getReportingOptions, {
+    callerPortalUserId: "$employeeId",
+    sessionToken: "$sessionToken"
+  })
+  wiredManagers({ error, data }) {
+    if (data) {
+      this.reportingByUserId = new Map(
+        data.map((portalUser) => [portalUser.portalUserId, portalUser])
+      );
+      this.managerOptions = [
+        { label: "No manager (top-level)", value: "" },
+        ...data
+          .filter((manager) => manager.isActive)
+          .map((manager) => ({
+            label: manager.designation
+              ? `${manager.portalUserName} — ${manager.designation}`
+              : manager.portalUserName,
+            value: manager.portalUserId
+          }))
+      ];
+      if (this.users.length > 0) {
+        this.users = this.users.map((user) => ({
+          ...user,
+          managerId: this.reportingByUserId.get(user.userId)?.managerId || "",
+          managerName:
+            this.reportingByUserId.get(user.userId)?.managerName || "Unassigned"
+        }));
+        this.filterUsers();
+      }
+    } else if (error) {
+      const errorMsg =
+        error?.body?.message || error?.message || "Failed to load managers";
+      this.showToast("Error", `Failed to load managers: ${errorMsg}`, "error");
     }
   }
 
@@ -229,6 +278,7 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
   openManageAccessModal(user) {
     this.selectedUser = { ...user };
     this.selectedProfileId = user.profileId || "";
+    this.selectedManagerId = user.managerId || "";
     this.showUserFeatureModal = true;
   }
 
@@ -236,10 +286,24 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
     this.showUserFeatureModal = false;
     this.selectedUser = null;
     this.selectedProfileId = "";
+    this.selectedManagerId = "";
   }
 
   handleProfileChange(event) {
     this.selectedProfileId = event.detail.value;
+  }
+
+  handleManagerChange(event) {
+    this.selectedManagerId = event.detail.value;
+  }
+
+  get availableManagerOptions() {
+    if (!this.selectedUser) {
+      return this.managerOptions;
+    }
+    return this.managerOptions.filter(
+      (option) => !option.value || option.value !== this.selectedUser.userId
+    );
   }
 
   handleSaveUserProfile() {
@@ -252,16 +316,17 @@ export default class PwchronoConfigurationCenter extends NavigationMixin(
       return;
     }
     this.isSaving = true;
-    assignUserProfile({
+    saveUserSetup({
       targetPortalUserId: this.selectedUser.userId,
       profileId: this.selectedProfileId,
+      managerPortalUserId: this.selectedManagerId || null,
       callerPortalUserId: this.employeeId,
       sessionToken: this.sessionToken
     })
       .then(() => {
         this.showToast(
           "Success",
-          "Portal User Profile assigned successfully",
+          "Portal User Profile and reporting manager saved successfully",
           "success"
         );
         this.closeModal();

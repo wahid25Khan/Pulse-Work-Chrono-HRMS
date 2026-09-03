@@ -1,7 +1,8 @@
 import { api, LightningElement, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import createPortalUser from "@salesforce/apex/PWChrono_ConfigurationController.createPortalUser";
+import createPortalUser from "@salesforce/apex/PWChrono_ReportingManagerController.createPortalUser";
 import getAvailableProfiles from "@salesforce/apex/PWChrono_ConfigurationController.getAvailableProfiles";
+import getReportingOptions from "@salesforce/apex/PWChrono_ReportingManagerController.getReportingOptions";
 
 export default class PwchronoNewUserForm extends LightningElement {
   @api callerPortalUserId;
@@ -12,16 +13,43 @@ export default class PwchronoNewUserForm extends LightningElement {
     Role__c: "Employee",
     Designation__c: "",
     Department__c: "",
+    Reports_To__c: null,
     Is_Active__c: true
   };
   @track selectedProfileId = "";
   @track profileOptions = [];
+  @track managerOptions = [];
   @track isSaving = false;
   @track isLoadingProfiles = true;
   @track profileLoadError = null;
 
   connectedCallback() {
     this.loadProfiles();
+    this.loadManagers();
+  }
+
+  async loadManagers() {
+    try {
+      const data = await getReportingOptions({
+        callerPortalUserId: this.callerPortalUserId,
+        sessionToken: this.sessionToken
+      });
+      this.managerOptions = [
+        { label: "No manager (top-level)", value: "" },
+        ...(data || [])
+          .filter((manager) => manager.isActive)
+          .map((manager) => ({
+            label: manager.designation
+              ? `${manager.portalUserName} — ${manager.designation}`
+              : manager.portalUserName,
+            value: manager.portalUserId
+          }))
+      ];
+    } catch (error) {
+      const errorMsg =
+        error?.body?.message || error?.message || "Failed to load managers";
+      this.showToast("Error", errorMsg, "error");
+    }
   }
 
   async loadProfiles() {
@@ -64,6 +92,13 @@ export default class PwchronoNewUserForm extends LightningElement {
     this.selectedProfileId = event.detail.value;
   }
 
+  handleManagerChange(event) {
+    this.newUser = {
+      ...this.newUser,
+      Reports_To__c: event.detail.value || null
+    };
+  }
+
   async handleSave() {
     if (!this.validateInput()) {
       return;
@@ -74,7 +109,8 @@ export default class PwchronoNewUserForm extends LightningElement {
       const userId = await createPortalUser({
         userRecord: this.newUser,
         profileId: this.selectedProfileId,
-        portalUserId: this.callerPortalUserId,
+        managerPortalUserId: this.newUser.Reports_To__c,
+        callerPortalUserId: this.callerPortalUserId,
         sessionToken: this.sessionToken
       });
 
