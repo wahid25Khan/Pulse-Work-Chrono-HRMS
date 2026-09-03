@@ -4,6 +4,16 @@
  */
 @SuppressWarnings('PMD.ApexSOQLInjection')
 public inherited sharing class PWChrono_PayrollController {
+  @TestVisible
+  private static String testUserTypeOverride;
+
+  private static Boolean isGuestRuntime() {
+    String userType = Test.isRunningTest() && testUserTypeOverride != null
+      ? testUserTypeOverride
+      : UserInfo.getUserType();
+    return userType == 'Guest';
+  }
+
   private static Id resolveVerifiedPortalUserId(
     String portalUserId,
     String sessionToken
@@ -33,6 +43,41 @@ public inherited sharing class PWChrono_PayrollController {
     return portalUsers[0].Contact__c;
   }
 
+  private static Id resolveVerifiedPayrollPortalUserId(
+    String portalUserId,
+    String sessionToken
+  ) {
+    Id verifiedPortalUserId = resolveVerifiedPortalUserId(
+      portalUserId,
+      sessionToken
+    );
+    List<Portal_Users__c> portalUsers = [
+      SELECT Portal_User_Profile__c
+      FROM Portal_Users__c
+      WHERE Id = :verifiedPortalUserId AND Is_Active__c = TRUE
+      LIMIT 1
+    ];
+    if (
+      portalUsers.isEmpty() || portalUsers[0].Portal_User_Profile__c == null
+    ) {
+      throw new AuraHandledException('Unauthorized.');
+    }
+    Id profileId = portalUsers[0].Portal_User_Profile__c;
+    if (
+      [
+        SELECT COUNT()
+        FROM Portal_Profile_Feature__c
+        WHERE
+          Portal_User_Profile__c = :profileId
+          AND Feature_Key__c = 'Payroll'
+          AND Is_Enabled__c = TRUE
+      ] == 0
+    ) {
+      throw new AuraHandledException('Unauthorized.');
+    }
+    return verifiedPortalUserId;
+  }
+
   private static Id resolveTargetContactIdForNonGuest(String contactId) {
     if (
       String.isNotBlank(contactId) &&
@@ -59,10 +104,10 @@ public inherited sharing class PWChrono_PayrollController {
     String portalUserId,
     String sessionToken
   ) {
-    if (UserInfo.getUserType() == 'Guest') {
+    if (isGuestRuntime()) {
       // Guest sessions identify a Portal User, but payroll ownership is Contact.
       return resolveContactIdForPortalUser(
-        resolveVerifiedPortalUserId(portalUserId, sessionToken)
+        resolveVerifiedPayrollPortalUserId(portalUserId, sessionToken)
       );
     }
     return resolveTargetContactIdForNonGuest(contactId);
@@ -171,9 +216,9 @@ public inherited sharing class PWChrono_PayrollController {
     String sessionToken
   ) {
     try {
-      if (UserInfo.getUserType() == 'Guest') {
+      if (isGuestRuntime()) {
         Id contactId = resolveContactIdForPortalUser(
-          resolveVerifiedPortalUserId(portalUserId, sessionToken)
+          resolveVerifiedPayrollPortalUserId(portalUserId, sessionToken)
         );
         return [
           SELECT Id, Name, Email
@@ -197,11 +242,9 @@ public inherited sharing class PWChrono_PayrollController {
    */
   @AuraEnabled(cacheable=true)
   public static Map<String, String> getPayrollConfiguration() {
-    // In a real scenario, query a Custom Setting or Custom Metadata Type
-    // For now, returning a placeholder or checking a specific setup
-    return new Map<String, String>{
-      'ccEmail' => 'payroll@lodestonegroup.com' // Default/Placeholder
-    };
+    // Do not default a confidential payslip to an environment-specific CC.
+    // A future reviewed configuration can supply one; blank means no CC.
+    return new Map<String, String>{ 'ccEmail' => '' };
   }
 
   /**
@@ -219,7 +262,7 @@ public inherited sharing class PWChrono_PayrollController {
   ) {
     try {
       if (
-        UserInfo.getUserType() == 'Guest' ||
+        isGuestRuntime() ||
         !FeatureManagement.checkPermission('PWChrono_Send_Payslips')
       ) {
         throw new AuraHandledException('Unauthorized.');

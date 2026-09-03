@@ -2,6 +2,8 @@ public inherited sharing class PWChrono_EmployeeDirectoryController {
   private static final String NOT_PROVIDED = 'Not provided';
   @TestVisible
   private static String testUserTypeOverride;
+  @TestVisible
+  private static Boolean testCanViewAllSensitiveOverride;
 
   public class EmployeeDirectoryException extends Exception {
   }
@@ -192,8 +194,14 @@ public inherited sharing class PWChrono_EmployeeDirectoryController {
           'You do not have permission to access employee records.'
         );
       }
-      context.canViewSensitive = Contact.Account_Number__c.getDescribe()
-        .isAccessible();
+      // Contact read access alone must not expose payroll, identity, or family
+      // details for every employee. Allow sensitive detail only for the
+      // current employee's own Contact or an explicitly authorized payroll
+      // manager. stripInaccessible() still enforces field-level visibility.
+      context.canViewSensitive =
+        targetContactId != null &&
+        (canViewAllSensitiveEmployeeData() ||
+        targetContactId == resolveCurrentUserContactId());
       return context;
     }
 
@@ -230,22 +238,28 @@ public inherited sharing class PWChrono_EmployeeDirectoryController {
     }
 
     Portal_Object_Permission__c permission = permissions[0];
+    Boolean isOwnContact =
+      targetContactId != null &&
+      callers[0].Contact__c == targetContactId;
     Boolean allowed = operation == 'create'
       ? permission.Can_Create__c
       : operation == 'edit'
-          ? (permission.Can_Edit__c || permission.Can_Modify_All__c)
+          ? (permission.Can_Modify_All__c ||
+            (permission.Can_Edit__c && isOwnContact))
           : operation == 'delete'
-              ? (permission.Can_Delete__c || permission.Can_Modify_All__c)
-              : (permission.Can_View__c || permission.Can_View_All__c);
+              ? (permission.Can_Modify_All__c ||
+                (permission.Can_Delete__c && isOwnContact))
+              : targetContactId == null
+                  ? (permission.Can_View_All__c || permission.Can_Modify_All__c)
+                  : (permission.Can_View_All__c ||
+                    permission.Can_Modify_All__c ||
+                    (permission.Can_View__c && isOwnContact));
     if (!allowed) {
       throw new AuraHandledException('Unauthorized.');
     }
 
     context.canViewSensitive =
-      targetContactId != null &&
-      (callers[0].Contact__c == targetContactId ||
-      permission.Can_Edit__c ||
-      permission.Can_Modify_All__c);
+      targetContactId != null && (isOwnContact || permission.Can_Modify_All__c);
     return context;
   }
 
@@ -254,6 +268,28 @@ public inherited sharing class PWChrono_EmployeeDirectoryController {
       ? testUserTypeOverride
       : UserInfo.getUserType();
     return userType == 'Guest';
+  }
+
+  private static Id resolveCurrentUserContactId() {
+    Id portalUserId = PWChrono_Utils.getCurrentEmployeeId(UserInfo.getUserId());
+    if (portalUserId == null) {
+      return null;
+    }
+
+    List<Portal_Users__c> portalUsers = [
+      SELECT Contact__c
+      FROM Portal_Users__c
+      WHERE Id = :portalUserId
+      LIMIT 1
+    ];
+    return portalUsers.isEmpty() ? null : portalUsers[0].Contact__c;
+  }
+
+  private static Boolean canViewAllSensitiveEmployeeData() {
+    if (Test.isRunningTest() && testCanViewAllSensitiveOverride != null) {
+      return testCanViewAllSensitiveOverride;
+    }
+    return FeatureManagement.checkPermission('PWChrono_Send_Payslips');
   }
 
   private static List<Contact> sanitizeContactsForRead(List<Contact> contacts) {
@@ -786,7 +822,7 @@ public inherited sharing class PWChrono_EmployeeDirectoryController {
         query += ' WHERE Name LIKE :key OR Email LIKE :key OR Department LIKE :key';
       }
       query += ' ORDER BY Name ASC LIMIT 50';
-      return (List<Contact>) Database.query(query);
+      return sanitizeContactsForRead((List<Contact>) Database.query(query));
     } catch (Exception e) {
       return new List<Contact>();
     }

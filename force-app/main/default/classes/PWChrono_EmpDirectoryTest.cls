@@ -123,14 +123,19 @@ private class PWChrono_EmpDirectoryTest {
   @isTest
   static void testGetEmployeeDetail() {
     Contact c = [SELECT Id FROM Contact WHERE FirstName = 'Alice' LIMIT 1];
-
-    Test.startTest();
-    PWChrono_EmployeeDirectoryController.EmployeeWrapper detail = PWChrono_EmployeeDirectoryController.getEmployeeDetail(
-      c.Id,
-      null,
-      null
-    );
-    Test.stopTest();
+    PWChrono_EmployeeDirectoryController.testCanViewAllSensitiveOverride = true;
+    PWChrono_EmployeeDirectoryController.EmployeeWrapper detail;
+    try {
+      Test.startTest();
+      detail = PWChrono_EmployeeDirectoryController.getEmployeeDetail(
+        c.Id,
+        null,
+        null
+      );
+      Test.stopTest();
+    } finally {
+      PWChrono_EmployeeDirectoryController.testCanViewAllSensitiveOverride = null;
+    }
 
     System.assertNotEquals(null, detail, 'Employee detail should not be null');
     System.assertEquals('Alice Developer', detail.name);
@@ -146,6 +151,35 @@ private class PWChrono_EmpDirectoryTest {
       'Test Laptop - Model One',
       detail.assetInfo.displayText
     );
+  }
+
+  @isTest
+  static void testNonPayrollUserCannotViewAnotherEmployeesSensitiveData() {
+    Contact otherContact = [
+      SELECT Id
+      FROM Contact
+      WHERE FirstName = 'Alice'
+      LIMIT 1
+    ];
+
+    PWChrono_EmployeeDirectoryController.testCanViewAllSensitiveOverride = false;
+    try {
+      Test.startTest();
+      PWChrono_EmployeeDirectoryController.EmployeeWrapper detail = PWChrono_EmployeeDirectoryController.getEmployeeDetail(
+        otherContact.Id,
+        null,
+        null
+      );
+      Test.stopTest();
+
+      System.assertEquals(false, detail.canViewSensitive);
+      System.assertEquals(null, detail.bankInfo);
+      System.assertEquals(null, detail.personalInfo);
+      System.assertEquals(null, detail.emergencyContact);
+      System.assertEquals(null, detail.familyInfo);
+    } finally {
+      PWChrono_EmployeeDirectoryController.testCanViewAllSensitiveOverride = null;
+    }
   }
 
   @isTest
@@ -220,6 +254,7 @@ private class PWChrono_EmpDirectoryTest {
       Portal_User_Profile__c = profile.Id,
       Portal_Object__c = contactObject.Id,
       Can_View__c = true,
+      Can_View_All__c = true,
       Can_Edit__c = false
     );
     Portal_Users__c portalUser = PWChrono_TestDataFactory.createPortalUser(

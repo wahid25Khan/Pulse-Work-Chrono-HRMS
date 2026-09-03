@@ -329,6 +329,78 @@ private class PWChrono_PayrollController_Test {
   }
 
   @isTest
+  static void testGuestPayrollRequiresEnabledProfileFeature() {
+    Portal_User_Profile__c profile = new Portal_User_Profile__c();
+    insert profile;
+    Portal_Users__c portalUser = PWChrono_TestDataFactory.createPortalUser(
+      'Restricted Payroll Guest',
+      'restricted-payroll@example.com',
+      'Employee'
+    );
+    portalUser.Portal_User_Profile__c = profile.Id;
+    portalUser.Session_Token__c = 'restricted_payroll_token';
+    portalUser.Session_Expires_At__c = System.now().addHours(1);
+    update portalUser;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    PWChrono_PayrollController.testUserTypeOverride = 'Guest';
+    try {
+      Test.startTest();
+      try {
+        PWChrono_PayrollController.getEmployeesForDropdown(
+          String.valueOf(portalUser.Id),
+          'restricted_payroll_token'
+        );
+        Assert.fail('A guest without the Payroll feature must be rejected.');
+      } catch (AuraHandledException expected) {
+        Assert.isNotNull(expected);
+      }
+      Test.stopTest();
+    } finally {
+      PWChrono_GuestSession.testUserTypeOverride = null;
+      PWChrono_PayrollController.testUserTypeOverride = null;
+    }
+  }
+
+  @isTest
+  static void testGuestPayrollReturnsOnlyOwnContactWhenFeatureIsEnabled() {
+    Portal_User_Profile__c profile = new Portal_User_Profile__c();
+    insert profile;
+    insert new Portal_Profile_Feature__c(
+      Portal_User_Profile__c = profile.Id,
+      Feature_Key__c = 'Payroll',
+      Feature_Label__c = 'Payroll',
+      Is_Enabled__c = true
+    );
+    Portal_Users__c portalUser = PWChrono_TestDataFactory.createPortalUser(
+      'Authorized Payroll Guest',
+      'authorized-payroll@example.com',
+      'Employee'
+    );
+    portalUser.Portal_User_Profile__c = profile.Id;
+    portalUser.Session_Token__c = 'authorized_payroll_token';
+    portalUser.Session_Expires_At__c = System.now().addHours(1);
+    update portalUser;
+
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    PWChrono_PayrollController.testUserTypeOverride = 'Guest';
+    try {
+      Test.startTest();
+      List<Contact> contacts = PWChrono_PayrollController.getEmployeesForDropdown(
+        String.valueOf(portalUser.Id),
+        'authorized_payroll_token'
+      );
+      Test.stopTest();
+
+      System.assertEquals(1, contacts.size());
+      System.assertEquals(portalUser.Contact__c, contacts[0].Id);
+    } finally {
+      PWChrono_GuestSession.testUserTypeOverride = null;
+      PWChrono_PayrollController.testUserTypeOverride = null;
+    }
+  }
+
+  @isTest
   static void testGetMySalaryStructure() {
     User testUser = [SELECT Id FROM User WHERE Alias = 'tuser' LIMIT 1];
 

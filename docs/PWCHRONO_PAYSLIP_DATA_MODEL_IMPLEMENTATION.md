@@ -2,7 +2,7 @@
 
 ## Scope
 
-This package implements the first four approved payslip prerequisites without generating PDFs, deploying metadata, changing org data, or publishing the portal.
+This package implements the first four approved payslip prerequisites without generating PDFs, deploying metadata, or publishing the portal. The separately authorized Contact reconciliation changed only the employee Contact records and `Portal_Users__c.Contact__c` links documented below.
 
 1. Reconcile `Portal_Users__c.Contact__c` using exact unique email matches.
 2. Add the missing employee/bank fields to `Contact` with access isolated to the Payroll Manager permission set.
@@ -22,7 +22,7 @@ New Contact fields:
 
 The existing `Bank_Name__c`, `Account_Number__c`, `Branch_Name_Code__c`, and `SWIFT_Code__c` fields remain in use. Full account, IBAN, and government ID values must never be copied to a salary slip; only masked snapshot fields are provided.
 
-Assign `PWChrono Payroll Manager` only to authorized HR/payroll staff. It deliberately grants no access to portal guest users. Organization-wide defaults, sharing, and `Portal_User_Profile__c` authorization remain additional enforcement layers.
+Assign `PWChrono Payroll Manager` only to authorized HR/payroll staff. It deliberately grants no access to portal guest users. Sensitive Employee Directory sections are returned only for the employee's own Contact or an authorized payroll manager, and full account/passport values are masked before leaving Apex. Organization-wide defaults, sharing, field-level security, and `Portal_User_Profile__c` authorization remain additional enforcement layers.
 
 ## Contact reconciliation
 
@@ -44,7 +44,7 @@ After those links are complete, run `scripts/apex/migrate_payroll_relationships_
 
 `Contact__c` is canonical. It is present on `PWChrono_Salary_Slip__c`, `PWChrono_Salary_Assignment__c`, and `PWChrono_Salary_History__c`. Payroll values and historical ownership must be resolved through Contact.
 
-The payroll controller, salary-slip viewer, salary-slip history trigger, and appraisal salary-assignment path now resolve payroll ownership through Contact. The viewer sends Contact IDs to Apex and reads the Contact relationship plus immutable employee-name/code snapshots. The legacy automatic salary-slip notification flow is delivered as `Draft` so it cannot bypass the HR-controlled delivery path.
+The payroll controller, salary-slip viewer, salary-slip history trigger, and appraisal salary-assignment path now resolve payroll ownership through Contact. The viewer sends Contact IDs to Apex and reads the Contact relationship plus immutable employee-name/code snapshots. The legacy automatic salary-slip notification flow is stored as `Draft`; the release checklist must verify that no previously active flow version remains active before HR uses the controlled delivery path.
 
 `Employees__c` is retained temporarily only because current portal access and existing records still reference `Portal_Users__c`. `Employee__c` and `Portal_Users__c` are additional legacy fields. The active compatibility rule prevents those Portal User lookups from contradicting one another.
 
@@ -68,7 +68,7 @@ The salary slip now contains:
 
 The existing salary-slip email action and cross-employee selector are restricted by the `PWChrono_Send_Payslips` custom permission, supplied through `PWChrono_Payroll_Manager`. Users without it are locked server-side to their own linked Contact, and guest users cannot send. Apex obtains the destination only from `PWChrono_Salary_Slip__c.Contact__r.Email` and rejects a different caller-supplied address; the LWC also hides the action when the permission is absent.
 
-This action remains a transitional HTML-email implementation. It does not yet generate or attach an immutable PDF, queue delivery, or write `PWChrono_Payslip_Delivery__c`. Those capabilities remain a separate implementation phase.
+This action remains a transitional HTML-email implementation. It does not default an environment-specific CC recipient, generate or attach an immutable PDF, queue delivery, or write `PWChrono_Payslip_Delivery__c`. Those capabilities remain a separate implementation phase.
 
 ## Deployment gates
 
@@ -90,6 +90,7 @@ PDF generation, an audited delivery service, queueing, delivery-history writes, 
 - Contact migration readiness: all 6 salary slips and all 3 salary-history records resolve to Contact through their transition Portal User. There are no salary-assignment records yet.
 - Isolated org comparison confirmed that `PWChrono_ConfigurationController` already matches the repository, while the org's older `PWChrono_ConfigurationController_Test` still calls removed per-user feature APIs. The current profile-based repository test is now included in this manifest.
 - `PWChrono_NewMgrDashboardCtrl_Test` was corrected locally to call the current `getDashboardData(portalUserId, sessionToken)` contract and is also included in the manifest; the production controller was not changed.
-- Final focused check-only validation `0Afg800000C2q8VCAR`: 84/84 components and 34/34 focused tests passed with zero component errors, test failures, or coverage warnings.
+- Final payslip/data-model check-only validation `0Afg800000C3pIQCAZ`: 87/87 components and 49/49 focused tests passed with zero component errors, test failures, or coverage warnings. This validation included the updated Employee Directory controller and both of its current test classes.
+- One-tab application and destructive-tab check-only validation `0Afg800000C4ELdCAN`: 27/27 components and 4/4 focused tests passed. The standalone-tab deletions were simulated only; no tabs were deleted in the org.
 - The broader `RunLocalTests` check-only validation `0Afg800000C1VJ0CAN` progressed past both PWChrono contract corrections. It is now blocked before test execution only by `SwiftSignIntegrationTest`, which references the missing `SwiftSignFlowController.EnvelopeRequest` type. SwiftSign source is not part of this repository or payslip package, so it was not imported or modified.
 - No metadata was deployed, no flow was activated, and no site was published. Org data changes were limited to the explicitly authorized creation of 13 Contacts, their 13 Portal User links, and the final exact-email link for `Wahid SFMA Test`.

@@ -4,6 +4,9 @@
         <members>PWChrono_AppraisalTriggerHandler</members>
         <members>PWChrono_AppraisalTriggerHandler_Test</members>
         <members>PWChrono_DashboardController_Test</members>
+        <members>PWChrono_EmpDirectoryCtrl_Test</members>
+        <members>PWChrono_EmpDirectoryTest</members>
+        <members>PWChrono_EmployeeDirectoryController</members>
         <members>PWChrono_LeaveTestDataFactory</members>
         <members>PWChrono_NewMgrDashboardCtrl_Test</members>
         <members>PWChrono_PayrollController</members>

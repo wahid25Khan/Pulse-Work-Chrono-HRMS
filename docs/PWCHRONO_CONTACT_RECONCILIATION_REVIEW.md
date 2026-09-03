@@ -2,7 +2,7 @@
 
 ## Execution result
 
-On 2026-09-03, the user explicitly authorized creating and linking Contacts for the 13 Portal Users listed in this document. The ID-scoped script `scripts/apex/create_missing_portal_user_contacts.apex` completed successfully in one transaction:
+On 2026-09-03, the user explicitly authorized creating and linking Contacts for the 13 Portal Users listed in this document. The reviewed, ID-scoped one-time transaction completed successfully:
 
 - Contacts created: 13
 - Portal Users linked: 13
@@ -13,6 +13,8 @@ On 2026-09-03, the user explicitly authorized creating and linking Contacts for 
 - Remaining conflicts: 0
 
 `Wahid SFMA Test` was subsequently linked to the sole existing exact-email Contact, `Harley Windler` (`003g800000dL4exAAC`). That Contact is also referenced by the `Harmon_Abshire` Portal User. These are treated as two login/access records for one employee, preserving one canonical employee and bank-information record. No duplicate Contact was created; an attempted insert was rolled back after the org returned `STORAGE_LIMIT_EXCEEDED`.
+
+The two execution-only scripts are intentionally not retained in source control because their work is complete and they contained org-specific record IDs. The repository retains only the reusable dry-run reconciliation and payroll-backfill scripts.
 
 `M Wahid CS Test`, `Shaun Howard`, and `Zack Martin` now have separate Contact records as requested, but all three Contacts inherit the shared email `m.wahidcs@gmail.com`. HR should correct those emails before relying on them for payslip delivery.
 
@@ -42,7 +44,9 @@ That Portal User is now named `Harmon_Abshire` and is linked to `Harley Windler`
 
 The other three existing paid salary slips belong to the already-linked `Wahid Khan` Portal User and can be backfilled after the Contact fields are deployed.
 
-## Created and linked Portal Users (historical review)
+## Created and linked Portal Users (pre-creation review notes)
+
+The notes below preserve the identity risks identified before creation. The requested Contact records were nevertheless created and linked; HR should now resolve the flagged test identities and shared-email values before enabling payroll delivery for them.
 
 | Portal User                | Role       | Current email evidence               | Recommended HR decision                                                                                                   |
 | -------------------------- | ---------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
@@ -62,10 +66,10 @@ The other three existing paid salary slips belong to the already-linked `Wahid K
 
 ## Created and linked inactive Portal Users
 
-| Portal User  | Email                      | Recommended decision                                                                |
-| ------------ | -------------------------- | ----------------------------------------------------------------------------------- |
-| Bob Sales    | `bob.sales@example.com`    | Leave unlinked unless the employee must be reactivated and HR confirms the Contact. |
-| John Manager | `john.manager@example.com` | Leave unlinked unless the employee must be reactivated and HR confirms the Contact. |
+| Portal User  | Email                      | Recommended decision                                                                             |
+| ------------ | -------------------------- | ------------------------------------------------------------------------------------------------ |
+| Bob Sales    | `bob.sales@example.com`    | Contact created and linked; keep payroll access disabled while the Portal User remains inactive. |
+| John Manager | `john.manager@example.com` | Contact created and linked; keep payroll access disabled while the Portal User remains inactive. |
 
 ## Already linked
 
@@ -80,4 +84,4 @@ For future Portal Users, HR should provide exactly one decision:
 3. Mark as test/non-employee and exclude it from payroll.
 4. Deactivate or retire the Portal User.
 
-The 13 requested links are complete. Apply the same decision format only to the remaining `Wahid SFMA Test` conflict, then rerun the dry-run reconciliation. Payroll relationship backfill can proceed for the six existing salary slips and three salary-history records because all of their legacy employee relationships now resolve to Contacts.
+All 16 Portal Users now resolve to Contacts, including the reviewed shared-Contact login case for `Wahid SFMA Test`. Rerun the dry-run reconciliation before future migrations, and investigate any newly reported unresolved, ambiguous, or conflicting records. Payroll relationship backfill can proceed for the six existing salary slips and three salary-history records because all of their legacy employee relationships now resolve to Contacts.

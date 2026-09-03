@@ -2,6 +2,14 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description
   >Least-privilege access for HR payroll managers. Includes sensitive Contact bank fields and immutable payslip data; do not assign to portal guest users.</description>
+    <classAccesses>
+        <apexClass>PWChrono_EmployeeDirectoryController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PWChrono_PayrollController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <customPermissions>
         <enabled>true</enabled>
         <name>PWChrono_Send_Payslips</name>
