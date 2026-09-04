@@ -1,7 +1,7 @@
 import getNavigationMenuItems from "@salesforce/apex/PWChrono_NavigationController.getNavigationMenuItems";
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { filterMenuItemsByFeatures } from "c/pwchronoNavigationAccess";
-import { getSession } from "c/pwchronoSession";
+import { getSession, SESSION_CHANGED_EVENT } from "c/pwchronoSession";
 import { navigateTo } from "c/pwchronoRouter";
 import { NavigationMixin } from "lightning/navigation";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
@@ -11,26 +11,26 @@ import { api, LightningElement, track, wire } from "lwc";
 // NOTE: Tabler icon CSS in `smarthr_assets` references missing webfonts, so `ti ti-*` icons won't render.
 // FontAwesome is present (css + webfonts), so we standardize on it for reliable icons.
 const ICON_CLASS_MAP = {
-  Dashboard: "fa-solid fa-gauge fa-fw",
-  "Admin Dashboard": "fa-solid fa-gauge fa-fw",
-  "Manager Dashboard": "fa-solid fa-gauge fa-fw",
-  "Leave Management": "fa-solid fa-calendar-days fa-fw",
-  "Attendance Management": "fa-solid fa-calendar-check fa-fw",
-  "Attendance (Admin)": "fa-solid fa-users fa-fw",
+  Dashboard: "fa-solid fa-house fa-fw",
+  "Admin Dashboard": "fa-solid fa-house fa-fw",
+  "Manager Dashboard": "fa-solid fa-house fa-fw",
+  "Leave Management": "fa-solid fa-calendar-minus fa-fw",
+  "Attendance Management": "fa-solid fa-user-clock fa-fw",
+  "Attendance (Admin)": "fa-solid fa-clipboard-user fa-fw",
   "Attendance Employee": "fa-solid fa-clock fa-fw",
-  "Employee Directory": "fa-solid fa-users fa-fw",
-  "My Profile": "fa-solid fa-user fa-fw",
-  Approvals: "fa-solid fa-list-check fa-fw",
-  Holidays: "fa-solid fa-umbrella-beach fa-fw",
-  Payroll: "fa-solid fa-money-check-dollar fa-fw",
-  "Expense Management": "fa-solid fa-receipt fa-fw",
-  "Performance Management": "fa-solid fa-chart-line fa-fw",
-  "Reports Dashboard": "fa-solid fa-chart-pie fa-fw",
-  Configuration: "fa-solid fa-gear fa-fw",
-  Projects: "fa-solid fa-diagram-project fa-fw",
-  "Project List": "fa-solid fa-diagram-project fa-fw",
-  "Training Management": "fa-solid fa-graduation-cap fa-fw",
-  Recruitment: "fa-solid fa-user-tie fa-fw",
+  "Employee Directory": "fa-solid fa-address-book fa-fw",
+  "My Profile": "fa-solid fa-address-card fa-fw",
+  Approvals: "fa-solid fa-circle-check fa-fw",
+  Holidays: "fa-solid fa-plane-departure fa-fw",
+  Payroll: "fa-solid fa-file-invoice-dollar fa-fw",
+  "Expense Management": "fa-solid fa-wallet fa-fw",
+  "Performance Management": "fa-solid fa-chart-simple fa-fw",
+  "Reports Dashboard": "fa-solid fa-chart-column fa-fw",
+  Configuration: "fa-solid fa-sliders fa-fw",
+  Projects: "fa-solid fa-folder-tree fa-fw",
+  "Project List": "fa-solid fa-folder-tree fa-fw",
+  "Training Management": "fa-solid fa-chalkboard-user fa-fw",
+  Recruitment: "fa-solid fa-user-plus fa-fw",
   "Staffing Plan": "fa-solid fa-sitemap fa-fw",
   "Job Requisition": "fa-solid fa-file-signature fa-fw",
   "Career Portal": "fa-solid fa-globe fa-fw",
@@ -41,8 +41,8 @@ const ICON_CLASS_MAP = {
   "Employee Separation": "fa-solid fa-door-open fa-fw",
   "Exit Interview": "fa-solid fa-comments fa-fw",
   "Full & Final Settlement": "fa-solid fa-file-invoice-dollar fa-fw",
-  Onboarding: "fa-solid fa-id-card-clip fa-fw",
-  "Company Policies": "fa-solid fa-file-lines fa-fw"
+  Onboarding: "fa-solid fa-person-circle-check fa-fw",
+  "Company Policies": "fa-solid fa-file-shield fa-fw"
 };
 
 const APPLICATION_ROUTES = {
@@ -94,6 +94,7 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
   @track expandedParentKeys = [];
   @track userData = null;
   _allItemsByKey = {};
+  sessionChangedHandler;
 
   @track logoLightErrored = false;
   @track logoDarkErrored = false;
@@ -119,9 +120,32 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
   }
 
   connectedCallback() {
+    this.refreshUserFromSession();
+    this.sessionChangedHandler = () => this.refreshUserFromSession();
     try {
-      const session = getSession();
-      this.userData = session?.user || null;
+      const w = globalThis?.window ?? globalThis;
+      w?.addEventListener?.(SESSION_CHANGED_EVENT, this.sessionChangedHandler);
+    } catch {
+      // no-op
+    }
+  }
+
+  disconnectedCallback() {
+    try {
+      const w = globalThis?.window ?? globalThis;
+      w?.removeEventListener?.(
+        SESSION_CHANGED_EVENT,
+        this.sessionChangedHandler
+      );
+    } catch {
+      // no-op
+    }
+    this.sessionChangedHandler = null;
+  }
+
+  refreshUserFromSession() {
+    try {
+      this.userData = getSession()?.user || null;
     } catch {
       this.userData = null;
     }
@@ -165,7 +189,7 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
       return {
         name,
         role: this.userData.Role__c || this.userData.role || "",
-        photoUrl: this.userData.Photo_Url__c || this.userData.photoUrl || null
+        photoUrl: this.userData.Photo_Url__c || null
       };
     }
     return {
