@@ -401,6 +401,96 @@ private class PWChrono_AttendanceController_Test {
   }
 
   @IsTest
+  static void testGetAttendanceTrackerDataForEmployee_adminCanViewSelectedEmployee() {
+    Portal_Users__c admin = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'HR Admin'
+      LIMIT 1
+    ];
+    Portal_Users__c employee = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'Employee'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    List<PWChrono_AttendanceController.AttendanceDayWrapper> result = PWChrono_AttendanceController.getAttendanceTrackerDataForEmployee(
+      Date.today().addDays(-2),
+      Date.today(),
+      employee.Id,
+      admin.Id,
+      null
+    );
+    Test.stopTest();
+
+    System.assertEquals(3, result.size());
+    System.assertEquals('Test Employee', result[0].employeeName);
+  }
+
+  @IsTest
+  static void testGetAttendanceTrackerDataForEmployee_rejectsInactiveTarget() {
+    Portal_Users__c admin = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'HR Admin'
+      LIMIT 1
+    ];
+    Portal_Users__c inactiveEmployee = PWChrono_AttendanceTestDataFactory.createEmployee(
+      'Inactive Attendance Employee',
+      false
+    );
+
+    Test.startTest();
+    try {
+      PWChrono_AttendanceController.getAttendanceTrackerDataForEmployee(
+        Date.today(),
+        Date.today(),
+        inactiveEmployee.Id,
+        admin.Id,
+        null
+      );
+      System.assert(false, 'Inactive employees must not be available.');
+    } catch (AuraHandledException e) {
+      System.assertNotEquals(null, e.getMessage());
+    }
+    Test.stopTest();
+  }
+
+  @IsTest
+  static void testGetAttendanceAdminRows_listsEveryActiveEmployee() {
+    Integer activeEmployeeCount = [
+      SELECT COUNT()
+      FROM Portal_Users__c
+      WHERE Is_Active__c = TRUE
+    ];
+    Date attendanceDate = Date.today().addDays(-10);
+
+    Test.startTest();
+    List<PWChrono_AttendanceController.AttendanceAdminRow> rows = PWChrono_AttendanceController.getAttendanceAdminRows(
+      attendanceDate,
+      null,
+      null
+    );
+    Test.stopTest();
+
+    System.assertEquals(activeEmployeeCount, rows.size());
+    Boolean foundEmployee = false;
+    for (PWChrono_AttendanceController.AttendanceAdminRow row : rows) {
+      if (row.employeeName == 'Test Employee') {
+        foundEmployee = true;
+        System.assertEquals(attendanceDate, row.attendanceDate);
+        System.assertNotEquals(null, row.status);
+      }
+    }
+    System.assert(
+      foundEmployee,
+      'The employee must appear in the admin table.'
+    );
+  }
+
+  @IsTest
   static void testBuildTrackerData_coversStatusVariants() {
     Portal_Users__c emp = [
       SELECT Id
