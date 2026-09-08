@@ -6,16 +6,54 @@ private class PWChrono_PerformanceController_Test {
     User testUser = [SELECT Id FROM User WHERE Alias = 'tuser' LIMIT 1];
     User managerUser = [SELECT Id FROM User WHERE Alias = 'admin' LIMIT 1];
 
+    Portal_User_Profile__c employeeProfile = new Portal_User_Profile__c(
+      Profile_Type__c = 'Employee',
+      Is_Active__c = true
+    );
+    Portal_User_Profile__c managerProfile = new Portal_User_Profile__c(
+      Profile_Type__c = 'Manager',
+      Can_Approve__c = true,
+      Approval_Scope__c = 'Direct Reports',
+      Is_Active__c = true
+    );
+    insert new List<Portal_User_Profile__c>{ employeeProfile, managerProfile };
+
+    insert new List<Portal_Profile_Feature__c>{
+      new Portal_Profile_Feature__c(
+        Portal_User_Profile__c = employeeProfile.Id,
+        Feature_Key__c = 'Performance Management',
+        Feature_Label__c = 'Performance Management',
+        Is_Enabled__c = true
+      ),
+      new Portal_Profile_Feature__c(
+        Portal_User_Profile__c = employeeProfile.Id,
+        Feature_Key__c = 'Goals',
+        Feature_Label__c = 'Goals',
+        Is_Enabled__c = true
+      ),
+      new Portal_Profile_Feature__c(
+        Portal_User_Profile__c = managerProfile.Id,
+        Feature_Key__c = 'Approvals',
+        Feature_Label__c = 'Approvals',
+        Is_Enabled__c = true
+      )
+    };
+
     System.runAs(managerUser) {
       Portal_Users__c manager = PWChrono_TestDataFactory.createTestEmployee(
         managerUser.Id
       );
+      manager.Role__c = 'Manager';
+      manager.Portal_User_Profile__c = managerProfile.Id;
+      update manager;
     }
 
     System.runAs(testUser) {
       Portal_Users__c employee = PWChrono_TestDataFactory.createTestEmployee(
         testUser.Id
       );
+      employee.Portal_User_Profile__c = employeeProfile.Id;
+      update employee;
       Portal_Users__c manager = [
         SELECT Id
         FROM Portal_Users__c
