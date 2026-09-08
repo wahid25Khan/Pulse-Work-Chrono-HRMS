@@ -281,7 +281,7 @@ private class PWChrono_GuestSession_Test {
       System.assertEquals(true, result.get('hasAccess'));
       System.assertEquals(false, result.get('isSalesforceUser'));
       System.assertEquals(
-        new List<String>{ 'Employee Directory' },
+        new List<String>{ 'Dashboard', 'My Profile' },
         (List<String>) result.get('features')
       );
     } finally {

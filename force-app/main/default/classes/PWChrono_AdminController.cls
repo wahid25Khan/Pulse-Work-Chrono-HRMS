@@ -11,50 +11,51 @@ public inherited sharing class PWChrono_AdminController {
   // For admin/config endpoints we require a verified portal session AND
   // that the caller has the Admin Settings feature.
   private static void requireSalesforceInternalUser() {
-    // Admin Settings panel methods without (portalUserId, sessionToken)
-    // must never be callable from Guest runtime.
-    if (!PWChrono_AccessController.isSalesforceInternalUser()) {
-      throw new AuraHandledException('Unauthorized.');
-    }
+    PWChrono_AccessController.requireFeature(null, 'Admin Settings');
   }
 
   private static void requireAdminSettingsAccessForGuest(
     String callerPortalUserId,
     String sessionToken
   ) {
-    if (UserInfo.getUserType() != 'Guest') {
-      return;
-    }
-
-    Id verifiedPortalUserId = PWChrono_GuestSession.requireVerifiedPortalUserId(
-      callerPortalUserId,
-      sessionToken
-    );
-
-    Portal_Users__c caller = [
-      SELECT Id, Access_Features__c
-      FROM Portal_Users__c
-      WHERE Id = :verifiedPortalUserId
-      LIMIT 1
-    ];
-
-    if (!hasFeature(caller.Access_Features__c, 'Admin Settings')) {
-      throw new AuraHandledException('Unauthorized.');
-    }
+    requirePortalFeature(callerPortalUserId, sessionToken, 'Admin Settings');
   }
 
-  private static Boolean hasFeature(String accessFeatures, String featureName) {
-    if (String.isBlank(accessFeatures) || String.isBlank(featureName)) {
-      return false;
-    }
+  private static Id resolveActorId(
+    String callerPortalUserId,
+    String sessionToken
+  ) {
+    return UserInfo.getUserType() == 'Guest'
+      ? PWChrono_GuestSession.requireVerifiedPortalUserId(
+          callerPortalUserId,
+          sessionToken
+        )
+      : (String.isBlank(callerPortalUserId)
+          ? null
+          : PWChrono_RequestValidator.resolveEmployeeId(
+              callerPortalUserId,
+              sessionToken
+            ));
+  }
 
-    // Split on semicolons and trim whitespace.
-    for (String part : accessFeatures.split('\\s*;\\s*')) {
-      if (part == featureName) {
-        return true;
-      }
+  private static void requirePortalFeature(
+    String callerPortalUserId,
+    String sessionToken,
+    String featureName
+  ) {
+    Id actorEmployeeId = resolveActorId(callerPortalUserId, sessionToken);
+    PWChrono_AccessController.requireFeature(actorEmployeeId, featureName);
+  }
+
+  private static void requireProjectManagementAccess(
+    String callerPortalUserId,
+    String sessionToken
+  ) {
+    Id actorEmployeeId = resolveActorId(callerPortalUserId, sessionToken);
+    PWChrono_AccessController.requireFeature(actorEmployeeId, 'Projects');
+    if (!PWChrono_AccessController.canManageProjects(actorEmployeeId)) {
+      throw new AuraHandledException('Project management access is required.');
     }
-    return false;
   }
 
   public class ChartPoint {
@@ -1247,7 +1248,7 @@ public inherited sharing class PWChrono_AdminController {
     String portalUserId,
     String sessionToken
   ) {
-    requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
+    requirePortalFeature(portalUserId, sessionToken, 'Projects');
     return getProjectsCore();
   }
 
@@ -1293,7 +1294,7 @@ public inherited sharing class PWChrono_AdminController {
     String portalUserId,
     String sessionToken
   ) {
-    requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
+    requirePortalFeature(portalUserId, sessionToken, 'Projects');
     try {
       return [
         SELECT Id, Name
@@ -1629,7 +1630,7 @@ public inherited sharing class PWChrono_AdminController {
     String portalUserId,
     String sessionToken
   ) {
-    requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
+    requireProjectManagementAccess(portalUserId, sessionToken);
     return saveProjectCore(projectData);
   }
 
@@ -1777,7 +1778,7 @@ public inherited sharing class PWChrono_AdminController {
     String portalUserId,
     String sessionToken
   ) {
-    requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
+    requireProjectManagementAccess(portalUserId, sessionToken);
     if (projectId == null) {
       throw new AuraHandledException('Project Id is required.');
     }
@@ -1837,7 +1838,7 @@ public inherited sharing class PWChrono_AdminController {
     String portalUserId,
     String sessionToken
   ) {
-    requireAdminSettingsAccessForGuest(portalUserId, sessionToken);
+    requireProjectManagementAccess(portalUserId, sessionToken);
     deleteProjectCore(projectId);
   }
 

@@ -7,6 +7,7 @@ import saveEmployee from "@salesforce/apex/PWChrono_EmployeeDirectoryController.
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import { downloadCsv } from "c/pwchronoCsv";
 import { LightningElement, track } from "lwc";
 
 export default class PwchronoEmployeeDirectory extends LightningElement {
@@ -22,6 +23,21 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
 
   @track isLoading = true;
   @track isMetricsLoading = true;
+  loadError = "";
+  metricsError = "";
+  _employeeRequest = 0;
+
+  get showEmptyEmployees() {
+    return (
+      !this.isLoading && !this.loadError && !this.displayedEmployees.length
+    );
+  }
+
+  handleRetryDirectory() {
+    this.loadEmployees();
+    this.loadMetrics();
+    this.loadDesignations();
+  }
 
   // Filter & Search states
   @track searchTerm = "";
@@ -169,6 +185,32 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
   }
 
   // View Switching
+  handleExport() {
+    downloadCsv(
+      "employees.csv",
+      ["Employee ID", "Name", "Email", "Phone", "Designation", "Department"],
+      this.allEmployees.map((e) => [
+        e.empId,
+        e.name,
+        e.email,
+        e.phone,
+        e.title,
+        e.department
+      ])
+    );
+  }
+
+  renderedCallback() {
+    this.querySelectorAll("select[data-filter]").forEach((select) => {
+      const value = String(this[select.dataset.filter]);
+      if (select.value !== value) select.value = value;
+    });
+  }
+
+  disconnectedCallback() {
+    clearTimeout(this.searchTimeout);
+  }
+
   switchToList() {
     this.previousView = "list";
     this.currentView = "list";
@@ -240,7 +282,9 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
 
   // Data Loading
   async loadEmployees() {
+    const request = ++this._employeeRequest;
     this.isLoading = true;
+    this.loadError = "";
     try {
       const data = await getEmployees({
         searchTerm: this.searchTerm,
@@ -250,6 +294,7 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
         callerPortalUserId: this.callerPortalUserId,
         sessionToken: this.sessionToken
       });
+      if (request !== this._employeeRequest) return;
       this.allEmployees = (data || []).map((employee) => ({
         ...employee,
         avatarUrl: employee.avatarUrl || this.DEFAULT_AVATAR
@@ -257,6 +302,9 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
       this.currentPage = 1;
       this.applyPagination();
     } catch (err) {
+      if (request !== this._employeeRequest) return;
+      this.loadError =
+        "Unable to load employees. Retry, or sign in again if your session has expired.";
       this.showToast(
         "Error",
         "Failed to load employees: " + (err?.body?.message || err.message),
@@ -265,12 +313,13 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
       this.allEmployees = [];
       this.displayedEmployees = [];
     } finally {
-      this.isLoading = false;
+      if (request === this._employeeRequest) this.isLoading = false;
     }
   }
 
   async loadMetrics() {
     this.isMetricsLoading = true;
+    this.metricsError = "";
     try {
       const data = await getEmployeeDirectoryMetrics({
         callerPortalUserId: this.callerPortalUserId,
@@ -285,6 +334,13 @@ export default class PwchronoEmployeeDirectory extends LightningElement {
         };
       }
     } catch (err) {
+      this.metricsError = "Employee summary is unavailable.";
+      this.metrics = {
+        total: "—",
+        active: "—",
+        inactive: "—",
+        newJoiners: "—"
+      };
       console.error("Error loading metrics", err);
     } finally {
       this.isMetricsLoading = false;

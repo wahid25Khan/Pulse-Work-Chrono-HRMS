@@ -110,35 +110,9 @@ public without sharing class PWChrono_GuestSession {
       sessionToken
     );
 
-    Portal_Users__c portalUser = [
-      SELECT Id, Role__c, Portal_User_Profile__c
-      FROM Portal_Users__c
-      WHERE Id = :verifiedPortalUserId AND Is_Active__c = TRUE
-      LIMIT 1
-    ];
-
-    List<String> features = new List<String>();
-    if (portalUser.Portal_User_Profile__c != null) {
-      for (Portal_Profile_Feature__c assignment : [
-        SELECT Feature_Key__c
-        FROM Portal_Profile_Feature__c
-        WHERE
-          Portal_User_Profile__c = :portalUser.Portal_User_Profile__c
-          AND Is_Enabled__c = TRUE
-        ORDER BY Feature_Key__c
-      ]) {
-        if (String.isNotBlank(assignment.Feature_Key__c)) {
-          features.add(assignment.Feature_Key__c);
-        }
-      }
-    }
-
-    return new Map<String, Object>{
-      'hasAccess' => true,
-      'role' => portalUser.Role__c,
-      'features' => features,
-      'isSalesforceUser' => false
-    };
+    return PWChrono_AccessController.getVerifiedPortalUserAccess(
+      verifiedPortalUserId
+    );
   }
 
   @TestVisible

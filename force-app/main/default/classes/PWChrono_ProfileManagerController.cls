@@ -19,36 +19,18 @@ public inherited sharing class PWChrono_ProfileManagerController {
     String callerPortalUserId,
     String sessionToken
   ) {
-    if (UserInfo.getUserType() != 'Guest') {
-      return;
-    }
-
-    Id verifiedPortalUserId = PWChrono_GuestSession.requireVerifiedPortalUserId(
-      callerPortalUserId,
-      sessionToken
-    );
-    List<Portal_Users__c> callers = [
-      SELECT Id, Portal_User_Profile__c
-      FROM Portal_Users__c
-      WHERE Id = :verifiedPortalUserId
-      LIMIT 1
-    ];
-    if (callers.isEmpty() || callers[0].Portal_User_Profile__c == null) {
-      throw new AuraHandledException('Unauthorized.');
-    }
-    if (
-      [
-        SELECT COUNT()
-        FROM Portal_Object_Permission__c
-        WHERE
-          Portal_User_Profile__c = :callers[0].Portal_User_Profile__c
-          AND Portal_Object__r.Object_API_Name__c = 'Portal_Users__c'
-          AND Can_View__c = TRUE
-          AND Can_Edit__c = TRUE
-      ] == 0
-    ) {
-      throw new AuraHandledException('Unauthorized.');
-    }
+    Id actorEmployeeId = UserInfo.getUserType() == 'Guest'
+      ? PWChrono_GuestSession.requireVerifiedPortalUserId(
+          callerPortalUserId,
+          sessionToken
+        )
+      : (String.isBlank(callerPortalUserId)
+          ? null
+          : PWChrono_RequestValidator.resolveEmployeeId(
+              callerPortalUserId,
+              sessionToken
+            ));
+    PWChrono_AccessController.requireFeature(actorEmployeeId, 'Configuration');
   }
 
   private static List<FeatureOption> buildCatalog() {

@@ -1,63 +1,80 @@
 {
-  "type" : "sfdc_cms__view",
-  "title" : "Shift Roster",
-  "contentBody" : {
-    "component" : {
-      "children" : [ {
-        "children" : [ {
-          "attributes" : {
-            "backgroundImageConfig" : "",
-            "backgroundImageOverlay" : "rgba(0,0,0,0)",
-            "componentSpacerSize" : "",
-            "dxpStyle" : { },
-            "layoutDirectionDesktop" : "row",
-            "layoutDirectionMobile" : "column",
-            "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
-            "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"13e165c7-3051-4ed5-b122-95987b592e9e\",\"columns\":[{\"UUID\":\"4d9cc8c3-ae4a-43eb-aad6-2f9b4e7f2295\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
-            "sectionMinHeight" : "",
-            "sectionVerticalAlign" : "flex-start"
-          },
-          "children" : [ {
-            "id" : "4d9cc8c3-ae4a-43eb-aad6-2f9b4e7f2295",
-            "name" : "col1",
-            "title" : "Column 1",
-            "type" : "region"
-          } ],
-          "definition" : "community_layout:section",
-          "id" : "13e165c7-3051-4ed5-b122-95987b592e9e",
-          "type" : "component"
-        } ],
-        "id" : "3e5c8626-431d-4d26-8e15-b09944b796e1",
-        "name" : "content",
-        "title" : "Content",
-        "type" : "region"
-      }, {
-        "children" : [ {
-          "attributes" : {
-            "customHeadTags" : "",
-            "description" : "",
-            "dxpStyle" : { },
-            "pageTitle" : "Shift Roster",
-            "recordId" : "{!recordId}"
-          },
-          "definition" : "community_builder:seoAssistant",
-          "id" : "1fa21c38-cf29-4e17-89ec-428caa3fc04f",
-          "type" : "component"
-        } ],
-        "id" : "fb62ca02-0c75-4e73-b578-a93226056882",
-        "name" : "sfdcHiddenRegion",
-        "title" : "sfdcHiddenRegion",
-        "type" : "region"
-      } ],
-      "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "af53612b-fc67-4d65-ac28-ae1f3b42b49c",
-      "type" : "component"
+  "type": "sfdc_cms__view",
+  "title": "Shift Roster",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "dxpStyle": {},
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"13e165c7-3051-4ed5-b122-95987b592e9e\",\"columns\":[{\"UUID\":\"4d9cc8c3-ae4a-43eb-aad6-2f9b4e7f2295\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
+              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": { "dxpStyle": {} },
+                      "definition": "c:pwchronoShiftRosterView",
+                      "id": "b96df9dd-054a-4bab-a7e2-f8c2a44de808",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "4d9cc8c3-ae4a-43eb-aad6-2f9b4e7f2295",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "13e165c7-3051-4ed5-b122-95987b592e9e",
+              "type": "component"
+            }
+          ],
+          "id": "3e5c8626-431d-4d26-8e15-b09944b796e1",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "dxpStyle": {},
+                "pageTitle": "Shift Roster",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "1fa21c38-cf29-4e17-89ec-428caa3fc04f",
+              "type": "component"
+            }
+          ],
+          "id": "fb62ca02-0c75-4e73-b578-a93226056882",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "af53612b-fc67-4d65-ac28-ae1f3b42b49c",
+      "type": "component"
     },
-    "dataProviders" : [ ],
+    "dataProviders": [],
     "themeLayoutType": "vEHuLHFeEwNFShTIe5Y3zxU813Irbj",
-    "viewType" : "custom-shift-roster"
+    "viewType": "custom-shift-roster"
   },
-  "urlName" : "shift-roster"
+  "urlName": "shift-roster"
 }

@@ -1,63 +1,80 @@
 {
-  "type" : "sfdc_cms__view",
-  "title" : "Admin Settings",
-  "contentBody" : {
-    "component" : {
-      "children" : [ {
-        "children" : [ {
-          "attributes" : {
-            "backgroundImageConfig" : "",
-            "backgroundImageOverlay" : "rgba(0,0,0,0)",
-            "componentSpacerSize" : "",
-            "dxpStyle" : { },
-            "layoutDirectionDesktop" : "row",
-            "layoutDirectionMobile" : "column",
-            "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
-            "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"07f2399f-4be9-4f81-8a27-15462ea29f28\",\"columns\":[{\"UUID\":\"2e829ba5-6260-4d16-87c5-805d86824289\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
-            "sectionMinHeight" : "",
-            "sectionVerticalAlign" : "flex-start"
-          },
-          "children" : [ {
-            "id" : "2e829ba5-6260-4d16-87c5-805d86824289",
-            "name" : "col1",
-            "title" : "Column 1",
-            "type" : "region"
-          } ],
-          "definition" : "community_layout:section",
-          "id" : "07f2399f-4be9-4f81-8a27-15462ea29f28",
-          "type" : "component"
-        } ],
-        "id" : "0c4a5348-92cc-48dd-9d82-adc723dcef27",
-        "name" : "content",
-        "title" : "Content",
-        "type" : "region"
-      }, {
-        "children" : [ {
-          "attributes" : {
-            "customHeadTags" : "",
-            "description" : "",
-            "dxpStyle" : { },
-            "pageTitle" : "Admin Settings",
-            "recordId" : "{!recordId}"
-          },
-          "definition" : "community_builder:seoAssistant",
-          "id" : "dc13a72c-c33b-4291-a283-39fd8384bc49",
-          "type" : "component"
-        } ],
-        "id" : "16ea7764-e632-4078-b278-b24ea7a15f2b",
-        "name" : "sfdcHiddenRegion",
-        "title" : "sfdcHiddenRegion",
-        "type" : "region"
-      } ],
-      "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "647679e2-e9bd-4557-b5e1-bacc2b04cd00",
-      "type" : "component"
+  "type": "sfdc_cms__view",
+  "title": "Admin Settings",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "dxpStyle": {},
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"07f2399f-4be9-4f81-8a27-15462ea29f28\",\"columns\":[{\"UUID\":\"2e829ba5-6260-4d16-87c5-805d86824289\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
+              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": { "dxpStyle": {} },
+                      "definition": "c:pwchronoAdminSettings",
+                      "id": "f5d51d93-2a83-42dd-8cda-f48ad784ba01",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "2e829ba5-6260-4d16-87c5-805d86824289",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "07f2399f-4be9-4f81-8a27-15462ea29f28",
+              "type": "component"
+            }
+          ],
+          "id": "0c4a5348-92cc-48dd-9d82-adc723dcef27",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "dxpStyle": {},
+                "pageTitle": "Admin Settings",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "dc13a72c-c33b-4291-a283-39fd8384bc49",
+              "type": "component"
+            }
+          ],
+          "id": "16ea7764-e632-4078-b278-b24ea7a15f2b",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "647679e2-e9bd-4557-b5e1-bacc2b04cd00",
+      "type": "component"
     },
-    "dataProviders" : [ ],
+    "dataProviders": [],
     "themeLayoutType": "vEHuLHFeEwNFShTIe5Y3zxU813Irbj",
-    "viewType" : "custom-admin-settings"
+    "viewType": "custom-admin-settings"
   },
-  "urlName" : "admin-settings"
+  "urlName": "admin-settings"
 }

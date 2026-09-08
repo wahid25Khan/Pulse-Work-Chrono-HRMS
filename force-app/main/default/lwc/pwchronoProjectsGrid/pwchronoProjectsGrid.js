@@ -1,4 +1,5 @@
 import { refreshApex } from "@salesforce/apex";
+import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUserAccessById";
 import deleteProjectController from "@salesforce/apex/PWChrono_AdminController.deleteProject";
 import getProjectClients from "@salesforce/apex/PWChrono_AdminController.getProjectClients";
 import getProjects from "@salesforce/apex/PWChrono_AdminController.getProjects";
@@ -27,6 +28,7 @@ export default class PwchronoProjectsGrid extends LightningElement {
   @track selectedSort = "Recent";
   @track showDeleteModal = false;
   @track projectIdPendingDelete = null;
+  @track canManageProjects = false;
 
   @track clientOptions = [];
   @track clientsLoading = true;
@@ -236,13 +238,8 @@ export default class PwchronoProjectsGrid extends LightningElement {
   }
 
   handleExportPdf() {
-    // UI parity: PDF export not implemented yet.
     this.showExportDropdown = false;
-    this.showToast(
-      "Info",
-      "PDF export isn't available yet. Use Excel export for now.",
-      "info"
-    );
+    globalThis?.window?.print?.();
   }
 
   handleExportExcel() {
@@ -382,6 +379,7 @@ export default class PwchronoProjectsGrid extends LightningElement {
 
   connectedCallback() {
     this.refreshSessionFromStore();
+    this.loadAccess();
 
     this.sessionChangedHandler = () => {
       const priorUserId = this.portalUserId;
@@ -393,6 +391,7 @@ export default class PwchronoProjectsGrid extends LightningElement {
         priorToken !== this.sessionToken
       ) {
         refreshApex(this.wiredProjectsResult);
+        this.loadAccess();
       }
     };
 
@@ -457,6 +456,20 @@ export default class PwchronoProjectsGrid extends LightningElement {
   refreshSessionFromStore() {
     this.portalUserId = getEmployeeId();
     this.sessionToken = getSessionToken();
+  }
+
+  async loadAccess() {
+    try {
+      const access = await getUserAccessById({
+        employeeId: this.portalUserId,
+        sessionToken: this.sessionToken
+      });
+      this.canManageProjects =
+        access?.isAdmin === true || access?.role === "Project Manager";
+    } catch (error) {
+      logError("pwchronoProjectsGrid.loadAccess", error);
+      this.canManageProjects = false;
+    }
   }
 
   @wire(getProjects, {

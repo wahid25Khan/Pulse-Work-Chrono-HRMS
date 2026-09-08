@@ -1,63 +1,80 @@
 {
-  "type" : "sfdc_cms__view",
-  "title" : "Offer Letter",
-  "contentBody" : {
-    "component" : {
-      "children" : [ {
-        "children" : [ {
-          "attributes" : {
-            "backgroundImageConfig" : "",
-            "backgroundImageOverlay" : "rgba(0,0,0,0)",
-            "componentSpacerSize" : "",
-            "dxpStyle" : { },
-            "layoutDirectionDesktop" : "row",
-            "layoutDirectionMobile" : "column",
-            "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
-            "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"7ba48412-d925-46ce-9fb6-56dd2324ab34\",\"columns\":[{\"UUID\":\"8ab280e1-d925-4e06-b102-57205b2e7ffc\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
-            "sectionMinHeight" : "",
-            "sectionVerticalAlign" : "flex-start"
-          },
-          "children" : [ {
-            "id" : "8ab280e1-d925-4e06-b102-57205b2e7ffc",
-            "name" : "col1",
-            "title" : "Column 1",
-            "type" : "region"
-          } ],
-          "definition" : "community_layout:section",
-          "id" : "7ba48412-d925-46ce-9fb6-56dd2324ab34",
-          "type" : "component"
-        } ],
-        "id" : "23799743-5576-42d5-8bbb-cd107d0085eb",
-        "name" : "content",
-        "title" : "Content",
-        "type" : "region"
-      }, {
-        "children" : [ {
-          "attributes" : {
-            "customHeadTags" : "",
-            "description" : "",
-            "dxpStyle" : { },
-            "pageTitle" : "Offer Letter",
-            "recordId" : "{!recordId}"
-          },
-          "definition" : "community_builder:seoAssistant",
-          "id" : "29bd4aa2-5ecf-4832-be3b-6fa58e58f37a",
-          "type" : "component"
-        } ],
-        "id" : "cdc8577c-3e68-4013-a5f0-ebc2302402b6",
-        "name" : "sfdcHiddenRegion",
-        "title" : "sfdcHiddenRegion",
-        "type" : "region"
-      } ],
-      "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "e1c20f90-b76c-4636-a288-132ad74c9f92",
-      "type" : "component"
+  "type": "sfdc_cms__view",
+  "title": "Offer Letter",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "dxpStyle": {},
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"7ba48412-d925-46ce-9fb6-56dd2324ab34\",\"columns\":[{\"UUID\":\"8ab280e1-d925-4e06-b102-57205b2e7ffc\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
+              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": { "dxpStyle": {} },
+                      "definition": "c:pwchronoOfferLetterGenerator",
+                      "id": "be70d174-4cac-4d4e-bfbb-d089c59fc606",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "8ab280e1-d925-4e06-b102-57205b2e7ffc",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "7ba48412-d925-46ce-9fb6-56dd2324ab34",
+              "type": "component"
+            }
+          ],
+          "id": "23799743-5576-42d5-8bbb-cd107d0085eb",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "dxpStyle": {},
+                "pageTitle": "Offer Letter",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "29bd4aa2-5ecf-4832-be3b-6fa58e58f37a",
+              "type": "component"
+            }
+          ],
+          "id": "cdc8577c-3e68-4013-a5f0-ebc2302402b6",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "e1c20f90-b76c-4636-a288-132ad74c9f92",
+      "type": "component"
     },
-    "dataProviders" : [ ],
+    "dataProviders": [],
     "themeLayoutType": "vEHuLHFeEwNFShTIe5Y3zxU813Irbj",
-    "viewType" : "custom-offer-letter"
+    "viewType": "custom-offer-letter"
   },
-  "urlName" : "offer-letter"
+  "urlName": "offer-letter"
 }

@@ -1,4 +1,27 @@
+import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUserAccessById";
+import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 import { LightningElement, track } from "lwc";
+
+const ROUTE_FEATURES = {
+  dashboard: "Dashboard",
+  profile: "My Profile",
+  attendance: "Attendance Management",
+  leave: "Leave Management",
+  holidays: "Holidays",
+  directory: "Employee Directory",
+  recruitment: "Recruitment",
+  onboarding: "Onboarding",
+  performance: "Performance Management",
+  goals: "Goals",
+  training: "Training Management",
+  projects: "Projects",
+  expenses: "Expense Management",
+  payroll: "Payroll",
+  approvals: "Approvals",
+  policies: "Company Policies",
+  reports: "Reports Dashboard",
+  configuration: "Configuration"
+};
 
 const ROUTES = new Set([
   "dashboard",
@@ -26,12 +49,16 @@ export default class PwchronoLightningWorkspace extends LightningElement {
 
   @track currentRoute = "dashboard";
   @track assetsReady = false;
+  @track accessReady = false;
+  @track features = [];
+  @track accessDenied = false;
   hashChangeHandler;
 
   connectedCallback() {
     this.hashChangeHandler = () => this.syncRouteFromLocation();
     globalThis.addEventListener?.("hashchange", this.hashChangeHandler);
     this.syncRouteFromLocation();
+    this.loadAccess();
 
     // Keep the workspace usable if a static-resource request is slow.
     // eslint-disable-next-line @lwc/lwc/no-async-operation
@@ -66,7 +93,33 @@ export default class PwchronoLightningWorkspace extends LightningElement {
 
   setRoute(route) {
     const normalized = String(route || "dashboard").toLowerCase();
-    this.currentRoute = ROUTES.has(normalized) ? normalized : "dashboard";
+    const requestedRoute = ROUTES.has(normalized) ? normalized : "dashboard";
+    this.currentRoute = requestedRoute;
+    this.enforceRouteAccess();
+  }
+
+  async loadAccess() {
+    try {
+      const access = await getUserAccessById({
+        employeeId: getEmployeeId() || null,
+        sessionToken: getSessionToken() || null
+      });
+      this.features = access?.features || [];
+    } catch {
+      this.features = [];
+    } finally {
+      this.accessReady = true;
+      this.enforceRouteAccess();
+    }
+  }
+
+  enforceRouteAccess() {
+    if (!this.accessReady) {
+      return;
+    }
+    const requiredFeature = ROUTE_FEATURES[this.currentRoute];
+    this.accessDenied =
+      !requiredFeature || !this.features.includes(requiredFeature);
   }
 
   get loaderStyle() {
@@ -130,5 +183,11 @@ export default class PwchronoLightningWorkspace extends LightningElement {
   }
   get isConfiguration() {
     return this.currentRoute === "configuration";
+  }
+  get isAccessDenied() {
+    return this.accessReady && this.accessDenied;
+  }
+  get isRouteVisible() {
+    return this.accessReady && !this.accessDenied;
   }
 }

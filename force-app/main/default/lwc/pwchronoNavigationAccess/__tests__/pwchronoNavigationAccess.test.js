@@ -68,6 +68,42 @@ describe("pwchronoNavigationAccess", () => {
       )
     ).toEqual([]);
   });
+
+  it("does not expose admin attendance to an employee", () => {
+    const items = [
+      {
+        id: "attendance-parent",
+        label: "Attendance Management",
+        children: [
+          { id: "employee", label: "Attendance Employee", children: [] },
+          { id: "admin", label: "Attendance (Admin)", children: [] }
+        ]
+      }
+    ];
+
+    expect(filterMenuItemsByFeatures(items, ["Attendance Management"])).toEqual(
+      [
+        {
+          id: "attendance-parent",
+          label: "Attendance Management",
+          children: [
+            { id: "employee", label: "Attendance Employee", children: [] }
+          ]
+        }
+      ]
+    );
+  });
+
+  it("exposes scoped attendance without attendance settings to managers", () => {
+    const items = [
+      { id: "admin", label: "Attendance (Admin)", children: [] },
+      { id: "settings", label: "Attendance Settings", children: [] }
+    ];
+
+    expect(filterMenuItemsByFeatures(items, ["Attendance Team"])).toEqual([
+      { id: "admin", label: "Attendance (Admin)", children: [] }
+    ]);
+  });
 });
 
 describe("PWChrono application routes", () => {

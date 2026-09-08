@@ -1,72 +1,45 @@
-.employee-grid-card {
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-  border-radius: 8px;
+.employee-identity {
+  min-width: 0;
 }
-
-.employee-grid-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+.employee-name {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  color: #111827;
+  text-align: left;
 }
-
-.badge-soft-purple {
-  background-color: rgba(139, 92, 246, 0.12);
-  color: #8b5cf6;
+.employee-name:hover {
+  color: #f26522;
 }
-
-.badge-soft-primary {
-  background-color: rgba(30, 169, 137, 0.12);
-  color: #1ea989;
+.employee-grid-card dt {
+  flex-shrink: 0;
 }
-
-.badge-soft-dark {
-  background-color: rgba(33, 37, 41, 0.1);
-  color: #212529;
+.employee-grid-card dd {
+  overflow-wrap: anywhere;
 }
-
-.badge-soft-secondary {
-  background-color: rgba(108, 117, 125, 0.12);
-  color: #6c757d;
+.employee-grid-card .card-body {
+  padding: 20px;
 }
-
-.bg-purple {
-  background-color: #8b5cf6 !important;
+.card-header select,
+.card-header input {
+  max-width: 100%;
 }
-
-.bg-pink-transparent {
-  background-color: rgba(236, 72, 153, 0.12);
+@media (max-width: 575.98px) {
+  .card-header .right-content {
+    gap: 12px;
+    width: 100%;
+  }
 }
-
-.text-pink {
-  color: #ec4899 !important;
+.directory-empty-icon {
+  float: none;
+  margin-inline: auto;
 }
-
-.cursor-pointer {
-  cursor: pointer;
+.alert-warning {
+  color: #854d0e;
+  background-color: #fffbeb;
 }
-
-.avatar-rounded {
-  border-radius: 50% !important;
-}
-
-.icon-list button.active {
-  background-color: #ff5e3a !important;
-  color: #ffffff !important;
-  border-color: #ff5e3a !important;
-}
-
-.nav-pills .nav-link.active {
-  background-color: #ff5e3a !important;
-  color: #ffffff !important;
-}
-
-.btn-primary {
-  background-color: #ff5e3a !important;
-  border-color: #ff5e3a !important;
-}
-
-.btn-primary:hover {
-  background-color: #e04b28 !important;
-  border-color: #e04b28 !important;
+.avatar > i {
+  /* Bundled icon and utility rules otherwise shrink these metric glyphs. */
+  font-size: 24px !important;
 }

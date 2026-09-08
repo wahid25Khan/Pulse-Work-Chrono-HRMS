@@ -87,6 +87,7 @@ private class PWChrono_PerformanceController_Test {
     System.runAs(managerUser) {
       Test.startTest();
       List<PWChrono_Appraisal__c> appraisals = PWChrono_PerformanceController.getTeamAppraisalsForReview(
+        null,
         null
       );
       Test.stopTest();

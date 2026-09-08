@@ -460,6 +460,12 @@ private class PWChrono_AttendanceController_Test {
 
   @IsTest
   static void testGetAttendanceAdminRows_listsEveryActiveEmployee() {
+    Portal_Users__c admin = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'HR Admin'
+      LIMIT 1
+    ];
     Integer activeEmployeeCount = [
       SELECT COUNT()
       FROM Portal_Users__c
@@ -470,7 +476,7 @@ private class PWChrono_AttendanceController_Test {
     Test.startTest();
     List<PWChrono_AttendanceController.AttendanceAdminRow> rows = PWChrono_AttendanceController.getAttendanceAdminRows(
       attendanceDate,
-      null,
+      admin.Id,
       null
     );
     Test.stopTest();
@@ -797,12 +803,18 @@ private class PWChrono_AttendanceController_Test {
       WHERE Role__c = 'Manager'
       LIMIT 1
     ];
+    Portal_Users__c admin = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'HR Admin'
+      LIMIT 1
+    ];
     Date targetDate = Date.today().addDays(-3);
 
     Test.startTest();
     List<PWChrono_Attendance_Request__c> allRows = PWChrono_AttendanceController.getAllAttendance(
       targetDate,
-      null,
+      admin.Id,
       null
     );
     List<PWChrono_Attendance_Request__c> mine = PWChrono_AttendanceController.getMyAttendanceRequests(
@@ -831,6 +843,12 @@ private class PWChrono_AttendanceController_Test {
 
   @IsTest
   static void testCreateAndUpdateShiftType_adminFlow() {
+    Portal_Users__c admin = [
+      SELECT Id
+      FROM Portal_Users__c
+      WHERE Role__c = 'HR Admin'
+      LIMIT 1
+    ];
     PWChrono_Shift_Type__c shiftType = new PWChrono_Shift_Type__c(
       Name = 'Night Shift',
       Start_Time__c = Time.newInstance(22, 0, 0, 0),
@@ -843,13 +861,13 @@ private class PWChrono_AttendanceController_Test {
     Test.startTest();
     PWChrono_Shift_Type__c created = PWChrono_AttendanceController.createShiftType(
       shiftType,
-      null,
+      admin.Id,
       null
     );
     created.Grace_Period_Minutes__c = 20;
     PWChrono_Shift_Type__c updated = PWChrono_AttendanceController.updateShiftType(
       created,
-      null,
+      admin.Id,
       null
     );
     Test.stopTest();

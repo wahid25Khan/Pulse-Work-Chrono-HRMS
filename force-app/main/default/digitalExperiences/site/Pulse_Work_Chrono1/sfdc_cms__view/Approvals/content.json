@@ -1,63 +1,80 @@
 {
-  "type" : "sfdc_cms__view",
-  "title" : "Approvals",
-  "contentBody" : {
-    "component" : {
-      "children" : [ {
-        "children" : [ {
-          "attributes" : {
-            "backgroundImageConfig" : "",
-            "backgroundImageOverlay" : "rgba(0,0,0,0)",
-            "componentSpacerSize" : "",
-            "dxpStyle" : { },
-            "layoutDirectionDesktop" : "row",
-            "layoutDirectionMobile" : "column",
-            "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
-            "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"065d74f4-ee28-48ea-a082-41928c0ca937\",\"columns\":[{\"UUID\":\"d737ab9f-96df-49dd-a7d8-cb4b230ba477\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
-            "sectionMinHeight" : "",
-            "sectionVerticalAlign" : "flex-start"
-          },
-          "children" : [ {
-            "id" : "d737ab9f-96df-49dd-a7d8-cb4b230ba477",
-            "name" : "col1",
-            "title" : "Column 1",
-            "type" : "region"
-          } ],
-          "definition" : "community_layout:section",
-          "id" : "065d74f4-ee28-48ea-a082-41928c0ca937",
-          "type" : "component"
-        } ],
-        "id" : "65138b48-10f5-4723-89f1-032c99ce41dd",
-        "name" : "content",
-        "title" : "Content",
-        "type" : "region"
-      }, {
-        "children" : [ {
-          "attributes" : {
-            "customHeadTags" : "",
-            "description" : "",
-            "dxpStyle" : { },
-            "pageTitle" : "Approvals",
-            "recordId" : "{!recordId}"
-          },
-          "definition" : "community_builder:seoAssistant",
-          "id" : "5ff0db08-114d-48c0-8a4a-bd65d2c88041",
-          "type" : "component"
-        } ],
-        "id" : "2b19d23d-9965-42aa-8d08-9ff14c0b7691",
-        "name" : "sfdcHiddenRegion",
-        "title" : "sfdcHiddenRegion",
-        "type" : "region"
-      } ],
-      "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "b6bc1a86-4d9d-4a2e-a08c-6ed58ad4276e",
-      "type" : "component"
+  "type": "sfdc_cms__view",
+  "title": "Approvals",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "dxpStyle": {},
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"065d74f4-ee28-48ea-a082-41928c0ca937\",\"columns\":[{\"UUID\":\"d737ab9f-96df-49dd-a7d8-cb4b230ba477\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
+              },
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": { "dxpStyle": {} },
+                      "definition": "c:pwchronoApprovalsPage",
+                      "id": "1042949c-e148-44f8-902b-b46ddb9a4602",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "d737ab9f-96df-49dd-a7d8-cb4b230ba477",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "065d74f4-ee28-48ea-a082-41928c0ca937",
+              "type": "component"
+            }
+          ],
+          "id": "65138b48-10f5-4723-89f1-032c99ce41dd",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "dxpStyle": {},
+                "pageTitle": "Approvals",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "5ff0db08-114d-48c0-8a4a-bd65d2c88041",
+              "type": "component"
+            }
+          ],
+          "id": "2b19d23d-9965-42aa-8d08-9ff14c0b7691",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "b6bc1a86-4d9d-4a2e-a08c-6ed58ad4276e",
+      "type": "component"
     },
-    "dataProviders" : [ ],
+    "dataProviders": [],
     "themeLayoutType": "vEHuLHFeEwNFShTIe5Y3zxU813Irbj",
-    "viewType" : "custom-approvals"
+    "viewType": "custom-approvals"
   },
-  "urlName" : "approvals"
+  "urlName": "approvals"
 }

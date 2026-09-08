@@ -1,0 +1,219 @@
+/* SmartHR modern shell adapters for light-DOM LWC. Keep vendor CSS unchanged.
+ * Theme attributes live on the portal wrapper, never Salesforce's document. */
+.pwchrono-shell {
+  --pwchrono-primary: #f26522;
+  --pwchrono-text: #111827;
+  --pwchrono-muted: #6b7280;
+  --pwchrono-border: #e5e7eb;
+  font-family: "Roboto", sans-serif;
+  color: var(--pwchrono-muted);
+}
+
+/* LWR mounts the shared shell in the header region and pages in main, not
+ * inside our wrapper. Use the observed theme spacing hooks only when our
+ * portal chrome is present; do not target generated Salesforce classes. */
+community_layout-simple-theme-layout:has(
+  .pwchrono-shell [data-region="header"]
+) {
+  --dxp-c-header-container-spacing-block-start: 0;
+  --dxp-c-header-container-spacing-block-end: 0;
+  --dxp-c-header-container-spacing-block-start-mobile: 0;
+  --dxp-c-header-container-spacing-block-end-mobile: 0;
+}
+
+/* The theme reapplies header padding below its inherited hooks. The fixed
+ * portal header already reserves space through .page-wrapper. */
+community_layout-simple-theme-layout:has(.pwchrono-shell [data-region="header"])
+  > header {
+  padding: 0 !important;
+}
+
+body:has(.pwchrono-shell [data-region="header"])
+  community_layout-section:has(.page-wrapper) {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100%;
+  max-width: none;
+}
+
+/* Legacy page templates use Bootstrap spacing utilities with !important.
+ * Normalize their content gutters at the portal boundary, not in Lightning. */
+body:has(.pwchrono-shell [data-region="header"]) .page-wrapper > .content {
+  padding: 24px 24px 0 !important;
+}
+
+body:has(.pwchrono-shell [data-region="header"]) .page-wrapper {
+  isolation: isolate;
+}
+
+body:has(.pwchrono-shell [data-region="header"]) .page-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 168px;
+  background: #fff;
+  z-index: -1;
+}
+
+body:has(.pwchrono-shell [data-region="header"]) .page-wrapper .card {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+body:has(.pwchrono-shell [data-region="header"]) .page-wrapper .btn-white,
+body:has(.pwchrono-shell [data-region="header"]) .page-wrapper .breadcrumb a {
+  color: #111827;
+  text-decoration: none;
+}
+
+@media (max-width: 991.98px) {
+  .slide-nav .pwchrono-shell .sidebar-overlay {
+    display: block;
+    border: 0;
+    z-index: 1040;
+  }
+
+  body:has(.pwchrono-shell [data-region="header"]) .page-wrapper > .content {
+    padding: 15px 15px 0 !important;
+  }
+}
+
+/* LWC has no jQuery slimScroll wrapper: let flex reserve the profile height. */
+.pwchrono-shell [data-region="sidebar"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.pwchrono-shell [data-region="sidebarProfile"] {
+  flex: 0 0 auto;
+}
+
+.pwchrono-shell [data-region="sidebarProfile"] .sidebar-nav .nav-link {
+  color: #374151;
+  background: transparent;
+  border-radius: 50px;
+  font-weight: 500;
+}
+
+.pwchrono-shell [data-region="sidebarProfile"] .sidebar-nav .nav-link.active {
+  background: #f26522;
+  color: #fff;
+}
+
+.pwchrono-shell [data-region="sidebar"] .sidebar-inner {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto !important;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
+
+/* The permission-filtered LWC menu is flat; vendor selectors assume groups
+ * have an extra UL. Adapt that structure without changing access filtering. */
+.pwchrono-shell .sidebar-menu > ul > [data-repeat="menuItem"] {
+  margin-bottom: 4px;
+}
+
+.pwchrono-shell .sidebar-menu [data-repeat="menuItem"] > a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 5px;
+  color: #d1d5db;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 37px;
+}
+
+.pwchrono-shell .sidebar-menu [data-repeat="menuItem"] > a > span:not(.badge) {
+  color: #d1d5db;
+}
+
+.pwchrono-shell
+  .sidebar-menu
+  [data-repeat="menuItem"]
+  > a
+  > span:first-of-type {
+  min-width: 0;
+  padding-right: 12px;
+}
+
+.pwchrono-shell .sidebar-menu [data-repeat="child"] > a {
+  text-decoration: none;
+}
+
+.pwchrono-shell .sidebar-menu [data-repeat="menuItem"] > a > i {
+  width: 18px;
+  flex: 0 0 18px;
+  color: #e5e7eb;
+  font-size: 16px;
+}
+
+.pwchrono-shell .sidebar-menu [data-repeat="menuItem"] > a:hover,
+.pwchrono-shell .sidebar-menu [data-repeat="menuItem"] > a:focus-visible {
+  background: #4b5563;
+  color: #fff;
+}
+
+.pwchrono-shell .sidebar-menu [data-repeat="menuItem"].active > a,
+.pwchrono-shell .sidebar-menu [data-repeat="menuItem"] > a.active {
+  background: #374151;
+  color: #fff;
+}
+
+.pwchrono-shell .sidebar-menu > ul > .menu-title {
+  margin: 24px 0 12px;
+  color: #9ca3af;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.pwchrono-shell .sidebar-menu > ul > .menu-title:first-child {
+  margin-top: 0;
+}
+
+.pwchrono-shell .sidebar-menu [data-repeat="child"] > a {
+  color: #d1d5db;
+}
+
+.pwchrono-shell .sidebar-menu [data-repeat="child"] > a.active,
+.pwchrono-shell .sidebar-menu [data-repeat="child"] > a:hover {
+  color: #f26522;
+}
+
+.pwchrono-shell :is(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid #c2410c;
+  outline-offset: 2px;
+}
+
+/* Collapse state is owned by MainLayout on body, outside the theme wrapper. */
+@media (min-width: 992px) {
+  .mini-sidebar:not(.expand-menu)
+    .pwchrono-shell
+    .modern-profile
+    .user-profile {
+    padding: 0 !important;
+    margin-bottom: 16px !important;
+    background: transparent !important;
+  }
+
+  .mini-sidebar:not(.expand-menu) .pwchrono-shell .modern-profile h6,
+  .mini-sidebar:not(.expand-menu) .pwchrono-shell .modern-profile p,
+  .mini-sidebar:not(.expand-menu) .pwchrono-shell .modern-profile .sidebar-nav {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pwchrono-shell *,
+  .pwchrono-shell *::before,
+  .pwchrono-shell *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
