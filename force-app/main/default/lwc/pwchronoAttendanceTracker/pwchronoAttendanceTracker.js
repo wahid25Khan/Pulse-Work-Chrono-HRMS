@@ -3,6 +3,7 @@ import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUse
 import getAttendanceTrackerDataForEmployee from "@salesforce/apex/PWChrono_AttendanceController.getAttendanceTrackerDataForEmployee";
 import { showErrorToast, logError } from "c/pwchronoErrorHandler";
 import { getSession, getEmployeeId, getSessionToken } from "c/pwchronoSession";
+import { downloadCsv } from "c/pwchronoCsv";
 import { CurrentPageReference, NavigationMixin } from "lightning/navigation";
 
 const MONTH_NAMES = [
@@ -102,6 +103,13 @@ export default class PwchronoAttendanceTracker extends NavigationMixin(
     );
   }
 
+  get employeeOptions() {
+    const employeeId = this.targetEmployeeId || this.employeeId;
+    return employeeId
+      ? [{ label: this.userName || "Employee", value: employeeId }]
+      : [];
+  }
+
   handleBackToAdmin() {
     this[NavigationMixin.Navigate]({
       type: "comm__namedPage",
@@ -176,6 +184,33 @@ export default class PwchronoAttendanceTracker extends NavigationMixin(
     this.showExportDropdown = !this.showExportDropdown;
     this.showStatusDropdown = false;
     this.showDateRangeDropdown = false;
+  }
+
+  handleExportCsv() {
+    downloadCsv(
+      "my-attendance.csv",
+      [
+        "Date",
+        "Check in",
+        "Check out",
+        "Working hours",
+        "Shift start",
+        "Shift end",
+        "Break",
+        "Status"
+      ],
+      this.attendanceData.map((day) => [
+        day.formattedDate,
+        day.formattedCheckIn,
+        day.formattedCheckOut,
+        day.productionHours,
+        day.formattedShiftStart,
+        day.formattedShiftEnd,
+        day.breakTime,
+        day.displayStatus
+      ])
+    );
+    this.showExportDropdown = false;
   }
 
   toggleStatusDropdown(event) {
