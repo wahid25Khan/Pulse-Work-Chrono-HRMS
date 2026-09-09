@@ -6,7 +6,8 @@ import {
   getEmployeeId,
   getSession,
   getSessionToken,
-  setSession
+  setSession,
+  SESSION_CHANGED_EVENT
 } from "c/pwchronoSession";
 import { NavigationMixin } from "lightning/navigation";
 import { api, LightningElement, track } from "lwc";
@@ -31,6 +32,84 @@ export default class PwchronoMainLayout extends NavigationMixin(
   @track isLightningExperience = false;
 
   sessionToken;
+  sessionTimer;
+  assetsTimer;
+  sessionCheckPending = false;
+  handleSessionChanged = () => {
+    if (this.isExperienceBuilder || this.isLightningExperience) return;
+    if (!getSession().isLoggedIn) {
+      this.handleLoginFailure();
+      return;
+    }
+    this.checkActiveSession();
+  };
+  handleSessionFocus = () => {
+    if (document.visibilityState !== "hidden") this.checkActiveSession();
+  };
+
+  disconnectedCallback() {
+    clearTimeout(this.sessionTimer);
+    clearTimeout(this.assetsTimer);
+    window.removeEventListener(
+      SESSION_CHANGED_EVENT,
+      this.handleSessionChanged
+    );
+    window.removeEventListener("focus", this.handleSessionFocus);
+    document.removeEventListener("visibilitychange", this.handleSessionFocus);
+  }
+
+  scheduleSessionCheck() {
+    clearTimeout(this.sessionTimer);
+    if (
+      !this.isConnected ||
+      !this.isLoggedIn ||
+      this.isExperienceBuilder ||
+      this.isLightningExperience ||
+      this.isLoginRoute
+    )
+      return;
+    const session = getSession();
+    const expiresAt = Date.parse(session.user?.Session_Expires_At__c);
+    const delay =
+      session.sessionToken && Number.isFinite(expiresAt)
+        ? Math.max(0, Math.min(60000, expiresAt - Date.now()))
+        : 60000;
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    this.sessionTimer = setTimeout(() => this.checkActiveSession(), delay);
+  }
+
+  async checkActiveSession() {
+    if (
+      !this.isConnected ||
+      this.isExperienceBuilder ||
+      this.isLightningExperience ||
+      this.isLoginRoute
+    )
+      return;
+    const session = getSession();
+    const expiresAt = Date.parse(session.user?.Session_Expires_At__c);
+    if (
+      !session.isLoggedIn ||
+      (Number.isFinite(expiresAt) && !session.sessionToken) ||
+      (session.sessionToken &&
+        Number.isFinite(expiresAt) &&
+        expiresAt <= Date.now())
+    ) {
+      this.handleLoginFailure();
+      return;
+    }
+    // Keep the expiry clock running even if a server request stalls.
+    this.scheduleSessionCheck();
+    if (this.sessionCheckPending) return;
+    this.sessionCheckPending = true;
+    this.sessionToken = session.sessionToken;
+    try {
+      await this.loadFeatureAccess(session.user?.Id);
+    } finally {
+      this.sessionCheckPending = false;
+      this.scheduleSessionCheck();
+    }
+  }
 
   connectedCallback() {
     this.sessionToken = getSessionToken();
@@ -38,9 +117,8 @@ export default class PwchronoMainLayout extends NavigationMixin(
 
     // Safety fallback: if asset loading takes too long (>2.5s), display the page
     // eslint-disable-next-line @lwc/lwc/no-async-operation
-    setTimeout(() => {
+    this.assetsTimer = setTimeout(() => {
       this.isUiReady = true;
-      this.isAuthChecked = true;
     }, 2500);
 
     // If we're embedded inside Salesforce Lightning Experience (tabs/app pages),
@@ -60,6 +138,9 @@ export default class PwchronoMainLayout extends NavigationMixin(
     // want to render the portal chrome in Builder/Live Preview.
     this.isLightningExperience = isLightning && !isLightningSetup;
 
+    window.addEventListener(SESSION_CHANGED_EVENT, this.handleSessionChanged);
+    window.addEventListener("focus", this.handleSessionFocus);
+    document.addEventListener("visibilitychange", this.handleSessionFocus);
     this.checkLoginStatus();
   }
 
@@ -125,7 +206,12 @@ export default class PwchronoMainLayout extends NavigationMixin(
     // With custom OTP auth, we keep Experience routes Public and enforce login client-side.
     // Only redirect when we're in the portal (not Lightning Experience) and NOT already on /login.
     try {
-      if (this.isLightningExperience || this.isLoginRoute) return;
+      if (
+        this.isExperienceBuilder ||
+        this.isLightningExperience ||
+        this.isLoginRoute
+      )
+        return;
 
       const base = this.getCommunityBasePath();
       const targetPath = base ? `${base}/login` : "/login";
@@ -209,12 +295,17 @@ export default class PwchronoMainLayout extends NavigationMixin(
 
       if (session.isLoggedIn) {
         this.setSessionState(session.user, session.permissions);
-        await this.loadFeatureAccess(getEmployeeId());
+        if (this.isExperienceBuilder || this.isLightningExperience) {
+          await this.loadFeatureAccess(getEmployeeId());
+        } else {
+          await this.checkActiveSession();
+        }
       } else {
         await this.attemptAutoBootstrap();
       }
     } finally {
       this.isAuthChecked = true;
+      this.scheduleSessionCheck();
     }
   }
 
@@ -225,11 +316,18 @@ export default class PwchronoMainLayout extends NavigationMixin(
   }
 
   async loadFeatureAccess(employeeId) {
+    const requestToken = this.sessionToken;
+    const requestUserId = getEmployeeId();
+    const isCurrent = () =>
+      this.isConnected &&
+      requestToken === getSessionToken() &&
+      requestUserId === getEmployeeId();
     try {
       const accessData = await getUserAccessById({
         employeeId: employeeId || null,
-        sessionToken: this.sessionToken
+        sessionToken: requestToken
       });
+      if (!isCurrent()) return;
       if (accessData?.hasAccess) {
         this.features = accessData.features || [];
         this.isSalesforceUser = accessData.isSalesforceUser || false;
@@ -237,9 +335,21 @@ export default class PwchronoMainLayout extends NavigationMixin(
         this.features = [];
         this.isSalesforceUser = false;
       }
-    } catch {
+    } catch (error) {
+      if (!isCurrent()) return;
       this.features = [];
       this.isSalesforceUser = false;
+      const bodies = Array.isArray(error?.body) ? error.body : [error?.body];
+      const messages = [...bodies.map((body) => body?.message), error?.message];
+      if (
+        messages.some((message) =>
+          /session (?:invalid|expired)|invalid session attempts|account is inactive|INVALID_SESSION_ID/i.test(
+            message || ""
+          )
+        )
+      ) {
+        this.handleLoginFailure();
+      }
     }
   }
 
@@ -279,7 +389,21 @@ export default class PwchronoMainLayout extends NavigationMixin(
   }
 
   handleLoginFailure() {
+    if (this.isExperienceBuilder || this.isLightningExperience) return;
+    clearTimeout(this.sessionTimer);
     this.isLoggedIn = false;
+    this.user = null;
+    this.permissions = null;
+    this.features = [];
+    this.sessionToken = null;
+    this.isSalesforceUser = false;
+    // clearSession emits synchronously; avoid recursively handling our own event.
+    window.removeEventListener(
+      SESSION_CHANGED_EVENT,
+      this.handleSessionChanged
+    );
+    clearSession();
+    window.addEventListener(SESSION_CHANGED_EVENT, this.handleSessionChanged);
     this.redirectToLoginIfNeeded();
   }
   handleLogout() {
