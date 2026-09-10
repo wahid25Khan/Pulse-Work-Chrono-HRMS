@@ -1,3 +1,22 @@
+import revokePortalSession from "@salesforce/apex/PWChrono_AuthController.revokePortalSession";
+import { mockNavigate as navigateMock } from "lightning/navigation";
+jest.mock("lightning/navigation", () => {
+  const mockNavigate = jest.fn();
+  const navigateKey = Symbol("Navigate");
+  const NavigationMixin = (Base) =>
+    class extends Base {
+      [navigateKey](reference) {
+        mockNavigate(reference);
+      }
+    };
+  NavigationMixin.Navigate = navigateKey;
+  return { NavigationMixin, mockNavigate };
+});
+jest.mock(
+  "@salesforce/apex/PWChrono_AuthController.revokePortalSession",
+  () => ({ default: jest.fn() }),
+  { virtual: true }
+);
 import { createElement } from "lwc";
 import MainLayout from "c/pwchronoMainLayout";
 import getAccess from "@salesforce/apex/PWChrono_AccessController.getUserAccessById";
@@ -21,6 +40,7 @@ jest.mock("c/pwchronoSidebar", () => {
   registerDecorators(Sidebar, {
     publicProps: {
       features: { config: 0 },
+      searchTerm: { config: 0 },
       isSalesforceUser: { config: 0 },
       applicationMode: { config: 0 },
       navigationContext: { config: 0 }
@@ -29,11 +49,12 @@ jest.mock("c/pwchronoSidebar", () => {
   return { __esModule: true, default: Sidebar };
 });
 jest.mock("c/pwchronoHeader", () => {
-  const { LightningElement } = require("lwc");
-  return {
-    __esModule: true,
-    default: class Header extends LightningElement {}
-  };
+  const { LightningElement, registerDecorators } = require("lwc");
+  class Header extends LightningElement {}
+  registerDecorators(Header, {
+    publicProps: { logoutPending: { config: 0 }, searchTerm: { config: 0 } }
+  });
+  return { __esModule: true, default: Header };
 });
 jest.mock("c/pwchronoUiAssets", () => {
   const { LightningElement } = require("lwc");
@@ -200,4 +221,70 @@ it("still expires while an access request is stalled", async () => {
   jest.advanceTimersByTime(1000);
   await flush();
   expect(replace).toHaveBeenCalledWith("/PulseWorkChrono/login");
+});
+
+it("revokes before clearing the session and ignores duplicate logout clicks", async () => {
+  let finish;
+  revokePortalSession.mockImplementation(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      })
+  );
+  const element = mount();
+  await flush();
+  const header = element.querySelector("c-pwchrono-header");
+  header.dispatchEvent(new CustomEvent("logout"));
+  header.dispatchEvent(new CustomEvent("logout"));
+  expect(revokePortalSession).toHaveBeenCalledTimes(1);
+  expect(revokePortalSession).toHaveBeenCalledWith({
+    portalUserId: "employee",
+    sessionToken: "test-token"
+  });
+  expect(getSession().isLoggedIn).toBe(true);
+  finish();
+  await flush();
+  expect(getSession().isLoggedIn).toBe(false);
+  expect(replace).toHaveBeenCalled();
+});
+it("keeps a retryable logout error when revocation fails", async () => {
+  revokePortalSession.mockRejectedValue(new Error("offline"));
+  const element = mount();
+  await flush();
+  element
+    .querySelector("c-pwchrono-header")
+    .dispatchEvent(new CustomEvent("logout"));
+  await flush();
+  expect(getSession().isLoggedIn).toBe(true);
+  expect(element.querySelector('[role="alert"]').textContent).toContain(
+    "try Log Out again"
+  );
+  expect(replace).not.toHaveBeenCalled();
+});
+it("routes My Profile to the Experience page", async () => {
+  const element = mount();
+  await flush();
+  element
+    .querySelector("c-pwchrono-header")
+    .dispatchEvent(
+      new CustomEvent("navigate", { detail: { action: "my_profile" } })
+    );
+  expect(navigateMock).toHaveBeenCalledWith({
+    type: "comm__namedPage",
+    attributes: { name: "User_Profile__c" }
+  });
+});
+it("closes the mobile overlay and passes search to the sidebar", async () => {
+  const element = mount();
+  await flush();
+  document.body.classList.add("slide-nav");
+  element.querySelector('[data-region="sidebarOverlay"]').click();
+  expect(document.body.classList.contains("slide-nav")).toBe(false);
+  element
+    .querySelector("c-pwchrono-header")
+    .dispatchEvent(
+      new CustomEvent("search", { detail: { searchTerm: "leave" } })
+    );
+  await flush();
+  expect(element.querySelector("c-pwchrono-sidebar").searchTerm).toBe("leave");
 });

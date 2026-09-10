@@ -4,6 +4,19 @@
  */
 @SuppressWarnings('PMD')
 public inherited sharing class PWChrono_AuthController {
+  @AuraEnabled
+  public static void revokePortalSession(
+    String portalUserId,
+    String sessionToken
+  ) {
+    PWChrono_GuestSession.revokeSession(portalUserId, sessionToken);
+  }
+
+  @AuraEnabled(cacheable=true)
+  public static String getSalesforceChatterUrl() {
+    return URL.getOrgDomainUrl().toExternalForm() + '/lightning/page/chatter';
+  }
+
   /**
    * @description Returns portal user context for the currently authenticated Salesforce user.
    *              This supports running PWChrono as a Lightning App/Tab without requiring OTP.

@@ -46,3 +46,22 @@ export function filterMenuItemsByFeatures(items, features) {
     return visibleItems;
   }, []);
 }
+
+// Search only an already authorized menu tree, preserving matching descendants.
+export function filterMenuItemsBySearch(items, searchTerm) {
+  const query = String(searchTerm || "")
+    .trim()
+    .toLowerCase();
+  if (!query) return items || [];
+  return (items || []).reduce((matches, item) => {
+    const children = filterMenuItemsBySearch(item.children, query);
+    if (
+      String(item.label || "")
+        .toLowerCase()
+        .includes(query)
+    )
+      matches.push(item);
+    else if (children.length) matches.push({ ...item, children });
+    return matches;
+  }, []);
+}

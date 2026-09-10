@@ -1,4 +1,7 @@
-import { filterMenuItemsByFeatures } from "c/pwchronoNavigationAccess";
+import {
+  filterMenuItemsBySearch,
+  filterMenuItemsByFeatures
+} from "c/pwchronoNavigationAccess";
 import { normalizeApplicationRoute } from "c/pwchronoRouter";
 
 const MENU_ITEMS = [
@@ -118,4 +121,15 @@ describe("PWChrono application routes", () => {
     expect(normalizeApplicationRoute("not-a-real-module")).toBe("dashboard");
     expect(normalizeApplicationRoute(null)).toBe("dashboard");
   });
+});
+
+it("searches nested authorized pages without exposing restricted pages", () => {
+  const allowed = filterMenuItemsByFeatures(MENU_ITEMS, [
+    "Attendance Management"
+  ]);
+  expect(
+    filterMenuItemsBySearch(allowed, " ATTENDANCE ")[0].children[0].id
+  ).toBe("attendance");
+  expect(filterMenuItemsBySearch(allowed, "Payroll")).toEqual([]);
+  expect(filterMenuItemsBySearch(allowed, "")).toEqual(allowed);
 });

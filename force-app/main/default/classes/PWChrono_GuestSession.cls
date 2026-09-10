@@ -9,6 +9,34 @@ public without sharing class PWChrono_GuestSession {
   @TestVisible
   private static Datetime testNowOverride;
 
+  /** Revoke only the presented token, never a newer session issued after it. */
+  public static void revokeSession(String portalUserId, String sessionToken) {
+    if (String.isBlank(portalUserId) || String.isBlank(sessionToken))
+      return;
+    Id pid;
+    try {
+      pid = (Id) portalUserId;
+    } catch (Exception e) {
+      throw handledException('Session invalid.');
+    }
+    List<Portal_Users__c> users = [
+      SELECT Id, Session_Token__c, Session_Expires_At__c
+      FROM Portal_Users__c
+      WHERE Id = :pid
+      LIMIT 1
+      FOR UPDATE
+    ];
+    if (
+      users.isEmpty() ||
+      users[0].Session_Token__c == null ||
+      !users[0].Session_Token__c.equals(sessionToken)
+    )
+      return;
+    users[0].Session_Token__c = null;
+    users[0].Session_Expires_At__c = null;
+    update users[0];
+  }
+
   /**
    * @description Resolve the effective portal user Id for the current context.
    *              - Non-Guest: uses provided portalUserId if present, otherwise maps current Salesforce user.

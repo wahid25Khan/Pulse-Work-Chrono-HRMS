@@ -392,4 +392,87 @@ private class PWChrono_GuestSession_Test {
 
     System.assert(true, 'Clean records should be left untouched.');
   }
+
+  @isTest
+  static void testLogoutRevokesPresentedToken() {
+    Portal_Users__c employee = [SELECT Id FROM Portal_Users__c LIMIT 1];
+    Test.startTest();
+    PWChrono_AuthController.revokePortalSession(
+      String.valueOf(employee.Id),
+      'valid_token'
+    );
+    Test.stopTest();
+    employee = [
+      SELECT Session_Token__c, Session_Expires_At__c
+      FROM Portal_Users__c
+      WHERE Id = :employee.Id
+    ];
+    System.assertEquals(null, employee.Session_Token__c);
+    System.assertEquals(null, employee.Session_Expires_At__c);
+    PWChrono_GuestSession.testUserTypeOverride = 'Guest';
+    try {
+      PWChrono_GuestSession.requireVerifiedPortalUserId(
+        String.valueOf(employee.Id),
+        'valid_token'
+      );
+      System.assert(false, 'Revoked credentials must be rejected');
+    } catch (AuraHandledException expected) {
+      System.assert(expected.getMessage().contains('expired'));
+    } finally {
+      resetGuestSessionOverrides();
+    }
+  }
+
+  @isTest
+  static void testLogoutCannotRevokeAnotherToken() {
+    Portal_Users__c employee = [SELECT Id FROM Portal_Users__c LIMIT 1];
+    PWChrono_AuthController.revokePortalSession(
+      String.valueOf(employee.Id),
+      'wrong-token'
+    );
+    PWChrono_AuthController.revokePortalSession(
+      String.valueOf(employee.Id),
+      null
+    );
+    employee = [
+      SELECT Session_Token__c
+      FROM Portal_Users__c
+      WHERE Id = :employee.Id
+    ];
+    System.assertEquals('valid_token', employee.Session_Token__c);
+  }
+
+  @isTest
+  static void testLogoutIsIdempotentAndDoesNotRevokeRenewal() {
+    Portal_Users__c employee = [SELECT Id FROM Portal_Users__c LIMIT 1];
+    PWChrono_AuthController.revokePortalSession(
+      String.valueOf(employee.Id),
+      'valid_token'
+    );
+    PWChrono_AuthController.revokePortalSession(
+      String.valueOf(employee.Id),
+      'valid_token'
+    );
+    employee.Session_Token__c = 'new-token';
+    employee.Session_Expires_At__c = System.now().addHours(1);
+    update employee;
+    PWChrono_AuthController.revokePortalSession(
+      String.valueOf(employee.Id),
+      'valid_token'
+    );
+    employee = [
+      SELECT Session_Token__c
+      FROM Portal_Users__c
+      WHERE Id = :employee.Id
+    ];
+    System.assertEquals('new-token', employee.Session_Token__c);
+  }
+
+  @isTest
+  static void testChatterUrlUsesSalesforceDomain() {
+    System.assertEquals(
+      URL.getOrgDomainUrl().toExternalForm() + '/lightning/page/chatter',
+      PWChrono_AuthController.getSalesforceChatterUrl()
+    );
+  }
 }

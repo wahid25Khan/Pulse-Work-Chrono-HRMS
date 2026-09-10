@@ -1,6 +1,9 @@
 import getNavigationMenuItems from "@salesforce/apex/PWChrono_NavigationController.getNavigationMenuItems";
 import smarthrAssets from "@salesforce/resourceUrl/smarthr_assets";
-import { filterMenuItemsByFeatures } from "c/pwchronoNavigationAccess";
+import {
+  filterMenuItemsBySearch,
+  filterMenuItemsByFeatures
+} from "c/pwchronoNavigationAccess";
 import { getSession, SESSION_CHANGED_EVENT } from "c/pwchronoSession";
 import { navigateTo } from "c/pwchronoRouter";
 import { NavigationMixin } from "lightning/navigation";
@@ -80,6 +83,15 @@ const APPLICATION_ROUTES = {
 export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
   static renderMode = "light";
   @api features = [];
+  _searchTerm = "";
+  @api
+  get searchTerm() {
+    return this._searchTerm;
+  }
+  set searchTerm(value) {
+    this._searchTerm = String(value || "");
+    if (this._searchTerm.trim()) this.activeSidebarTab = "menu";
+  }
   @api isSalesforceUser = false;
   @api menuGroupLabel;
   @api applicationMode = false;
@@ -355,11 +367,14 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
 
     // If Salesforce internal user, show everything.
     if (this.isSalesforceUser) {
-      return this.rawMenuItems;
+      return filterMenuItemsBySearch(this.rawMenuItems, this.searchTerm);
     }
 
     // This is a visibility aid. Apex remains responsible for authorization.
-    return filterMenuItemsByFeatures(this.rawMenuItems, this.features);
+    return filterMenuItemsBySearch(
+      filterMenuItemsByFeatures(this.rawMenuItems, this.features),
+      this.searchTerm
+    );
   }
 
   get menuGroupLabelValue() {
@@ -554,7 +569,9 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
         Array.isArray(item.children) && item.children.length > 0;
 
       // Return boolean strictly. false instead of undefined ensures aria-expanded="false" which is valid.
-      const isExpanded = hasChildren ? this.isParentExpanded(item.key) : false;
+      const isExpanded = hasChildren
+        ? Boolean(this.searchTerm.trim()) || this.isParentExpanded(item.key)
+        : false;
 
       const isActive = String(this.activeNavKey) === String(item.key);
 
@@ -652,7 +669,9 @@ export default class PwchronoSidebar extends NavigationMixin(LightningElement) {
         label: this.menuGroupLabelValue,
         items,
         hasItems: Array.isArray(items) && items.length > 0,
-        emptyText: "No menu items available",
+        emptyText: this.searchTerm.trim()
+          ? "No matching pages"
+          : "No menu items available",
         emptyKey: "main-empty",
         wrapKey: "main-wrap"
       }

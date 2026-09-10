@@ -1,6 +1,6 @@
 import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUserAccessById";
 import getCurrentUserContext from "@salesforce/apex/PWChrono_AuthController.getCurrentUserContext";
-import { navigateTo } from "c/pwchronoRouter";
+import revokePortalSession from "@salesforce/apex/PWChrono_AuthController.revokePortalSession";
 import {
   clearSession,
   getEmployeeId,
@@ -32,6 +32,9 @@ export default class PwchronoMainLayout extends NavigationMixin(
   @track isLightningExperience = false;
 
   sessionToken;
+  logoutPending = false;
+  logoutError = "";
+  menuSearchTerm = "";
   sessionTimer;
   assetsTimer;
   sessionCheckPending = false;
@@ -406,15 +409,45 @@ export default class PwchronoMainLayout extends NavigationMixin(
     window.addEventListener(SESSION_CHANGED_EVENT, this.handleSessionChanged);
     this.redirectToLoginIfNeeded();
   }
-  handleLogout() {
-    clearSession();
-    this.isLoggedIn = false;
-    this.user = null;
-    this.permissions = null;
-    navigateTo("");
+  async handleLogout(event) {
+    event?.stopPropagation();
+    if (this.logoutPending) return;
+    this.logoutPending = true;
+    this.logoutError = "";
+    const session = getSession();
+    try {
+      if (session.sessionToken) {
+        await revokePortalSession({
+          portalUserId: session.user?.Id,
+          sessionToken: session.sessionToken
+        });
+      }
+      // A delayed logout response must not clear a newly established session.
+      if (
+        getSessionToken() === session.sessionToken &&
+        getEmployeeId() === session.user?.Id
+      ) {
+        if (this.isLightningExperience || this.isExperienceBuilder) {
+          clearSession();
+          this.isLoggedIn = false;
+          this.user = null;
+          this.permissions = null;
+        } else this.handleLoginFailure();
+      }
+    } catch {
+      this.logoutError =
+        "We couldn't complete sign out. Check your connection and try Log Out again.";
+    } finally {
+      this.logoutPending = false;
+    }
+  }
 
-    // For OTP-only portal auth, ensure we actually land on the login route.
-    this.redirectToLoginIfNeeded();
+  handleMenuSearch(event) {
+    this.menuSearchTerm = event.detail?.searchTerm || "";
+  }
+
+  handleSidebarOverlayClick() {
+    document.body.classList.remove("slide-nav");
   }
 
   handleSidebarToggle(event) {
@@ -451,7 +484,10 @@ export default class PwchronoMainLayout extends NavigationMixin(
     }
 
     if (action === "my_profile" || page === "profile") {
-      navigateTo("profile");
+      this[NavigationMixin.Navigate]({
+        type: "comm__namedPage",
+        attributes: { name: "User_Profile__c" }
+      });
       return;
     }
 
