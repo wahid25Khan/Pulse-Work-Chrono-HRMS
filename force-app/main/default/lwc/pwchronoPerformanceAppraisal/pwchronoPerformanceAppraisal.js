@@ -1,15 +1,29 @@
 import { LightningElement, api, track, wire } from "lwc";
 import { refreshApex } from "@salesforce/apex";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import getMyAppraisals from "@salesforce/apex/PWChrono_PerformanceController.getMyAppraisals";
-import saveAppraisal from "@salesforce/apex/PWChrono_PerformanceController.saveAppraisal";
+import getMyAppraisals from "@salesforce/apex/PWChrono_PortalApi.getMyAppraisals";
+import saveAppraisal from "@salesforce/apex/PWChrono_PortalApi.saveAppraisal";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 
-const RATING_MAP = { Beginner: 1, Intermediate: 2, Advanced: 3, Expert: 4, Leader: 5 };
+const RATING_MAP = {
+  Beginner: 1,
+  Intermediate: 2,
+  Advanced: 3,
+  Expert: 4,
+  Leader: 5
+};
 
 const TECHNICAL_COMPETENCIES = [
-  { key: "customer_experience", label: "Customer Experience", expected: "Advanced" },
-  { key: "technical_knowledge", label: "Technical Knowledge", expected: "Expert" },
+  {
+    key: "customer_experience",
+    label: "Customer Experience",
+    expected: "Advanced"
+  },
+  {
+    key: "technical_knowledge",
+    label: "Technical Knowledge",
+    expected: "Expert"
+  },
   { key: "problem_solving", label: "Problem Solving", expected: "Advanced" },
   { key: "code_quality", label: "Code Quality", expected: "Intermediate" },
   { key: "system_design", label: "System Design", expected: "Advanced" },
@@ -42,6 +56,13 @@ export default class PerformanceAppraisal extends LightningElement {
   @api colStatus = "Status";
 
   @track appraisalData = [];
+  handleSortChange(event) {
+    const direction = event.target.value === "oldest" ? 1 : -1;
+    this.appraisalData = [...this.appraisalData].sort(
+      (a, b) =>
+        String(a.CreatedDate).localeCompare(String(b.CreatedDate)) * direction
+    );
+  }
   @track isModalOpen = false;
   @track isSaving = false;
   @track isLoading = true;
@@ -74,9 +95,12 @@ export default class PerformanceAppraisal extends LightningElement {
         name: record.Employees__r ? record.Employees__r.Name : record.Name,
         designation: record.Employees__r?.Designation__c || "--",
         department: record.Employees__r?.Department__c || "--",
-        appraisalDate: record.Appraisal_Period__c || record.Start_Date__c || "--",
+        appraisalDate:
+          record.Appraisal_Period__c || record.Start_Date__c || "--",
         status: record.Status__c || "Draft",
-        initials: this.getInitials(record.Employees__r?.Name || record.Name || ""),
+        initials: this.getInitials(
+          record.Employees__r?.Name || record.Name || ""
+        ),
         statusClass:
           record.Status__c === "Completed" || record.Status__c === "Active"
             ? "badge badge-success d-inline-flex align-items-center badge-xs"
@@ -104,7 +128,9 @@ export default class PerformanceAppraisal extends LightningElement {
     if (!name) return "?";
     const parts = name.trim().split(" ");
     if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    return (
+      parts[0].charAt(0) + parts[parts.length - 1].charAt(0)
+    ).toUpperCase();
   }
 
   computeSelfRating() {
@@ -125,6 +151,17 @@ export default class PerformanceAppraisal extends LightningElement {
         this.ratings = {};
         this.formFields = { appraisalDate: "" };
         this.selectedAppraisalId = action === "edit" ? recordId : null;
+        if (action === "edit") {
+          const existing = this.appraisalData.find(
+            (item) => item.id === recordId
+          );
+          this.formFields = { appraisalDate: existing?.Start_Date__c || "" };
+          try {
+            this.ratings = JSON.parse(existing?.Achievements__c || "{}");
+          } catch {
+            this.ratings = {};
+          }
+        }
         this.isModalOpen = true;
         break;
       case "saveModal":
@@ -132,9 +169,6 @@ export default class PerformanceAppraisal extends LightningElement {
         break;
       case "closeModal":
         this.isModalOpen = false;
-        break;
-      case "delete":
-        this.appraisalData = this.appraisalData.filter((item) => item.id !== recordId);
         break;
       default:
         break;
@@ -156,7 +190,11 @@ export default class PerformanceAppraisal extends LightningElement {
 
   async handleSave() {
     if (!this.formFields.appraisalDate) {
-      this.showToast("Validation", "Please select an appraisal date.", "warning");
+      this.showToast(
+        "Validation",
+        "Please select an appraisal date.",
+        "warning"
+      );
       return;
     }
     this.isSaving = true;
@@ -165,7 +203,10 @@ export default class PerformanceAppraisal extends LightningElement {
         Id: this.selectedAppraisalId || undefined,
         Appraisal_Period__c: this.formFields.appraisalDate,
         Start_Date__c: this.formFields.appraisalDate,
-        Status__c: "Draft",
+        Status__c:
+          this.appraisalData.find(
+            (item) => item.id === this.selectedAppraisalId
+          )?.Status__c || "Draft",
         Self_Rating__c: this.computeSelfRating(),
         Achievements__c: Object.keys(this.ratings).length
           ? JSON.stringify(this.ratings)

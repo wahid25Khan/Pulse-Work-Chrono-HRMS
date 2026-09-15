@@ -1,10 +1,10 @@
 import { refreshApex } from "@salesforce/apex";
 import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUserAccessById";
-import deleteProjectController from "@salesforce/apex/PWChrono_AdminController.deleteProject";
-import getProjectClients from "@salesforce/apex/PWChrono_AdminController.getProjectClients";
-import getProjects from "@salesforce/apex/PWChrono_AdminController.getProjects";
-import saveProject from "@salesforce/apex/PWChrono_AdminController.saveProject";
-import uploadProjectLogo from "@salesforce/apex/PWChrono_AdminController.uploadProjectLogo";
+import deleteProjectController from "@salesforce/apex/PWChrono_PortalApi.deleteProject";
+import getProjectClients from "@salesforce/apex/PWChrono_PortalApi.getProjectClients";
+import getProjects from "@salesforce/apex/PWChrono_PortalApi.getProjects";
+import saveProject from "@salesforce/apex/PWChrono_PortalApi.saveProject";
+import uploadProjectLogo from "@salesforce/apex/PWChrono_PortalApi.uploadProjectLogo";
 import { logError } from "c/pwchronoErrorHandler";
 import {
   getEmployeeId,
@@ -15,6 +15,15 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { LightningElement, track, wire } from "lwc";
 
 export default class PwchronoProjectsGrid extends LightningElement {
+  viewProject;
+  handleViewProject(event) {
+    this.viewProject = this.projects.find(
+      (p) => p.id === event.currentTarget.dataset.id
+    );
+  }
+  closeProjectView() {
+    this.viewProject = null;
+  }
   @track projects = [];
   @track isLoading = true;
   @track showProjectModal = false;
@@ -251,7 +260,7 @@ export default class PwchronoProjectsGrid extends LightningElement {
     try {
       this.showExportDropdown = false;
 
-      const rows = Array.isArray(this.projects) ? this.projects : [];
+      const rows = this.projectsWithMenuState;
       if (!rows.length) {
         this.showToast("Info", "No projects to export.", "info");
         return;

@@ -37,6 +37,13 @@ private class PWChrono_LeaveController_Test {
   @IsTest
   static void testSubmitApproveAndLedgerHistory() {
     PWChrono_LeaveTestDataFactory.TestDataBundle bundle = getBundle();
+    // These scenarios exercise several explicit portal actors as an unlinked
+    // platform administrator. A Salesforce identity must not map to three people.
+    update new List<Portal_Users__c>{
+      new Portal_Users__c(Id = bundle.employee.Id, User__c = null),
+      new Portal_Users__c(Id = bundle.manager.Id, User__c = null),
+      new Portal_Users__c(Id = bundle.admin.Id, User__c = null)
+    };
 
     PWChrono_LeaveValidator.LeaveDTO dto = new PWChrono_LeaveValidator.LeaveDTO();
     dto.leaveTypeId = bundle.annualLeave.Id;
@@ -51,7 +58,7 @@ private class PWChrono_LeaveController_Test {
       String.valueOf(bundle.employee.Id),
       null
     );
-    Leave__c approvedLeave = PWChrono_LeaveController.processLeaveApproval(
+    Leave__c approvedLeave = PWChrono_PortalApi.processLeaveApproval(
       createdLeave.Id,
       'Approve',
       'Looks good',
@@ -148,6 +155,13 @@ private class PWChrono_LeaveController_Test {
   @IsTest
   static void testReadOperationsReturnEmployeeAndManagerData() {
     PWChrono_LeaveTestDataFactory.TestDataBundle bundle = getBundle();
+    // These scenarios exercise several explicit portal actors as an unlinked
+    // platform administrator. A Salesforce identity must not map to three people.
+    update new List<Portal_Users__c>{
+      new Portal_Users__c(Id = bundle.employee.Id, User__c = null),
+      new Portal_Users__c(Id = bundle.manager.Id, User__c = null),
+      new Portal_Users__c(Id = bundle.admin.Id, User__c = null)
+    };
     Leave__c submittedLeave = PWChrono_LeaveTestDataFactory.createLeave(
       bundle.employee.Id,
       bundle.annualLeave.Id,
@@ -192,11 +206,11 @@ private class PWChrono_LeaveController_Test {
       String.valueOf(bundle.employee.Id),
       null
     );
-    List<Leave__c> teamPending = PWChrono_LeaveController.getTeamLeavesForApproval(
+    List<Leave__c> teamPending = PWChrono_PortalApi.getTeamLeavesForApproval(
       String.valueOf(bundle.manager.Id),
       null
     );
-    List<Leave__c> teamLeaves = PWChrono_LeaveController.getTeamLeaves(
+    List<Leave__c> teamLeaves = PWChrono_PortalApi.getTeamLeaves(
       'Submitted',
       null,
       null,
@@ -316,6 +330,13 @@ private class PWChrono_LeaveController_Test {
   @IsTest
   static void testAdminOperationsAndLegacySave() {
     PWChrono_LeaveTestDataFactory.TestDataBundle bundle = getBundle();
+    // These scenarios exercise several explicit portal actors as an unlinked
+    // platform administrator. A Salesforce identity must not map to three people.
+    update new List<Portal_Users__c>{
+      new Portal_Users__c(Id = bundle.employee.Id, User__c = null),
+      new Portal_Users__c(Id = bundle.manager.Id, User__c = null),
+      new Portal_Users__c(Id = bundle.admin.Id, User__c = null)
+    };
     PWChrono_Leave_Type__c newType = new PWChrono_Leave_Type__c(
       Name = 'Bereavement Leave',
       Max_Days_Allowed__c = 5,
@@ -325,13 +346,13 @@ private class PWChrono_LeaveController_Test {
     );
 
     Test.startTest();
-    PWChrono_Leave_Type__c createdType = PWChrono_LeaveController.createLeaveType(
+    PWChrono_Leave_Type__c createdType = PWChrono_PortalApi.createLeaveType(
       newType,
       String.valueOf(bundle.admin.Id),
       null
     );
     createdType.Max_Days_Allowed__c = 7;
-    PWChrono_Leave_Type__c updatedType = PWChrono_LeaveController.updateLeaveType(
+    PWChrono_Leave_Type__c updatedType = PWChrono_PortalApi.updateLeaveType(
       createdType,
       String.valueOf(bundle.admin.Id),
       null
@@ -344,11 +365,22 @@ private class PWChrono_LeaveController_Test {
       String.valueOf(bundle.admin.Id),
       null
     );
+    // Submit the legacy request as its employee and choose weekdays deterministically.
+    Date requestMonday = Date.today().addDays(14);
+    Integer weekday = Math.mod(
+      Date.newInstance(1900, 1, 1).daysBetween(requestMonday),
+      7
+    );
+    requestMonday = requestMonday.addDays(Math.mod(7 - weekday, 7));
+    update new Portal_Users__c(
+      Id = bundle.employee.Id,
+      User__c = UserInfo.getUserId()
+    );
     Leave__c savedLeave = PWChrono_LeaveController.saveLeaveApplication(
       new Leave__c(
         Leave_Type__c = bundle.annualLeave.Id,
-        From_Date__c = Date.today().addDays(12),
-        To_Date__c = Date.today().addDays(13),
+        From_Date__c = requestMonday,
+        To_Date__c = requestMonday.addDays(1),
         Half_Day__c = false,
         Reason__c = 'Legacy save coverage',
         Status__c = 'Submitted'
@@ -436,7 +468,7 @@ private class PWChrono_LeaveController_Test {
       }
 
       try {
-        PWChrono_LeaveController.getTeamLeavesForApproval(null, null);
+        PWChrono_PortalApi.getTeamLeavesForApproval(null, null);
         System.assert(false, 'Missing employee context should throw.');
       } catch (AuraHandledException e) {
         System.assertNotEquals(null, e.getMessage());
@@ -462,7 +494,7 @@ private class PWChrono_LeaveController_Test {
       }
 
       try {
-        PWChrono_LeaveController.getTeamLeaves('All', null, null, null, null);
+        PWChrono_PortalApi.getTeamLeaves('All', null, null, null, null);
         System.assert(false, 'Missing employee context should throw.');
       } catch (AuraHandledException e) {
         System.assertNotEquals(null, e.getMessage());
@@ -481,7 +513,7 @@ private class PWChrono_LeaveController_Test {
       }
 
       try {
-        PWChrono_LeaveController.processLeaveApproval(
+        PWChrono_PortalApi.processLeaveApproval(
           submittedLeave.Id,
           'Approve',
           'No access',
@@ -494,7 +526,7 @@ private class PWChrono_LeaveController_Test {
       }
 
       try {
-        PWChrono_LeaveController.createLeaveType(
+        PWChrono_PortalApi.createLeaveType(
           new PWChrono_Leave_Type__c(Name = 'Orphan User Type'),
           null,
           null
@@ -578,7 +610,7 @@ private class PWChrono_LeaveController_Test {
       }
 
       try {
-        PWChrono_LeaveController.updateLeaveType(
+        PWChrono_PortalApi.updateLeaveType(
           new PWChrono_Leave_Type__c(
             Id = bundle.annualLeave.Id,
             Name = 'Annual Leave'

@@ -107,7 +107,7 @@ private class PWChrono_PerformanceController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      List<PWChrono_Appraisal__c> appraisals = PWChrono_PerformanceController.getMyAppraisals(
+      List<PWChrono_Appraisal__c> appraisals = PWChrono_PortalApi.getMyAppraisals(
         null,
         null,
         null
@@ -151,7 +151,7 @@ private class PWChrono_PerformanceController_Test {
       );
 
       Test.startTest();
-      PWChrono_Appraisal__c savedAppraisal = PWChrono_PerformanceController.saveAppraisal(
+      PWChrono_Appraisal__c savedAppraisal = PWChrono_PortalApi.saveAppraisal(
         newAppraisal,
         null,
         null
@@ -172,7 +172,7 @@ private class PWChrono_PerformanceController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      List<PWChrono_Goal__c> goals = PWChrono_PerformanceController.getMyGoals(
+      List<PWChrono_Goal__c> goals = PWChrono_PortalApi.getMyGoals(
         null,
         null,
         null
@@ -196,7 +196,7 @@ private class PWChrono_PerformanceController_Test {
       );
 
       Test.startTest();
-      PWChrono_Goal__c savedGoal = PWChrono_PerformanceController.saveGoal(
+      PWChrono_Goal__c savedGoal = PWChrono_PortalApi.saveGoal(
         newGoal,
         null,
         null
@@ -214,7 +214,7 @@ private class PWChrono_PerformanceController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      PWChrono_Goal__c updatedGoal = PWChrono_PerformanceController.updateGoalProgress(
+      PWChrono_Goal__c updatedGoal = PWChrono_PortalApi.updateGoalProgress(
         goal.Id,
         100,
         PWChrono_Constants.STATUS_COMPLETED,
@@ -243,7 +243,7 @@ private class PWChrono_PerformanceController_Test {
     System.runAs(adminUser) {
       Test.startTest();
       try {
-        PWChrono_PerformanceController.getMyAppraisals(null, null, null);
+        PWChrono_PortalApi.getMyAppraisals(null, null, null);
         // May throw exception or return empty list, either is valid for user without employee record
         System.assert(true, 'Should handle user without employee gracefully');
       } catch (AuraHandledException e) {
@@ -265,7 +265,7 @@ private class PWChrono_PerformanceController_Test {
     System.runAs(testUser) {
       Test.startTest();
       try {
-        PWChrono_PerformanceController.saveAppraisal(null, null, null);
+        PWChrono_PortalApi.saveAppraisal(null, null, null);
         System.assert(false, 'Should throw exception for null appraisal');
       } catch (AuraHandledException e) {
         System.assert(true, 'Should handle null appraisal');
@@ -283,7 +283,7 @@ private class PWChrono_PerformanceController_Test {
     System.runAs(testUser) {
       Test.startTest();
       try {
-        PWChrono_PerformanceController.saveGoal(null, null, null);
+        PWChrono_PortalApi.saveGoal(null, null, null);
         System.assert(false, 'Should throw exception for null goal');
       } catch (AuraHandledException e) {
         System.assert(true, 'Should handle null goal');
@@ -301,7 +301,7 @@ private class PWChrono_PerformanceController_Test {
     System.runAs(testUser) {
       Test.startTest();
       try {
-        PWChrono_PerformanceController.updateGoalProgress(
+        PWChrono_PortalApi.updateGoalProgress(
           null,
           50,
           PWChrono_Constants.STATUS_IN_PROGRESS,
@@ -325,7 +325,7 @@ private class PWChrono_PerformanceController_Test {
     System.runAs(testUser) {
       Test.startTest();
       // Test with filters
-      List<PWChrono_Goal__c> inProgressGoals = PWChrono_PerformanceController.getMyGoals(
+      List<PWChrono_Goal__c> inProgressGoals = PWChrono_PortalApi.getMyGoals(
         PWChrono_Constants.STATUS_IN_PROGRESS,
         null,
         null
@@ -351,7 +351,7 @@ private class PWChrono_PerformanceController_Test {
 
     System.runAs(testUser) {
       Test.startTest();
-      List<PWChrono_Appraisal__c> draftAppraisals = PWChrono_PerformanceController.getMyAppraisals(
+      List<PWChrono_Appraisal__c> draftAppraisals = PWChrono_PortalApi.getMyAppraisals(
         PWChrono_Constants.STATUS_DRAFT,
         null,
         null
@@ -380,7 +380,7 @@ private class PWChrono_PerformanceController_Test {
       Test.startTest();
       try {
         // Progress > 100 is allowed; goal should auto-complete
-        PWChrono_Goal__c updatedGoal = PWChrono_PerformanceController.updateGoalProgress(
+        PWChrono_Goal__c updatedGoal = PWChrono_PortalApi.updateGoalProgress(
           goal.Id,
           150,
           PWChrono_Constants.STATUS_IN_PROGRESS,

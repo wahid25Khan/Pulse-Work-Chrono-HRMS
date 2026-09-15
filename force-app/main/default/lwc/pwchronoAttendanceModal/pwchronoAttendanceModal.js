@@ -1,5 +1,5 @@
 import { LightningElement, api, track } from "lwc";
-import saveAttendanceRequest from "@salesforce/apex/PWChrono_AttendanceController.saveAttendanceRequest";
+import saveAttendanceRequest from "@salesforce/apex/PWChrono_PortalApi.saveAttendanceRequest";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";
 

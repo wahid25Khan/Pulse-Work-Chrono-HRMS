@@ -100,7 +100,14 @@ export default class TimesheetManager extends LightningElement {
 
   handleSort(event) {
     const field = event.currentTarget.dataset.field || "workDateValue";
-    this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
+    const requested = event.currentTarget.dataset.sort;
+    this.sortDirection = requested
+      ? requested === "asc"
+        ? "asc"
+        : "desc"
+      : this.sortDirection === "asc"
+        ? "desc"
+        : "asc";
     const multiplier = this.sortDirection === "asc" ? 1 : -1;
     this.filteredData = [...this.filteredData].sort(
       (a, b) =>

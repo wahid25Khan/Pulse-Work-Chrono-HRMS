@@ -25,6 +25,7 @@ const MENU_FEATURE_MAP = {
   Projects: ["Projects", "Dashboard"],
   "Expense Management": ["Expense Management"],
   Payroll: ["Payroll"],
+  Configuration: ["Admin Settings", "Configuration"],
   Administration: ["Admin Settings", "Configuration"],
   "Reports Dashboard": ["Reports Dashboard", "Admin Settings", "Configuration"],
   "Role Feature Mapping": ["Admin Settings", "Configuration"]

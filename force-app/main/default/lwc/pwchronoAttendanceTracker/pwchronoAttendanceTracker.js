@@ -1,6 +1,6 @@
 import { LightningElement, track, wire } from "lwc";
 import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUserAccessById";
-import getAttendanceTrackerDataForEmployee from "@salesforce/apex/PWChrono_AttendanceController.getAttendanceTrackerDataForEmployee";
+import getAttendanceTrackerDataForEmployee from "@salesforce/apex/PWChrono_PortalApi.getAttendanceTrackerDataForEmployee";
 import { showErrorToast, logError } from "c/pwchronoErrorHandler";
 import { getSession, getEmployeeId, getSessionToken } from "c/pwchronoSession";
 import { downloadCsv } from "c/pwchronoCsv";
@@ -25,6 +25,23 @@ export default class PwchronoAttendanceTracker extends NavigationMixin(
   LightningElement
 ) {
   @track currentDate = new Date();
+  showReport = false;
+  openReport(event) {
+    event?.preventDefault();
+    this.setDefaultReportData();
+    this.showReport = true;
+  }
+  closeReport() {
+    this.showReport = false;
+  }
+  handleDateSort(event) {
+    const direction = event.target.value === "asc" ? 1 : -1;
+    this.attendanceData = [...this.attendanceData].sort(
+      (a, b) =>
+        String(a.attendanceDate).localeCompare(String(b.attendanceDate)) *
+        direction
+    );
+  }
   @track attendanceData = [];
   @track isLoading = false;
   @track error = null;
@@ -498,7 +515,7 @@ export default class PwchronoAttendanceTracker extends NavigationMixin(
       totalWorking: day.productionHours || "--",
       productive: day.productionHours || "--",
       breakHours: day.breakTime || "00 Min",
-      overtime: "0h"
+      overtime: "Not recorded"
     };
   }
 

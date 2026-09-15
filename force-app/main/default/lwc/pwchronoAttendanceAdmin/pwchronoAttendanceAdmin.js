@@ -1,4 +1,4 @@
-import getAttendanceAdminRows from "@salesforce/apex/PWChrono_AttendanceController.getAttendanceAdminRows";
+import getAttendanceAdminRows from "@salesforce/apex/PWChrono_PortalApi.getAttendanceAdminRows";
 import getUserAccessById from "@salesforce/apex/PWChrono_AccessController.getUserAccessById";
 import { logError } from "c/pwchronoErrorHandler";
 import { getEmployeeId, getSessionToken } from "c/pwchronoSession";

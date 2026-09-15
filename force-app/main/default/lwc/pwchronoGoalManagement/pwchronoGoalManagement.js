@@ -1,9 +1,9 @@
 import { LightningElement, track, wire } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
-import getMyGoals from "@salesforce/apex/PWChrono_PerformanceController.getMyGoals";
-import saveGoal from "@salesforce/apex/PWChrono_PerformanceController.saveGoal";
-import updateGoalProgress from "@salesforce/apex/PWChrono_PerformanceController.updateGoalProgress";
+import getMyGoals from "@salesforce/apex/PWChrono_PortalApi.getMyGoals";
+import saveGoal from "@salesforce/apex/PWChrono_PortalApi.saveGoal";
+import updateGoalProgress from "@salesforce/apex/PWChrono_PortalApi.updateGoalProgress";
 import { getSession, getSessionToken } from "c/pwchronoSession";
 
 export default class PwchronoGoalManagement extends LightningElement {

@@ -24,15 +24,11 @@
           class="d-flex my-xl-auto right-content align-items-center flex-wrap"
         >
           <div class="mb-2 me-2">
-            <div class="dropdown">
-              <a
-                href="javascript:void(0);"
-                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
-                data-bs-toggle="dropdown"
-              >
+            <details class="native-menu dropdown">
+              <summary class="btn btn-white">
                 <i class="ti ti-file-export me-1"></i>Export
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end p-3">
+              </summary>
+              <ul class="native-menu-list p-3">
                 <li>
                   <a
                     href="javascript:void(0);"
@@ -50,7 +46,7 @@
                   </a>
                 </li>
               </ul>
-            </div>
+            </details>
           </div>
           <div class="mb-2">
             <button
@@ -94,15 +90,9 @@
               </div>
             </div>
             <template for:each={filterConfigs} for:item="filter">
-              <div class="dropdown me-3" key={filter.label}>
-                <a
-                  href="javascript:void(0);"
-                  class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
-                  data-bs-toggle="dropdown"
-                >
-                  {filter.label}
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end p-3">
+              <details class="native-menu dropdown me-3" key={filter.label}>
+                <summary class="btn btn-white">{filter.label}</summary>
+                <ul class="native-menu-list p-3">
                   <template for:each={filter.options} for:item="opt">
                     <li key={opt}>
                       <a
@@ -116,7 +106,7 @@
                     </li>
                   </template>
                 </ul>
-              </div>
+              </details>
             </template>
           </div>
         </div>

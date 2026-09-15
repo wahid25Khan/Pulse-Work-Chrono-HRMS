@@ -161,8 +161,22 @@
         <type>InternalLink</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>Projects List</label>
+        <label>Probation Management</label>
         <position>11</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <target>/probation-management</target>
+        <type>InternalLink</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Notice Period Tracker</label>
+        <position>12</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <target>/notice-period-tracker</target>
+        <type>InternalLink</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Projects List</label>
+        <position>13</position>
         <publiclyAvailable>true</publiclyAvailable>
         <subMenu>
             <navigationMenuItem>
@@ -177,21 +191,21 @@
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Expense Management</label>
-        <position>12</position>
+        <position>14</position>
         <publiclyAvailable>true</publiclyAvailable>
         <target>/expenses</target>
         <type>InternalLink</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Payroll</label>
-        <position>13</position>
+        <position>15</position>
         <publiclyAvailable>true</publiclyAvailable>
         <target>/payroll</target>
         <type>InternalLink</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Administration</label>
-        <position>14</position>
+        <position>16</position>
         <publiclyAvailable>true</publiclyAvailable>
         <subMenu>
             <navigationMenuItem>
@@ -206,6 +220,13 @@
                 <position>1</position>
                 <publiclyAvailable>true</publiclyAvailable>
                 <target>/role-feature-mapping</target>
+                <type>InternalLink</type>
+            </navigationMenuItem>
+            <navigationMenuItem>
+                <label>Configuration</label>
+                <position>2</position>
+                <publiclyAvailable>true</publiclyAvailable>
+                <target>/configuration</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
         </subMenu>

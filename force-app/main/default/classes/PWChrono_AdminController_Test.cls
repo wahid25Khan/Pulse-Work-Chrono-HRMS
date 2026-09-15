@@ -190,7 +190,7 @@ private class PWChrono_AdminController_Test {
 
     System.runAs(adminUser) {
       Test.startTest();
-      PWChrono_AdminController.AttendanceOverview res = PWChrono_AdminController.getAttendanceOverview(
+      PWChrono_AdminController.AttendanceOverview res = PWChrono_PortalApi.getAttendanceOverview(
         Date.today(),
         null,
         null
@@ -407,7 +407,7 @@ private class PWChrono_AdminController_Test {
 
     System.runAs(adminUser) {
       Test.startTest();
-      List<PWChrono_AdminController.ChartPoint> points = PWChrono_AdminController.getEmployeesByDepartment(
+      List<PWChrono_AdminController.ChartPoint> points = PWChrono_PortalApi.getEmployeesByDepartment(
         null,
         null
       );

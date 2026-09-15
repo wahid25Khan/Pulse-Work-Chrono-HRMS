@@ -148,7 +148,11 @@
           <!-- Primary action -->
           <template lwc:if={canManageProjects}>
             <div class="mb-2">
-              <button type="button" class="btn btn-primary" onclick={openModal}>
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick={handleAddProject}
+              >
                 <i class="fa-solid fa-square-plus me-1" aria-hidden="true"></i
                 >Add Project
               </button>
@@ -369,6 +373,8 @@
                         </td>
                         <td>
                           <button
+                            onclick={handleViewProject}
+                            data-id={proj.id}
                             type="button"
                             class="btn btn-link p-0 text-decoration-none"
                             title="Project ID"
@@ -379,6 +385,8 @@
                         <td>
                           <h6 class="fw-medium mb-0">
                             <button
+                              onclick={handleViewProject}
+                              data-id={proj.id}
                               type="button"
                               class="btn btn-link p-0 text-decoration-none link-dark"
                               title={proj.name}
@@ -512,6 +520,8 @@
                     >
                       <h6>
                         <button
+                          onclick={handleViewProject}
+                          data-id={proj.id}
                           type="button"
                           class="btn btn-link p-0 text-decoration-none link-dark fw-bold"
                         >
@@ -602,6 +612,8 @@
                     >
                       <div class="d-flex align-items-center file-name-icon">
                         <button
+                          onclick={handleViewProject}
+                          data-id={proj.id}
                           type="button"
                           class="btn btn-link p-0 border-0 avatar avatar-sm avatar-rounded flex-shrink-0"
                         >
@@ -1094,4 +1106,34 @@
       </template>
     </div>
   </div>
-</template>
+  <template if:true={viewProject}
+    ><section
+      class="modal show d-block"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Project details"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>{viewProject.name}</h3>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close project details"
+              onclick={closeProjectView}
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>{viewProject.description}</p>
+            <p>Status: {viewProject.status}</p>
+            <p>Client: {viewProject.clientName}</p>
+            <p>Leader: {viewProject.leaderName}</p>
+            <p>Deadline: {viewProject.deadline}</p>
+            <p>Hours logged: {viewProject.hoursLogged} / {viewProject.hours}</p>
+          </div>
+        </div>
+      </div>
+    </section></template
+  ></template
+>
