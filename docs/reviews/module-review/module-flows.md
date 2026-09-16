@@ -98,7 +98,7 @@ Verify persistence after refresh, approver ownership, cross-user boundaries and 
 
 ### Performance and training
 
-**Performance goals.** Entry: Performance. The corrected view displays the real Goal Management component. Employees create or edit goals, set a target date/status and update progress. The server owns persistence and access checks. Dashboard active-goal counts can then reflect the employee's records.
+**Performance goals.** Entry: Performance. The view displays the real Goal Management component with SmartHR-style summary cards, status pills, search, responsive goal cards, target dates and progress bars. Employees create or edit goals, set a target date/status and update progress with the slider; progress changes derive Not Started, In Progress or Completed status and persist through the server API. Refresh reloads the authoritative records, while error and no-match states keep the workflow understandable. The server owns persistence and access checks. Dashboard active-goal counts can then reflect the employee's records.
 
 **Appraisals.** Entry: Appraisals. Employees review or save their appraisal fields and ratings through the appraisal controller. The separate legacy template now preserves existing edit values and no longer pretends to delete a record only in browser memory. Reviewer completion is a process gap: the existing team-review query selects completed records, and the existing save method does not generally authorize an assigned reviewer to edit someone else's appraisal. A dedicated, permission-tested reviewer transition is still needed.
 
