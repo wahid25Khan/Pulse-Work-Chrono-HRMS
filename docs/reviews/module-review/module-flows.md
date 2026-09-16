@@ -94,7 +94,7 @@ Verify persistence after refresh, approver ownership, cross-user boundaries and 
 
 **Offer letters.** Entry: Offer Letter. Select the applicant and relevant designation and complete the offer details. Generate invokes the recruitment service. Review the generated result before any external communication. The offer-generation action is distinct from accepting an offer or completing employee onboarding.
 
-**Onboarding.** Entry: Onboarding. The user loads assigned onboarding tasks and updates their completion status. Completed task records feed the admin dashboard. Employee creation, task assignment and recruitment handoff require configured records and automation; they should be tested as a complete sequence before claiming automatic hire-to-onboard processing.
+**Onboarding.** Entry: Onboarding. The employee checklist loads only tasks assigned to the signed-in employee through a session-validated portal endpoint. The screen shows total, open, completed and overdue counts, progress, mandatory badges, due dates, search and status filters, and loading, error and empty states. Selecting **Mark complete** persists `Status__c = Completed`, refreshes the checklist and updates the progress summary. Completed task records feed the admin dashboard. Employee creation, task-template assignment and recruitment handoff require configured records and automation; test those prerequisites as one sequence before claiming automatic hire-to-onboard processing.
 
 ### Performance and training
 
